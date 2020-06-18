@@ -1,4 +1,4 @@
-export const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000/api'
+export const API_URL = process.env.REACT_APP_API_URL || 'https://ops.wematch.com/da24'
 
 export const MOVE_URL = process.env.REACT_APP_MOVE_URL || 'http://dev.da24.wematch.com'
 export const CLEAN_URL = process.env.REACT_APP_CLEAN_URL || 'http://dev.da24.wematch.com/default_clean.asp'

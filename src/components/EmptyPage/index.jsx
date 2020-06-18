@@ -1,7 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import { IconSad } from '../../components/common/Icon'
+import { IconSad } from '../Icon'
 
 const S = {
 	Container: Styled.div`
@@ -33,7 +33,7 @@ const S = {
 
 }
 
-const NoneList = ({}) => {
+const EmptyPage = ({}) => {
 	return (
 		<S.Container>
 			<IconSad width="80" height="64"/>
@@ -43,4 +43,4 @@ const NoneList = ({}) => {
 	)
 }
 
-export default NoneList
+export default EmptyPage

@@ -1,6 +1,6 @@
 import React from 'react'
 import Styled from 'styled-components'
-import { Previous, Truck } from '../../components/common/Icon'
+import { Previous, Truck } from '../Icon'
 
 const S = {
 		Container: Styled.div`

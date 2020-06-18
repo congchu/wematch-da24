@@ -1,6 +1,6 @@
 import React from 'react'
 import Styled, { css } from 'styled-components'
-import { NextArrow, ProfileDefault } from '../../components/common/Icon'
+import { NextArrow, ProfileDefault } from '../../../components/Icon'
 
 const S = {
 	Box: Styled.a`
