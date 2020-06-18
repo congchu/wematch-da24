@@ -11,7 +11,8 @@ import { black } from 'styles/colors'
 
 
 interface IconProps {
-  size?: number;
+  width?: number;
+  height?: number;
   color?: string;
   secondColor?: string;
   className?: string;
@@ -22,7 +23,8 @@ interface IconProps {
 export default class ${componentName} extends React.PureComponent<IconProps> {
   public static defaultProps: IconProps = {
     color: black,
-    size: 16,
+    width: 16,
+    height: 16,
   }
 
   public render() {

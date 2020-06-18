@@ -1,2 +1,7 @@
+export { default as ChatIcon } from './generated/ChatIcon'
+export { default as IconSad } from './generated/IconSad'
+export { default as KakaoIcon } from './generated/KakaoIcon'
+export { default as NextArrow } from './generated/NextArrow'
 export { default as Previous } from './generated/Previous'
-
+export { default as ProfileDefault } from './generated/ProfileDefault'
+export { default as Truck } from './generated/Truck'

@@ -1,7 +1,8 @@
-import * as React from 'react'
-import { black } from 'styles/colors'
+import * as React from 'react';
+import { black } from 'styles/colors';
 interface IconProps {
-  size?: number;
+  width?: number;
+  height?: number;
   color?: string;
   secondColor?: string;
   className?: string;
@@ -10,12 +11,12 @@ interface IconProps {
 export default class SvgPrevious extends React.PureComponent<IconProps> {
   public static defaultProps: IconProps = {
     color: black,
-    size: 16
-  }
+    width: 16,
+    height: 16
+  };
 
   public render() {
-    return <svg width={this.props.size} height={this.props.size} style={this.props.style}
-      className={this.props.className} viewBox="0 0 16 16"><path fill={this.props.color} d="M6.307 14.293L.144 8.003a.505.505 0 01.004-.71l.055-.045L6.3 1.147a.5.5 0 01.638-.059l.069.058a.5.5 0 010 .708l-5.8 5.805 5.804 5.923a.505.505 0 01-.004.71.495.495 0 01-.7 0z" /></svg>
+    return <svg width={this.props.width} height={this.props.height} style={this.props.style} className={this.props.className}><g fill="none" fillRule="evenodd"><path d="M9.618 19.85L.151 10.4a.513.513 0 01-.134-.496.505.505 0 01.139-.258L9.619.151a.513.513 0 11.726.726L1.23 10.025l9.115 9.098a.513.513 0 11-.726.727z" fill={this.props.color} fillRule="nonzero" /><path d="M0-2h24v24H0z" /></g></svg>;
   }
 
 }

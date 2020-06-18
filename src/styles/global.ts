@@ -9,12 +9,14 @@ export default createGlobalStyle`
     height: 100%;
   }
   body {
+    min-width:320px;
     font-family: 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
     font-size: 14px;
     background-color: white;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
+    color:#333;
     line-height: normal;
     letter-spacing: -1px;
   }

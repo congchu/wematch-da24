@@ -4,11 +4,10 @@ module.exports = {
     '#121212': '{this.props.color}'
   },
   svgProps: {
-    width: '{this.props.size}',
-    height: '{this.props.size}',
+    width: '{this.props.width}',
+    height: '{this.props.height}',
     style: '{this.props.style}',
     className: '{this.props.className}',
-    viewBox: '0 0 16 16'
   },
   expandProps: false,
   prettier: false
