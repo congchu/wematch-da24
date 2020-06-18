@@ -8,7 +8,7 @@ import EmptyPage from '../../../components/EmptyPage'
 
 import * as colors from '../../../styles/colors'
 
-import { KakaoIcon, ChatIcon } from '../../../components/Icon'
+import { KakaoIcon } from '../../../components/Icon'
 
 const S = {
     Container: Styled.div``,
@@ -153,12 +153,12 @@ const PartnerList = () => {
 
     return (
         <S.Container>
-            <TopGnb />
+            <TopGnb title="업체 직접 선택"/>
             <SetType />
             {data.length >= 1 ? (
                 <S.WrapItem>
                     {data.map((list) => (
-                        <PartnerItem key={list.id} profileImg={data.profileImg} disabled={data.disabled} level={data.level} wordTitle={list.wordTitle} select={list.select} review={list.review} career={list.career}/>
+                        <PartnerItem key={list.id} profileImg={data.profileImg} disabled={data.disabled} level={data.level} wordTitle={list.wordTitle} pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}/>
                     ))}
                     <S.ChatText>
                         도움이 필요하세요?

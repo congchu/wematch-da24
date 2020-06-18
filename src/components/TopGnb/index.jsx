@@ -4,16 +4,6 @@ import { Previous, Truck } from '../Icon'
 
 const S = {
 		Container: Styled.div`
-			svg{
-				position:absolute;
-				top:0;
-				left:0;
-				padding:12px 16px;
-				@media screen and (min-width: 768px) {
-					top:14px;
-					left:8px;
-				}
-			}
 			:after{
 				content:'';
 				display:block;
@@ -21,6 +11,20 @@ const S = {
 				height:8px;
 				background-color:#f7f8fa;
 				box-shadow:inset 0 1px 0 #ebeef2;
+			}
+		`,
+		BtnPrevious: Styled.a`
+			position:absolute;
+				top:0;
+				left:0;
+				padding:12px 16px;
+				@media screen and (min-width: 768px) {
+					top:14px;
+					left:8px;
+				}
+			svg{
+				
+				
 			}
 		`,
 		HeadTitle: Styled.strong`
@@ -66,11 +70,13 @@ const S = {
 		`
 }
 
-const TopGnb = ({}) => {
+const TopGnb = ({title}) => {
 	return (
 		<S.Container>
-			<Previous width="11" height="20" color="#333" />
-			<S.HeadTitle>업체 직접 선택</S.HeadTitle>
+			<S.BtnPrevious>
+				<Previous width="11" height="20" color="#333" />
+			</S.BtnPrevious>
+			<S.HeadTitle>{title}</S.HeadTitle>
 			<Truck width="22" height="15" color="#000"/>
 			<S.Count>2</S.Count>
 		</S.Container>

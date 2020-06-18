@@ -112,7 +112,7 @@ const S = {
 	`
 }
 
-const PartnerItem = ({disabled, profileImg, level, wordTitle, select, review, career}) => {
+const PartnerItem = ({disabled, profileImg, level, wordTitle, pick_count, review_count, experience}) => {
 
 	return (
 		<S.Box>
@@ -132,9 +132,9 @@ const PartnerItem = ({disabled, profileImg, level, wordTitle, select, review, ca
 				<S.LevelTitle><em>{level}등급</em> (고객평가 상위 10%)</S.LevelTitle>
 				<S.PartnerWord>{wordTitle}</S.PartnerWord>
 				<S.PartnerInfo>
-					<span>고객선택 {select}</span>
-					<span>평가 {review}</span>
-					<span>경력 {career}년</span>
+					<span>고객선택 {pick_count}</span>
+					<span>평가 {review_count}</span>
+					<span>경력 {experience}년</span>
 				</S.PartnerInfo>
 				<S.CompanyLink>
 					자세히 보기
