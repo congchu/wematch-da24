@@ -73,6 +73,7 @@ const PartnerList = () => {
             "title": "내가족 이사처럼 꼼꼼하고 기분좋게~^^",
             "description": "이젠 이사하면서 스트레스받지 마세요! 견적부터 마무리까지 깔끔하게 해드립니다~^^",
             "levelDescription":"고객평가 상위 10%",
+            "active":true,
             "keyword": {
                 "time_normal": [
                     "시간"
@@ -113,6 +114,7 @@ const PartnerList = () => {
             "level":"B",
             "manager_name": "이형규",
             "title": null,
+            "active":false,
             "description": null,
             "levelDescription":"평균수준",
             "keyword": {
@@ -168,12 +170,12 @@ const PartnerList = () => {
 
     return (
         <S.Container>
-            <TopGnb Toptitle="업체 직접 선택" numberInfo="4" isCounted />
+            <TopGnb title="업체 직접 선택" count={2} />
             <SetType />
-            {data.length >= 1 ? (
+            {data.length > 0 ? (
                 <S.WrapItem>
                     {data.map((list) => (
-                        <PartnerItem key={list.id} profileImg={list.profileImg} disabled={list.disabled} level={list.level} levelDescription={list.levelDescription} title={list.title} pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}/>
+                        <PartnerItem key={list.id} profileImg={list.profileImg} disabled={list.disabled} level={list.level} levelDescription={list.levelDescription} title={list.title} pick_count={list.pick_count} review_count={list.review_count} experience={list.experience} active={list.active}/>
                     ))}
                     <S.ChatText>
                         도움이 필요하세요?
@@ -183,7 +185,7 @@ const PartnerList = () => {
                     </S.BtnKakao>
                 </S.WrapItem>
             ) : (
-                <EmptyPage EmptyTitle="죄송합니다" EmptySubtitle="해당지역에 가능한 업체가 없습니다." />
+                <EmptyPage title="죄송합니다" subtitle="해당지역에 가능한 업체가 없습니다." />
             )}
         </S.Container>
     )

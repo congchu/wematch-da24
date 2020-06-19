@@ -1,7 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import * as colors from 'styles/colors'
+import * as colors from '../../styles/colors'
 
 import { IconSad } from '../Icon'
 
@@ -35,12 +35,12 @@ const S = {
 
 }
 
-const EmptyPage = ({ EmptyTitle, EmptySubtitle }) => {
+const EmptyPage = ({ title, subtitle }) => {
 	return (
 		<S.Container>
 			<IconSad width="80" height="64"/>
-			<strong>{EmptyTitle}</strong>
-			<p>{EmptySubtitle}</p>
+			<strong>{title}</strong>
+			<p>{subtitle}</p>
 		</S.Container>
 	)
 }

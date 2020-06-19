@@ -11,6 +11,9 @@ const S = {
 		overflow:hidden;
 		padding:24px;
 		border-bottom:1px solid ${colors.lineDefault};
+		${props => props.active && css`
+			background: ${colors.hoverBg};
+		`}
 	`,
 	PartnerImg: Styled.div`
 		position:relative;
@@ -115,10 +118,10 @@ const S = {
 	`
 }
 
-const PartnerItem = ({disabled, profileImg, level, levelDescription, title, pick_count, review_count, experience}) => {
+const PartnerItem = ({active, disabled, profileImg, level, levelDescription, title, pick_count, review_count, experience}) => {
 
 	return (
-		<S.Box>
+		<S.Box active={active}>
 			{profileImg ? (
 				<S.PartnerImg profileImg={profileImg}>
 					<span></span>
@@ -126,7 +129,7 @@ const PartnerItem = ({disabled, profileImg, level, levelDescription, title, pick
 				</S.PartnerImg>
 			) : (
 				<S.PartnerImg>
-					<ProfileDefault width="36" height="36" color="#fff"/>
+					<ProfileDefault width="36" height="36" color={colors.white}/>
 					{disabled && <S.BgClose disabled>오늘<br/>마감</S.BgClose>}
 				</S.PartnerImg>
 			)}
@@ -141,7 +144,7 @@ const PartnerItem = ({disabled, profileImg, level, levelDescription, title, pick
 				</S.PartnerInfo>
 				<S.CompanyLink>
 					자세히 보기
-					<NextArrow color="#666" width="8" height="14"/>
+					<NextArrow color={colors.gray66} width="8" height="14"/>
 				</S.CompanyLink>
 			</S.CompanyInfo>
 		</S.Box>

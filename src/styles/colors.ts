@@ -14,3 +14,4 @@ export const lineDeco = '#ebeef2'
 export const error = '#ec485c'
 
 // booking colors
+export const hoverBg = '#f8f9fa'

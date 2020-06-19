@@ -54,8 +54,8 @@ const S = {
 		Count: Styled.span`
 			display:inline-block;
 			position:absolute;
-			top:11px;
-			right:23px;
+			top:3px;
+			right:7px;
 			width:16px;
 			height:16px;
 			border-radius:8px;
@@ -71,16 +71,16 @@ const S = {
 		`
 }
 
-const TopGnb = ({Toptitle,numberInfo,isCounted}) => {
+const TopGnb = ({title,count}) => {
 	return (
 		<S.Container>
 			<S.BtnPrevious>
-				<Previous width="11" height="20" color="#333" />
+				<Previous width="11" height="20" color={colors.gray33} />
 			</S.BtnPrevious>
-			<S.HeadTitle>{Toptitle}</S.HeadTitle>
+			<S.HeadTitle>{title}</S.HeadTitle>
 			<S.BtnList>
-				<Truck width="22" height="15" color="#000"/>
-				{isCounted && <S.Count>{numberInfo}</S.Count>}
+				<Truck width="22" height="15" color={colors.black}/>
+				{count > 0 && <S.Count>{count}</S.Count>}
 			</S.BtnList>
 		</S.Container>
 	)
