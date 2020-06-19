@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react'
 import Styled from 'styled-components'
 
+import TopGnb from '../../../components/TopGnb'
+import UserImage from './userImage'
+import PartnerInfo from './partnerInfo'
+
 const S = {
     Container: Styled.div``
 }
@@ -8,7 +12,9 @@ const S = {
 const PartnerDetail = ({}) => {
     return (
         <S.Container>
-            Partner Detail Page
+            <TopGnb title="업체 직접 선택" count={0}/>
+            <UserImage />
+            <PartnerInfo />
         </S.Container>
     )
 }
