@@ -8,7 +8,7 @@ import EmptyPage from '../../../components/EmptyPage'
 
 import * as colors from '../../../styles/colors'
 
-import { KakaoIcon } from '../../../components/Icon'
+import { KakaoIcon, ChatArrow } from '../../../components/Icon'
 
 const S = {
     Container: Styled.div``,
@@ -50,9 +50,15 @@ const S = {
         border: 1px solid ${colors.pointBlue};
         border-radius: 100px;
         font-size: 15px;
+        box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
         background: ${colors.white};
         color: ${colors.pointBlue};
         letter-spacing: -0.5px;
+        svg{
+            position:absolute;
+            bottom:-11px;
+            right:19px;
+        }
         @media screen and (min-width: 768px) {
             right:10%;
         }
@@ -179,6 +185,7 @@ const PartnerList = () => {
                     ))}
                     <S.ChatText>
                         도움이 필요하세요?
+                        <ChatArrow width="20" height="12" />
                     </S.ChatText>
                     <S.BtnKakao>
                         <KakaoIcon width="35" height="34" />
