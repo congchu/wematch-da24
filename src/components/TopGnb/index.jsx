@@ -1,5 +1,8 @@
 import React from 'react'
 import Styled from 'styled-components'
+
+import * as colors from '../../styles/colors'
+
 import { Previous, Truck } from '../Icon'
 
 const S = {
@@ -9,22 +12,18 @@ const S = {
 				display:block;
 				width:100%;
 				height:8px;
-				background-color:#f7f8fa;
-				box-shadow:inset 0 1px 0 #ebeef2;
+				background-color:${colors.grayBg};
+				box-shadow:inset 0 1px 0 ${colors.lineDeco};
 			}
 		`,
 		BtnPrevious: Styled.a`
 			position:absolute;
-				top:0;
-				left:0;
-				padding:12px 16px;
-				@media screen and (min-width: 768px) {
-					top:14px;
-					left:8px;
-				}
-			svg{
-				
-				
+			top:0;
+			left:0;
+			padding:12px 16px;
+			@media screen and (min-width: 768px) {
+				top:14px;
+				left:8px;
 			}
 		`,
 		HeadTitle: Styled.strong`
@@ -34,20 +33,22 @@ const S = {
 			font-size:16px;
 			line-height:18px;
 			letter-spacing:-1px;
-			color:#121212;
+			color:${colors.black};
 			text-align:center;
-			+ svg {
-				top:7px;
-				left:auto;
-				right:15px;
-				@media screen and (min-width: 768px) {
-					top:18px;
-					right:9px;
-				}
-			}
 			@media screen and (min-width: 768px) {
 				padding:30px 0 24px;
 				font-size:18px;
+			}
+		`,
+		BtnList: Styled.a`
+			position:absolute;
+			top:7px;
+			left:auto;
+			right:15px;
+			padding:12px 16px;
+			@media screen and (min-width: 768px) {
+				top:18px;
+				right:9px;
 			}
 		`,
 		Count: Styled.span`
@@ -59,13 +60,13 @@ const S = {
 			height:16px;
 			border-radius:8px;
 			font-size:11px;
-			color:#fff;
+			color:${colors.white};
 			text-align:center;
 			line-height:17px;
-			background:#1672f7;
+			background:${colors.pointBlue};
 			@media screen and (min-width: 768px) {
-				top:20px;
-				right:16px;
+				top:3px;
+				right:7px;
 			}
 		`
 }
@@ -77,8 +78,10 @@ const TopGnb = ({title}) => {
 				<Previous width="11" height="20" color="#333" />
 			</S.BtnPrevious>
 			<S.HeadTitle>{title}</S.HeadTitle>
-			<Truck width="22" height="15" color="#000"/>
-			<S.Count>2</S.Count>
+			<S.BtnList>
+				<Truck width="22" height="15" color="#000"/>
+				<S.Count>2</S.Count>
+			</S.BtnList>
 		</S.Container>
 	)
 }

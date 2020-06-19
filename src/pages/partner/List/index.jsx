@@ -13,7 +13,6 @@ import { KakaoIcon } from '../../../components/Icon'
 const S = {
     Container: Styled.div``,
     WrapItem: Styled.div`
-        
         @media screen and (min-width: 768px) {
             width:608px;
             margin:0 auto;
@@ -48,11 +47,11 @@ const S = {
         bottom: 156px;
         right: 24px;
         padding: 10px 18px 8px;
-        border: 1px solid #1672f7;
+        border: 1px solid ${colors.pointBlue};
         border-radius: 100px;
         font-size: 15px;
         background: ${colors.white};
-        color: #1672f7;
+        color: ${colors.pointBlue};
         letter-spacing: -0.5px;
         @media screen and (min-width: 768px) {
             right:10%;

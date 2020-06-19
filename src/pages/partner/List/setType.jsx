@@ -1,9 +1,11 @@
 import React from 'react'
 import Styled from 'styled-components'
 
+import * as colors from '../../../styles/colors'
+
 const S = {
 		TypeSet: Styled.div`
-			background:#f7f8fa;
+			background:${colors.grayBg};
 		`,
 		BoxSet: Styled.div`
 			padding:19px 24px;

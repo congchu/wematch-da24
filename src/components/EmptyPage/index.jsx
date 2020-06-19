@@ -1,6 +1,8 @@
 import React from 'react'
 import Styled from 'styled-components'
 
+import * as colors from 'styles/colors'
+
 import { IconSad } from '../Icon'
 
 const S = {
@@ -19,7 +21,7 @@ const S = {
 			display:block;
 			margin-top:47px;
 			font-size:16px;
-			color:#000;
+			color:${colors.black};
 			@media screen and (max-width: 320px) {
 				margin-top:37px;
 			}
@@ -27,7 +29,7 @@ const S = {
 		p{
 			margin-top:8px;
 			font-size:14px;
-			color:#666;
+			color:${colors.gray66};
 		}
 	`,
 

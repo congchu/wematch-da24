@@ -1,5 +1,8 @@
 import React from 'react'
 import Styled, { css } from 'styled-components'
+
+import * as colors from '../../../styles/colors'
+
 import { NextArrow, ProfileDefault } from '../../../components/Icon'
 
 const S = {
@@ -7,7 +10,7 @@ const S = {
 		display:block;
 		overflow:hidden;
 		padding:24px;
-		border-bottom:1px solid #d7dbe2;
+		border-bottom:1px solid ${colors.lineDefault};
 	`,
 	PartnerImg: Styled.div`
 		position:relative;
@@ -15,7 +18,7 @@ const S = {
 		width:88px;
 		height:88px;
 		border-radius:44px;
-		background:#d7dbe2;
+		background:${colors.lineDefault};
 		svg {
 			position:absolute;
 			top:50%;
@@ -50,7 +53,7 @@ const S = {
 		padding-top:27px;
 		border-radius:44px;
 		font-weight:700;
-		color:#fff;
+		color:${colors.white};
 		${props => props.disabled && css`
 			background-color: rgba(0,0,0,0.4);
 		`}
@@ -69,7 +72,7 @@ const S = {
 		display:inline-block;
 		margin-top:2px;
 		font-size:16px;
-		color:#1672f7;
+		color:${colors.pointBlue};
 		letter-spacing:-0.5px;
 		em{
 			font-weight:bold;
@@ -78,7 +81,7 @@ const S = {
 	PartnerWord: Styled.p`
 		margin-top:4px;
 		font-size:16px;
-		color:#000;
+		color:${colors.black};
 		letter-spacing:-0.5px;
 		line-height:21px;
 		@media screen and (max-width: 320px) {
@@ -88,7 +91,7 @@ const S = {
 	PartnerInfo: Styled.div`
 		margin-top:14px;
 		font-size:14px;
-		color:#666;
+		color:${colors.gray66};
 		span{
 			margin-right:16px;
 			@media screen and (max-width: 320px) {
@@ -103,7 +106,7 @@ const S = {
 		display:inline-block;
 		margin-top:27px;
 		font-size:14px;
-		color:#666;
+		color:${colors.gray66};
 		letter-spacing:-1px;
 		svg {
 			margin-left:10px;
