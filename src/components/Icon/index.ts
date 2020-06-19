@@ -1,4 +1,4 @@
-export { default as ChatIcon } from './generated/ChatIcon'
+export { default as ChatArrow } from './generated/ChatArrow'
 export { default as IconSad } from './generated/IconSad'
 export { default as KakaoIcon } from './generated/KakaoIcon'
 export { default as NextArrow } from './generated/NextArrow'

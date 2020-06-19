@@ -11,6 +11,10 @@ const S = {
 		overflow:hidden;
 		padding:24px;
 		border-bottom:1px solid ${colors.lineDefault};
+		background:${colors.white};
+		${props => props.active && css`
+			background: ${colors.hoverBg};
+		`}
 	`,
 	PartnerImg: Styled.div`
 		position:relative;
@@ -115,10 +119,10 @@ const S = {
 	`
 }
 
-const PartnerItem = ({disabled, profileImg, level, title, pick_count, review_count, experience}) => {
+const PartnerItem = ({active, disabled, profileImg, level, levelDescription, title, pick_count, review_count, experience}) => {
 
 	return (
-		<S.Box>
+		<S.Box active={active}>
 			{profileImg ? (
 				<S.PartnerImg profileImg={profileImg}>
 					<span></span>
@@ -126,13 +130,13 @@ const PartnerItem = ({disabled, profileImg, level, title, pick_count, review_cou
 				</S.PartnerImg>
 			) : (
 				<S.PartnerImg>
-					<ProfileDefault width="36" height="36" color="#fff"/>
+					<ProfileDefault width="36" height="36" color={colors.white}/>
 					{disabled && <S.BgClose disabled>오늘<br/>마감</S.BgClose>}
 				</S.PartnerImg>
 			)}
 
 			<S.CompanyInfo>
-				<S.LevelTitle><em>{level}등급</em> (고객평가 상위 10%)</S.LevelTitle>
+				<S.LevelTitle><em>{level}등급</em> ({levelDescription})</S.LevelTitle>
 				<S.PartnerWord>{title}</S.PartnerWord>
 				<S.PartnerInfo>
 					<span>고객선택 {pick_count}</span>
@@ -141,7 +145,7 @@ const PartnerItem = ({disabled, profileImg, level, title, pick_count, review_cou
 				</S.PartnerInfo>
 				<S.CompanyLink>
 					자세히 보기
-					<NextArrow color="#666" width="8" height="14"/>
+					<NextArrow color={colors.gray66} width="8" height="14"/>
 				</S.CompanyLink>
 			</S.CompanyInfo>
 		</S.Box>

@@ -4,7 +4,7 @@ import Styled, { css } from 'styled-components'
 import TopGnb from 'components/TopGnb'
 import EmptyPage from 'components/EmptyPage'
 import Loading from 'components/Loading'
-import { KakaoIcon } from 'components/Icon'
+import { KakaoIcon, ChatArrow } from 'components/Icon'
 
 import SetType from './setType'
 import PartnerItem from './item'
@@ -53,9 +53,15 @@ const S = {
         border: 1px solid ${colors.pointBlue};
         border-radius: 100px;
         font-size: 15px;
+        box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
         background: ${colors.white};
         color: ${colors.pointBlue};
         letter-spacing: -0.5px;
+        svg{
+            position:absolute;
+            bottom:-11px;
+            right:19px;
+        }
         @media screen and (min-width: 768px) {
             right:10%;
         }
@@ -113,12 +119,12 @@ const PartnerList = () => {
 
     return (
         <S.Container>
-            <TopGnb Toptitle="업체 직접 선택" numberInfo="4" isCounted />
+            <TopGnb title="업체 직접 선택" count={2} />
             <SetType />
-            {partnerList.length >= 1 ? (
+            {partnerList.length > 0 ? (
                 <S.WrapItem>
                     {partnerList.map((list) => (
-                        <PartnerItem key={list.id} profileImg={list.profileImg} disabled={list.disabled} level={list.level} title={list.title} pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}/>
+                        <PartnerItem key={list.id} profileImg={list.profileImg} disabled={list.disabled} level={list.level} levelDescription={list.levelDescription} title={list.title} pick_count={list.pick_count} review_count={list.review_count} experience={list.experience} active={list.active}/>
                     ))}
                     <S.ChatText>
                         도움이 필요하세요?
@@ -133,5 +139,6 @@ const PartnerList = () => {
         </S.Container>
     )
 }
+
 
 export default PartnerList
