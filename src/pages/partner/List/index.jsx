@@ -14,7 +14,9 @@ import * as colors from 'styles/colors'
 import { fetchList } from 'api/partner';
 
 const S = {
-    Container: Styled.div``,
+    Container: Styled.div`
+        height: 100%;
+    `,
     WrapItem: Styled.div`
         @media screen and (min-width: 768px) {
             width:608px;
@@ -68,12 +70,28 @@ const S = {
         @media screen and (max-width: 320px) {
             bottom:112px;
         }
+    `,
+    More: Styled.div`
+        display: flex;
+        justify-content: center;
+        font-size: 16px;
+        color: ${colors.pointBlue};
+        padding: 15px;
     `
+}
+
+function MoreLoading() {
+    return (
+        <S.More>
+            로딩중..
+        </S.More>
+    )
 }
 
 const PartnerList = () => {
     const [partnerList, setPartnerList] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
+    const [moreLoading, setMoreLoading] = useState(false)
     let perPage = 10
 
     const fetchPartnerList = useCallback(async (count) => {
@@ -89,12 +107,12 @@ const PartnerList = () => {
 
     const fetchMorePartnerList = useCallback(async (count) => {
         try {
-            setLoading(true)
+            setMoreLoading(true)
             const data = await fetchList(count)
             setPartnerList([...partnerList, ...data])
         } catch (e) {
         } finally {
-            setLoading(false)
+            setMoreLoading(false)
         }
     }, [fetchPartnerList])
 
@@ -117,24 +135,31 @@ const PartnerList = () => {
         window.addEventListener('scroll' , infiniteScroll, true)
     }, [])
 
+    if (loading) {
+        return <Loading />
+    }
+
     return (
         <S.Container>
             <TopGnb title="업체 직접 선택" count={2} />
             <SetType />
             {partnerList.length > 0 ? (
-                <S.WrapItem>
-                    {partnerList.map((list) => (
-                        <PartnerItem key={list.id} profileImg={list.profileImg} disabled={list.disabled} level={list.level} levelDescription={list.levelDescription} title={list.title} pick_count={list.pick_count} review_count={list.review_count} experience={list.experience} active={list.active}/>
-                    ))}
-                    <S.ChatText>
-                        도움이 필요하세요?
-                    </S.ChatText>
-                    <S.BtnKakao>
-                        <KakaoIcon width="35" height="34" />
-                    </S.BtnKakao>
-                </S.WrapItem>
+                <>
+                    <S.WrapItem>
+                        {partnerList.map((list) => (
+                            <PartnerItem key={list.id} profileImg={list.profileImg} disabled={list.disabled} level={list.level} levelDescription={list.levelDescription} title={list.title} pick_count={list.pick_count} review_count={list.review_count} experience={list.experience} active={list.active}/>
+                        ))}
+                        <S.ChatText>
+                            도움이 필요하세요?
+                        </S.ChatText>
+                        <S.BtnKakao>
+                            <KakaoIcon width="35" height="34" />
+                        </S.BtnKakao>
+                    </S.WrapItem>
+                    {moreLoading && <MoreLoading />}
+                </>
             ) : (
-                <EmptyPage EmptyTitle="죄송합니다" EmptySubtitle="해당지역에 가능한 업체가 없습니다." />
+                <EmptyPage title="죄송합니다" subtitle="해당지역에 가능한 업체가 없습니다." />
             )}
         </S.Container>
     )
