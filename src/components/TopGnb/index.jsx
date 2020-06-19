@@ -71,16 +71,16 @@ const S = {
 		`
 }
 
-const TopGnb = ({title}) => {
+const TopGnb = ({Toptitle,numberInfo,isCounted}) => {
 	return (
 		<S.Container>
 			<S.BtnPrevious>
 				<Previous width="11" height="20" color="#333" />
 			</S.BtnPrevious>
-			<S.HeadTitle>{title}</S.HeadTitle>
+			<S.HeadTitle>{Toptitle}</S.HeadTitle>
 			<S.BtnList>
 				<Truck width="22" height="15" color="#000"/>
-				<S.Count>2</S.Count>
+				{isCounted && <S.Count>{numberInfo}</S.Count>}
 			</S.BtnList>
 		</S.Container>
 	)

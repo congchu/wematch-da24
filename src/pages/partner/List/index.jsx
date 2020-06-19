@@ -65,30 +65,43 @@ const S = {
 const PartnerList = () => {
     const data = [
         {
-            "id": 821425,
-            "username": "a4466",
-            "score": 9.97,
-            "manager_name": "김두한",
-            "title": null,
-            "description": null,
+            "id": 821427,
+            "username": "a7114",
+            "score": 9.91,
+            "level":"S",
+            "manager_name": "양일권",
+            "title": "내가족 이사처럼 꼼꼼하고 기분좋게~^^",
+            "description": "이젠 이사하면서 스트레스받지 마세요! 견적부터 마무리까지 깔끔하게 해드립니다~^^",
             "keyword": {
+                "time_normal": [
+                    "시간"
+                ],
+                "price_normal": [
+                    "견적 상담"
+                ],
                 "kind_positive": [
-                    "친절하고",
-                    "친절하고 좋으신",
-                    "친절하셨어요"
+                    "친절해요",
+                    "친절하고"
+                ],
+                "cleaning_normal": [
+                    "주방"
+                ],
+                "cleaning_positive": [
+                    "깔끔하게"
                 ],
                 "professional_positive": [
-                    "꼼꼼한",
+                    "인간적",
                     "친절하고 꼼꼼하게",
-                    "저렴하고 꼼꼼하게"
+                    "꼼꼼하고",
+                    "세심"
                 ],
                 "recommendation_positive": [
-                    "강력 추천",
-                    "완전 추천"
+                    "정말 강력 추천",
+                    "망설이지 마세요"
                 ]
             },
-            "pick_count": 221,
-            "review_count": 27,
+            "pick_count": 839,
+            "review_count": 43,
             "experience": 10,
             "image": null
         },
@@ -96,6 +109,7 @@ const PartnerList = () => {
             "id": 821426,
             "username": "a6565",
             "score": 9.93,
+            "level":"A",
             "manager_name": "이형규",
             "title": null,
             "description": null,
@@ -152,12 +166,12 @@ const PartnerList = () => {
 
     return (
         <S.Container>
-            <TopGnb title="업체 직접 선택"/>
+            <TopGnb Toptitle="업체 직접 선택" numberInfo="4" isCounted />
             <SetType />
             {data.length >= 1 ? (
                 <S.WrapItem>
                     {data.map((list) => (
-                        <PartnerItem key={list.id} profileImg={data.profileImg} disabled={data.disabled} level={data.level} wordTitle={list.wordTitle} pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}/>
+                        <PartnerItem key={list.id} profileImg={list.profileImg} disabled={list.disabled} level={list.level} title={list.title} pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}/>
                     ))}
                     <S.ChatText>
                         도움이 필요하세요?
@@ -172,5 +186,6 @@ const PartnerList = () => {
         </S.Container>
     )
 }
+
 
 export default PartnerList
