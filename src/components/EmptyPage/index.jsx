@@ -35,12 +35,12 @@ const S = {
 
 }
 
-const EmptyPage = ({}) => {
+const EmptyPage = ({ EmptyTitle, EmptySubtitle }) => {
 	return (
 		<S.Container>
 			<IconSad width="80" height="64"/>
-			<strong>죄송합니다</strong>
-			<p>해당지역에 가능한 업체가 없습니다.</p>
+			<strong>{EmptyTitle}</strong>
+			<p>{EmptySubtitle}</p>
 		</S.Container>
 	)
 }

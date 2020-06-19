@@ -181,7 +181,7 @@ const PartnerList = () => {
                     </S.BtnKakao>
                 </S.WrapItem>
             ) : (
-                <EmptyPage />
+                <EmptyPage EmptyTitle="죄송합니다" EmptySubtitle="해당지역에 가능한 업체가 없습니다." />
             )}
         </S.Container>
     )
