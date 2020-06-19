@@ -115,7 +115,7 @@ const S = {
 	`
 }
 
-const PartnerItem = ({disabled, profileImg, level, title, pick_count, review_count, experience}) => {
+const PartnerItem = ({disabled, profileImg, level, levelDescription, title, pick_count, review_count, experience}) => {
 
 	return (
 		<S.Box>
@@ -132,7 +132,7 @@ const PartnerItem = ({disabled, profileImg, level, title, pick_count, review_cou
 			)}
 
 			<S.CompanyInfo>
-				<S.LevelTitle><em>{level}등급</em> (고객평가 상위 10%)</S.LevelTitle>
+				<S.LevelTitle><em>{level}등급</em> ({levelDescription})</S.LevelTitle>
 				<S.PartnerWord>{title}</S.PartnerWord>
 				<S.PartnerInfo>
 					<span>고객선택 {pick_count}</span>
