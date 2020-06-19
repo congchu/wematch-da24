@@ -11,6 +11,7 @@ const S = {
 		overflow:hidden;
 		padding:24px;
 		border-bottom:1px solid ${colors.lineDefault};
+		background:${colors.white};
 		${props => props.active && css`
 			background: ${colors.hoverBg};
 		`}
