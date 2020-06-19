@@ -151,6 +151,7 @@ const PartnerList = () => {
                         ))}
                         <S.ChatText>
                             도움이 필요하세요?
+                            <ChatArrow width="20" height="12" />
                         </S.ChatText>
                         <S.BtnKakao>
                             <KakaoIcon width="35" height="34" />
