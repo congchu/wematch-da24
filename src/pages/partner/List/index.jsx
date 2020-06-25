@@ -12,6 +12,7 @@ import PartnerItem from './item'
 import * as colors from 'styles/colors'
 
 import { fetchList } from 'api/partner';
+import useInfiniteScroll from 'lib/useInfiniteScroll';
 
 const S = {
     Container: Styled.div`
@@ -91,48 +92,31 @@ function MoreLoading() {
 const PartnerList = () => {
     const [partnerList, setPartnerList] = useState([])
     const [loading, setLoading] = useState(false)
-    const [moreLoading, setMoreLoading] = useState(false)
-    let perPage = 10
+    const [page, setPage] = useState(2)
+    const SIZE = 10
 
-    const fetchPartnerList = useCallback(async (count) => {
-        try {
-            setLoading(true)
-            const data = await fetchList(count)
-            setPartnerList(data)
-        } catch (e) {
-        } finally {
-            setLoading(false)
-        }
-    }, [])
-
-    const fetchMorePartnerList = useCallback(async (count) => {
-        try {
-            setMoreLoading(true)
-            const data = await fetchList(count)
-            setPartnerList([...partnerList, ...data])
-        } catch (e) {
-        } finally {
-            setMoreLoading(false)
-        }
-    }, [fetchPartnerList])
-
-    const infiniteScroll = () => {
-        let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)
-        let scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop)
-        let clientHeight = document.documentElement.clientHeight
-
-        if (scrollTop + clientHeight === scrollHeight) {
-            perPage += 10
-            fetchMorePartnerList(perPage)
-        }
+    const fetchMoreListItems = () => {
+        setPage(page + 1)
+        fetchList(page, SIZE)
+            .then((res) => {
+                setTimeout(() => {
+                    setPartnerList(prevState => ([...prevState, ...res]))
+                    setIsFetching(false);
+                }, 2000)
+            })
     }
+    const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
 
     useEffect(() => {
-        fetchPartnerList(perPage)
-    }, [])
-
-    useEffect(() => {
-        window.addEventListener('scroll' , infiniteScroll, true)
+        const DEFAULT_PAGE = 1
+        setLoading(true)
+        fetchList(DEFAULT_PAGE, SIZE)
+            .then((res) => {
+                setIsFetching(false);
+                setPartnerList(res)
+            }).finally(() => {
+                setLoading(false)
+            })
     }, [])
 
     if (loading) {
@@ -157,11 +141,11 @@ const PartnerList = () => {
                             <KakaoIcon width="35" height="34" />
                         </S.BtnKakao>
                     </S.WrapItem>
-                    {moreLoading && <MoreLoading />}
                 </>
             ) : (
                 <EmptyPage title="죄송합니다" subtitle="해당지역에 가능한 업체가 없습니다." />
             )}
+            {isFetching && <MoreLoading />}
         </S.Container>
     )
 }
