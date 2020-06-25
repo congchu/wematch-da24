@@ -57,6 +57,9 @@ const S = {
 		span{
 			display:block;
 		}
+		img{
+			width:56px;
+		}
 	`,
 	Description: Styled.div`
 
@@ -98,7 +101,7 @@ const PartnerInfo = () => {
 				<S.Info>
 					<S.Card>
 						<span>평가등급</span>
-						<img src="/"/>
+						<img src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/level_txt_s.png"/>
 					</S.Card>
 					<S.Card>
 						<span>고객선택</span>
