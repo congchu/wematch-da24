@@ -27,17 +27,17 @@ const S = {
 		color:${colors.pointBlue}
 	`,
 	PartnerWord: Styled.p`
-    display: -webkit-box;
-    overflow: hidden;
-    width: 312px;
-    margin-top: 10px;
-		font-size: 24px;
-    font-weight: 700;
-    line-height: 30px;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    word-wrap: break-word;
+    display:-webkit-box;
+    overflow:hidden;
+    width:100%;
+    margin-top:10px;
+		font-size:24px;
+    font-weight:700;
+    line-height:30px;
+    text-overflow:ellipsis;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    word-wrap:break-word;
 	`,
 	Info: Styled.div`
 		overflow:hidden;
