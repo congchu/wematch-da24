@@ -16,68 +16,68 @@ import useInfiniteScroll from 'lib/useInfiniteScroll';
 
 const S = {
     Container: Styled.div`
-        height: 100%;
+        height:100%;
     `,
     WrapItem: Styled.div`
-        @media screen and (min-width: 768px) {
+        @media screen and (min-width:768px) {
             width:608px;
             margin:0 auto;
         }
     `,
 	BtnKakao: Styled.a`
 		display:inline-block;
-		position: fixed;
-        bottom: 72px;
-        right: 24px;
-        width: 62px;
-        height: 62px;
-        border-radius: 62px;
-        border: 1px solid #f6df0d;
-        background-color: #ffe500;
-        box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
-        text-align: center;
-        z-index: 2;
+		position:fixed;
+        bottom:72px;
+        right:24px;
+        width:62px;
+        height:62px;
+        border-radius:62px;
+        border:1px solid #f6df0d;
+        background-color:#ffe500;
+        box-shadow:0 4px 10px 0 rgba(0, 0, 0, 0.1);
+        text-align:center;
+        z-index:2;
         svg {
             margin-top:17px;
         }
-        @media screen and (min-width: 768px) {
+        @media screen and (min-width:768px) {
             right:10%;
         }
-        @media screen and (max-width: 320px) {
+        @media screen and (max-width:320px) {
             bottom:32px;
         }
     `,
     ChatText: Styled.a`
-        display: inline-block;
-        position: fixed;
-        bottom: 156px;
-        right: 24px;
-        padding: 10px 18px 8px;
-        border: 1px solid ${colors.pointBlue};
-        border-radius: 100px;
-        font-size: 15px;
-        box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
-        background: ${colors.white};
-        color: ${colors.pointBlue};
-        letter-spacing: -0.5px;
+        display:inline-block;
+        position:fixed;
+        bottom:156px;
+        right:24px;
+        padding:10px 18px 8px;
+        border:1px solid ${colors.pointBlue};
+        border-radius:100px;
+        font-size:15px;
+        box-shadow:0 4px 10px 0 rgba(0, 0, 0, 0.2);
+        background:${colors.white};
+        color:${colors.pointBlue};
+        letter-spacing:-0.5px;
         svg{
             position:absolute;
             bottom:-11px;
             right:19px;
         }
-        @media screen and (min-width: 768px) {
+        @media screen and (min-width:768px) {
             right:10%;
         }
-        @media screen and (max-width: 320px) {
+        @media screen and (max-width:320px) {
             bottom:112px;
         }
     `,
     More: Styled.div`
-        display: flex;
-        justify-content: center;
-        font-size: 16px;
-        color: ${colors.pointBlue};
-        padding: 15px;
+        display:flex;
+        justify-content:center;
+        font-size:16px;
+        color:${colors.pointBlue};
+        padding:15px;
     `
 }
 
@@ -117,7 +117,7 @@ const PartnerList = () => {
             }).finally(() => {
                 setLoading(false)
             })
-    }, [])
+    }, [setIsFetching])
 
     if (loading) {
         return <Loading />

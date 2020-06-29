@@ -15,3 +15,4 @@ export const error = '#ec485c'
 
 // booking colors
 export const hoverBg = '#f8f9fa'
+export const boxBg = '#f5f7f9'

@@ -6,6 +6,7 @@ import * as colors from '../../../styles/colors'
 const S = {
 		TypeSet: Styled.div`
 			background:${colors.grayBg};
+			border-bottom:1px solid ${colors.lineDefault};
 		`,
 		BoxSet: Styled.div`
 			padding:19px 24px;
@@ -13,9 +14,12 @@ const S = {
 				font-size:16px;
 				letter-spacing:-0.5px;
 			}
-			@media screen and (min-width: 768px) {
-				width:608px;
+			@media screen and (min-width:768px) {
+				width:528px;
 				margin:0 auto;
+			}
+			@media screen and (min-width:1200px) {
+				width:992px;
 			}
 		`,
 		ReSelect: Styled.a`
