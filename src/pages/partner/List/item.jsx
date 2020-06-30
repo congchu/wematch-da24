@@ -37,13 +37,17 @@ const S = {
 			display:inline-block;
 			width:88px;
 			height:88px;
-			background-image:url(${props => props.profileImg});
-			background-size:100%;
+			border-radius:44px;
+			background-image:url(${props => props.profile_img});
+			background-size:cover;
 			background-repeat:no-repeat;
 			@media screen and (max-width: 320px) {
 				width:76px;
 				height:76px;
 			}
+		}
+		.randomImg{
+			background-image:url(https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_1.jpg);
 		}
 		@media screen and (max-width: 320px) {
 			width:76px;
@@ -61,7 +65,7 @@ const S = {
 		border-radius:44px;
 		font-weight:700;
 		color:${colors.white};
-		${props => props.disabled && css`
+		${props => props.is_full && css`
 			background-color: rgba(0,0,0,0.4);
 		`}
 		text-align:center;
@@ -122,25 +126,26 @@ const S = {
 	`
 }
 
-const PartnerItem = ({active, disabled, profileImg, level, levelDescription, title, pick_count, review_count, experience}) => {
+const PartnerItem = ({active, is_full, profile_img, random_img, level, levelDescription, title, pick_count, review_count, experience}) => {
 
 	return (
 		<S.Box active={active}>
-			{profileImg ? (
-				<S.PartnerImg profileImg={profileImg}>
+			{profile_img ? (
+				<S.PartnerImg profile_img={profile_img}>
 					<span></span>
-					{disabled && <S.BgClose disabled>오늘<br/>마감</S.BgClose>}
+					{is_full && <S.BgClose is_full>오늘<br/>마감</S.BgClose>}
 				</S.PartnerImg>
 			) : (
-				<S.PartnerImg>
-					<ProfileDefault width="36" height="36" color={colors.white}/>
-					{disabled && <S.BgClose disabled>오늘<br/>마감</S.BgClose>}
+				<S.PartnerImg is_full>
+					<span className="randomImg"></span>
+					{/* <ProfileDefault width="36" height="36" color={colors.white}/> //이미지 없을 때 default 사람아이콘 */} 
+					{is_full && <S.BgClose is_full>오늘<br/>마감</S.BgClose>}
 				</S.PartnerImg>
 			)}
 
 			<S.CompanyInfo>
-				<S.LevelTitle><em>{level}등급</em> ({levelDescription})</S.LevelTitle>
-				<S.PartnerWord>{title}</S.PartnerWord>
+				<S.LevelTitle><em>{level}등급</em> {levelDescription}</S.LevelTitle>
+				<S.PartnerWord>{title !== '' ? title : '의욕이 가득한 이사업체입니다.'}</S.PartnerWord>
 				<S.PartnerInfo>
 					<span>고객선택 {pick_count}</span>
 					<span>평가 {review_count}</span>
@@ -155,10 +160,6 @@ const PartnerItem = ({active, disabled, profileImg, level, levelDescription, tit
 	)
 }
 
-
-PartnerItem.defaultProps = {
-	title: '의욕이 가득한 이사업체입니다.'
-}
 
 
 export default PartnerItem

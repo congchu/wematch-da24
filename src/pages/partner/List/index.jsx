@@ -134,7 +134,7 @@ const PartnerList = () => {
                 <>
                     <S.WrapItem>
                         {partnerList.map((list) => (
-                            <PartnerItem key={list.id} profileImg={list.profileImg} disabled={list.disabled} level={list.level} levelDescription={list.levelDescription} title={list.title} pick_count={list.pick_count} review_count={list.review_count} experience={list.experience} active={list.active}/>
+                            <PartnerItem key={list.id} profile_img={list.profile_img} is_full={list.is_full} level={list.level} levelDescription={list.levelDescription} title={list.title} pick_count={list.pick_count} review_count={list.review_count} experience={list.experience} active={list.active}/>
                         ))}
                         <S.ChatText>
                             도움이 필요하세요?
