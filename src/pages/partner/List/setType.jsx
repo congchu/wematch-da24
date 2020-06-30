@@ -3,6 +3,8 @@ import Styled from 'styled-components'
 
 import * as colors from '../../../styles/colors'
 
+import { Truck } from '../../../components/Icon'
+
 const S = {
 		TypeSet: Styled.div`
 			background:${colors.grayBg};
@@ -19,7 +21,8 @@ const S = {
 				margin:0 auto;
 			}
 			@media screen and (min-width:1200px) {
-				width:992px;
+				width:720px;
+				padding:21px 24px 17px;
 			}
 		`,
 		ReSelect: Styled.a`
@@ -27,7 +30,22 @@ const S = {
 			float:right;
 			font-size:16px;
 			text-decoration:underline;
-		`
+			@media screen and (min-width:1200px) {
+				float:none;
+				margin-left:16px;
+			}
+		`,
+		CompareList: Styled.span`
+			display:none;
+			float:right;
+			cursor:pointer;
+			svg{
+				margin-left:11px;
+			}
+			@media screen and (min-width:1200px) {
+				display:inline-block;
+			}
+		`,
 }
 
 const setType = ({}) => {
@@ -40,6 +58,7 @@ const setType = ({}) => {
 				<S.ReSelect>
 					재검색
 				</S.ReSelect>
+				<S.CompareList>선택한 업체비교함<Truck width="22" height="15" color={colors.black}/></S.CompareList>
 			</S.BoxSet>
 		</S.TypeSet>
 	)

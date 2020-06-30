@@ -15,6 +15,9 @@ const S = {
 		${props => props.active && css`
 			background: ${colors.hoverBg};
 		`}
+		@media screen and (min-width:768px) {
+			padding:24px 40px;
+		}
 	`,
 	PartnerImg: Styled.div`
 		position:relative;

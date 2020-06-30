@@ -23,6 +23,9 @@ const S = {
             width:608px;
             margin:0 auto;
         }
+        @media screen and (min-width:1200px) {
+            width:720px;
+        }
     `,
 	BtnKakao: Styled.a`
 		display:inline-block;
