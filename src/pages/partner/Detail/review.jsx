@@ -108,7 +108,7 @@ const S = {
 			margin-top:32px;
 		}
 		@media screen and (min-width:1200px) {
-			margin-top:10x;
+			margin-top:10px;
 		}
 	`,
 	Answer: Styled.div`

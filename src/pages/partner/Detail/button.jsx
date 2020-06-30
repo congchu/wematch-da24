@@ -87,7 +87,7 @@ const S = {
 			bottom:120px;
 		}
 		@media screen and (min-width:120px) {
-			z-z-index:5;
+			z-index:5;
 			right:70px;
 			bottom:80px;
 		}
