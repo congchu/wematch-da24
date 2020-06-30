@@ -207,7 +207,11 @@ const S = {
 			}
 		}
 		@media screen and (min-width:768px) {
-			margin-top:12px;
+			float: left;
+			width: 294px;
+			margin-top: 12px;
+			margin-left: 50px;
+			text-align: right;
 		}
 	`,
 
