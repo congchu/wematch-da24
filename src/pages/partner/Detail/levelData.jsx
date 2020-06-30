@@ -89,21 +89,6 @@ const S = {
 		float:left;
 		width:60%;
 		margin-left:5%;
-		li:last-child{
-			display:inline-block;
-			float:right;
-			cursor:pointer;
-			svg{
-				margin-left:6px;
-				vertical-align:top;
-				@media screen and (min-width:768px) {
-					margin:0 7px 0 3px;
-				}
-			}
-			@media screen and (min-width:768px) {
-				margin-top:12px;
-			}
-		}
 		@media screen and (min-width:768px) {
 			width:50%;
 			margin:22px 0 0 50px;
@@ -158,7 +143,6 @@ const S = {
 			width:100%;
 			height:8px;
 			border-radius:8px;
-			background: linear-gradient(to right, #1674f7 0%, #2ea6fc 100%);
 		}
 		em{
 			position:absolute;
@@ -167,11 +151,63 @@ const S = {
 			width:8px;
 			height:8px;
 			border-radius:8px;
-			background-color:#1674f7;
+			background-color:${colors.lineDeco};
+		}
+		.graph_s{
+			background:linear-gradient(to right, #1674f7 0%, #2ea6fc 100%);
+			em{
+				background-color:#1674f7;
+			}
+		}
+		.graph_a{
+			background:linear-gradient(to right, #00b6ed 0%, #00dcf7 100%);
+			em{
+				background-color:#00b6ed;
+			}
+		}
+		.graph_b{
+			background:linear-gradient(to right, #ffae2c 0%, #ffd34e 100%);
+			em{
+				background-color:#ffae2c;
+			}
+		}
+		.graph_c{
+			background:linear-gradient(to right, #fa703e 0%, #fda46c 100%);
+			em{
+				background-color:#fa703e;
+			}
+		}
+		.graph_d{
+			background:linear-gradient(to right, #fa3c3c 0%, #fd6f6f 100%);
+			em{
+				background-color:#fa3c3c;
+			}
+		}
+		.graph_n{
+			background:linear-gradient(to right, #6532d2 0%, #9d61eb 100%);
+			em{
+				background-color:#6532d2;
+			}
 		}
 		@media screen and (min-width:768px) {
 			width:67%;
 			margin-top:4px;
+		}
+	`,
+	DataText: Styled.p`
+		float:right;
+		font-size:12px;
+		color:${colors.gray88};
+		line-height:18px;
+		svg{
+			margin-left:6px;
+			vertical-align:top;
+			@media screen and (min-width:768px) {
+				margin:0 7px 0 3px;
+			}
+		}
+		@media screen and (min-width:768px) {
+			margin-top:12px;
 		}
 	`,
 
@@ -195,26 +231,23 @@ const levelData = () => {
 							<S.SkillList>
 								<strong>전문성 <em>S</em></strong>
 								<S.Graph>
-									<span><em></em></span>
+									<span className="graph_s"><em></em></span>
 								</S.Graph>
 							</S.SkillList>
 							<S.SkillList>
 								<strong>친절도 <em>S</em></strong>
 								<S.Graph>
-									<span><em></em></span>
+									<span className="graph_b"><em></em></span>
 								</S.Graph>
 							</S.SkillList>
 							<S.SkillList>
 								<strong>가격도 <em>S</em></strong>
 								<S.Graph>
-									<span><em></em></span>
+									<span className="graph_c"><em></em></span>
 								</S.Graph>
 							</S.SkillList>
-							<S.SkillList>
-								<p>위매치 빅데이터를 분석한 결과입니다</p>
-								<Question width="16" height="16" />
-							</S.SkillList>
 						</S.SkillGraph>
+						<S.DataText>위매치 빅데이터를 분석한 결과입니다<Question width="16" height="16" /></S.DataText>
 					</S.WrapGraph>
 				</S.Average>
 			</S.Wrap>
