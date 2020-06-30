@@ -21,7 +21,7 @@ const S = {
 				margin:0 auto;
 			}
 			@media screen and (min-width:1200px) {
-				width:720px;
+				width:992px;
 				padding:21px 24px 17px;
 			}
 		`,

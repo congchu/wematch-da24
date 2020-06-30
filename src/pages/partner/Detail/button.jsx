@@ -21,6 +21,7 @@ const S = {
 			box-sizing:border-box;
 			@media screen and (min-width:1200px) {
 				width:720px;
+				border:0;
 			}
 		}
 		@media screen and (min-width:1200px) {
@@ -82,8 +83,13 @@ const S = {
 			margin-top:-8px;
 			margin-left:-8px;
 		}
-		@media screen and (min-width: 768px) {
+		@media screen and (min-width:768px) {
 			bottom:120px;
+		}
+		@media screen and (min-width:120px) {
+			z-z-index:5;
+			right:70px;
+			bottom:80px;
 		}
 	`,
 }
