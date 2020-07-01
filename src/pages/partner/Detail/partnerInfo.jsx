@@ -152,13 +152,13 @@ const S = {
 	`,
 }
 
-const PartnerInfo = () => {
+const PartnerInfo = ({title, level, pick_count, experience, description }) => {
 	return (
 		<S.Container>
 			<S.Wrap>
 				<S.LevelDescription>상위 10% 업체</S.LevelDescription>
-				<S.Level>고객평가 S등급</S.Level>
-				<S.PartnerWord>내가족 이사처럼 꼼꼼하고 기분좋게~^^ 내가족 이사처럼 꼼꼼하고 기분좋게</S.PartnerWord>
+				<S.Level>고객평가 {level}등급</S.Level>
+				<S.PartnerWord>{title !== '' ? title : '의욕이 가득한 이사업체입니다.'}</S.PartnerWord>
 				<S.Info>
 					<S.Card>
 						<span>평가등급 <Question width="16" height="16" /></span>
@@ -166,17 +166,17 @@ const PartnerInfo = () => {
 					</S.Card>
 					<S.Card>
 						<span>고객선택</span>
-						<em>8,991</em>
+						<em>{pick_count}</em>
 					</S.Card>
 					<S.Card>
 						<span>경력년차</span>
-						<em>17</em>
+						<em>{experience}</em>
 					</S.Card>
 				</S.Info>
 				<S.Description>
 					<S.Option>
 						<strong>사장님 한마디(업체명)</strong>
-						<p>설문조사에 수집된 내용 그대로 모두 노출 제한글자 없음 모두 노출 제한글자 없음모두 노출 제한글자 없음모두 노출 제한글자 없음</p>
+						<p>{description !== '' ? description : '열심히 하겠습니다아아아앙'}</p>
 					</S.Option>
 					<S.Option>
 						<strong>고객이 많이 언급한 키워드</strong>

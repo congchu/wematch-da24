@@ -31,34 +31,36 @@ const S = {
 		}
 	`,
 	ProfileImg: Styled.div`
-		span{
-			display:inline-block;
-			width:100%;
-			height:228px;
-			background-image:url('https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/bg/m/bg_happymove.png');
-			background-size:100%;
-			background-repeat:no-repeat;
-			@media screen and (min-width:768px) {
-				height:486px;
+			span{
+				display:inline-block;
+				width:100%;
+				height:228px;
+				background-image:url(${props => props.profile_img});
+				background-size:cover;
+				background-position:50% 50%;
+				background-repeat:no-repeat;
+				@media screen and (min-width:768px) {
+					height:486px;
+				}
+				@media screen and (min-width:1200px) {
+					height:474px;
+				}
 			}
 			@media screen and (min-width:1200px) {
-				height:474px;
-			}
-		}
-		@media screen and (min-width:1200px) {
-				padding-top:70px;
+				margin-top:70px;
 			}
 	`,
 
 }
 
-const UserImage = () => {
+const UserImage = ({ profile_img }) => {
+
 	return (
 		<S.WrapImg>
 			<S.Title>
 				<h3>업체<br />직접선택</h3>
 			</S.Title>
-			<S.ProfileImg>
+			<S.ProfileImg profile_img={profile_img}>
 				<span></span>
 			</S.ProfileImg>
 		</S.WrapImg>
