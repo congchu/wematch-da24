@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Styled from 'styled-components'
 
 import * as colors from '../../../styles/colors'
 
 import { Question } from '../../../components/Icon'
+import TermsModal from '../../../components/Modal/TermsModal'
 
 const S = {
 	Container: Styled.div`
@@ -217,12 +218,16 @@ const S = {
 
 }
 
-const levelData = () => {
+const LevelData = () => {
+	const [visibleTermsModal, setVisibleTermsModal] = useState(false)
+
+	const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
+
 	return (
 		<S.Container>
 			<S.Wrap>
 				<S.Box>
-					<p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span>자세히</span></p>
+					<p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
 				</S.Box>
 				<S.Average>
 					<strong>고객평가 9,999건</strong>
@@ -255,8 +260,9 @@ const levelData = () => {
 					</S.WrapGraph>
 				</S.Average>
 			</S.Wrap>
+			<TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
 		</S.Container>
 	)
 }
 
-export default levelData
+export default LevelData
