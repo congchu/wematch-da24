@@ -144,10 +144,10 @@ const PartnerList = () => {
                 <>
                     <S.WrapItem>
                         {partnerList.map((list) => (
-                            <PartnerItem key={list.id} profileImg={list.profileImg} disabled={list.disabled}
+                            <PartnerItem key={list.id} profile_img={list.profile_img} disabled={list.disabled}
                                 level={list.level} levelDescription={list.levelDescription} title={list.title}
                                 pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
-                                active={list.active} onClick={() => history.push(`/partner/detail/${list.username}`)}
+                                active={list.active} is_full={list.is_full} onClick={() => history.push(`/partner/detail/${list.username}`)}
                             />
                         ))}
                         <S.ChatText>

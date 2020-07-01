@@ -126,20 +126,20 @@ const S = {
 	`
 }
 
-const PartnerItem = ({active, disabled, profileImg, level, levelDescription, title, pick_count, review_count, experience, onClick}) => {
+const PartnerItem = ({active, disabled, profile_img, level, levelDescription, title, pick_count, review_count, experience, onClick, is_full}) => {
 
 	return (
 		<S.Box active={active} onClick={onClick}>
-			{profileImg ? (
-				<S.PartnerImg profileImg={profileImg}>
+			{profile_img ? (
+				<S.PartnerImg profile_img={profile_img}>
 					<span></span>
-					{is_full && <S.BgClose is_full>오늘<br/>마감</S.BgClose>}
+					{is_full && <S.BgClose is_full={is_full}>오늘<br/>마감</S.BgClose>}
 				</S.PartnerImg>
 			) : (
-				<S.PartnerImg is_full>
+				<S.PartnerImg is_full={is_full}>
 					<span className="randomImg"></span>
 					{/* <ProfileDefault width="36" height="36" color={colors.white}/> //이미지 없을 때 default 사람아이콘 */} 
-					{is_full && <S.BgClose is_full>오늘<br/>마감</S.BgClose>}
+					{is_full && <S.BgClose is_full={is_full}>오늘<br/>마감</S.BgClose>}
 				</S.PartnerImg>
 			)}
 
