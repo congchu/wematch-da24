@@ -225,7 +225,7 @@ const S = {
 
 }
 
-const levelData = ({review_count}) => {
+const LevelData = ({review_count}) => {
 	const [visibleTermsModal, setVisibleTermsModal] = useState(false)
 
 	const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
