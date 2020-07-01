@@ -21,7 +21,7 @@ function AppRoute() {
     return (
         <Switch>
             <Route exact path="/partner/list" component={PartnerList} />
-            <Route exact path="/partner/detail" component={PartnerDetail} />
+            <Route exact path="/partner/detail/:username" component={PartnerDetail} />
             <Route exact path="/partner/item" component={PartnerItem} />
             <Route exact path="/partner/topGnb" component={TopGnb} />
             <Route exact path="/partner/setType" component={setType} />

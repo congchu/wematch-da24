@@ -122,10 +122,10 @@ const S = {
 	`
 }
 
-const PartnerItem = ({active, disabled, profileImg, level, levelDescription, title, pick_count, review_count, experience}) => {
+const PartnerItem = ({active, disabled, profileImg, level, levelDescription, title, pick_count, review_count, experience, onClick}) => {
 
 	return (
-		<S.Box active={active}>
+		<S.Box active={active} onClick={onClick}>
 			{profileImg ? (
 				<S.PartnerImg profileImg={profileImg}>
 					<span></span>
