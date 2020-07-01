@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Styled from 'styled-components'
 
 import * as colors from '../../../styles/colors'
 
 import { Question } from '../../../components/Icon'
+import LevelModal from '../../../components/Modal/LevelModal'
 
 const S = {
 	Container: Styled.div`
@@ -153,6 +154,10 @@ const S = {
 }
 
 const PartnerInfo = () => {
+	const [visibleLevelModal, setVisibleLevelModal] = useState(true)
+
+	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
+
 	return (
 		<S.Container>
 			<S.Wrap>
@@ -161,7 +166,9 @@ const PartnerInfo = () => {
 				<S.PartnerWord>내가족 이사처럼 꼼꼼하고 기분좋게~^^ 내가족 이사처럼 꼼꼼하고 기분좋게</S.PartnerWord>
 				<S.Info>
 					<S.Card>
-						<span>평가등급 <Question width="16" height="16" /></span>
+						<span onClick={toggleVisibleLevel}>평가등급
+							<Question width="16" height="16" />
+						</span>
 						<img src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/level_txt_s.png"/>
 					</S.Card>
 					<S.Card>
@@ -194,6 +201,7 @@ const PartnerInfo = () => {
 				</S.Description>
 			</S.Wrap>
 			<S.Border />
+			<LevelModal visible={visibleLevelModal} onClose={toggleVisibleLevel} />
 		</S.Container>
 	)
 }

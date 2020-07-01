@@ -44,7 +44,7 @@ export const fetchList = async (page: number, size: number) => {
 }
 
 export const fetchDetail = async (username: string) => {
-    const { data } = await api.request<ApiResponse<PartnerDataProp>>({
+    const { data } = await api.request<ApiResponse<PartnerDetailProp>>({
         method: 'get',
         url: `/partners/${username}`
     })
