@@ -75,8 +75,11 @@ const S = {
 			color:${colors.pointBlue};
 			text-align:center;
 			@media screen and (min-width:768px) {
-				margin:15px 0 0 63px;
+				margin:15px 0 0 58px;
     		font-size:18px;
+			}
+			@media screen and (min-width:1200px) {
+				margin:15px 0 0 80px;
 			}
 		}
 		@media screen and (min-width:768px) {
@@ -200,6 +203,7 @@ const S = {
 		font-size:12px;
 		color:${colors.gray88};
 		line-height:18px;
+		cursor:pointer;
 		svg{
 			margin-left:6px;
 			vertical-align:top;
@@ -214,11 +218,14 @@ const S = {
 			margin-left: 50px;
 			text-align: right;
 		}
+		@media screen and (min-width:1200px) {
+			margin-left:62px;
+		}
 	`,
 
 }
 
-const LevelData = () => {
+const levelData = ({review_count}) => {
 	const [visibleTermsModal, setVisibleTermsModal] = useState(false)
 
 	const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
@@ -230,7 +237,7 @@ const LevelData = () => {
 					<p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
 				</S.Box>
 				<S.Average>
-					<strong>고객평가 9,999건</strong>
+					<strong>고객평가 {review_count}건</strong>
 					<S.WrapGraph>
 						<S.LevelImg>
 							<img src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/level_txt_s.png" alt="levelImage"/>

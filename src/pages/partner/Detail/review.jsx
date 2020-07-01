@@ -1,5 +1,5 @@
 import React from 'react'
-import Styled from 'styled-components'
+import Styled, {css} from 'styled-components'
 
 import * as colors from '../../../styles/colors'
 
@@ -130,13 +130,13 @@ const S = {
 	`,
 }
 
-const Review = () => {
+const Review = ({id, created_at, professional, kind, price, memo, reply}) => {
 	return (
 		<S.Container>
 			<S.Wrap>
 				<S.UserInfo>
-					<strong>고객번호 23577</strong>
-					<span>27일전 이사</span>
+					<strong>고객번호 {id}</strong>
+					<span>{created_at} 이사</span>
 				</S.UserInfo>
 				<S.Grade>
 					<span className="levetText">최고</span>
@@ -147,29 +147,38 @@ const Review = () => {
 					<S.Emotion>
 						<ul>
 							<li>
-								전문성 <span>뛰어나요</span>
+								전문성 <span>{professional}</span>
 							</li>
 							<li>
-								친절도 <span>친절해요</span>
+								친절도 <span>{kind}</span>
 							</li>
 							<li>
-								가격도 <span>돈이 아깝지 않아요</span>
+								가격도 <span>{price}</span>
 							</li>
 						</ul>
 						<IconSad width="80" height="64"/>
 					</S.Emotion>
 				</S.Grade>
 				<S.Review>
-					<S.ReviewText>이사한 집에 냉장고 위치가 애매해서 문이 덜 열렸는데, 해결해주시려고 많이 고생하시고 가셨어요. 해결해주시려고 많이 고생하시고 가셨어요. 해결해주시려고 많이 고생하시고 가셨어요.</S.ReviewText>
+					<S.ReviewText>{memo}</S.ReviewText>
 					<S.MoreReview>
 						더보기
 						<DownArrow width="16" height="16" />
 					</S.MoreReview>
 				</S.Review>
-				<S.Answer>
+				{reply === null ? (
+					<S.Answer>
+						<strong>이사업체 답변</strong>
+						<p>너무 멋지고 에쁜 후기와 평가 감사드려요~^^ 정말 완전 세상 열심히 하겠습니다^^</p>
+					</S.Answer>
+				) : (
+					''
+				)}
+					
+				{/* <S.Answer>
 					<strong>이사업체 답변</strong>
 					<p>너무 멋지고 에쁜 후기와 평가 감사드려요~^^ 정말 완전 세상 열심히 하겠습니다^^</p>
-				</S.Answer>
+				</S.Answer> */}
 			</S.Wrap>
 		</S.Container>
 	)
