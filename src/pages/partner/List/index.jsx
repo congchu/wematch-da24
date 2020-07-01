@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import Styled, { css } from 'styled-components'
+import Styled  from 'styled-components'
+import { useHistory } from 'react-router-dom'
 
 import TopGnb from 'components/TopGnb'
 import EmptyPage from 'components/EmptyPage'
@@ -93,6 +94,8 @@ function MoreLoading() {
 }
 
 const PartnerList = () => {
+    const history = useHistory()
+
     const [partnerList, setPartnerList] = useState([])
     const [loading, setLoading] = useState(false)
     const [page, setPage] = useState(2)
@@ -108,18 +111,25 @@ const PartnerList = () => {
                 }, 2000)
             })
     }
+
     const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
 
-    useEffect(() => {
+    const getPartnerList = useCallback(async () => {
         const DEFAULT_PAGE = 1
-        setLoading(true)
-        fetchList(DEFAULT_PAGE, SIZE)
-            .then((res) => {
-                setIsFetching(false);
-                setPartnerList(res)
-            }).finally(() => {
-                setLoading(false)
-            })
+
+        try {
+            setLoading(true)
+            const response = await fetchList(DEFAULT_PAGE, SIZE)
+            setIsFetching(false)
+            setPartnerList(response)
+        } catch (e) {
+        } finally {
+            setLoading(false)
+        }
+    }, [])
+
+    useEffect(() => {
+        getPartnerList()
     }, [setIsFetching])
 
     if (loading) {
@@ -134,7 +144,11 @@ const PartnerList = () => {
                 <>
                     <S.WrapItem>
                         {partnerList.map((list) => (
-                            <PartnerItem key={list.id} profile_img={list.profile_img} is_full={list.is_full} level={list.level} levelDescription={list.levelDescription} title={list.title} pick_count={list.pick_count} review_count={list.review_count} experience={list.experience} active={list.active}/>
+                            <PartnerItem key={list.id} profileImg={list.profileImg} disabled={list.disabled}
+                                level={list.level} levelDescription={list.levelDescription} title={list.title}
+                                pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
+                                active={list.active} onClick={() => history.push(`/partner/detail/${list.username}`)}
+                            />
                         ))}
                         <S.ChatText>
                             도움이 필요하세요?

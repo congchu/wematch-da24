@@ -126,12 +126,12 @@ const S = {
 	`
 }
 
-const PartnerItem = ({active, is_full, profile_img, random_img, level, levelDescription, title, pick_count, review_count, experience}) => {
+const PartnerItem = ({active, disabled, profileImg, level, levelDescription, title, pick_count, review_count, experience, onClick}) => {
 
 	return (
-		<S.Box active={active}>
-			{profile_img ? (
-				<S.PartnerImg profile_img={profile_img}>
+		<S.Box active={active} onClick={onClick}>
+			{profileImg ? (
+				<S.PartnerImg profileImg={profileImg}>
 					<span></span>
 					{is_full && <S.BgClose is_full>오늘<br/>마감</S.BgClose>}
 				</S.PartnerImg>
