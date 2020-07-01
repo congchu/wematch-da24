@@ -154,7 +154,7 @@ const S = {
 }
 
 const PartnerInfo = () => {
-	const [visibleLevelModal, setVisibleLevelModal] = useState(true)
+	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 
 	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
 
