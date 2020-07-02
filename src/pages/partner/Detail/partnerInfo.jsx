@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Styled from 'styled-components'
 
 import * as colors from '../../../styles/colors'
 
 import { Question } from '../../../components/Icon'
+import LevelModal from '../../../components/Modal/LevelModal'
 
 const S = {
 	Container: Styled.div`
@@ -153,9 +154,10 @@ const S = {
 }
 
 const PartnerInfo = ({title, level, pick_count, experience, description, keyword }) => {
-	// const [visibleLevelModal, setVisibleLevelModal] = useState(false)
+	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 
-	// const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
+	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
+
 	return (
 		<S.Container>
 			<S.Wrap>
@@ -164,7 +166,9 @@ const PartnerInfo = ({title, level, pick_count, experience, description, keyword
 				<S.PartnerWord>{title !== '' ? title : '의욕이 가득한 이사업체입니다.'}</S.PartnerWord>
 				<S.Info>
 					<S.Card>
-						<span>평가등급 <Question width="16" height="16" /></span>
+						<span onClick={toggleVisibleLevel}>평가등급
+							<Question width="16" height="16" />
+						</span>
 						<img src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/level_txt_s.png"/>
 					</S.Card>
 					<S.Card>
@@ -189,13 +193,14 @@ const PartnerInfo = ({title, level, pick_count, experience, description, keyword
 							<li>전문성</li>
 						</ul>
 					</S.Option>
-					<S.Option>
+					{/* <S.Option>
 						<strong>추가 가능 옵션</strong>
 						<p>설문조사에 수집된 내용대로 모두 노출</p>
-					</S.Option>
+					</S.Option> */}
 				</S.Description>
 			</S.Wrap>
 			<S.Border />
+			<LevelModal visible={visibleLevelModal} onClose={toggleVisibleLevel} />
 		</S.Container>
 	)
 }

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Styled from 'styled-components'
 
 import * as colors from '../../../styles/colors'
 
 import { Question } from '../../../components/Icon'
+import TermsModal from '../../../components/Modal/TermsModal'
 
 const S = {
 	Container: Styled.div`
@@ -224,16 +225,20 @@ const S = {
 
 }
 
-const levelData = ({review_count}) => {
+const LevelData = ({review_count}) => {
+	const [visibleTermsModal, setVisibleTermsModal] = useState(false)
+
+	const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
+
 	return (
 		<S.Container>
 			<S.Wrap>
 				<S.Box>
-					<p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span>자세히</span></p>
+					<p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
 				</S.Box>
 				<S.Average>
-					<strong>고객평가 {review_count}건</strong>
-					<S.WrapGraph>
+					<strong>고객평가 {/* {review_count}건 */}</strong>
+					{/* <S.WrapGraph>
 						<S.LevelImg>
 							<img src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/level_txt_s.png" alt="levelImage"/>
 							<span>최고</span>
@@ -259,11 +264,12 @@ const levelData = ({review_count}) => {
 							</S.SkillList>
 						</S.SkillGraph>
 						<S.DataText>위매치 빅데이터를 분석한 결과입니다<Question width="16" height="16" /></S.DataText>
-					</S.WrapGraph>
+					</S.WrapGraph> */}
 				</S.Average>
 			</S.Wrap>
+			<TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
 		</S.Container>
 	)
 }
 
-export default levelData
+export default LevelData

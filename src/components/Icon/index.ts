@@ -1,4 +1,5 @@
 export { default as ChatArrow } from './generated/ChatArrow'
+export { default as Close } from './generated/Close'
 export { default as DownArrow } from './generated/DownArrow'
 export { default as IconSad } from './generated/IconSad'
 export { default as KakaoIcon } from './generated/KakaoIcon'

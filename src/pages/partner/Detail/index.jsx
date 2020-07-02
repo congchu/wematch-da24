@@ -1,7 +1,8 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Styled from 'styled-components'
+import { useParams, useHistory } from 'react-router-dom'
 
-import Loading from '../../../components/Loading';
+import Loading from '../../../components/Loading'
 import TopGnb from '../../../components/TopGnb'
 import SetType from '../List/setType'
 import UserImage from './userImage'
@@ -9,10 +10,10 @@ import PartnerInfo from './partnerInfo'
 import LevelData from './levelData'
 import Review from './review'
 
-import { fetchDetail, fetchReviewList } from '../../../api/partner';
-import { useParams } from 'react-router-dom'
-import {DownArrow, UpArrow} from "../../../components/Icon";
-import * as colors from "../../../styles/colors";
+import { fetchDetail, fetchReviewList } from '../../../api/partner'
+import { DownArrow, UpArrow } from "../../../components/Icon"
+
+import * as colors from "../../../styles/colors"
 
 
 const S = {
@@ -97,12 +98,17 @@ const S = {
 		@media screen and (min-width:768px) {
 			bottom:120px;
 		}
-		@media screen and (min-width:120px) {
-			z-z-index:5;
-			right:70px;
+		@media screen and (min-width:1200px) {
+			z-index:5;
+			right:130px;
 			bottom:80px;
 		}
 	`,
+    ReviewMoreLoading: Styled.div`
+        display: block;
+        text-align: center;
+        color: ${colors.pointBlue};
+    `,
 }
 
 const PartnerDetail = () => {
@@ -110,7 +116,8 @@ const PartnerDetail = () => {
     const [partnerDetail, setPartnerDetail] = useState()
     const [reviewLoading, setReviewLoading] = useState(false)
     const [reviewList, setReviewList] = useState([])
-    // const [page, setPage] = useState(1)
+
+    const history = useHistory()
     const params = useParams()
 
     const DEFAULT_SIZE = 5
@@ -139,25 +146,24 @@ const PartnerDetail = () => {
 
     }, [params.username])
 
-    // const getMoreReviewList = useCallback(async () => {
-    //     page = page + 1
-    //     setReviewLoading(true)
-    //     const response = await fetchReviewList(params.username, page, DEFAULT_SIZE)
-    //     setReviewList(prevState => ([...prevState, ...response]))
-    //     console.log(reviewList)
-    //     setReviewLoading(false)
-    // }, [reviewList])
-    //
+    const getMoreReviewList = useCallback(async () => {
+        page = page + 1
+        setReviewLoading(true)
+        const response = await fetchReviewList(params.username, page, DEFAULT_SIZE)
+        setReviewList(prevState => ([...prevState, ...response]))
+        setReviewLoading(false)
+    }, [reviewList])
+
     const handleSelected = () => {
-        alert('선택 완료')
+        history.goBack()
     }
 
     useEffect(() => {
         getPartnerDetail()
         getReviewList()
-    }, [getReviewList, getPartnerDetail])
+    }, [getPartnerDetail, getReviewList])
 
-    if (detailLoading || reviewLoading) {
+    if (detailLoading) {
         return <Loading />
 		}
 		
@@ -166,23 +172,28 @@ const PartnerDetail = () => {
 
     return (
         <S.Container>
-						{partnerDetail !== undefined && (
-							<>
-							<TopGnb title="업체 직접 선택" count={0}/>
-							<SetType />
-							<UserImage profile_img={partnerDetail.profile_img} />
-							<PartnerInfo title={partnerDetail.title} level={partnerDetail.level} pick_count={partnerDetail.pick_count} experience={partnerDetail.experience} description={partnerDetail.description} keyword={partnerDetail.keyword}/>
-							<LevelData review_count={partnerDetail.review_count} />
-							{reviewList.map((review, index) => (
-									<Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} />
-							))}
-							<S.BottomContainer>
-									<S.MoreList>후기 더보기 <DownArrow width="16" height="16" /></S.MoreList>
-									<S.BtnSelect onClick={handleSelected}>이 업체 선택하기</S.BtnSelect>
-									<S.TopBtn><UpArrow color={colors.pointBlue} width="16" height="16" /></S.TopBtn>
-							</S.BottomContainer>
-							</>
-						)}
+            {partnerDetail !== undefined && (
+                <>
+                    <TopGnb title="업체 직접 선택" count={0} onPrevious={() => history.goBack()}/>
+                    <SetType />
+                    <UserImage profile_img={partnerDetail.profile_img} />
+                    <PartnerInfo title={partnerDetail.title} level={partnerDetail.level} pick_count={partnerDetail.pick_count} experience={partnerDetail.experience} description={partnerDetail.description} keyword={partnerDetail.keyword}/>
+                    <LevelData review_count={partnerDetail.review_count} />
+                    {reviewList.map((review, index) => (
+                        <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} />
+                    ))}
+                    <S.BottomContainer>
+                            <S.MoreList onClick={getMoreReviewList}>후기 더보기 <DownArrow width="16" height="16" /></S.MoreList>
+                            <S.BtnSelect onClick={handleSelected}>이 업체 선택하기</S.BtnSelect>
+                            <S.TopBtn><UpArrow color={colors.pointBlue} width="16" height="16" /></S.TopBtn>
+                    </S.BottomContainer>
+                    {reviewLoading && (
+                        <S.ReviewMoreLoading>
+                            로딩중..
+                        </S.ReviewMoreLoading>
+                    )}
+                </>
+            )}
         </S.Container>
     )
 }
