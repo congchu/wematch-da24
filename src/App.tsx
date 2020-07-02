@@ -3,11 +3,8 @@ import {
     Switch,
     Route,
 } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import { ConnectedRouter } from 'connected-react-router'
 
-import store from 'store/index'
-import browserHistory from 'lib/history'
+import { BrowserRouter } from 'react-router-dom'
 import GlobalStyled from 'styles/global'
 
 import PartnerList from 'pages/partner/List/index'
@@ -35,11 +32,9 @@ function App() {
   return (
       <>
           <GlobalStyled />
-          <Provider store={store}>
-              <ConnectedRouter history={browserHistory}>
-                  <AppRoute />
-              </ConnectedRouter>
-          </Provider>
+          <BrowserRouter>
+              <AppRoute />
+          </BrowserRouter>
       </>
   );
 }
