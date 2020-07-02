@@ -194,10 +194,10 @@ const PartnerInfo = ({title, level, pick_count, experience, description }) => {
 							<li>세심</li>
 						</ul>
 					</S.Option>
-					<S.Option>
+					{/* <S.Option>
 						<strong>추가 가능 옵션</strong>
 						<p>설문조사에 수집된 내용대로 모두 노출</p>
-					</S.Option>
+					</S.Option> */}
 				</S.Description>
 			</S.Wrap>
 			<S.Border />
