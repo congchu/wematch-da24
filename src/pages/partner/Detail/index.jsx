@@ -171,16 +171,16 @@ const PartnerDetail = ({}) => {
         <S.Container>
             {partnerDetail !== undefined && (
                 <>
-                    <TopGnb title="업체 직접 선택" count={0}/>
+                    <TopGnb title="업체 직접 선택" count={0} onPrevious={() => history.goBack()}/>
                     <SetType />
                     <UserImage profile_img={partnerDetail.profile_img} />
                     <PartnerInfo title={partnerDetail.title} level={partnerDetail.level} pick_count={partnerDetail.pick_count} experience={partnerDetail.experience} description={partnerDetail.description} keyword={partnerDetail.keyword}/>
                     <LevelData review_count={partnerDetail.review_count} />
                     {reviewList.map((review, index) => (
-                            <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} />
+                        <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} />
                     ))}
                     <S.BottomContainer>
-                            <S.MoreList>후기 더보기 <DownArrow width="16" height="16" /></S.MoreList>
+                            <S.MoreList onClick={getMoreReviewList}>후기 더보기 <DownArrow width="16" height="16" /></S.MoreList>
                             <S.BtnSelect onClick={handleSelected}>이 업체 선택하기</S.BtnSelect>
                             <S.TopBtn><UpArrow color={colors.pointBlue} width="16" height="16" /></S.TopBtn>
                     </S.BottomContainer>

@@ -74,7 +74,7 @@ const S = {
 const TopGnb = ({title,count,onPrevious}) => {
 	return (
 		<S.Container>
-			<S.BtnPrevious onPrevious={onPrevious}>
+			<S.BtnPrevious onClick={onPrevious}>
 				<Previous width="11" height="20" color={colors.gray33} />
 			</S.BtnPrevious>
 			<S.HeadTitle>{title}</S.HeadTitle>
