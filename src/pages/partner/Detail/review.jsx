@@ -1,5 +1,6 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Styled, {css} from 'styled-components'
+
 
 import * as colors from '../../../styles/colors'
 
@@ -131,6 +132,13 @@ const S = {
 }
 
 const Review = ({id, created_at, professional, kind, price, memo, reply}) => {
+	// const [open, setOpen] = useState(0);
+	// const openReview = () => {
+	// 	console.log('openopen!');
+		
+
+	// }
+
 	return (
 		<S.Container>
 			<S.Wrap>
@@ -160,25 +168,29 @@ const Review = ({id, created_at, professional, kind, price, memo, reply}) => {
 					</S.Emotion>
 				</S.Grade> */}
 				<S.Review>
-					<S.ReviewText>{memo}</S.ReviewText>
-					<S.MoreReview>
-						더보기
-						<DownArrow width="16" height="16" />
-					</S.MoreReview>
+					{memo.length >= 42 ? (
+						<S.ReviewText>{memo}</S.ReviewText>
+					) : (
+						<S.ReviewText>좋아좋아요!!</S.ReviewText>
+					)}
+					{memo.length >= 42 ? (
+						<S.MoreReview >
+							더보기
+							<DownArrow width="16" height="16" />
+						</S.MoreReview>
+					) : (
+						''
+					)}
 				</S.Review>
-				{reply === null ? (
+				{reply !== null ? (
 					<S.Answer>
 						<strong>이사업체 답변</strong>
-						<p>너무 멋지고 에쁜 후기와 평가 감사드려요~^^ 정말 완전 세상 열심히 하겠습니다^^</p>
+						<p>{reply}</p>
 					</S.Answer>
 				) : (
 					''
 				)}
-					
-				{/* <S.Answer>
-					<strong>이사업체 답변</strong>
-					<p>너무 멋지고 에쁜 후기와 평가 감사드려요~^^ 정말 완전 세상 열심히 하겠습니다^^</p>
-				</S.Answer> */}
+				
 			</S.Wrap>
 		</S.Container>
 	)

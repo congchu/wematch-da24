@@ -70,6 +70,9 @@ const S = {
 		`}
 		text-align:center;
 		box-sizing:border-box;
+		@media screen and (max-width: 320px) {
+			padding-top:23px;
+		}
 	`,
 	CompanyInfo: Styled.div`
 		float:left;
