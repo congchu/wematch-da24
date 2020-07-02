@@ -98,9 +98,9 @@ const S = {
 		@media screen and (min-width:768px) {
 			bottom:120px;
 		}
-		@media screen and (min-width:120px) {
+		@media screen and (min-width:1200px) {
 			z-index:5;
-			right:70px;
+			right:130px;
 			bottom:80px;
 		}
 	`,
@@ -161,7 +161,7 @@ const PartnerDetail = ({}) => {
     useEffect(() => {
         getPartnerDetail()
         getReviewList()
-    }, [])
+    }, [getPartnerDetail, getReviewList])
 
     if (detailLoading) {
         return <Loading />

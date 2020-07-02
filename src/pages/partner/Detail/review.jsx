@@ -88,7 +88,7 @@ const S = {
 		display:-webkit-box;
     overflow:hidden;
     width:100%;
-    margin-top:20px;
+    margin-top:30px;
 		font-size:15px;
     font-weight:500;
     line-height:24px;
@@ -138,10 +138,10 @@ const Review = ({id, created_at, professional, kind, price, memo, reply}) => {
 					<strong>고객번호 {id}</strong>
 					<span>{created_at} 이사</span>
 				</S.UserInfo>
-				<S.Grade>
+				{/* <S.Grade>
 					<span className="levetText">최고</span>
 					<S.StarFill>
-						{/* .fill class에  width 20% -> 40% -> ... -> 100% 별 채워짐 */}
+						/* .fill class에  width 20% -> 40% -> ... -> 100% 별 채워짐 - 주석처리
 						<span className="fill"></span>
 					</S.StarFill>
 					<S.Emotion>
@@ -158,7 +158,7 @@ const Review = ({id, created_at, professional, kind, price, memo, reply}) => {
 						</ul>
 						<IconSad width="80" height="64"/>
 					</S.Emotion>
-				</S.Grade>
+				</S.Grade> */}
 				<S.Review>
 					<S.ReviewText>{memo}</S.ReviewText>
 					<S.MoreReview>

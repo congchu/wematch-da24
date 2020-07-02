@@ -237,8 +237,8 @@ const LevelData = ({review_count}) => {
 					<p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
 				</S.Box>
 				<S.Average>
-					<strong>고객평가 {review_count}건</strong>
-					<S.WrapGraph>
+					<strong>고객평가 {/* {review_count}건 */}</strong>
+					{/* <S.WrapGraph>
 						<S.LevelImg>
 							<img src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/level_txt_s.png" alt="levelImage"/>
 							<span>최고</span>
@@ -264,7 +264,7 @@ const LevelData = ({review_count}) => {
 							</S.SkillList>
 						</S.SkillGraph>
 						<S.DataText>위매치 빅데이터를 분석한 결과입니다<Question width="16" height="16" /></S.DataText>
-					</S.WrapGraph>
+					</S.WrapGraph> */}
 				</S.Average>
 			</S.Wrap>
 			<TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
