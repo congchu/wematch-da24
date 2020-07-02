@@ -153,39 +153,9 @@ const S = {
 }
 
 const PartnerInfo = ({title, level, pick_count, experience, description, keyword }) => {
-	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
+	// const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 
-	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
-
-	console.log(keyword,'111')
-	console.log(Object.keys(keyword),'222')
-
-	const qqqqq = Object.keys(keyword).map((qwer) => (
-		keyword[qwer].map((ssss, index) => (
-			<li key={index}>{ssss}</li>
-		))
-	))
-
-
-	// let aaa = Object.keys(keyword).map((item) => (
-	// 	// console.log(keyword[item]);
-	// 	keyword[item].map((list, index) => {
-	// 		// console.log(list)
-	// 		return (
-	// 			<li key={index}>{list}</li>
-	// 		)
-	// 	})
-	// ))
-
-	// for (const item in keyword){
-	// 	// console.log(keyword[item]);
-	// 	let aaa = keyword[item];
-	// 	aaa.map((item,index) => {
-	// 		return (
-	// 			<li key={index}>{item}</li>
-	// 		)
-	// 	})
-	// }
+	// const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
 	return (
 		<S.Container>
 			<S.Wrap>
@@ -214,15 +184,9 @@ const PartnerInfo = ({title, level, pick_count, experience, description, keyword
 					<S.Option>
 						<strong>고객이 많이 언급한 키워드</strong>
 						<ul>
-						{qqqqq}
-						{/* {Object.keys(keyword).map((item) => {
-							// console.log(keyword[item]);
-							keyword[item].map((list, index) => {
-								return (
-									<li key={index}>{list}</li>
-								)
-							})
-						})} */}
+							<li>세심</li>
+							<li>친절하고 편안하게</li>
+							<li>전문성</li>
 						</ul>
 					</S.Option>
 					<S.Option>
