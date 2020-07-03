@@ -189,9 +189,11 @@ const PartnerInfo = ({title, level, pick_count, experience, description, keyword
 					<S.Option>
 						<strong>고객이 많이 언급한 키워드</strong>
 						<ul>
-							{keywords.map((list, index) => (
-								<li key={index}>{list}</li>
-							))}
+							{keywords && (
+								keywords.map((list, index) => (
+									<li key={index}>{list}</li>
+								))
+							)}
 						</ul>
 					</S.Option>
 					{/* <S.Option>
