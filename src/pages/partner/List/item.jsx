@@ -70,6 +70,9 @@ const S = {
 		`}
 		text-align:center;
 		box-sizing:border-box;
+		@media screen and (max-width: 320px) {
+			padding-top:23px;
+		}
 	`,
 	CompanyInfo: Styled.div`
 		float:left;
@@ -120,7 +123,7 @@ const S = {
 		color:${colors.gray66};
 		letter-spacing:-1px;
 		svg {
-			margin-left:10px;
+			margin:1px 0 0 10px;
 			vertical-align:top;
 		}
 	`

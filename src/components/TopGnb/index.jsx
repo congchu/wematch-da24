@@ -20,7 +20,7 @@ const S = {
 			position:absolute;
 			top:0;
 			left:0;
-			padding:12px 16px;
+			padding:14px 16px 10px;
 			@media screen and (min-width: 768px) {
 				top:14px;
 				left:8px;
@@ -28,7 +28,7 @@ const S = {
 		`,
 		HeadTitle: Styled.strong`
 			display:block;
-			padding:15px 0;
+			padding:17px 0 13px;
 			font-weight:400;
 			font-size:16px;
 			line-height:18px;
@@ -44,7 +44,7 @@ const S = {
 			position:absolute;
 			top:7px;
 			left:auto;
-			right:15px;
+			right:8px;
 			padding:12px 16px;
 			@media screen and (min-width: 768px) {
 				top:18px;
@@ -54,8 +54,8 @@ const S = {
 		Count: Styled.span`
 			display:inline-block;
 			position:absolute;
-			top:3px;
-			right:7px;
+			top:2px;
+			right:8px;
 			width:16px;
 			height:16px;
 			border-radius:8px;
