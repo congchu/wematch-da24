@@ -15,15 +15,18 @@
     "@types/styled-components": "5.1.0",
     "axios": "0.19.2",
     "connected-react-router": "6.8.0",
+    "core-js": "3.6.5",
     "dayjs": "1.8.28",
     "lodash": "4.17.15",
     "query-string": "6.13.1",
     "react": "^16.13.1",
+    "react-app-polyfill": "1.0.6",
     "react-dom": "^16.13.1",
     "react-media": "1.10.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.1",
     "react-use-media": "0.3.0",
+    "regenerator-runtime": "0.13.5",
     "styled-components": "5.1.1",
     "typesafe-actions": "5.1.0",
     "typescript": "~3.7.2"
@@ -40,10 +43,16 @@
   "browserslist": {
     "production": [
       ">0.2%",
+      "ie 9",
+      "ie 10",
+      "ie 11",
       "not dead",
       "not op_mini all"
     ],
     "development": [
+      "ie 9",
+      "ie 10",
+      "ie 11",
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
