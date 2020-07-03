@@ -180,7 +180,7 @@ const PartnerDetail = () => {
                     <TopGnb title="업체 직접 선택" count={0} onPrevious={() => history.goBack()}/>
                     <SetType />
                     <UserImage profile_img={partnerDetail.profile_img} />
-                    <PartnerInfo title={partnerDetail.title} level={partnerDetail.level} pick_count={partnerDetail.pick_count} experience={partnerDetail.experience} description={partnerDetail.description} keyword={partnerDetail.keyword}/>
+                    <PartnerInfo title={partnerDetail.title} level={partnerDetail.level} pick_count={partnerDetail.pick_count} experience={partnerDetail.experience} description={partnerDetail.description} keywords={partnerDetail.keywords}/>
                     <LevelData review_count={partnerDetail.review_count} />
                     {reviewList.map((review, index) => (
                         <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply}  />
