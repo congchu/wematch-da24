@@ -169,9 +169,6 @@ const PartnerDetail = () => {
     if (detailLoading) {
         return <Loading />
 		}
-		
-		console.log(partnerDetail)
-		console.log(reviewList)
 
     return (
         <S.Container>
@@ -183,11 +180,10 @@ const PartnerDetail = () => {
                     <PartnerInfo title={partnerDetail.title} level={partnerDetail.level} pick_count={partnerDetail.pick_count} experience={partnerDetail.experience} description={partnerDetail.description} keywords={partnerDetail.keywords}/>
                     <LevelData review_count={partnerDetail.review_count} />
                     {reviewList.map((review, index) => (
-                        <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply}  />
+                        <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} />
                     ))}
                     <S.BottomContainer>
 												<S.MoreList onClick={getMoreReviewList}>후기 더보기 <DownArrow width="16" height="16" /></S.MoreList>
-												{/* {is_full !== false &&		} */}
 												<S.BtnSelect is_full={partnerDetail.is_full} onClick={handleSelected}>이 업체 선택하기</S.BtnSelect>
 												<S.TopBtn><UpArrow color={colors.pointBlue} width="16" height="16" /></S.TopBtn>
                     </S.BottomContainer>
