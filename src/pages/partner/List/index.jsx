@@ -11,9 +11,11 @@ import SetType from './setType'
 import PartnerItem from './item'
 
 import * as colors from 'styles/colors'
-
-import { fetchList } from 'api/partner';
-import useInfiniteScroll from 'lib/useInfiniteScroll';
+import { API_URL } from 'constants/env'
+import { fetchList } from 'api/partner'
+import useInfiniteScroll from 'hooks/useInfiniteScroll'
+import {useMedia} from "react-use-media";
+import MainHeader from "../../../components/MainHeader";
 
 const S = {
     Container: Styled.div`
@@ -94,22 +96,44 @@ function MoreLoading() {
 }
 
 const PartnerList = () => {
+    const isDesktop = useMedia({
+        minWidth: 1200,
+    })
+
+    const THUMBNAIL_URL = API_URL + '/unsafe/88x88/'
     const history = useHistory()
 
     const [partnerList, setPartnerList] = useState([])
     const [loading, setLoading] = useState(false)
     const [page, setPage] = useState(2)
     const SIZE = 10
+    const defaultText = [
+        '기술은 백두산급 정성은 에베레스트급 이사입니다.',
+        '친절!정확!속도! 믿을 수 있는 이사전문가입니다.',
+        '내 집처럼 섬세하게 완벽한 이사 해드립니다.',
+        '이사 품질만은 양보할 수 없다! 확실하게 해드립니다.',
+        '이사는 기본, 정리정돈까지 완벽을 추구합니다.'
+    ]
 
-    const fetchMoreListItems = () => {
+    const defaultImage = [
+        `${API_URL}/unsafe/88x88/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_1.jpg`,
+        `${API_URL}/unsafe/88x88/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_2.jpg`,
+        `${API_URL}/unsafe/88x88/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_3.jpg`,
+        `${API_URL}/unsafe/88x88/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_4.jpg`,
+        `${API_URL}/unsafe/88x88/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_5.jpg`,
+    ]
+
+    const fetchMoreListItems = async () => {
         setPage(page + 1)
-        fetchList(page, SIZE)
-            .then((res) => {
-                setTimeout(() => {
-                    setPartnerList(prevState => ([...prevState, ...res]))
-                    setIsFetching(false);
-                }, 2000)
-            })
+        const response = await fetchList(page, SIZE)
+        setTimeout(() => {
+            setPartnerList(prevState => ([...prevState, ...response]))
+        }, 500)
+        setIsFetching(false)
+    }
+
+    const randomSeed = () => {
+        return Math.floor(Math.random() * 5)
     }
 
     const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
@@ -128,6 +152,19 @@ const PartnerList = () => {
         }
     }, [])
 
+    const makeDefaultRandomData = () => {
+        const r = randomSeed()
+        return {
+            text: defaultText[r],
+            image: defaultImage[r],
+            seed: r
+        }
+    }
+
+    const handleLinkKakao = () => {
+        window.open('https://api.happytalk.io/api/kakao/chat_open?yid=%40%EC%9C%84%EB%A7%A4%EC%B9%98&site_id=4000001315&category_id=111561&division_id=111564', '_blank')
+    }
+
     useEffect(() => {
         getPartnerList()
     }, [setIsFetching])
@@ -136,32 +173,41 @@ const PartnerList = () => {
         return <Loading />
     }
 
+    if (!partnerList) return <EmptyPage title="죄송합니다" subtitle="해당지역에 가능한 업체가 없습니다." />
+
     return (
         <S.Container>
-            <TopGnb title="업체 직접 선택" count={2} />
+            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={0} onPrevious={() => history.goBack()}/>}
             <SetType />
-            {partnerList.length > 0 ? (
-                <>
-                    <S.WrapItem>
-                        {partnerList.map((list) => (
-                            <PartnerItem key={list.id} profile_img={list.profile_img} disabled={list.disabled}
-                                level={list.level} levelDescription={list.levelDescription} title={list.title}
-                                pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
-                                active={list.active} is_full={list.is_full} onClick={() => history.push(`/partner/detail/${list.username}`)}
+            <S.WrapItem>
+                {partnerList.map((list) => {
+                    if (list.profile_img) {
+                        return (
+                            <PartnerItem key={list.id} profile_img={THUMBNAIL_URL + list.profile_img} disabled={list.disabled}
+                                 level={list.level} levelDescription={list.levelDescription} title={list.title}
+                                 pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
+                                 active={list.active} is_full={list.is_full} onClick={() => history.push(`/partner/detail/${list.username}`)}
                             />
-                        ))}
-                        <S.ChatText>
-                            도움이 필요하세요?
-                            <ChatArrow width="20" height="12" />
-                        </S.ChatText>
-                        <S.BtnKakao>
-                            <KakaoIcon width="35" height="34" />
-                        </S.BtnKakao>
-                    </S.WrapItem>
-                </>
-            ) : (
-                <EmptyPage title="죄송합니다" subtitle="해당지역에 가능한 업체가 없습니다." />
-            )}
+                        )
+                    } else {
+                        const data = makeDefaultRandomData()
+                        return (
+                            <PartnerItem key={list.id} profile_img={data.image} disabled={list.disabled}
+                                 level={list.level} levelDescription={list.levelDescription} title={data.text}
+                                 pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
+                                 active={list.active} is_full={list.is_full} onClick={() => history.push(`/partner/detail/${list.username}?seed=${data.seed}`)}
+                            />
+                        )
+                    }
+                })}
+                <S.ChatText onClick={handleLinkKakao}>
+                    도움이 필요하세요?
+                    <ChatArrow width="20" height="12" />
+                </S.ChatText>
+                <S.BtnKakao onClick={handleLinkKakao}>
+                    <KakaoIcon width="35" height="34" />
+                </S.BtnKakao>
+            </S.WrapItem>
             {isFetching && <MoreLoading />}
         </S.Container>
     )

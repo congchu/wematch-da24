@@ -164,10 +164,10 @@ const PartnerInfo = ({title, level, pick_count, experience, description, keyword
 			<S.Wrap>
 				<S.LevelDescription>상위 10% 업체</S.LevelDescription>
 				<S.Level>고객평가 {level}등급</S.Level>
-				<S.PartnerWord>{title !== '' ? title : '의욕이 가득한 이사업체입니다.'}</S.PartnerWord>
+				<S.PartnerWord>{title}</S.PartnerWord>
 				<S.Info>
-					<S.Card>
-						<span onClick={toggleVisibleLevel}>평가등급
+					<S.Card onClick={toggleVisibleLevel}>
+						<span>평가등급
 							<Question width="16" height="16" />
 						</span>
 						<LevelIcon level={level}/>
