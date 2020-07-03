@@ -123,13 +123,15 @@ const PartnerList = () => {
         `${API_URL}/unsafe/88x88/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_5.jpg`,
     ]
 
-    const fetchMoreListItems = async () => {
+    const fetchMoreListItems = () => {
         setPage(page + 1)
-        const response = await fetchList(page, SIZE)
-        setTimeout(() => {
-            setPartnerList(prevState => ([...prevState, ...response]))
-        }, 500)
-        setIsFetching(false)
+        fetchList(page, SIZE)
+            .then((res) => {
+                setTimeout(() => {
+                    setPartnerList(prevState => ([...prevState, ...res]))
+                    setIsFetching(false);
+                }, 500)
+            })
     }
 
     const randomSeed = () => {
@@ -173,41 +175,45 @@ const PartnerList = () => {
         return <Loading />
     }
 
-    if (!partnerList) return <EmptyPage title="죄송합니다" subtitle="해당지역에 가능한 업체가 없습니다." />
-
     return (
         <S.Container>
             {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={0} onPrevious={() => history.goBack()}/>}
             <SetType />
-            <S.WrapItem>
-                {partnerList.map((list) => {
-                    if (list.profile_img) {
-                        return (
-                            <PartnerItem key={list.id} profile_img={THUMBNAIL_URL + list.profile_img} disabled={list.disabled}
-                                 level={list.level} levelDescription={list.levelDescription} title={list.title}
-                                 pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
-                                 active={list.active} is_full={list.is_full} onClick={() => history.push(`/partner/detail/${list.username}`)}
-                            />
-                        )
-                    } else {
-                        const data = makeDefaultRandomData()
-                        return (
-                            <PartnerItem key={list.id} profile_img={data.image} disabled={list.disabled}
-                                 level={list.level} levelDescription={list.levelDescription} title={data.text}
-                                 pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
-                                 active={list.active} is_full={list.is_full} onClick={() => history.push(`/partner/detail/${list.username}?seed=${data.seed}`)}
-                            />
-                        )
-                    }
-                })}
-                <S.ChatText onClick={handleLinkKakao}>
-                    도움이 필요하세요?
-                    <ChatArrow width="20" height="12" />
-                </S.ChatText>
-                <S.BtnKakao onClick={handleLinkKakao}>
-                    <KakaoIcon width="35" height="34" />
-                </S.BtnKakao>
-            </S.WrapItem>
+            {partnerList.length > 0 ? (
+                <>
+                    <S.WrapItem>
+                        {partnerList.map((list) => {
+                            if (list.profile_img) {
+                                return (
+                                    <PartnerItem key={list.id} profile_img={THUMBNAIL_URL + list.profile_img} disabled={list.disabled}
+                                                 level={list.level} levelDescription={list.levelDescription} title={list.title}
+                                                 pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
+                                                 active={list.active} is_full={list.is_full} onClick={() => history.push(`/partner/detail/${list.username}`)}
+                                    />
+                                )
+                            } else {
+                                const data = makeDefaultRandomData()
+                                return (
+                                    <PartnerItem key={list.id} profile_img={data.image} disabled={list.disabled}
+                                                 level={list.level} levelDescription={list.levelDescription} title={data.text}
+                                                 pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
+                                                 active={list.active} is_full={list.is_full} onClick={() => history.push(`/partner/detail/${list.username}?seed=${data.seed}`)}
+                                    />
+                                )
+                            }
+                        })}
+                        <S.ChatText onClick={handleLinkKakao}>
+                            도움이 필요하세요?
+                            <ChatArrow width="20" height="12" />
+                        </S.ChatText>
+                        <S.BtnKakao onClick={handleLinkKakao}>
+                            <KakaoIcon width="35" height="34" />
+                        </S.BtnKakao>
+                    </S.WrapItem>
+                </>
+            ) : (
+                <EmptyPage title="죄송합니다" subtitle="해당지역에 가능한 업체가 없습니다." />
+            )}
             {isFetching && <MoreLoading />}
         </S.Container>
     )
