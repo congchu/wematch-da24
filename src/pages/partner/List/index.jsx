@@ -14,7 +14,8 @@ import * as colors from 'styles/colors'
 import { API_URL } from 'constants/env'
 import { fetchList } from 'api/partner'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
-
+import {useMedia} from "react-use-media";
+import MainHeader from "../../../components/MainHeader";
 
 const S = {
     Container: Styled.div`
@@ -95,6 +96,10 @@ function MoreLoading() {
 }
 
 const PartnerList = () => {
+    const isDesktop = useMedia({
+        minWidth: 1200,
+    })
+
     const THUMBNAIL_URL = API_URL + '/unsafe/88x88/'
     const history = useHistory()
 
@@ -173,7 +178,7 @@ const PartnerList = () => {
 
     return (
         <S.Container>
-            <TopGnb title="업체 직접 선택" count={2} />
+            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={0} onPrevious={() => history.goBack()}/>}
             <SetType />
             {partnerList.length > 0 ? (
                 <>
