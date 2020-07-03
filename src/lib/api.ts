@@ -24,7 +24,9 @@ const api = axios.create({
 api.interceptors.response.use((response) => {
     return response
 }, (error: AxiosError) => {
-    throw new ApiError(500, 'SERVER ERROR')
+    if (error.response?.data.result === 'failure') {
+        //TODO: 예외처리 추가해야함
+    }
 })
 
 export default api

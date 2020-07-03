@@ -78,7 +78,7 @@ const S = {
 		cursor:pointer;
 		${props => props.is_full && css`
 			background-color:${colors.lineDefault};
-		`}
+		`};
 		@media screen and (min-width:1200px) {
 			position:relative;
 		}
@@ -224,7 +224,7 @@ const PartnerDetail = ({location}) => {
                 <>
                     {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={0} onPrevious={() => history.goBack()}/>}
                     <SetType />
-                    <UserImage profile_img={isEmpty(query.seed) ? partnerDetail.profile_img : defaultImage[query.seed]} />
+                    <UserImage profile_img={isEmpty(query.seed) ? `${API_URL}/unsafe/719x474/` + partnerDetail.profile_img : defaultImage[query.seed]} />
                     <PartnerInfo title={isEmpty(query.seed) ? partnerDetail.title : defaultText[query.seed]} level={partnerDetail.level} pick_count={partnerDetail.pick_count} experience={partnerDetail.experience} description={partnerDetail.description} keyword={partnerDetail.keyword}/>
                     <LevelData review_count={partnerDetail.review_count} />
                     {reviewList.map((review, index) => (
