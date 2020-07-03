@@ -106,7 +106,7 @@ const LevelModal:React.FC<Props> = (props) => {
                         </tr>
                         <tr>
                             <td>등급 산정 중</td>
-                            <td>74%</td>
+                            <td>-</td>
                         </tr>
                     </tbody>
                 </S.Table>
