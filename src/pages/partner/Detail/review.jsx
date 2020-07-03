@@ -4,6 +4,7 @@ import Styled, {css} from 'styled-components'
 import * as colors from '../../../styles/colors'
 
 import { IconSad, DownArrow } from '../../../components/Icon'
+import {  getCreatedAt } from '../../../lib/time'
 
 const S = {
 	Container: Styled.div`
@@ -40,7 +41,7 @@ const S = {
 	`,
 	Grade: Styled.div`
 		margin-top:18px;
-		.levetText{
+		.levelText{
 			display:block;
 			margin-bottom:5px;
 			font-size:14px;
@@ -50,10 +51,10 @@ const S = {
 	`,
 	StarFill: Styled.span`
 		display:block;
-    position:relative;
-    z-index:5;
+    	position:relative;
+    	z-index:5;
 		width:80px;
-    height:16px;
+    	height:16px;
 		vertical-align:middle;
 		background:url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/icon/star.svg) no-repeat 0 0;
 		.fill{
@@ -136,7 +137,7 @@ const Review = ({id, created_at, professional, kind, price, memo, reply}) => {
 			<S.Wrap>
 				<S.UserInfo>
 					<strong>고객번호 {id}</strong>
-					<span>{created_at} 이사</span>
+					<span>{getCreatedAt(created_at)} 이사</span>
 				</S.UserInfo>
 				{/* <S.Grade>
 					<span className="levetText">최고</span>

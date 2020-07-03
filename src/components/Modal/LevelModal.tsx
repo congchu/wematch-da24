@@ -39,6 +39,9 @@ const S = {
         thead {
             font-weight: bold;
             border-bottom: 1px solid ${colors.gray33};
+            th {
+              height: 25px;
+            }
             tr {
                 margin-bottom: 9px;
             }
@@ -51,22 +54,15 @@ const S = {
             }
         }
         tr {
-            width: 33%;
+            width: 50%;
         }
     `,
-    Box: Styled.div`
-        border: solid 1px ${colors.lineDefault};
-        border-radius: 8px;
-        background-color: ${colors.lineDeco};
-        margin-top: 20px;
-        padding: 16px 12px;
-        
-        ul {
-           font-size: 12px;
-           line-height: 1.67;
-           letter-spacing: -1px;
-           color: ${colors.gray66};
-        }
+    Refresh: Styled.p`
+        font-size: 12px;
+        line-height: 1.67;
+        color: ${colors.gray66};
+        text-align: right;
+        margin-top: 37px;
     `
 }
 
@@ -80,62 +76,43 @@ const LevelModal:React.FC<Props> = (props) => {
         <ModalTemplate visible={visible} title="평가등급이란" onClose={onClose} onOverlayClose={onOverlayClose}>
             <S.Container>
                 <S.Text>
-                    <em>수십만 위매치 이용자들의 피드백</em><br />
-                    업체 평가의 기준을 정했습니다.
-                </S.Text>
-                <S.Text>
-                    <em>해당 업체와 이사한 고객들의 평가를 수집 후,</em>을 통해 <br />
-                    빅데이터로 분석해 등급과 만족확률을 <br />
-                    산출했습니다. <br />
-                </S.Text>
-                <S.Text>
-                    <em>등급을 통해 해당 업체의 서비스 수준이</em><br />
-                    전체 이사업체 중 어느 정도인지 <br />
-                    쉽게 알 수 있습니다. <br />
+                    업체 평가의 기준을 정했습니다. <br />
+                    <em>최근 1년간 해당 업체를 이용한 고객의 평가(전문성, 친절도, 가성비)를</em><br />
+                    빅데이터로 분석해 산출하는 서비스 등급 입니다.
                 </S.Text>
                 <S.Table>
                     <thead>
                         <tr>
                             <th>등급</th>
                             <th>만족 확률</th>
-                            <th>시장상위</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>S</td>
                             <td>84%</td>
-                            <td>상위 10%</td>
                         </tr>
                         <tr>
                             <td>A</td>
                             <td>73%</td>
-                            <td>상위 38%</td>
                         </tr>
                         <tr>
                             <td>B</td>
                             <td>65%</td>
-                            <td>평균수준</td>
                         </tr>
                         <tr>
                             <td>C</td>
                             <td>51%</td>
-                            <td>평균수준</td>
                         </tr>
                         <tr>
                             <td>등급 산정 중</td>
                             <td>74%</td>
-                            <td>-</td>
                         </tr>
                     </tbody>
                 </S.Table>
-                <S.Box>
-                    <ul>
-                        <li>- 위매치다이사 빅데이터 제공 (2018년 4월 기준-최근 1년)</li>
-                        <li>- 최근 1년간의 평가로 등급 산출</li>
-                        <li>- 매월 1일 갱신</li>
-                    </ul>
-                </S.Box>
+                <S.Refresh>
+                    *매월 1일 갱신
+                </S.Refresh>
             </S.Container>
         </ModalTemplate>
     )

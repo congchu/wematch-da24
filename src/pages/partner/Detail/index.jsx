@@ -1,8 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import Styled from 'styled-components'
+import queryString from 'query-string';
 import { useParams, useHistory } from 'react-router-dom'
+import { useMedia } from 'react-use-media'
+import { isEmpty } from 'lodash'
 
+import { DownArrow, UpArrow } from '../../../components/Icon'
 import Loading from '../../../components/Loading'
+import MainHeader from '../../../components/MainHeader'
 import TopGnb from '../../../components/TopGnb'
 import SetType from '../List/setType'
 import UserImage from './userImage'
@@ -10,11 +15,9 @@ import PartnerInfo from './partnerInfo'
 import LevelData from './levelData'
 import Review from './review'
 
+import { API_URL } from '../../../constants/env';
 import { fetchDetail, fetchReviewList } from '../../../api/partner'
-import { DownArrow, UpArrow } from "../../../components/Icon"
-
-import * as colors from "../../../styles/colors"
-
+import * as colors from '../../../styles/colors'
 
 const S = {
     Container: Styled.div``,
@@ -109,13 +112,35 @@ const S = {
         text-align: center;
         color: ${colors.pointBlue};
     `,
+    ScrollView: Styled.div``
 }
 
-const PartnerDetail = ({}) => {
+const PartnerDetail = ({location}) => {
+    const isDesktop = useMedia({
+        minWidth: 1200,
+    })
+
+    const defaultText = [
+        '기술은 백두산급 정성은 에베레스트급 이사입니다.',
+        '친절!정확!속도! 믿을 수 있는 이사전문가입니다.',
+        '내 집처럼 섬세하게 완벽한 이사 해드립니다.',
+        '이사 품질만은 양보할 수 없다! 확실하게 해드립니다.',
+        '이사는 기본, 정리정돈까지 완벽을 추구합니다.'
+    ]
+
+    const defaultImage = [
+        `https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_1.jpg`,
+        `https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_2.jpg`,
+        `https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_3.jpg`,
+        `https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_4.jpg`,
+        `https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_5.jpg`,
+    ]
+
     const [detailLoading, setDetailLoading] = useState(false)
     const [partnerDetail, setPartnerDetail] = useState(undefined)
     const [reviewLoading, setReviewLoading] = useState(false)
     const [reviewList, setReviewList] = useState([])
+    const [showScrollView, setShowScrollView] = useState(false)
 
     const history = useHistory()
     const params = useParams()
@@ -154,6 +179,20 @@ const PartnerDetail = ({}) => {
         setReviewLoading(false)
     }, [reviewList])
 
+    const checkScrollTop = () => {
+        if (!showScrollView && window.pageYOffset > 300){
+            setShowScrollView(true)
+        } else if (showScrollView && window.pageYOffset <= 300){
+            setShowScrollView(false)
+        } else if (window.pageYOffset === 0) {
+            setShowScrollView(false)
+        }
+    };
+
+    const handleScrollTop = () =>{
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    };
+
     const handleSelected = () => {
         history.goBack()
     }
@@ -163,26 +202,41 @@ const PartnerDetail = ({}) => {
         getReviewList()
     }, [getPartnerDetail, getReviewList])
 
+    useEffect(() => {
+        window.addEventListener('scroll', checkScrollTop);
+        return () => {
+            window.removeEventListener('scroll', checkScrollTop);
+        }
+    }, [])
+
     if (detailLoading) {
         return <Loading />
     }
 
+    const query = queryString.parse(location.search);
+
     return (
         <S.Container>
-            {partnerDetail !== undefined && (
+            {!isEmpty(partnerDetail) && (
                 <>
-                    <TopGnb title="업체 직접 선택" count={0} onPrevious={() => history.goBack()}/>
+                    {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={0} onPrevious={() => history.goBack()}/>}
                     <SetType />
-                    <UserImage profile_img={partnerDetail.profile_img} />
-                    <PartnerInfo title={partnerDetail.title} level={partnerDetail.level} pick_count={partnerDetail.pick_count} experience={partnerDetail.experience} description={partnerDetail.description} keyword={partnerDetail.keyword}/>
+                    <UserImage profile_img={isEmpty(query.seed) ? partnerDetail.profile_img : defaultImage[query.seed]} />
+                    <PartnerInfo title={isEmpty(query.seed) ? partnerDetail.title : defaultText[query.seed]} level={partnerDetail.level} pick_count={partnerDetail.pick_count} experience={partnerDetail.experience} description={partnerDetail.description} keyword={partnerDetail.keyword}/>
                     <LevelData review_count={partnerDetail.review_count} />
                     {reviewList.map((review, index) => (
                         <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} />
                     ))}
                     <S.BottomContainer>
-                            <S.MoreList onClick={getMoreReviewList}>후기 더보기 <DownArrow width="16" height="16" /></S.MoreList>
-                            <S.BtnSelect onClick={handleSelected}>이 업체 선택하기</S.BtnSelect>
-                            <S.TopBtn><UpArrow color={colors.pointBlue} width="16" height="16" /></S.TopBtn>
+                        <S.MoreList onClick={getMoreReviewList}>후기 더보기 <DownArrow width="16" height="16" /></S.MoreList>
+                        {showScrollView && (
+                            <S.ScrollView>
+                                <S.BtnSelect onClick={handleSelected}>이 업체 선택하기</S.BtnSelect>
+                                <S.TopBtn onClick={handleScrollTop}>
+                                    <UpArrow color={colors.pointBlue} width="16" height="16" />
+                                </S.TopBtn>
+                            </S.ScrollView>
+                        )}
                     </S.BottomContainer>
                     {reviewLoading && (
                         <S.ReviewMoreLoading>
