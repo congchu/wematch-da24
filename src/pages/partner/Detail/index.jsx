@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import Styled from 'styled-components'
+import Styled, {css} from 'styled-components'
 import queryString from 'query-string';
 import { useParams, useHistory } from 'react-router-dom'
 import { useMedia } from 'react-use-media'
@@ -76,6 +76,9 @@ const S = {
 		background-color:${colors.pointBlue};
 		color:${colors.white};
 		cursor:pointer;
+		${props => props.is_full && css`
+			background-color:${colors.lineDefault};
+		`}
 		@media screen and (min-width:1200px) {
 			position:relative;
 		}
@@ -137,7 +140,7 @@ const PartnerDetail = ({location}) => {
     ]
 
     const [detailLoading, setDetailLoading] = useState(false)
-    const [partnerDetail, setPartnerDetail] = useState(undefined)
+    const [partnerDetail, setPartnerDetail] = useState()
     const [reviewLoading, setReviewLoading] = useState(false)
     const [reviewList, setReviewList] = useState([])
     const [showScrollView, setShowScrollView] = useState(false)
@@ -211,7 +214,7 @@ const PartnerDetail = ({location}) => {
 
     if (detailLoading) {
         return <Loading />
-    }
+		}
 
     const query = queryString.parse(location.search);
 

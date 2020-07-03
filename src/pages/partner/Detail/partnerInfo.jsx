@@ -5,6 +5,7 @@ import * as colors from '../../../styles/colors'
 
 import { Question } from '../../../components/Icon'
 import LevelModal from '../../../components/Modal/LevelModal'
+import LevelIcon from '../../../components/LevelIcon'
 
 const S = {
 	Container: Styled.div`
@@ -153,7 +154,7 @@ const S = {
 	`,
 }
 
-const PartnerInfo = ({title, level, pick_count, experience, description }) => {
+const PartnerInfo = ({title, level, pick_count, experience, description, keywords }) => {
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 
 	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
@@ -169,7 +170,7 @@ const PartnerInfo = ({title, level, pick_count, experience, description }) => {
 						<span>평가등급
 							<Question width="16" height="16" />
 						</span>
-						<img src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/level_txt_s.png"/>
+						<LevelIcon level={level}/>
 					</S.Card>
 					<S.Card>
 						<span>고객선택</span>
@@ -188,10 +189,9 @@ const PartnerInfo = ({title, level, pick_count, experience, description }) => {
 					<S.Option>
 						<strong>고객이 많이 언급한 키워드</strong>
 						<ul>
-							<li>정성스러운</li>
-							<li>합리적인</li>
-							<li>친절하고 꼼꼼하게</li>
-							<li>세심</li>
+							{keywords.map((list, index) => (
+								<li key={index}>{list}</li>
+							))}
 						</ul>
 					</S.Option>
 					{/* <S.Option>

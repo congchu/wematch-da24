@@ -1,5 +1,6 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Styled, {css} from 'styled-components'
+
 
 import * as colors from '../../../styles/colors'
 
@@ -37,7 +38,6 @@ const S = {
 			font-size:14px;
 			color:${colors.gray66};
 		}
-		
 	`,
 	Grade: Styled.div`
 		margin-top:18px;
@@ -82,14 +82,45 @@ const S = {
 			float:right;
 		}
 	`,
-	Review: Styled.div`
-
+	PartnerValue: Styled.ul`
+		margin-top:24px;
+		li{
+			display:inline-block;
+			padding:6px 7px 5px;
+			margin-right:10px;
+			border:1px solid ${colors.pointBlue};
+			border-radius:3px;
+			box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
+			background-color:${colors.white};
+			color:${colors.pointBlue};
+		}
+		.S{
+			border:1px solid ${colors.pointBlue};
+			color:${colors.pointBlue};
+		}
+		.A{
+			border:1px solid ${colors.levelA};
+			color:${colors.levelA}
+		}
+		.B{
+			border:1px solid ${colors.levelB};
+			color:${colors.levelB}
+		}
+		.C{
+			border:1px solid ${colors.levelC};
+			color:${colors.levelC}
+		}
+		.D{
+			border:1px solid ${colors.levelD};
+			color:${colors.levelD}
+		}
 	`,
+	Review: Styled.div``,
 	ReviewText: Styled.p`
 		display:-webkit-box;
     overflow:hidden;
     width:100%;
-    margin-top:30px;
+    margin-top:12px;
 		font-size:15px;
     font-weight:500;
     line-height:24px;
@@ -131,7 +162,22 @@ const S = {
 	`,
 }
 
-const Review = ({id, created_at, professional, kind, price, memo, reply}) => {
+const Review = ({id, created_at, memo, reply, professional, kind, price}) => {
+
+	const handleLevelText = (level) => {
+		if (level === 'verygood') {
+			return 'S'
+		} else if (level === 'good') {
+			return 'A'
+		} else if (level === 'normal') {
+			return 'B'
+		} else if (level === 'bad') {
+			return 'C'
+		} else if (level === 'verybad') {
+			return 'D'
+		}
+	}
+
 	return (
 		<S.Container>
 			<S.Wrap>
@@ -160,26 +206,34 @@ const Review = ({id, created_at, professional, kind, price, memo, reply}) => {
 						<IconSad width="80" height="64"/>
 					</S.Emotion>
 				</S.Grade> */}
+				<S.PartnerValue>
+					<li className={handleLevelText(professional)}>전문성 {handleLevelText(professional)}</li>
+					<li className={handleLevelText(kind)}>친절도 {handleLevelText(kind)}</li>
+					<li className={handleLevelText(price)}>가성비 {handleLevelText(price)}</li>
+				</S.PartnerValue>
 				<S.Review>
-					<S.ReviewText>{memo}</S.ReviewText>
-					<S.MoreReview>
-						더보기
-						<DownArrow width="16" height="16" />
-					</S.MoreReview>
+					{memo.length >= 42 ? (
+						<S.ReviewText>{memo}</S.ReviewText>
+					) : (
+						''
+					)}
+					{memo.length >= 42 ? (
+						<S.MoreReview >
+							더보기
+							<DownArrow width="16" height="16" />
+						</S.MoreReview>
+					) : (
+						''
+					)}
 				</S.Review>
-				{reply === null ? (
+				{reply !== null ? (
 					<S.Answer>
 						<strong>이사업체 답변</strong>
-						<p>너무 멋지고 에쁜 후기와 평가 감사드려요~^^ 정말 완전 세상 열심히 하겠습니다^^</p>
+						<p>{reply}</p>
 					</S.Answer>
 				) : (
 					''
 				)}
-					
-				{/* <S.Answer>
-					<strong>이사업체 답변</strong>
-					<p>너무 멋지고 에쁜 후기와 평가 감사드려요~^^ 정말 완전 세상 열심히 하겠습니다^^</p>
-				</S.Answer> */}
 			</S.Wrap>
 		</S.Container>
 	)

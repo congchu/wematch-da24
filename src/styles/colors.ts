@@ -16,3 +16,8 @@ export const error = '#ec485c'
 // booking colors
 export const hoverBg = '#f8f9fa'
 export const boxBg = '#f5f7f9'
+export const levelA = '#00b2ed'
+export const levelB = '#ff8600'
+export const levelC = '#e04108'
+export const levelD = '#d10707'
+
