@@ -150,14 +150,6 @@ const PartnerList = () => {
         }
     }, [])
 
-    useEffect(() => {
-        getPartnerList()
-    }, [setIsFetching])
-
-    if (loading) {
-        return <Loading />
-    }
-
     const makeDefaultData = () => {
         const r = randomSeed()
         return {
@@ -165,6 +157,18 @@ const PartnerList = () => {
             image: defaultImage[r],
             seed: r
         }
+    }
+
+    const handleLinkKakao = () => {
+        window.open('https://api.happytalk.io/api/kakao/chat_open?yid=%40%EC%9C%84%EB%A7%A4%EC%B9%98&site_id=4000001315&category_id=111561&division_id=111564', '_blank')
+    }
+
+    useEffect(() => {
+        getPartnerList()
+    }, [setIsFetching])
+
+    if (loading) {
+        return <Loading />
     }
 
     return (
@@ -194,11 +198,11 @@ const PartnerList = () => {
                                 )
                             }
                         })}
-                        <S.ChatText>
+                        <S.ChatText onClick={handleLinkKakao}>
                             도움이 필요하세요?
                             <ChatArrow width="20" height="12" />
                         </S.ChatText>
-                        <S.BtnKakao>
+                        <S.BtnKakao onClick={handleLinkKakao}>
                             <KakaoIcon width="35" height="34" />
                         </S.BtnKakao>
                     </S.WrapItem>
