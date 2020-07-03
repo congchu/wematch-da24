@@ -21,11 +21,13 @@ const S = {
         font-style: normal;
         line-height: normal;
         letter-spacing: -1px;
-        margin: 24px;
+        padding:28px 24px;
+        box-sizing:border-box;
     `,
     Text: Styled.p`
         color: ${colors.gray33};
         margin-bottom: 10px;
+        line-height:23px;
         em {
             font-weight: bold;
             color: ${colors.pointBlue};
@@ -35,26 +37,23 @@ const S = {
         width: 100%;
         text-align: center;
         font-size: 15px;
-        margin-top: 25px;
+        margin-top: 52px;
         thead {
             font-weight: bold;
             border-bottom: 1px solid ${colors.gray33};
             th {
-              height: 25px;
-            }
-            tr {
-                margin-bottom: 9px;
+                width:50%;
+                padding:9px 0;
             }
         }
         tbody {
-            line-height: 2.93;
             color: ${colors.gray66};
             tr {
                 border-bottom: 1px solid #d8d8d8;
+                td{
+                    line-height:44px;
+                }
             }
-        }
-        tr {
-            width: 50%;
         }
     `,
     Refresh: Styled.p`
@@ -62,7 +61,7 @@ const S = {
         line-height: 1.67;
         color: ${colors.gray66};
         text-align: right;
-        margin-top: 37px;
+        margin-top: 14px;
     `
 }
 
@@ -77,7 +76,7 @@ const LevelModal:React.FC<Props> = (props) => {
             <S.Container>
                 <S.Text>
                     업체 평가의 기준을 정했습니다. <br />
-                    <em>최근 1년간 해당 업체를 이용한 고객의 평가(전문성, 친절도, 가성비)를</em><br />
+                    <em>최근 1년간 해당 업체를 이용한<br />고객의 평가(전문성, 친절도, 가성비)</em>를<br />
                     빅데이터로 분석해 산출하는 서비스 등급 입니다.
                 </S.Text>
                 <S.Table>
