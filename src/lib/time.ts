@@ -10,7 +10,7 @@ export const getCreatedAt = (date: string | Date | Dayjs) => {
   }
 
   const diffMonth = now.diff(createdAt, 'month')
-  if (diffMonth <= 12) {
+  if (diffMonth < 12) {
     return `${diffMonth}달 전`
   }
 
