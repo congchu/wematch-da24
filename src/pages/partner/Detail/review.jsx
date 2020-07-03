@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
-import Styled, {css} from 'styled-components'
+import React, { useState } from 'react'
+import Styled, { css } from 'styled-components'
+import { useMedia } from "react-use-media";
 
+import { IconSad, DownArrow, UpArrow } from '../../../components/Icon'
 
+import { getCreatedAt } from '../../../lib/time'
 import * as colors from '../../../styles/colors'
-
-import { IconSad, DownArrow } from '../../../components/Icon'
-import {  getCreatedAt } from '../../../lib/time'
 
 const S = {
 	Container: Styled.div`
@@ -140,6 +140,7 @@ const S = {
 			margin-top:32px;
 		}
 		@media screen and (min-width:1200px) {
+			display: none;
 			margin-top:10px;
 		}
 	`,
@@ -163,6 +164,17 @@ const S = {
 }
 
 const Review = ({id, created_at, memo, reply, professional, kind, price}) => {
+	const isDesktop = useMedia({
+		minWidth: 1200,
+	})
+	const isTablet = useMedia({
+		minWidth: 768,
+	})
+	const isMobile = useMedia({
+		minWith: 356,
+	})
+
+	const [more, setMore] = useState(false)
 
 	const handleLevelText = (level) => {
 		if (level === 'verygood') {
@@ -176,6 +188,24 @@ const Review = ({id, created_at, memo, reply, professional, kind, price}) => {
 		} else if (level === 'verybad') {
 			return 'D'
 		}
+	}
+
+	const memoText = (memo) => {
+			if (isDesktop) {
+				return memo
+			}
+			if (!more && isTablet && memo.length >= 90) {
+				return memo.substring(0, 90) + '...'
+			}
+
+			if (!more && memo.length >= 45)
+				return memo.substring(0, 45) + '...'
+			else
+				return memo
+	}
+
+	const handleMore = () => {
+		setMore(!more)
 	}
 
 	return (
@@ -212,19 +242,22 @@ const Review = ({id, created_at, memo, reply, professional, kind, price}) => {
 					<li className={handleLevelText(price)}>가성비 {handleLevelText(price)}</li>
 				</S.PartnerValue>
 				<S.Review>
-					{memo.length >= 42 ? (
-						<S.ReviewText>{memo}</S.ReviewText>
-					) : (
-						''
-					)}
-					{memo.length >= 42 ? (
-						<S.MoreReview >
-							더보기
-							<DownArrow width="16" height="16" />
-						</S.MoreReview>
-					) : (
-						''
-					)}
+						<S.ReviewText>{memoText(memo)}</S.ReviewText>
+						{(memo.length >= 45 || isMobile) && (
+							<>
+								{more ? (
+									<S.MoreReview onClick={handleMore}>
+										접기
+										<UpArrow width="16" height="16" />
+									</S.MoreReview>
+								) : (
+									<S.MoreReview onClick={handleMore}>
+										더보기
+										<DownArrow width="16" height="16" />
+									</S.MoreReview>
+								)}
+							</>
+						)}
 				</S.Review>
 				{reply !== null ? (
 					<S.Answer>
