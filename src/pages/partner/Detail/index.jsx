@@ -150,6 +150,7 @@ const PartnerDetail = ({location}) => {
 
     const getPartnerDetail = useSelector(partnerSelector.getPartnerDetail)
     const getReviewList = useSelector(partnerSelector.getReviewList)
+    const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
 
     const checkScrollTop = () => {
         if (!showScrollView && window.pageYOffset > 300){
@@ -207,7 +208,7 @@ const PartnerDetail = ({location}) => {
         <S.Container>
             {getPartnerDetail.data && (
                 <>
-                    {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={0} onPrevious={() => history.goBack()}/>}
+                    {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()}/>}
                     <SetType />
                     <UserImage profile_img={isEmpty(query.seed) ? `${API_URL}/unsafe/719x474/` + getPartnerDetail.data.profile_img : defaultImage[query.seed]} />
                     <PartnerInfo title={isEmpty(query.seed) ? getPartnerDetail.data.title : defaultText[query.seed]}
@@ -219,7 +220,7 @@ const PartnerDetail = ({location}) => {
                     ))}
                     <S.BottomContainer>
                         {getReviewList.hasMore && (
-                          <S.MoreList onClick={handleMoreReview}>후기 더보기 <DownArrow width="16" height="16" /></S.MoreList>
+                            <S.MoreList onClick={handleMoreReview}>후기 더보기 <DownArrow width="16" height="16" /></S.MoreList>
                         )}
                         {showScrollView && (
                             <S.ScrollView>

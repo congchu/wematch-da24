@@ -188,7 +188,7 @@ const PartnerList = () => {
 
     return (
         <S.Container>
-            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick?.data?.length} onPrevious={() => history.goBack()}/>}
+            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()}/>}
             <SetType />
             <S.WrapItem>
                 {getPartnerList.data.map((list) => {
