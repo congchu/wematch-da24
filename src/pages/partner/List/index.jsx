@@ -1,7 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import Styled  from 'styled-components'
 import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useMedia } from "react-use-media";
+import useInfiniteScroll from 'hooks/useInfiniteScroll'
 
+import MainHeader from 'components/MainHeader'
 import TopGnb from 'components/TopGnb'
 import EmptyPage from 'components/EmptyPage'
 import Loading from 'components/Loading'
@@ -12,10 +16,9 @@ import PartnerItem from './item'
 
 import * as colors from 'styles/colors'
 import { API_URL } from 'constants/env'
-import { fetchList } from 'api/partner'
-import useInfiniteScroll from 'hooks/useInfiniteScroll'
-import {useMedia} from "react-use-media";
-import MainHeader from "../../../components/MainHeader";
+
+import * as partnerActions from 'store/partner/actions'
+import * as partnerSelector from 'store/partner/selectors'
 
 const S = {
     Container: Styled.div`
@@ -101,13 +104,14 @@ const PartnerList = () => {
     })
 
     const THUMBNAIL_URL = API_URL + '/unsafe/88x88/'
-    const history = useHistory()
+    const DEFAULT_PAGE = 1
 
-    const [partnerList, setPartnerList] = useState([])
-    const [loading, setLoading] = useState(false)
+    const history = useHistory()
+    const dispatch = useDispatch()
+    const getPartnerList = useSelector(partnerSelector.getPartnerList)
+    const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
+
     const [page, setPage] = useState(2)
-    const [error, setError] = useState(false)
-    const [hasNext, setHasNext] = useState(true)
     const SIZE = 10
     const defaultText = [
         '기술은 백두산급 정성은 에베레스트급 이사입니다.',
@@ -126,12 +130,14 @@ const PartnerList = () => {
     ]
 
     const fetchMoreListItems = async () => {
-        if (hasNext) {
+        if (getPartnerList.hasMore) {
             setPage(page + 1)
-            const response = await fetchList(page, SIZE)
             setTimeout(() => {
-                setPartnerList(prevState => ([...prevState, ...response]))
-                setIsFetching(false);
+                dispatch(partnerActions.fetchPartnerMoreListAsync.request({
+                    page: page,
+                    size: SIZE
+                }))
+                setIsFetching(false)
             }, 1500)
         }
     }
@@ -141,21 +147,6 @@ const PartnerList = () => {
     }
 
     const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
-
-    const getPartnerList = useCallback(async () => {
-        const DEFAULT_PAGE = 1
-
-        try {
-            setLoading(true)
-            const response = await fetchList(DEFAULT_PAGE, SIZE)
-            setIsFetching(false)
-            setPartnerList(response)
-        } catch (e) {
-            setError(true)
-        } finally {
-            setLoading(false)
-        }
-    }, [])
 
     const makeDefaultRandomData = () => {
         const r = randomSeed()
@@ -171,45 +162,60 @@ const PartnerList = () => {
     }
 
     useEffect(() => {
-        getPartnerList()
-    }, [getPartnerList])
+        dispatch(partnerActions.fetchPartnerListAsync.request({
+            page: DEFAULT_PAGE,
+            size: SIZE
+        }))
+    }, [dispatch])
 
-    if (loading) {
+    if (getPartnerList.loading) {
         return <Loading />
     }
 
-    if (error) {
-        return <EmptyPage title="죄송합니다" subtitle="에러가 발생했습니다. 잠시후에 다시시도 해주세요."/>
+    if (!getPartnerList.data) {
+        return <EmptyPage title="죄송합니다" subtitle="해당지역에 가능한 업체가 없습니다."/>
     }
 
-    if (!partnerList) {
-        return <EmptyPage title="죄송합니다" subtitle="해당지역에 가능한 업체가 없습니다."/>
+    const isActive = (id) => {
+        if (getPartnerPick.data) {
+            const filter = getPartnerPick.data.filter((pick) => {
+                return pick.id === id
+            })
+
+            return filter.length > 0
+        }
     }
 
     return (
         <S.Container>
-            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={0} onPrevious={() => history.goBack()}/>}
+            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick?.data?.length} onPrevious={() => history.goBack()}/>}
             <SetType />
             <S.WrapItem>
-                {partnerList.map((list) => {
-                    if (!list.has_next) {
-                        setHasNext(false)
-                    }
+                {getPartnerList.data.map((list) => {
                     if (list.profile_img) {
                         return (
                             <PartnerItem key={list.id} profile_img={THUMBNAIL_URL + list.profile_img} disabled={list.disabled}
-                                         level={list.level} levelDescription={list.levelDescription} title={list.title}
-                                         pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
-                                         active={list.active} is_full={list.is_full} onClick={() => history.push(`/partner/detail/${list.username}`)}
+                                 level={list.level} levelDescription={list.levelDescription} title={list.title}
+                                 pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
+                                 active={isActive(list.id)} is_full={list.is_full}
+                                 onClick={() => {
+                                     if (!isActive(list.id))
+                                         history.push(`/partner/detail/${list.username}`)
+                                 }}
                             />
                         )
                     } else {
+                        /* 프로필 이미지가 등록 안됐다면, 랜덤으로 보여준다. (원래는 기본 이미지가 있지만 등록 안한 업체가 많아서 임시) */
                         const data = makeDefaultRandomData()
                         return (
                             <PartnerItem key={list.id} profile_img={data.image} disabled={list.disabled}
-                                         level={list.level} levelDescription={list.levelDescription} title={data.text}
-                                         pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
-                                         active={list.active} is_full={list.is_full} onClick={() => history.push(`/partner/detail/${list.username}?seed=${data.seed}`)}
+                                 level={list.level} levelDescription={list.levelDescription} title={data.text}
+                                 pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
+                                 active={isActive(list.id)} is_full={list.is_full}
+                                 onClick={() => {
+                                     if (!isActive(list.id))
+                                        history.push(`/partner/detail/${list.username}?seed=${data.seed}`)
+                                 }}
                             />
                         )
                     }

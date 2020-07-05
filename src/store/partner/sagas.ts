@@ -1,0 +1,60 @@
+import { call, put, all, takeEvery } from 'redux-saga/effects'
+import { ActionType } from 'typesafe-actions'
+
+import * as actions from './actions'
+import * as request from './requests'
+
+export function* fetchPartnerListSaga(action: ActionType<typeof actions.fetchPartnerListAsync.request>) {
+    try {
+        const data = yield call(request.getPartnerList, action.payload.page, action.payload.size)
+        yield put(actions.fetchPartnerListAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchPartnerListAsync.failure())
+    }
+}
+
+export function* fetchPartnerMoreListSaga(action: ActionType<typeof actions.fetchPartnerMoreListAsync.request>) {
+    try {
+        const data = yield call(request.getPartnerList, action.payload.page, action.payload.size)
+        yield put(actions.fetchPartnerMoreListAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchPartnerMoreListAsync.failure())
+    }
+}
+
+export function* fetchPartnerDetailSaga(action: ActionType<typeof actions.fetchPartnerDetailAsync.request>) {
+    try {
+        const data = yield call(request.getPartnerDetail, action.payload.username)
+        yield put(actions.fetchPartnerDetailAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchPartnerDetailAsync.failure())
+    }
+}
+
+export function* fetchReviewListSaga(action: ActionType<typeof actions.fetchReviewListAsync.request>) {
+    try {
+        const data = yield call(request.getReviewList, action.payload.username, action.payload.page, action.payload.size)
+        yield put(actions.fetchReviewListAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchReviewListAsync.failure())
+    }
+}
+
+export function* fetchReviewMoreListSaga(action: ActionType<typeof actions.fetchReviewMoreListAsync.request>) {
+    try {
+        const data = yield call(request.getReviewList, action.payload.username, action.payload.page, action.payload.size)
+        yield put(actions.fetchReviewMoreListAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchReviewMoreListAsync.failure())
+    }
+}
+
+export default function* () {
+    yield all([
+        takeEvery(actions.fetchPartnerListAsync.request, fetchPartnerListSaga),
+        takeEvery(actions.fetchPartnerMoreListAsync.request, fetchPartnerMoreListSaga),
+        takeEvery(actions.fetchPartnerDetailAsync.request, fetchPartnerDetailSaga),
+        takeEvery(actions.fetchReviewListAsync.request, fetchReviewListSaga),
+        takeEvery(actions.fetchReviewMoreListAsync.request, fetchReviewMoreListSaga),
+    ])
+}

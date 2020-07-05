@@ -5,6 +5,7 @@ export interface ApiResponse<T> {
     data: T;
     err: number;
     msg: string;
+    result: 'success' | 'failure'
 }
 
 export class ApiError extends Error {

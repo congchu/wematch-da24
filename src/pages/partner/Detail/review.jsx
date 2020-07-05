@@ -124,9 +124,9 @@ const S = {
 		font-size:15px;
     font-weight:500;
     line-height:24px;
-    text-overflow:ellipsis;
-    -webkit-line-clamp:2;
-    -webkit-box-orient:vertical;
+    //text-overflow:ellipsis;
+    //-webkit-line-clamp:2;
+    //-webkit-box-orient:vertical;
     word-wrap:break-word;
 	`,
 	MoreReview: Styled.button`
