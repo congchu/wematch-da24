@@ -189,7 +189,7 @@ const PartnerList = () => {
     return (
         <S.Container>
             {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()}/>}
-            <SetType />
+            <SetType count={getPartnerPick.data.length}/>
             <S.WrapItem>
                 {getPartnerList.data.map((list) => {
                     if (list.profile_img) {
