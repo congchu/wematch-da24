@@ -36,7 +36,7 @@ const S = {
 	BtnKakao: Styled.a`
 		display:inline-block;
 		position:fixed;
-        bottom:72px;
+        bottom:24px;
         right:24px;
         width:62px;
         height:62px;
@@ -51,15 +51,16 @@ const S = {
         }
         @media screen and (min-width:768px) {
             right:10%;
+            bottom:48px;
         }
-        @media screen and (max-width:320px) {
-            bottom:32px;
+        @media screen and (min-width:1200px) {
+            bottom:72px;
         }
     `,
     ChatText: Styled.a`
         display:inline-block;
         position:fixed;
-        bottom:156px;
+        bottom:110px;
         right:24px;
         padding:10px 18px 8px;
         border:1px solid ${colors.pointBlue};
@@ -76,9 +77,10 @@ const S = {
         }
         @media screen and (min-width:768px) {
             right:10%;
+            bottom:134px;
         }
-        @media screen and (max-width:320px) {
-            bottom:112px;
+        @media screen and (min-width:1200px) {
+            bottom:158px;
         }
     `,
     More: Styled.div`
