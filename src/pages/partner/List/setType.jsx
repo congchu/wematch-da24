@@ -12,7 +12,7 @@ const S = {
 		`,
 		BoxSet: Styled.div`
 			padding:19px 24px;
-			span{
+			.type{
 				font-size:16px;
 				letter-spacing:-0.5px;
 			}
@@ -37,6 +37,7 @@ const S = {
 		`,
 		CompareList: Styled.span`
 			display:none;
+			position:relative;
 			float:right;
 			cursor:pointer;
 			svg{
@@ -46,19 +47,36 @@ const S = {
 				display:inline-block;
 			}
 		`,
+		Count: Styled.span`
+			display:inline-block;
+			position:absolute;
+			top:-9px;
+			right:-9px;
+			width:16px;
+			height:16px;
+			border-radius:8px;
+			font-size:11px;
+			color:${colors.white};
+			text-align:center;
+			line-height:17px;
+			background:${colors.pointBlue};
+		`
 }
 
-const setType = ({}) => {
+const setType = ({count}) => {
 	return (
 		<S.TypeSet>
 			<S.BoxSet>
-				<span>이사종류 / </span>
-				<span>이사날짜 / </span>
-				<span>출발지동주소</span>
+				<span className="type">이사종류 / </span>
+				<span className="type">이사날짜 / </span>
+				<span className="type">출발지동주소</span>
 				<S.ReSelect>
 					재검색
 				</S.ReSelect>
-				<S.CompareList>선택한 업체비교함<Truck width="22" height="15" color={colors.black}/></S.CompareList>
+				<S.CompareList>선택한 업체비교함
+					<Truck width="22" height="15" color={colors.black}/>
+					{count > 0 && <S.Count>{count}</S.Count>}
+				</S.CompareList>
 			</S.BoxSet>
 		</S.TypeSet>
 	)
