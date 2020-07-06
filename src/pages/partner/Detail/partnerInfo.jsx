@@ -162,7 +162,7 @@ const PartnerInfo = ({ title, level, pick_count, experience, description, keywor
 	return (
 		<S.Container>
 			<S.Wrap>
-				<S.LevelDescription>상위 10% 업체</S.LevelDescription>
+				{/*<S.LevelDescription>상위 10% 업체</S.LevelDescription>*/}
 				<S.Level>고객평가 {level}등급</S.Level>
 				<S.PartnerWord>{title}</S.PartnerWord>
 				<S.Info>
