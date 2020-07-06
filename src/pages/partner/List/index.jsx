@@ -129,14 +129,14 @@ const PartnerList = () => {
         `${API_URL}/unsafe/88x88/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_5.jpg`,
     ]
 
-    const fetchMoreListItems = async () => {
+    const fetchMoreListItems = () => {
         if (getPartnerList.hasMore) {
             setPage(page + 1)
+            dispatch(partnerActions.fetchPartnerMoreListAsync.request({
+                page: page,
+                size: SIZE
+            }))
             setTimeout(() => {
-                dispatch(partnerActions.fetchPartnerMoreListAsync.request({
-                    page: page,
-                    size: SIZE
-                }))
                 setIsFetching(false)
             }, 1500)
         }
