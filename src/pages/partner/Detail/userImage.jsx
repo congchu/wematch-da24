@@ -14,12 +14,12 @@ const S = {
 	`,
 	Title: Styled.div`
 		display:none;
-    position:absolute;
-    z-index:1;
-    top:74px;
-    left:50%;
-    width:240px;
-    margin-left:-496px;
+		position:absolute;
+		z-index:1;
+		top:74px;
+		left:50%;
+		width:240px;
+		margin-left:-496px;
 		h3{
 			font-size:32px;
 			font-weight:700;

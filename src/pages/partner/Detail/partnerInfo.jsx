@@ -154,7 +154,7 @@ const S = {
 	`,
 }
 
-const PartnerInfo = ({title, level, pick_count, experience, description, keywords }) => {
+const PartnerInfo = ({ title, level, pick_count, experience, description, keywords }) => {
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 
 	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
