@@ -180,14 +180,14 @@ const PartnerDetail = ({location}) => {
             page: 1,
             size: DEFAULT_SIZE
         }))
-    }, [])
+    }, [dispatch, params.username])
 
     useEffect(() => {
         window.addEventListener('scroll', checkScrollTop);
         return () => {
             window.removeEventListener('scroll', checkScrollTop);
         }
-    }, [])
+    }, [checkScrollTop])
 
     if (getPartnerDetail.loading) {
         return <Loading />
@@ -209,7 +209,7 @@ const PartnerDetail = ({location}) => {
             {getPartnerDetail.data && (
                 <>
                     {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()}/>}
-                    <SetType />
+                    <SetType count={getPartnerPick.data.length}/>
                     <UserImage profile_img={isEmpty(query.seed) ? `${API_URL}/unsafe/719x474/` + getPartnerDetail.data.profile_img : defaultImage[query.seed]} />
                     <PartnerInfo title={isEmpty(query.seed) ? getPartnerDetail.data.title : defaultText[query.seed]}
                         level={getPartnerDetail.data.level} pick_count={getPartnerDetail.data.pick_count} experience={getPartnerDetail.data.experience}
