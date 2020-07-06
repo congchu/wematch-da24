@@ -259,13 +259,11 @@ const Review = ({id, created_at, memo, reply, professional, kind, price}) => {
 							</>
 						)}
 				</S.Review>
-				{reply !== null ? (
+				{reply && (
 					<S.Answer>
 						<strong>이사업체 답변</strong>
 						<p>{reply}</p>
 					</S.Answer>
-				) : (
-					''
 				)}
 			</S.Wrap>
 		</S.Container>
