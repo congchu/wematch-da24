@@ -2,6 +2,7 @@ import React from 'react'
 import Styled, { css } from 'styled-components'
 
 import * as colors from '../../../styles/colors'
+import { API_URL } from 'constants/env'
 
 import { NextArrow, ProfileDefault } from '../../../components/Icon'
 
@@ -14,7 +15,7 @@ const S = {
 		background:${colors.white};
 		${props => props.active && css`
 			background: ${colors.hoverBg};
-		`}
+		`};
 		@media screen and (min-width:768px) {
 			padding:24px 40px;
 		}
@@ -46,9 +47,6 @@ const S = {
 				height:76px;
 			}
 		}
-		.randomImg{
-			background-image:url(https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_1.jpg);
-		}
 		@media screen and (max-width: 320px) {
 			width:76px;
 			height:76px;
@@ -67,7 +65,7 @@ const S = {
 		color:${colors.white};
 		${props => props.is_full && css`
 			background-color: rgba(0,0,0,0.4);
-		`}
+		`};
 		text-align:center;
 		box-sizing:border-box;
 		@media screen and (max-width: 320px) {
@@ -130,25 +128,24 @@ const S = {
 }
 
 const PartnerItem = ({active, profile_img, level, levelDescription, title, pick_count, review_count, experience, onClick, is_full}) => {
-
+	const THUMBNAIL_URL = API_URL + '/unsafe/88x88/'
 	return (
 		<S.Box active={active} onClick={onClick}>
 			{profile_img ? (
-				<S.PartnerImg profile_img={profile_img}>
-					<span></span>
+				<S.PartnerImg profile_img={THUMBNAIL_URL + profile_img}>
+					<span />
 					{is_full && <S.BgClose is_full={is_full}>오늘<br/>마감</S.BgClose>}
 				</S.PartnerImg>
 			) : (
 				<S.PartnerImg>
-					<span className="randomImg"></span>
-					{/* <ProfileDefault width="36" height="36" color={colors.white}/> //이미지 없을 때 default 사람아이콘 */} 
+					<span />
+					<ProfileDefault width="36" height="36" color={colors.white} />
 					{is_full && <S.BgClose is_full={is_full}>오늘<br/>마감</S.BgClose>}
 				</S.PartnerImg>
 			)}
-
 			<S.CompanyInfo>
 				<S.LevelTitle><em>{level}등급</em> {levelDescription}</S.LevelTitle>
-				<S.PartnerWord>{title !== '' ? title : '의욕이 가득한 이사업체입니다.'}</S.PartnerWord>
+				<S.PartnerWord>{title}</S.PartnerWord>
 				<S.PartnerInfo>
 					<span>고객선택 {pick_count}</span>
 					<span>평가 {review_count}</span>

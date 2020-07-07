@@ -3,8 +3,6 @@ import Styled, { css } from 'styled-components'
 import { useParams, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
-import { isEmpty } from 'lodash'
-import queryString from 'query-string'
 
 import { DownArrow, UpArrow } from '../../../components/Icon'
 import Loading from '../../../components/Loading'
@@ -16,11 +14,11 @@ import PartnerInfo from './partnerInfo'
 import LevelData from './levelData'
 import Review from './review'
 
-import { API_URL } from '../../../constants/env';
 import * as colors from '../../../styles/colors'
+import * as values from '../../../constants/values'
 
-import * as partnerActions from 'store/partner/actions'
-import * as partnerSelector from 'store/partner/selectors'
+import * as partnerActions from '../../../store/partner/actions'
+import * as partnerSelector from '../../../store/partner/selectors'
 
 const S = {
     Container: Styled.div``,
@@ -121,22 +119,7 @@ const S = {
     ScrollView: Styled.div``
 }
 
-const PartnerDetail = ({location}) => {
-    const defaultText = [
-        '기술은 백두산급 정성은 에베레스트급 이사입니다.',
-        '친절!정확!속도! 믿을 수 있는 이사전문가입니다.',
-        '내 집처럼 섬세하게 완벽한 이사 해드립니다.',
-        '이사 품질만은 양보할 수 없다! 확실하게 해드립니다.',
-        '이사는 기본, 정리정돈까지 완벽을 추구합니다.'
-    ]
-    const defaultImage = [
-        `${API_URL}/unsafe/719x474/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_1.jpg`,
-        `${API_URL}/unsafe/719x474/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_2.jpg`,
-        `${API_URL}/unsafe/719x474/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_3.jpg`,
-        `${API_URL}/unsafe/719x474/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_4.jpg`,
-        `${API_URL}/unsafe/719x474/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_5.jpg`,
-    ]
-    const DEFAULT_SIZE = 5
+const PartnerDetail = () => {
 
     const nextPage = useRef(1)
     const [showScrollView, setShowScrollView] = useState(false)
@@ -178,7 +161,7 @@ const PartnerDetail = ({location}) => {
         dispatch(partnerActions.fetchReviewListAsync.request({
             username: params.username,
             page: 1,
-            size: DEFAULT_SIZE
+            size: values.DEFAULT_REVIEW_LIST_SIZE
         }))
     }, [dispatch, params.username])
 
@@ -191,16 +174,14 @@ const PartnerDetail = ({location}) => {
 
     if (getPartnerDetail.loading) {
         return <Loading />
-		}
-
-    const query = queryString.parse(location.search);
+    }
 
     const handleMoreReview = () => {
         nextPage.current += 1;
         dispatch(partnerActions.fetchReviewMoreListAsync.request({
             username: params.username,
             page: nextPage.current,
-            size: DEFAULT_SIZE
+            size: values.DEFAULT_REVIEW_LIST_SIZE
         }))
     }
 
@@ -210,10 +191,10 @@ const PartnerDetail = ({location}) => {
                 <>
                     {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()}/>}
                     <SetType count={getPartnerPick.data.length}/>
-                    <UserImage profile_img={isEmpty(query.seed) ? `${API_URL}/unsafe/719x474/` + getPartnerDetail.data.profile_img : defaultImage[query.seed]} />
-                    <PartnerInfo title={isEmpty(query.seed) ? getPartnerDetail.data.title : defaultText[query.seed]}
+                    <UserImage profile_img={getPartnerDetail.data.profile_img } is_full={getPartnerDetail.data.is_full} />
+                    <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT}
                         level={getPartnerDetail.data.level} pick_count={getPartnerDetail.data.pick_count} experience={getPartnerDetail.data.experience}
-                        description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords}/>
+                        description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} company={getPartnerDetail.data.company}/>
                     <LevelData review_count={getPartnerDetail.review_count} />
                     {getReviewList.data.map((review, index) => (
                         <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} />

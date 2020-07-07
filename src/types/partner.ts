@@ -31,6 +31,7 @@ export type PartnerDetail = {
     review_count: number;
     title: string;
     username: string;
+    company: string;
 }
 
 export type Review = {

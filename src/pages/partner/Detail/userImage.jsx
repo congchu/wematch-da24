@@ -1,6 +1,7 @@
 import React from 'react'
 import Styled, { css } from 'styled-components'
 
+import { ProfileDefault } from '../../../components/Icon'
 import * as colors from '../../../styles/colors'
 
 const S = {
@@ -31,38 +32,92 @@ const S = {
 		}
 	`,
 	ProfileImg: Styled.div`
-			span{
-				display:inline-block;
-				width:100%;
-				height:228px;
-				background-image:url(${props => props.profile_img});
-				background-size:cover;
-				background-position:50% 50%;
-				background-repeat:no-repeat;
-				@media screen and (min-width:768px) {
-					height:486px;
-				}
-				@media screen and (min-width:1200px) {
-					height:474px;
-				}
+		span{
+			display:inline-block;
+			width:100%;
+			height:228px;
+			background-image:url(${props => props.profile_img});
+			background-size:cover;
+			background-position:50% 50%;
+			background-repeat:no-repeat;
+			@media screen and (min-width:768px) {
+				height:486px;
 			}
 			@media screen and (min-width:1200px) {
-				margin-top:70px;
+				height:474px;
 			}
+		}
+		@media screen and (min-width:1200px) {
+			margin-top:70px;
+		}
 	`,
+	DefaultProfileImg: Styled.div`
+		position:relative;
+	  	background-color:${colors.lineDefault};
+	  	width:100%;
+	  	height:228px;
+	  	display: flex;
+	  	justify-content: center;
+	  	align-items: center;
 
+	  	span{
+	  		position:absolute;
+	  		left:50%;
+	  		top:50%;
+	  		transform:translate(-50%, -50%);
+	  		font-size: 18px;
+			font-weight: bold;
+			font-stretch: normal;
+			font-style: normal;
+			line-height: 0.89;
+			letter-spacing: -1.29px;
+			color: ${colors.white};
+	  	}
+	  	
+		@media screen and (min-width:768px) {
+			height:486px;
+		}
+		@media screen and (min-width:1200px) {
+			height:474px;
+		}
+		@media screen and (min-width:1200px) {
+			margin-top:70px;
+		}
+	`,
+	Opacity: Styled.div`
+		position: absolute;
+		left:0;
+		top:0;
+		width: 100%;
+		height: 228px;
+		background-color: rgba(0,0,0,0.4);
+		
+		@media screen and (min-width:768px) {
+			height:486px;
+		}
+		@media screen and (min-width:1200px) {
+			height:474px;
+		}
+	`
 }
 
-const UserImage = ({ profile_img }) => {
-
+const UserImage = ({ profile_img, is_full }) => {
 	return (
 		<S.WrapImg>
 			<S.Title>
 				<h3>업체<br />직접선택</h3>
 			</S.Title>
-			<S.ProfileImg profile_img={profile_img}>
-				<span></span>
-			</S.ProfileImg>
+			{profile_img ? (
+				<S.ProfileImg profile_img={profile_img}>
+					<span />
+				</S.ProfileImg>
+			) : (
+				<S.DefaultProfileImg>
+					{is_full && (<S.Opacity />)}
+					<ProfileDefault width={60} height={60} color={colors.white} />
+					{is_full && (<span>오늘 마감</span>)}
+				</S.DefaultProfileImg>
+			)}
 		</S.WrapImg>
 	)
 }

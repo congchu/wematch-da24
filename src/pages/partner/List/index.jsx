@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import Styled  from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,7 +15,7 @@ import SetType from './setType'
 import PartnerItem from './item'
 
 import * as colors from 'styles/colors'
-import { API_URL } from 'constants/env'
+import * as values from 'constants/values'
 
 import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
@@ -103,9 +103,6 @@ const PartnerList = () => {
         minWidth: 1200,
     })
 
-    const THUMBNAIL_URL = API_URL + '/unsafe/88x88/'
-    const DEFAULT_PAGE = 1
-
     const history = useHistory()
     const dispatch = useDispatch()
     const getPartnerList = useSelector(partnerSelector.getPartnerList)
@@ -113,21 +110,6 @@ const PartnerList = () => {
 
     const [page, setPage] = useState(2)
     const SIZE = 10
-    const defaultText = [
-        '기술은 백두산급 정성은 에베레스트급 이사입니다.',
-        '친절!정확!속도! 믿을 수 있는 이사전문가입니다.',
-        '내 집처럼 섬세하게 완벽한 이사 해드립니다.',
-        '이사 품질만은 양보할 수 없다! 확실하게 해드립니다.',
-        '이사는 기본, 정리정돈까지 완벽을 추구합니다.'
-    ]
-
-    const defaultImage = [
-        `${API_URL}/unsafe/88x88/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_1.jpg`,
-        `${API_URL}/unsafe/88x88/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_2.jpg`,
-        `${API_URL}/unsafe/88x88/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_3.jpg`,
-        `${API_URL}/unsafe/88x88/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_4.jpg`,
-        `${API_URL}/unsafe/88x88/https://wematch-booking.s3.ap-northeast-2.amazonaws.com/da24/default_profile_5.jpg`,
-    ]
 
     const fetchMoreListItems = () => {
         if (getPartnerList.hasMore) {
@@ -142,20 +124,7 @@ const PartnerList = () => {
         }
     }
 
-    const randomSeed = () => {
-        return Math.floor(Math.random() * 5)
-    }
-
     const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
-
-    const makeDefaultRandomData = () => {
-        const r = randomSeed()
-        return {
-            text: defaultText[r],
-            image: defaultImage[r],
-            seed: r
-        }
-    }
 
     const handleLinkKakao = () => {
         window.open('https://api.happytalk.io/api/kakao/chat_open?yid=%40%EC%9C%84%EB%A7%A4%EC%B9%98&site_id=4000001315&category_id=111561&division_id=111564', '_blank')
@@ -163,7 +132,7 @@ const PartnerList = () => {
 
     useEffect(() => {
         dispatch(partnerActions.fetchPartnerListAsync.request({
-            page: DEFAULT_PAGE,
+            page: values.DEFAULT_PAGE,
             size: SIZE
         }))
     }, [dispatch])
@@ -192,33 +161,17 @@ const PartnerList = () => {
             <SetType count={getPartnerPick.data.length}/>
             <S.WrapItem>
                 {getPartnerList.data.map((list) => {
-                    if (list.profile_img) {
-                        return (
-                            <PartnerItem key={list.id} profile_img={THUMBNAIL_URL + list.profile_img} disabled={list.disabled}
-                                 level={list.level} levelDescription={list.levelDescription} title={list.title}
-                                 pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
-                                 active={isActive(list.id)} is_full={list.is_full}
-                                 onClick={() => {
-                                     if (!isActive(list.id))
-                                         history.push(`/partner/detail/${list.username}`)
-                                 }}
-                            />
-                        )
-                    } else {
-                        /* 프로필 이미지가 등록 안됐다면, 랜덤으로 보여준다. (원래는 기본 이미지가 있지만 등록 안한 업체가 많아서 임시) */
-                        const data = makeDefaultRandomData()
-                        return (
-                            <PartnerItem key={list.id} profile_img={data.image} disabled={list.disabled}
-                                 level={list.level} levelDescription={list.levelDescription} title={data.text}
-                                 pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
-                                 active={isActive(list.id)} is_full={list.is_full}
-                                 onClick={() => {
-                                     if (!isActive(list.id))
-                                        history.push(`/partner/detail/${list.username}?seed=${data.seed}`)
-                                 }}
-                            />
-                        )
-                    }
+                    return (
+                        <PartnerItem key={list.id} profile_img={list.profile_img} disabled={list.disabled}
+                             level={list.level} levelDescription={list.levelDescription} title={list.title ? list.title : values.DEFAULT_TEXT}
+                             pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
+                             active={isActive(list.id)} is_full={list.is_full}
+                             onClick={() => {
+                                 if (!isActive(list.id))
+                                     history.push(`/partner/detail/${list.username}`)
+                             }}
+                        />
+                    )
                 })}
                 <S.ChatText onClick={handleLinkKakao}>
                     도움이 필요하세요?

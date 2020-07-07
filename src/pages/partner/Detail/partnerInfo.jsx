@@ -2,10 +2,12 @@ import React, {useState} from 'react'
 import Styled from 'styled-components'
 
 import * as colors from '../../../styles/colors'
+import * as values from '../../../constants/values'
 
 import { Question } from '../../../components/Icon'
 import LevelModal from '../../../components/Modal/LevelModal'
 import LevelIcon from '../../../components/LevelIcon'
+
 
 const S = {
 	Container: Styled.div`
@@ -154,7 +156,7 @@ const S = {
 	`,
 }
 
-const PartnerInfo = ({ title, level, pick_count, experience, description, keywords }) => {
+const PartnerInfo = ({ title, level, pick_count, experience, description, keywords, company }) => {
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 
 	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
@@ -183,8 +185,8 @@ const PartnerInfo = ({ title, level, pick_count, experience, description, keywor
 				</S.Info>
 				<S.Description>
 					<S.Option>
-						<strong>사장님 한마디(업체명)</strong>
-						<p>{description !== '' ? description : '열심히 하겠습니다아아아앙'}</p>
+						<strong>사장님 한마디({company})</strong>
+						<p>{description !== '' ? description : values.DEFAULT_TEXT}</p>
 					</S.Option>
 					<S.Option>
 						<strong>고객이 많이 언급한 키워드</strong>
