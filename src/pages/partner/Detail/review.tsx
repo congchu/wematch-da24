@@ -4,8 +4,9 @@ import { useMedia } from "react-use-media";
 
 import { IconSad, DownArrow, UpArrow } from '../../../components/Icon'
 
-import { getCreatedAt } from '../../../lib/time'
-import * as colors from '../../../styles/colors'
+import { getCreatedAt } from 'lib/time'
+import * as colors from 'styles/colors'
+import { Grade } from 'types/partner';
 
 const S = {
 	Container: Styled.div`
@@ -163,7 +164,17 @@ const S = {
 	`,
 }
 
-const Review = ({id, created_at, memo, reply, professional, kind, price}) => {
+interface Props {
+	id: number;
+	created_at: string;
+	memo: string;
+	reply: string | null;
+	professional: Grade;
+	kind: Grade;
+	price: Grade;
+}
+
+const Review = ({ id, created_at, memo, reply, professional, kind, price }: Props) => {
 	const isDesktop = useMedia({
 		minWidth: 1200,
 	})
@@ -176,7 +187,7 @@ const Review = ({id, created_at, memo, reply, professional, kind, price}) => {
 
 	const [more, setMore] = useState(false)
 
-	const handleLevelText = (level) => {
+	const handleLevelText = (level: Grade) => {
 		if (level === 'verygood') {
 			return 'S'
 		} else if (level === 'good') {
@@ -190,7 +201,7 @@ const Review = ({id, created_at, memo, reply, professional, kind, price}) => {
 		}
 	}
 
-	const memoText = (memo) => {
+	const memoText = (memo: string) => {
 			if (isDesktop) {
 				return memo
 			}
@@ -248,12 +259,12 @@ const Review = ({id, created_at, memo, reply, professional, kind, price}) => {
 								{more ? (
 									<S.MoreReview onClick={handleMore}>
 										접기
-										<UpArrow width="16" height="16" />
+										<UpArrow width={16} height={16} />
 									</S.MoreReview>
 								) : (
 									<S.MoreReview onClick={handleMore}>
 										더보기
-										<DownArrow width="16" height="16" />
+										<DownArrow width={16} height={16} />
 									</S.MoreReview>
 								)}
 							</>

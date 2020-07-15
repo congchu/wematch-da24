@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {useMemo, useEffect, useState, useCallback} from 'react'
 import Styled  from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -110,7 +110,7 @@ const PartnerList = () => {
     const getPartnerList = useSelector(partnerSelector.getPartnerList)
     const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
 
-    const [page, setPage] = useState(2)
+    const [page, setPage] = useState<number>(2)
     const SIZE = 10
 
     const fetchMoreListItems = () => {
@@ -121,6 +121,7 @@ const PartnerList = () => {
                 size: SIZE
             }))
             setTimeout(() => {
+                // @ts-ignore
                 setIsFetching(false)
             }, 1500)
         }
@@ -144,10 +145,10 @@ const PartnerList = () => {
     }
 
     if (!getPartnerList.data) {
-        return <EmptyPage title="죄송합니다" subtitle="해당지역에 가능한 업체가 없습니다."/>
+        return <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다."/>
     }
 
-    const isActive = (id) => {
+    const isActive = (id: number) => {
         if (getPartnerPick.data) {
             const filter = getPartnerPick.data.filter((pick) => {
                 return pick.id === id
@@ -155,7 +156,9 @@ const PartnerList = () => {
 
             return filter.length > 0
         }
+        return false
     }
+
 
     return (
         <S.Container>
@@ -164,8 +167,8 @@ const PartnerList = () => {
             <S.WrapItem>
                 {getPartnerList.data.map((list) => {
                     return (
-                        <PartnerItem key={list.id} profile_img={list.profile_img} disabled={list.disabled}
-                             level={list.level} levelDescription={list.levelDescription} title={list.title ? list.title : values.DEFAULT_TEXT}
+                        <PartnerItem key={list.id} profile_img={list.profile_img}
+                             level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
                              pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
                              active={isActive(list.id)} is_full={list.is_full}
                              onClick={() => {
@@ -177,10 +180,10 @@ const PartnerList = () => {
                 })}
                 <S.ChatText onClick={handleLinkKakao}>
                     도움이 필요하세요?
-                    <ChatArrow width="20" height="12" />
+                    <ChatArrow width={20} height={12} />
                 </S.ChatText>
                 <S.BtnKakao onClick={handleLinkKakao}>
-                    <KakaoIcon width="35" height="34" />
+                    <KakaoIcon width={35} height={34} />
                 </S.BtnKakao>
             </S.WrapItem>
             {isFetching && <MoreLoading />}

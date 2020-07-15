@@ -16,6 +16,7 @@ export type PartnerList = {
     review_count: number;
     title: string;
     username: string;
+    company: string;
 }
 
 export type PartnerDetail = {

@@ -1,8 +1,8 @@
 import React from 'react'
-import Styled, { css } from 'styled-components'
+import Styled from 'styled-components'
 
-import { ProfileDefault } from '../../../components/Icon'
-import * as colors from '../../../styles/colors'
+import { ProfileDefault } from 'components/Icon'
+import * as colors from 'styles/colors'
 
 const S = {
 	WrapImg: Styled.div`
@@ -31,7 +31,7 @@ const S = {
 			display:block;
 		}
 	`,
-	ProfileImg: Styled.div`
+	ProfileImg: Styled.div<{profile_img: string}>`
 		span{
 			display:inline-block;
 			width:100%;
@@ -101,7 +101,12 @@ const S = {
 	`
 }
 
-const UserImage = ({ profile_img, is_full }) => {
+interface Props {
+	profile_img: string;
+	is_full: boolean;
+}
+
+const UserImage = ({ profile_img, is_full }: Props) => {
 	return (
 		<S.WrapImg>
 			<S.Title>

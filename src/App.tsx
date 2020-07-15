@@ -10,8 +10,8 @@ import store from 'store/index'
 import browserHistory from 'lib/history'
 import GlobalStyled from 'styles/global'
 
-import PartnerList from 'pages/partner/List/index'
-import PartnerDetail from 'pages/partner/Detail/index'
+import PartnerList from 'pages/partner/List'
+import PartnerDetail from 'pages/partner/Detail'
 
 function AppRoute() {
     return (

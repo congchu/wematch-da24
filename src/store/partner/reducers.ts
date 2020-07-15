@@ -7,7 +7,7 @@ export type Actions = ActionType<typeof actions>
 
 export interface PartnerState {
     pick: {
-        data: PartnerList[];
+        data: PartnerDetail[];
     },
     list: {
         data: PartnerList[];

@@ -35,12 +35,17 @@ const S = {
 
 }
 
-const EmptyPage = ({ title, subtitle }) => {
+interface Props {
+	title: string;
+	subTitle: string;
+}
+
+const EmptyPage = ({ title, subTitle }: Props) => {
 	return (
 		<S.Container>
-			<IconSad width="80" height="64"/>
+			<IconSad width={80} height={64} />
 			<strong>{title}</strong>
-			<p>{subtitle}</p>
+			<p>{subTitle}</p>
 		</S.Container>
 	)
 }

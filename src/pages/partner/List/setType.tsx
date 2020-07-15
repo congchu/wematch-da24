@@ -63,7 +63,11 @@ const S = {
 		`
 }
 
-const setType = ({count}) => {
+interface Props {
+	count: number
+}
+
+const setType = ({ count }: Props) => {
 	return (
 		<S.TypeSet>
 			<S.BoxSet>
@@ -74,7 +78,7 @@ const setType = ({count}) => {
 					재검색
 				</S.ReSelect>
 				<S.CompareList>선택한 업체비교함
-					<Truck width="22" height="15" color={colors.black}/>
+					<Truck width={22} height={15} color={colors.black}/>
 					{count > 0 && <S.Count>{count}</S.Count>}
 				</S.CompareList>
 			</S.BoxSet>

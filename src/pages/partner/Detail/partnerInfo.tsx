@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
 import Styled from 'styled-components'
 
-import * as colors from '../../../styles/colors'
-import * as values from '../../../constants/values'
+import * as colors from 'styles/colors'
+import * as values from 'constants/values'
 
-import { Question } from '../../../components/Icon'
-import LevelModal from '../../../components/Modal/LevelModal'
-import LevelIcon from '../../../components/LevelIcon'
-
+import { Question } from 'components/Icon'
+import LevelModal from 'components/Modal/LevelModal'
+import LevelIcon from 'components/LevelIcon'
+import { Level } from 'types/partner'
 
 const S = {
 	Container: Styled.div`
@@ -156,7 +156,17 @@ const S = {
 	`,
 }
 
-const PartnerInfo = ({ title, level, pick_count, experience, description, keywords, company }) => {
+interface Props {
+	title: string;
+	level: Level
+	pick_count: number;
+	experience: number;
+	description: string;
+	keywords: string[];
+	company: string;
+}
+
+const PartnerInfo = ({ title, level, pick_count, experience, description, keywords, company }: Props) => {
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 
 	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
@@ -170,7 +180,7 @@ const PartnerInfo = ({ title, level, pick_count, experience, description, keywor
 				<S.Info>
 					<S.Card onClick={toggleVisibleLevel}>
 						<span>평가등급
-							<Question width="16" height="16" />
+							<Question width={16} height={16} />
 						</span>
 						<LevelIcon level={level}/>
 					</S.Card>
