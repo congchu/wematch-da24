@@ -1,8 +1,9 @@
-import React, {useMemo, useEffect, useState, useCallback} from 'react'
+import React, { useEffect, useState } from 'react'
 import Styled  from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { useMedia } from "react-use-media";
+import { useMedia } from 'react-use-media'
+import { some } from 'lodash'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 
 import MainHeader from 'components/MainHeader'
@@ -150,16 +151,10 @@ const PartnerList = () => {
     }
 
     const isActive = (id: number) => {
-        if (getPartnerPick.data) {
-            const filter = getPartnerPick.data.filter((pick) => {
-                return pick.id === id
-            })
-
-            return filter.length > 0
-        }
-        return false
+        return some(getPartnerPick.data, {
+            id: id
+        })
     }
-
 
     return (
         <S.Container>
@@ -173,8 +168,7 @@ const PartnerList = () => {
                              pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
                              active={isActive(list.id)} is_full={list.is_full}
                              onClick={() => {
-                                 if (!isActive(list.id))
-                                     history.push(`/partner/detail/${list.username}`)
+                                 history.push(`/partner/detail/${list.username}`)
                              }}
                         />
                     )
