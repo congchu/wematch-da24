@@ -113,14 +113,13 @@ const PartnerList = () => {
     const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
 
     const [page, setPage] = useState<number>(2)
-    const SIZE = 10
 
     const fetchMoreListItems = () => {
         if (getPartnerList.hasMore) {
             setPage(page + 1)
             dispatch(partnerActions.fetchPartnerMoreListAsync.request({
                 page: page,
-                size: SIZE
+                size: values.DEFAULT_PARTNER_LIST_SIZE
             }))
             setTimeout(() => {
                 // @ts-ignore
@@ -138,7 +137,7 @@ const PartnerList = () => {
     useEffect(() => {
         dispatch(partnerActions.fetchPartnerListAsync.request({
             page: values.DEFAULT_PAGE,
-            size: SIZE
+            size: values.DEFAULT_PARTNER_LIST_SIZE
         }))
     }, [dispatch])
 
