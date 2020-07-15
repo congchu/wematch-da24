@@ -92,6 +92,7 @@ const S = {
     `
 }
 
+{/* 임시용 디자인 없음*/}
 function MoreLoading() {
     return (
         <S.More>

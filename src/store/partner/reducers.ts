@@ -3,6 +3,8 @@ import { createReducer, ActionType } from 'typesafe-actions'
 import * as actions from './actions'
 import { PartnerList, PartnerDetail, Review } from 'types/partner'
 
+import { DEFAULT_REVIEW_LIST_SIZE } from 'constants/values'
+
 export type Actions = ActionType<typeof actions>
 
 export interface PartnerState {
@@ -57,6 +59,6 @@ export default createReducer<PartnerState, Actions>(initialState)
     .handleAction(actions.fetchPartnerDetailAsync.request, (state) => ({ ...state, detail: { ...state.detail, loading: true }}))
     .handleAction(actions.fetchPartnerDetailAsync.success, (state, action) => ({ ...state, detail: { data: action.payload, loading: false }}))
     .handleAction(actions.fetchReviewListAsync.request, (state) => ({ ...state, review: { ...state.review, loading: true }}))
-    .handleAction(actions.fetchReviewListAsync.success, (state, action) => ({ ...state, review: { data: action.payload, loading: false, hasMore: action.payload.length === 5 }}))
+    .handleAction(actions.fetchReviewListAsync.success, (state, action) => ({ ...state, review: { data: action.payload, loading: false, hasMore: action.payload.length === DEFAULT_REVIEW_LIST_SIZE }}))
     .handleAction(actions.fetchReviewMoreListAsync.request, (state) => ({ ...state, review: { ...state.review, loading: false, moreLoading: true }}))
-    .handleAction(actions.fetchReviewMoreListAsync.success, (state, action) => ({ ...state, review: { data: [...state.review.data, ...action.payload], loading: false, moreLoading: false, hasMore: action.payload.length === 5 }}))
+    .handleAction(actions.fetchReviewMoreListAsync.success, (state, action) => ({ ...state, review: { data: [...state.review.data, ...action.payload], loading: false, moreLoading: false, hasMore: action.payload.length === DEFAULT_REVIEW_LIST_SIZE }}))

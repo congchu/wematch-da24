@@ -115,6 +115,7 @@ const S = {
         display: block;
         text-align: center;
         color: ${colors.pointBlue};
+        padding: 25px
     `,
     ScrollView: Styled.div``
 }
@@ -201,6 +202,12 @@ const PartnerDetail = () => {
                             kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} />
                     ))}
                     <S.BottomContainer>
+                        {/* 임시용 디자인 없음*/}
+                        {getReviewList.moreLoading && (
+                            <S.ReviewMoreLoading>
+                                로딩중..
+                            </S.ReviewMoreLoading>
+                        )}
                         {getReviewList.hasMore && (
                             <S.MoreList onClick={handleMoreReview}>후기 더보기 <DownArrow width={16} height={16} /></S.MoreList>
                         )}
@@ -213,11 +220,6 @@ const PartnerDetail = () => {
                             </S.ScrollView>
                         )}
                     </S.BottomContainer>
-                    {getReviewList.moreLoading && (
-                        <S.ReviewMoreLoading>
-                            로딩중..
-                        </S.ReviewMoreLoading>
-                    )}
               </>
             )}
         </S.Container>
