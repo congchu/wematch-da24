@@ -1,5 +1,5 @@
 import React from 'react'
-import Styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import * as colors from '../../../styles/colors'
 import { API_URL } from 'constants/env'
@@ -7,7 +7,7 @@ import { API_URL } from 'constants/env'
 import { NextArrow, ProfileDefault } from '../../../components/Icon'
 
 const S = {
-	Box: Styled.a`
+	Box: styled.a`
 		display:block;
 		overflow:hidden;
 		padding:24px;
@@ -20,7 +20,7 @@ const S = {
 			padding:24px 40px;
 		}
 	`,
-	PartnerImg: Styled.div`
+	PartnerImg: styled.div`
 		position:relative;
 		float:left;
 		width:88px;
@@ -52,7 +52,7 @@ const S = {
 			height:76px;
 		}
 	`,
-	BgClose: Styled.div`
+	BgClose: styled.div`
 		display:inline-block;
 		position:absolute;
 		top:0;
@@ -68,11 +68,15 @@ const S = {
 		`};
 		text-align:center;
 		box-sizing:border-box;
+		&:after {
+			content: "오늘\\a마감";
+			white-space: pre-line;
+		}
 		@media screen and (max-width: 320px) {
 			padding-top:23px;
 		}
 	`,
-	CompanyInfo: Styled.div`
+	CompanyInfo: styled.div`
 		float:left;
 		width:66%;
 		margin-left:16px;
@@ -80,7 +84,7 @@ const S = {
 			width:80%;
 		}
 	`,
-	LevelTitle: Styled.strong`
+	LevelTitle: styled.strong`
 		display:inline-block;
 		margin-top:2px;
 		font-size:16px;
@@ -90,7 +94,7 @@ const S = {
 			font-weight:bold;
 		}
 	`,
-	PartnerWord: Styled.p`
+	PartnerWord: styled.p`
 		margin-top:4px;
 		font-size:16px;
 		color:${colors.black};
@@ -100,7 +104,7 @@ const S = {
 			font-size:15px;
 		}
 	`,
-	PartnerInfo: Styled.div`
+	PartnerInfo: styled.div`
 		margin-top:14px;
 		font-size:14px;
 		color:${colors.gray66};
@@ -114,7 +118,7 @@ const S = {
 			margin-right:0;
 		}
 	`,
-	CompanyLink: Styled.span`
+	CompanyLink: styled.span`
 		display:inline-block;
 		margin-top:27px;
 		font-size:14px;
@@ -134,13 +138,13 @@ const PartnerItem = ({active, profile_img, level, levelDescription, title, pick_
 			{profile_img ? (
 				<S.PartnerImg profile_img={THUMBNAIL_URL + profile_img}>
 					<span />
-					{is_full && <S.BgClose is_full={is_full}>오늘<br/>마감</S.BgClose>}
+					{is_full && <S.BgClose is_full={is_full}/>}
 				</S.PartnerImg>
 			) : (
 				<S.PartnerImg>
 					<span />
 					<ProfileDefault width="36" height="36" color={colors.white} />
-					{is_full && <S.BgClose is_full={is_full}>오늘<br/>마감</S.BgClose>}
+					{is_full && <S.BgClose is_full={is_full}/>}
 				</S.PartnerImg>
 			)}
 			<S.CompanyInfo>

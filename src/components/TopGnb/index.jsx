@@ -78,8 +78,8 @@ const TopGnb = ({title,count,onPrevious}) => {
 				<Previous width="11" height="20" color={colors.gray33} />
 			</S.BtnPrevious>
 			<S.HeadTitle>{title}</S.HeadTitle>
-			<S.BtnList>
-				<Truck width="22" height="15" color={colors.black}/>
+			<S.BtnList href={'/partner/cart'}>
+				<Truck width="22" height="15" color={colors.black} />
 				{count > 0 && <S.Count>{count}</S.Count>}
 			</S.BtnList>
 		</S.Container>
