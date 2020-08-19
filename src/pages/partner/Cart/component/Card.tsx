@@ -1,9 +1,24 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ProfileDefault } from 'components/Icon';
-import * as colors from "../../../../styles/colors";
+import { ProfileDefault } from 'components/Icon'
+import * as colors from "styles/colors"
 import { API_URL } from 'constants/env'
 
+interface Props {
+    list: IList;
+    onSelect: (list:IList, id:number) => void;
+    openDetailPopup: () => void;
+}
+
+interface IList {
+    id: number;
+    title: string;
+    subTitle: string;
+    isChecked?: boolean;
+}
+interface styleProps {
+    checkImage?: string
+}
 const S = {
     CardContainer: styled.div`
       display: flex;
@@ -17,6 +32,10 @@ const S = {
       border-radius: 8px;
       box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.07);
       border: solid 1px #d7dbe2;
+      
+      &:last-child {
+        margin: 0;
+      }
       @media screen and (min-width:768px) {
         width: 528px;
         height: 112px;
@@ -26,12 +45,13 @@ const S = {
         width: 720px;
       };
     `,
-    CheckBtn: styled.div`
+    CheckBtn: styled.div<styleProps>`
       width: 24px;
       height: 24px;
-      background-color: #1672f7;
       border-radius: 50%;
       margin-right: 8px;
+      background-image: url(${props => props.checkImage});
+      background-size: cover;
     `,
     PartnerImg: styled.div`
 		position:relative;
@@ -83,18 +103,29 @@ const S = {
     `,
 };
 
-const Card:React.FC = () => {
+const Card:React.FC<Props> = (props: Props) => {
     const url = API_URL;
+    const {list, onSelect, openDetailPopup} = props;
+    const { id, title, subTitle, isChecked } = list;
+    const titleLength = () => {
+        if (subTitle.length >= 12) {
+            return subTitle.substring(0, 12) + ' . . .'
+        }
+        return subTitle
+    };
     return (
         <S.CardContainer>
-            <S.CheckBtn/>
+            <S.CheckBtn
+                onClick={() => onSelect(list, id)}
+                checkImage={require(`assets/images/check_circle_${isChecked ? "on" : "off"}.svg`)}
+            />
             <S.PartnerImg>
                 <span/>
                 <ProfileDefault width={24} height={24} />
             </S.PartnerImg>
-            <S.Content>
-                <div className="partner_name">업체명</div>
-                <div className="partner_about">가나다가나다12글자이상</div>
+            <S.Content onClick={openDetailPopup}>
+                <div className="partner_name">{title}</div>
+                <div className="partner_about">{titleLength()}</div>
                 <div className="partner_keyword">#키워드, #키워드, #키워드</div>
             </S.Content>
         </S.CardContainer>
