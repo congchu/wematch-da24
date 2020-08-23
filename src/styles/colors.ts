@@ -21,3 +21,6 @@ export const levelB = '#ff8600'
 export const levelC = '#e04108'
 export const levelD = '#d10707'
 
+//da24 colors
+export const pointSky = '#00b6ed';
+export const pointVividBlue = '#1689f7'

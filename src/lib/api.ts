@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { API_URL } from '../constants/env'
+import { API_URL } from 'constants/env'
 
 export interface ApiResponse<T> {
     data: T;
@@ -19,7 +19,7 @@ export class ApiError extends Error {
 }
 
 const api = axios.create({
-    baseURL: API_URL + '/da24'
+    baseURL: API_URL
 })
 
 api.interceptors.response.use((response) => {
