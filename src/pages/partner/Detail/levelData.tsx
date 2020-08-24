@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import Styled from 'styled-components'
 
-import * as colors from '../../../styles/colors'
+import * as colors from 'styles/colors'
 
-import { Question } from '../../../components/Icon'
-import TermsModal from '../../../components/Modal/TermsModal'
+import { Question } from 'components/Icon'
+import TermsModal from 'components/Modal/TermsModal'
 
 const S = {
 	Container: Styled.div`
@@ -225,7 +225,11 @@ const S = {
 
 }
 
-const LevelData = ({review_count}) => {
+interface Props {
+	review_count: number;
+}
+
+const LevelData = ({ review_count }: Props) => {
 	const [visibleTermsModal, setVisibleTermsModal] = useState(false)
 
 	const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)

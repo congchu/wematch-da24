@@ -4,21 +4,21 @@ import { useParams, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
 
-import { DownArrow, UpArrow } from '../../../components/Icon'
-import Loading from '../../../components/Loading'
-import MainHeader from '../../../components/MainHeader'
-import TopGnb from '../../../components/TopGnb'
+import { DownArrow, UpArrow } from 'components/Icon'
+import Loading from 'components/Loading'
+import MainHeader from 'components/MainHeader'
+import TopGnb from 'components/TopGnb'
 import SetType from '../List/setType'
 import UserImage from './userImage'
 import PartnerInfo from './partnerInfo'
 import LevelData from './levelData'
 import Review from './review'
 
-import * as colors from '../../../styles/colors'
-import * as values from '../../../constants/values'
+import * as colors from 'styles/colors'
+import * as values from 'constants/values'
 
-import * as partnerActions from '../../../store/partner/actions'
-import * as partnerSelector from '../../../store/partner/selectors'
+import * as partnerActions from 'store/partner/actions'
+import * as partnerSelector from 'store/partner/selectors'
 
 const S = {
     Container: Styled.div``,
@@ -64,7 +64,7 @@ const S = {
 			margin-bottom:0;
 		}
 	`,
-    BtnSelect: Styled.button`
+    BtnSelect: Styled.button<{is_full: boolean}>`
 		position:fixed;
 		z-index:5;
 		left:0;
@@ -115,12 +115,12 @@ const S = {
         display: block;
         text-align: center;
         color: ${colors.pointBlue};
+        padding: 25px
     `,
     ScrollView: Styled.div``
 }
 
 const PartnerDetail = () => {
-
     const nextPage = useRef(1)
     const [showScrollView, setShowScrollView] = useState(false)
 
@@ -128,7 +128,7 @@ const PartnerDetail = () => {
         minWidth: 1200,
     })
     const history = useHistory()
-    const params = useParams()
+    const params = useParams<{username: string}>()
     const dispatch = useDispatch()
 
     const getPartnerDetail = useSelector(partnerSelector.getPartnerDetail)
@@ -150,7 +150,8 @@ const PartnerDetail = () => {
     };
 
     const handleSelected = () => {
-        dispatch(partnerActions.setPartnerPick([getPartnerDetail.data]))
+        if (getPartnerDetail.data)
+            dispatch(partnerActions.setPartnerPick([getPartnerDetail.data]))
         history.goBack()
     }
 
@@ -195,28 +196,30 @@ const PartnerDetail = () => {
                     <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT}
                         level={getPartnerDetail.data.level} pick_count={getPartnerDetail.data.pick_count} experience={getPartnerDetail.data.experience}
                         description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} company={getPartnerDetail.data.company}/>
-                    <LevelData review_count={getPartnerDetail.review_count} />
+                    <LevelData review_count={getPartnerDetail.data.review_count} />
                     {getReviewList.data.map((review, index) => (
-                        <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} />
+                        <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional}
+                            kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} />
                     ))}
                     <S.BottomContainer>
+                        {/* 임시용 디자인 없음*/}
+                        {getReviewList.moreLoading && (
+                            <S.ReviewMoreLoading>
+                                로딩중..
+                            </S.ReviewMoreLoading>
+                        )}
                         {getReviewList.hasMore && (
-                            <S.MoreList onClick={handleMoreReview}>후기 더보기 <DownArrow width="16" height="16" /></S.MoreList>
+                            <S.MoreList onClick={handleMoreReview}>후기 더보기 <DownArrow width={16} height={16} /></S.MoreList>
                         )}
                         {showScrollView && (
                             <S.ScrollView>
-                                <S.BtnSelect onClick={handleSelected}>이 업체 선택하기</S.BtnSelect>
+                                <S.BtnSelect onClick={handleSelected} is_full={getPartnerDetail.data.is_full}>이 업체 선택하기</S.BtnSelect>
                                 <S.TopBtn onClick={handleScrollTop}>
-                                    <UpArrow color={colors.pointBlue} width="16" height="16" />
+                                    <UpArrow color={colors.pointBlue} width={16} height={16} />
                                 </S.TopBtn>
                             </S.ScrollView>
                         )}
                     </S.BottomContainer>
-                    {getReviewList.moreLoading && (
-                        <S.ReviewMoreLoading>
-                            로딩중..
-                        </S.ReviewMoreLoading>
-                    )}
               </>
             )}
         </S.Container>

@@ -1,13 +1,14 @@
 import React from 'react'
 import Styled, { css } from 'styled-components'
 
-import * as colors from '../../../styles/colors'
+import { NextArrow, ProfileDefault } from 'components/Icon'
+import { Level } from 'types/partner'
+
+import * as colors from 'styles/colors'
 import { API_URL } from 'constants/env'
 
-import { NextArrow, ProfileDefault } from '../../../components/Icon'
-
 const S = {
-	Box: Styled.a`
+	Box: Styled.a<{active: boolean}>`
 		display:block;
 		overflow:hidden;
 		padding:24px;
@@ -20,7 +21,7 @@ const S = {
 			padding:24px 40px;
 		}
 	`,
-	PartnerImg: Styled.div`
+	PartnerImg: Styled.div<{profile_img?: string}>`
 		position:relative;
 		float:left;
 		width:88px;
@@ -52,7 +53,7 @@ const S = {
 			height:76px;
 		}
 	`,
-	BgClose: Styled.div`
+	BgClose: Styled.div<{is_full: boolean}>`
 		display:inline-block;
 		position:absolute;
 		top:0;
@@ -127,7 +128,19 @@ const S = {
 	`
 }
 
-const PartnerItem = ({active, profile_img, level, levelDescription, title, pick_count, review_count, experience, onClick, is_full}) => {
+interface Props {
+	active: boolean;
+	profile_img: string;
+	level: Level;
+	title: string;
+	pick_count: number;
+	review_count: number;
+	experience: number;
+	onClick: () => void;
+	is_full: boolean;
+}
+
+const PartnerItem = ({ active, profile_img, level, title, pick_count, review_count, experience, onClick, is_full }: Props) => {
 	const THUMBNAIL_URL = API_URL + '/unsafe/88x88/'
 	return (
 		<S.Box active={active} onClick={onClick}>
@@ -139,12 +152,13 @@ const PartnerItem = ({active, profile_img, level, levelDescription, title, pick_
 			) : (
 				<S.PartnerImg>
 					<span />
-					<ProfileDefault width="36" height="36" color={colors.white} />
+					<ProfileDefault width={36} height={36} color={colors.white} />
 					{is_full && <S.BgClose is_full={is_full}>오늘<br/>마감</S.BgClose>}
 				</S.PartnerImg>
 			)}
 			<S.CompanyInfo>
-				<S.LevelTitle><em>{level}등급</em> {levelDescription}</S.LevelTitle>
+				{/*<S.LevelTitle><em>{level}등급</em> {levelDescription}</S.LevelTitle>*/}
+				<S.LevelTitle><em>{level}등급</em></S.LevelTitle>
 				<S.PartnerWord>{title}</S.PartnerWord>
 				<S.PartnerInfo>
 					<span>고객선택 {pick_count}</span>
@@ -153,7 +167,7 @@ const PartnerItem = ({active, profile_img, level, levelDescription, title, pick_
 				</S.PartnerInfo>
 				<S.CompanyLink>
 					자세히 보기
-					<NextArrow color={colors.gray66} width="8" height="14"/>
+					<NextArrow color={colors.gray66} width={8} height={14} />
 				</S.CompanyLink>
 			</S.CompanyInfo>
 		</S.Box>

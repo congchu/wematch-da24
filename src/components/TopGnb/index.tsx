@@ -71,15 +71,21 @@ const S = {
 		`
 }
 
-const TopGnb = ({title,count,onPrevious}) => {
+interface Props {
+	title: string;
+	count: number;
+	onPrevious: () => void;
+}
+
+const TopGnb = ({ title, count, onPrevious }: Props) => {
 	return (
 		<S.Container>
 			<S.BtnPrevious onClick={onPrevious}>
-				<Previous width="11" height="20" color={colors.gray33} />
+				<Previous width={11} height={20} color={colors.gray33} />
 			</S.BtnPrevious>
 			<S.HeadTitle>{title}</S.HeadTitle>
 			<S.BtnList>
-				<Truck width="22" height="15" color={colors.black}/>
+				<Truck width={22} height={15} color={colors.black}/>
 				{count > 0 && <S.Count>{count}</S.Count>}
 			</S.BtnList>
 		</S.Container>

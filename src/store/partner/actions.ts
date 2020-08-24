@@ -32,4 +32,4 @@ export const fetchReviewMoreListAsync = createAsyncAction(
     'FETCH_REVIEW_MORE_LIST_FAILURE'
 )<{ username: string, page: number, size: number }, Review[], undefined>()
 
-export const setPartnerPick = createAction('SET_PARTNER_PICK')<PartnerList[]>()
+export const setPartnerPick = createAction('SET_PARTNER_PICK')<PartnerDetail[]>()

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Styled  from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { useMedia } from "react-use-media";
+import { useMedia } from 'react-use-media'
+import { some } from 'lodash'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 
 import MainHeader from 'components/MainHeader'
@@ -92,6 +93,7 @@ const S = {
     `
 }
 
+{/* 임시용 디자인 없음*/}
 function MoreLoading() {
     return (
         <S.More>
@@ -110,17 +112,17 @@ const PartnerList = () => {
     const getPartnerList = useSelector(partnerSelector.getPartnerList)
     const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
 
-    const [page, setPage] = useState(2)
-    const SIZE = 10
+    const [page, setPage] = useState<number>(2)
 
     const fetchMoreListItems = () => {
         if (getPartnerList.hasMore) {
             setPage(page + 1)
             dispatch(partnerActions.fetchPartnerMoreListAsync.request({
                 page: page,
-                size: SIZE
+                size: values.DEFAULT_PARTNER_LIST_SIZE
             }))
             setTimeout(() => {
+                // @ts-ignore
                 setIsFetching(false)
             }, 1500)
         }
@@ -135,7 +137,7 @@ const PartnerList = () => {
     useEffect(() => {
         dispatch(partnerActions.fetchPartnerListAsync.request({
             page: values.DEFAULT_PAGE,
-            size: SIZE
+            size: values.DEFAULT_PARTNER_LIST_SIZE
         }))
     }, [dispatch])
 
@@ -144,17 +146,13 @@ const PartnerList = () => {
     }
 
     if (!getPartnerList.data) {
-        return <EmptyPage title="죄송합니다" subtitle="해당지역에 가능한 업체가 없습니다."/>
+        return <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다."/>
     }
 
-    const isActive = (id) => {
-        if (getPartnerPick.data) {
-            const filter = getPartnerPick.data.filter((pick) => {
-                return pick.id === id
-            })
-
-            return filter.length > 0
-        }
+    const isActive = (id: number) => {
+        return some(getPartnerPick.data, {
+            id: id
+        })
     }
 
     return (
@@ -164,23 +162,22 @@ const PartnerList = () => {
             <S.WrapItem>
                 {getPartnerList.data.map((list) => {
                     return (
-                        <PartnerItem key={list.id} profile_img={list.profile_img} disabled={list.disabled}
-                             level={list.level} levelDescription={list.levelDescription} title={list.title ? list.title : values.DEFAULT_TEXT}
+                        <PartnerItem key={list.id} profile_img={list.profile_img}
+                             level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
                              pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
                              active={isActive(list.id)} is_full={list.is_full}
                              onClick={() => {
-                                 if (!isActive(list.id))
-                                     history.push(`/partner/detail/${list.username}`)
+                                 history.push(`/partner/detail/${list.username}`)
                              }}
                         />
                     )
                 })}
                 <S.ChatText onClick={handleLinkKakao}>
                     도움이 필요하세요?
-                    <ChatArrow width="20" height="12" />
+                    <ChatArrow width={20} height={12} />
                 </S.ChatText>
                 <S.BtnKakao onClick={handleLinkKakao}>
-                    <KakaoIcon width="35" height="34" />
+                    <KakaoIcon width={35} height={34} />
                 </S.BtnKakao>
             </S.WrapItem>
             {isFetching && <MoreLoading />}

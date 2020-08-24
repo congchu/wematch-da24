@@ -1,11 +1,17 @@
 import React from 'react'
 import Styled from 'styled-components'
 
+import { Level } from 'types/partner'
+
 const S = {
 	Container: Styled.div``,
 }
 
-const LevelIcon = ({level}) => {
+interface Props {
+	level: Level
+}
+
+const LevelIcon = ({ level }: Props) => {
 	return (
 		<S.Container>
 			<img src={require(`../../assets/images/level_${level}.svg`)} alt={level} />
