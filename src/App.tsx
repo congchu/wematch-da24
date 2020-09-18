@@ -13,6 +13,7 @@ import GlobalStyled from 'styles/global'
 import Home from "pages/home";
 import PartnerList from 'pages/partner/List/index'
 import PartnerDetail from 'pages/partner/Detail/index'
+import PartnerCart from "pages/partner/Cart";
 
 function AppRoute() {
     return (
@@ -20,6 +21,7 @@ function AppRoute() {
             <Route exact path="/" component={Home} />
             <Route exact path="/partner/list" component={PartnerList} />
             <Route exact path="/partner/detail/:username" component={PartnerDetail} />
+            <Route exact path="/partner/cart" component={PartnerCart}/>
         </Switch>
     )
 }

@@ -8,7 +8,6 @@ import { DownArrow, UpArrow } from 'components/Icon'
 import Loading from 'components/Loading'
 import MainHeader from 'components/MainHeader'
 import TopGnb from 'components/TopGnb'
-import SetType from '../List/setType'
 import UserImage from './userImage'
 import PartnerInfo from './partnerInfo'
 import LevelData from './levelData'
@@ -19,6 +18,8 @@ import * as values from 'constants/values'
 
 import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
+import * as formSelector from "store/form/selectors";
+import {some} from "lodash";
 
 const S = {
     Container: Styled.div``,
@@ -64,7 +65,7 @@ const S = {
 			margin-bottom:0;
 		}
 	`,
-    BtnSelect: Styled.button<{is_full: boolean}>`
+    BtnSelect: Styled.button<{is_full: boolean, isSelected: boolean}>`
 		position:fixed;
 		z-index:5;
 		left:0;
@@ -74,7 +75,7 @@ const S = {
 		height:64px;
 		font-size:18px;
 		font-weight:700;
-		background-color:${colors.pointBlue};
+		background-color: ${props => props.isSelected ? colors.lineDefault : colors.pointBlue};
 		color:${colors.white};
 		cursor:pointer;
 		${props => props.is_full && css`
@@ -117,7 +118,25 @@ const S = {
         color: ${colors.pointBlue};
         padding: 25px
     `,
-    ScrollView: Styled.div``
+    ScrollView: Styled.div``,
+    ReviewPreview: Styled.div`
+        @media screen and (min-width:768px) {
+            width: 608px;
+            margin: 0 auto;
+        }
+        
+        @media screen and (min-width: 1200px) {
+            width: 656px;
+            margin: 0 auto;
+            padding-left: 272px;
+        }       
+        img {
+            width: inherit;
+            display: block;
+            margin: 0 auto;
+        }
+    `,
+
 }
 
 const PartnerDetail = () => {
@@ -127,6 +146,10 @@ const PartnerDetail = () => {
     const isDesktop = useMedia({
         minWidth: 1200,
     })
+
+    const isMobile = useMedia({
+        maxWidth: 767,
+    })
     const history = useHistory()
     const params = useParams<{username: string}>()
     const dispatch = useDispatch()
@@ -134,6 +157,8 @@ const PartnerDetail = () => {
     const getPartnerDetail = useSelector(partnerSelector.getPartnerDetail)
     const getReviewList = useSelector(partnerSelector.getReviewList)
     const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
+    const getFormData = useSelector(formSelector.getFormData)
+
 
     const checkScrollTop = () => {
         if (!showScrollView && window.pageYOffset > 300){
@@ -155,6 +180,11 @@ const PartnerDetail = () => {
         history.goBack()
     }
 
+    const isActive = () => {
+        return some(getPartnerPick.data, {
+            adminid: params.username
+        })
+    }
     useEffect(() => {
         dispatch(partnerActions.fetchPartnerDetailAsync.request({
             username: params.username,
@@ -190,17 +220,25 @@ const PartnerDetail = () => {
         <S.Container>
             {getPartnerDetail.data && (
                 <>
-                    {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()}/>}
-                    <SetType count={getPartnerPick.data.length}/>
+                    {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()}/>}
                     <UserImage profile_img={getPartnerDetail.data.profile_img } is_full={getPartnerDetail.data.is_full} />
                     <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT}
                         level={getPartnerDetail.data.level} pick_count={getPartnerDetail.data.pick_count} experience={getPartnerDetail.data.experience}
-                        description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} company={getPartnerDetail.data.company}/>
+                        description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname}/>
                     <LevelData review_count={getPartnerDetail.data.review_count} />
-                    {getReviewList.data.map((review, index) => (
-                        <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional}
-                            kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} />
-                    ))}
+                    {getReviewList.data.map((review, index) => {
+                        if(!review) {
+                            return (
+                                <S.ReviewPreview>
+                                    <img src={require(`../../../assets/images/review_${isMobile ? 'm' : 'pc'}.png`)} alt='review_img'/>
+                                </S.ReviewPreview>
+                            )
+                        }
+                        return (
+                            <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional}
+                                kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>
+                        )
+                    })}
                     <S.BottomContainer>
                         {/* 임시용 디자인 없음*/}
                         {getReviewList.moreLoading && (
@@ -213,7 +251,7 @@ const PartnerDetail = () => {
                         )}
                         {showScrollView && (
                             <S.ScrollView>
-                                <S.BtnSelect onClick={handleSelected} is_full={getPartnerDetail.data.is_full}>이 업체 선택하기</S.BtnSelect>
+                                <S.BtnSelect onClick={handleSelected} disabled={isActive()} isSelected={isActive()} is_full={getPartnerDetail.data.is_full}>이 업체에 견적 받아보기</S.BtnSelect>
                                 <S.TopBtn onClick={handleScrollTop}>
                                     <UpArrow color={colors.pointBlue} width={16} height={16} />
                                 </S.TopBtn>

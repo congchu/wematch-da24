@@ -22,8 +22,8 @@ export const fetchVerifyCodeAsync = createAsyncAction(
     'FETCH_VERIFY_CODE_FAILURE'
 )<types.RequestVerifyAuthCodeProps, types.ResponseVerifyCodeProps, undefined>()
 
-export const fetchUserInfoInsert = createAsyncAction(
-    'FETCH_USER_INFO_INSERT_REQUEST',
-    'FETCH_USER_INFO_INSERT_SUCCESS',
-    'FETCH_USER_INFO_INSERT_FAILURE'
+export const fetchMoveIdx = createAsyncAction(
+    'FETCH_MOVE_IDX_REQUEST',
+    'FETCH_MOVE_IDX_SUCCESS',
+    'FETCH_MOVE_IDX_FAILURE'
 )<types.RequestUserInfoInsert, types.RequestUserInfoInsertProps, undefined>()

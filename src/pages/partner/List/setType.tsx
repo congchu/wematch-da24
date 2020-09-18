@@ -1,9 +1,15 @@
 import React from 'react'
 import Styled from 'styled-components'
+import dayjs from 'dayjs'
 
-import * as colors from '../../../styles/colors'
+import { Truck } from 'components/Icon'
+import {useRouter} from 'hooks/useRouter'
 
-import { Truck } from '../../../components/Icon'
+import * as colors from  'styles/colors'
+import * as commonTypes from "store/common/types"
+import {useSelector} from "react-redux";
+import * as commonSelector from "../../../store/common/selectors";
+
 
 const S = {
 		TypeSet: Styled.div`
@@ -64,20 +70,24 @@ const S = {
 }
 
 interface Props {
-	count: number
+	count: number;
+	formData: commonTypes.RequestUserInfoInsert
 }
 
-const setType = ({ count }: Props) => {
+const SetType:React.FC<Props> = ({count, formData}) => {
+	const router = useRouter()
+	const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
+	const {dong, moving_type, moving_date} = formData
 	return (
 		<S.TypeSet>
 			<S.BoxSet>
-				<span className="type">이사종류 / </span>
-				<span className="type">이사날짜 / </span>
-				<span className="type">출발지동주소</span>
-				<S.ReSelect>
-					재검색
+				<span className="type">{moving_type}이사 / </span>
+				<span className="type">{dayjs(moving_date).format('MM.DD')} / </span>
+				<span className="type">{dong}</span>
+				<S.ReSelect onClick={() => router.history.push('/')}>
+					날짜변경
 				</S.ReSelect>
-				<S.CompareList>선택한 업체비교함
+				<S.CompareList onClick={() => router.push(`/partner/cart?idx=${getMoveIdxData.idx}`)}>선택한 업체비교함
 					<Truck width={22} height={15} color={colors.black}/>
 					{count > 0 && <S.Count>{count}</S.Count>}
 				</S.CompareList>
@@ -86,4 +96,4 @@ const setType = ({ count }: Props) => {
 	)
 }
 
-export default setType
+export default SetType

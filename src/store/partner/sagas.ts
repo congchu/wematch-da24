@@ -6,7 +6,7 @@ import * as request from './requests'
 
 export function* fetchPartnerListSaga(action: ActionType<typeof actions.fetchPartnerListAsync.request>) {
     try {
-        const data = yield call(request.getPartnerList, action.payload.page, action.payload.size)
+        const data = yield call(request.getPartnerList, action.payload.page, action.payload.size, action.payload.idx)
         yield put(actions.fetchPartnerListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchPartnerListAsync.failure())
@@ -15,7 +15,7 @@ export function* fetchPartnerListSaga(action: ActionType<typeof actions.fetchPar
 
 export function* fetchPartnerMoreListSaga(action: ActionType<typeof actions.fetchPartnerMoreListAsync.request>) {
     try {
-        const data = yield call(request.getPartnerList, action.payload.page, action.payload.size)
+        const data = yield call(request.getPartnerList, action.payload.page, action.payload.size, action.payload.idx)
         yield put(actions.fetchPartnerMoreListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchPartnerMoreListAsync.failure())
@@ -49,6 +49,23 @@ export function* fetchReviewMoreListSaga(action: ActionType<typeof actions.fetch
     }
 }
 
+export function* fetchRecommendedPartnerListSaga(action: ActionType<typeof actions.fetchCartListAsync.request>) {
+    try {
+        const data = yield call(request.getRecommendedPartnerList, action.payload.idx)
+        yield put(actions.fetchCartListAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchCartListAsync.failure())
+    }
+}
+
+export function* fetchMatchingPartnerSaga(action: ActionType<typeof actions.fetchMatchingAsync.request>) {
+    try {
+        const data = yield call(request.getMatchingIdx, action.payload.idx, action.payload.partners)
+        yield put(actions.fetchMatchingAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchMatchingAsync.failure())
+    }
+}
 export default function* () {
     yield all([
         takeEvery(actions.fetchPartnerListAsync.request, fetchPartnerListSaga),
@@ -56,5 +73,7 @@ export default function* () {
         takeEvery(actions.fetchPartnerDetailAsync.request, fetchPartnerDetailSaga),
         takeEvery(actions.fetchReviewListAsync.request, fetchReviewListSaga),
         takeEvery(actions.fetchReviewMoreListAsync.request, fetchReviewMoreListSaga),
+        takeEvery(actions.fetchCartListAsync.request, fetchRecommendedPartnerListSaga),
+        takeEvery(actions.fetchMatchingAsync.request, fetchMatchingPartnerSaga)
     ])
 }

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import Styled from 'styled-components'
+import styled from 'styled-components'
 
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
@@ -7,10 +7,13 @@ import * as values from 'constants/values'
 import { Question } from 'components/Icon'
 import LevelModal from 'components/Modal/LevelModal'
 import LevelIcon from 'components/LevelIcon'
+import NewPartner from 'components/common/NewPartner'
 import { Level } from 'types/partner'
+import {useMedia} from "react-use-media";
+import { isEmpty } from 'lodash'
 
 const S = {
-	Container: Styled.div`
+	Container: styled.div`
 		position:relative;
 		margin-top:-16px;
 		border-top-left-radius:10px;
@@ -24,7 +27,7 @@ const S = {
 			border-bottom:0;
 		}
 	`,
-	Wrap: Styled.div`
+	Wrap: styled.div`
 		padding:25px 24px;
 		letter-spacing:-0.5px;
 		@media screen and (min-width:768px) {
@@ -37,19 +40,19 @@ const S = {
 			padding-top:38px;
 		}
 	`,
-	LevelDescription: Styled.span`
+	LevelDescription: styled.span`
 		display:block;
 		font-size:14px;
 		font-weight:500;
 	`,
-	Level: Styled.strong`
+	Level: styled.strong`
 		display:block;
 		margin-top:5px;
 		font-size:20px;
 		font-weight:700;
 		color:${colors.pointBlue}
 	`,
-	PartnerWord: Styled.p`
+	PartnerWord: styled.p`
     display:-webkit-box;
     overflow:hidden;
     width:100%;
@@ -62,7 +65,7 @@ const S = {
     -webkit-box-orient:vertical;
     word-wrap:break-word;
 	`,
-	Info: Styled.div`
+	Info: styled.div`
 		overflow:visible;
 		height:112px;
 		margin:35px 0 45px;
@@ -76,7 +79,7 @@ const S = {
 			margin:35px 0 48px;
 		}
 	`,
-	Card: Styled.div`
+	Card: styled.div`
 		float:left;
 		width:32%;
 		height:100%;
@@ -111,12 +114,12 @@ const S = {
 			margin-right:1%;
 		}
 	`,
-	Description: Styled.div`
+	Description: styled.div`
 		div:last-child{
 			margin-bottom:-4px;
 		}
 	`,
-	Option: Styled.div`
+	Option: styled.div`
 		margin-bottom:44px;
 		strong{
 			display:block;
@@ -146,7 +149,7 @@ const S = {
 			margin-bottom:41px;
 		}
 	`,
-	Border: Styled.span`
+	Border: styled.span`
 		display:none;
 		width:720px;
 		border-bottom:8px solid ${colors.lineDeco};
@@ -163,45 +166,52 @@ interface Props {
 	experience: number;
 	description: string;
 	keywords: string[];
-	company: string;
+	adminname: string;
 }
 
-const PartnerInfo = ({ title, level, pick_count, experience, description, keywords, company }: Props) => {
+const PartnerInfo = ({ title, level, pick_count, experience, description, keywords, adminname }: Props) => {
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
+	const isMobile = useMedia({
+		maxWidth: 767,
+	})
 
 	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
+
 
 	return (
 		<S.Container>
 			<S.Wrap>
 				{/*<S.LevelDescription>상위 10% 업체</S.LevelDescription>*/}
-				<S.Level>고객평가 {level}등급</S.Level>
+				<S.Level>{level === 'NEW' ? '등급산정중' : '고객평가 {level}등급'}</S.Level>
 				<S.PartnerWord>{title}</S.PartnerWord>
-				<S.Info>
-					<S.Card onClick={toggleVisibleLevel}>
+				{level === 'NEW'
+					? <NewPartner/>
+					: <S.Info>
+						<S.Card onClick={toggleVisibleLevel}>
 						<span>평가등급
 							<Question width={16} height={16} />
 						</span>
-						<LevelIcon level={level}/>
-					</S.Card>
-					<S.Card>
-						<span>고객선택</span>
-						<em>{pick_count}</em>
-					</S.Card>
-					<S.Card>
-						<span>경력년차</span>
-						<em>{experience}</em>
-					</S.Card>
-				</S.Info>
+							<LevelIcon level={level}/>
+						</S.Card>
+						<S.Card>
+							<span>고객선택</span>
+							<em>{pick_count} 회</em>
+						</S.Card>
+						<S.Card>
+							<span>경력년차</span>
+							<em>{experience} 회</em>
+						</S.Card>
+					</S.Info>
+				}
 				<S.Description>
 					<S.Option>
-						<strong>사장님 한마디({company})</strong>
+						<strong>사장님 한마디({adminname})</strong>
 						<p>{description !== '' ? description : values.DEFAULT_TEXT}</p>
 					</S.Option>
 					<S.Option>
 						<strong>고객이 많이 언급한 키워드</strong>
 						<ul>
-							{keywords && (
+							{!isEmpty(keywords) && (
 								keywords.map((list, index) => (
 									<li key={index}>{list}</li>
 								))

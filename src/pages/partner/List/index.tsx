@@ -3,7 +3,7 @@ import Styled  from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
-import { some } from 'lodash'
+import { some, get, isEmpty } from 'lodash'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 
 import MainHeader from 'components/MainHeader'
@@ -11,16 +11,20 @@ import TopGnb from 'components/TopGnb'
 import EmptyPage from 'components/EmptyPage'
 import Loading from 'components/Loading'
 import { KakaoIcon, ChatArrow } from 'components/Icon'
+import ToastPopup from "components/wematch-ui/ToastPopup";
 
 import SetType from './setType'
 import PartnerItem from './item'
+import {useCookies} from "react-cookie";
+import {useRouter} from 'hooks/useRouter'
 
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
 
 import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
-
+import * as formSelector from "../../../store/form/selectors";
+import * as formActions from "../../../store/form/actions";
 const S = {
     Container: Styled.div`
         height:100%;
@@ -111,20 +115,27 @@ const PartnerList = () => {
     const dispatch = useDispatch()
     const getPartnerList = useSelector(partnerSelector.getPartnerList)
     const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
+    const getFormData = useSelector(formSelector.getFormData)
+    const getMoveDate = useSelector(formSelector.getDate)
 
     const [page, setPage] = useState<number>(2)
+    const [visible, setVisible] = useState(false)
+    const [cookies] = useCookies(['formData'])
+
+    const router = useRouter()
 
     const fetchMoreListItems = () => {
         if (getPartnerList.hasMore) {
             setPage(page + 1)
             dispatch(partnerActions.fetchPartnerMoreListAsync.request({
                 page: page,
-                size: values.DEFAULT_PARTNER_LIST_SIZE
+                size: values.DEFAULT_PARTNER_LIST_SIZE,
+                idx: router.query.idx
             }))
             setTimeout(() => {
                 // @ts-ignore
                 setIsFetching(false)
-            }, 1500)
+            }, 3000)
         }
     }
 
@@ -134,10 +145,17 @@ const PartnerList = () => {
         window.open('https://api.happytalk.io/api/kakao/chat_open?yid=%40%EC%9C%84%EB%A7%A4%EC%B9%98&site_id=4000001315&category_id=111561&division_id=111564', '_blank')
     }
 
+    /*useEffect(() => {
+        if(getFormData.moving_date.length === 0) {
+            setVisible(true)
+        }
+    }, [])*/
+
     useEffect(() => {
         dispatch(partnerActions.fetchPartnerListAsync.request({
             page: values.DEFAULT_PAGE,
-            size: values.DEFAULT_PARTNER_LIST_SIZE
+            size: values.DEFAULT_PARTNER_LIST_SIZE,
+            idx: router.query.idx
         }))
     }, [dispatch])
 
@@ -145,29 +163,25 @@ const PartnerList = () => {
         return <Loading />
     }
 
-    if (!getPartnerList.data) {
+    if (isEmpty(getPartnerList.data)) {
         return <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다."/>
     }
 
-    const isActive = (id: number) => {
-        return some(getPartnerPick.data, {
-            id: id
-        })
-    }
 
     return (
         <S.Container>
             {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()}/>}
-            <SetType count={getPartnerPick.data.length}/>
+            {getFormData.moving_date.length !== 0 && (
+                <SetType count={getPartnerPick.data.length} formData={getFormData}/>
+            )}
             <S.WrapItem>
-                {getPartnerList.data.map((list) => {
+                {getPartnerList.data.map((list:any) => {
                     return (
                         <PartnerItem key={list.id} profile_img={list.profile_img}
                              level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
-                             pick_count={list.pick_count} review_count={list.review_count} experience={list.experience}
-                             active={isActive(list.id)} is_full={list.is_full}
+                             pick_count={list.pick_count} review_count={list.review_count} experience={list.experience} is_full={list.is_full}
                              onClick={() => {
-                                 history.push(`/partner/detail/${list.username}`)
+                                 history.push(`/partner/detail/${list.adminid}`)
                              }}
                         />
                     )
@@ -181,6 +195,9 @@ const PartnerList = () => {
                 </S.BtnKakao>
             </S.WrapItem>
             {isFetching && <MoreLoading />}
+            <ToastPopup visible={visible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
+                <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
+            </ToastPopup>
         </S.Container>
     )
 }

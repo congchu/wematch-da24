@@ -12,10 +12,10 @@ export interface PartnerState {
         data: PartnerDetail[];
     },
     list: {
-        data: PartnerList[];
+        data: PartnerDetail[];
         loading: boolean;
         moreLoading?: boolean;
-        hasMore?: boolean;
+        hasMore: boolean;
     }
     detail: {
         data: PartnerDetail | undefined;
@@ -25,7 +25,12 @@ export interface PartnerState {
         data: Review[];
         loading: boolean;
         moreLoading?: boolean;
-        hasMore?: boolean;
+        hasMore: boolean;
+    },
+    cart: any,
+    matching: {
+        idx: string;
+        loading: boolean;
     }
 }
 
@@ -47,18 +52,40 @@ const initialState: PartnerState = {
         loading: false,
         moreLoading: false,
         hasMore: false
+    },
+    cart: {
+        recommendedList: [],
+        selectedList: [],
+        loading: false
+    },
+    matching: {
+        idx: '',
+        loading: false
     }
 }
 
 export default createReducer<PartnerState, Actions>(initialState)
     .handleAction(actions.setPartnerPick, (state, action) => ({ ...state, pick: { data: [...state.pick.data, ...action.payload] } }))
     .handleAction(actions.fetchPartnerListAsync.request, (state) => ({ ...state, list: { ...state.list, loading: true }}))
-    .handleAction(actions.fetchPartnerListAsync.success, (state, action) => ({ ...state, list: { data: action.payload, loading: false, hasMore: action.payload.length === 10 }}))
+    .handleAction(actions.fetchPartnerListAsync.success, (state, action) => ({ ...state, list: { data: action.payload.data, hasMore: action.payload.has_more, loading: false}}))
     .handleAction(actions.fetchPartnerMoreListAsync.request, (state) => ({ ...state, list: { ...state.list, loading: false }}))
-    .handleAction(actions.fetchPartnerMoreListAsync.success, (state, action) => ({ ...state, list: { data: [...state.list.data, ...action.payload], loading: false, hasMore: action.payload.length === 10 }}))
+    .handleAction(actions.fetchPartnerMoreListAsync.success, (state, action) => ({ ...state, list: { data: [...state.list.data, ...action.payload.data], hasMore: action.payload.has_more, loading: false}}))
     .handleAction(actions.fetchPartnerDetailAsync.request, (state) => ({ ...state, detail: { ...state.detail, loading: true }}))
     .handleAction(actions.fetchPartnerDetailAsync.success, (state, action) => ({ ...state, detail: { data: action.payload, loading: false }}))
     .handleAction(actions.fetchReviewListAsync.request, (state) => ({ ...state, review: { ...state.review, loading: true }}))
-    .handleAction(actions.fetchReviewListAsync.success, (state, action) => ({ ...state, review: { data: action.payload, loading: false, hasMore: action.payload.length === DEFAULT_REVIEW_LIST_SIZE }}))
+    .handleAction(actions.fetchReviewListAsync.success, (state, action) => ({ ...state, review: { data: action.payload.data, loading: false, hasMore: action.payload.has_more }}))
     .handleAction(actions.fetchReviewMoreListAsync.request, (state) => ({ ...state, review: { ...state.review, loading: false, moreLoading: true }}))
-    .handleAction(actions.fetchReviewMoreListAsync.success, (state, action) => ({ ...state, review: { data: [...state.review.data, ...action.payload], loading: false, moreLoading: false, hasMore: action.payload.length === DEFAULT_REVIEW_LIST_SIZE }}))
+    .handleAction(actions.fetchReviewMoreListAsync.success, (state, action) => ({ ...state, review: { data: [...state.review.data, ...action.payload.data], loading: false, moreLoading: false, hasMore: action.payload.has_more}}))
+    .handleAction(actions.fetchCartListAsync.request, (state => ({...state, cart: {selectedList: state.pick.data, loading: true}})))
+    .handleAction(actions.fetchCartListAsync.success, (state,action) => (
+            {
+                ...state,
+                cart: {
+                    recommendedList: action.payload.data.filter(({ id: id1 } : any) => !state.cart.selectedList.some(({ id: id2 }: any) => id2 === id1)),
+                    loading: false,
+                    selectedList: state.cart.selectedList
+                }
+            }
+            ))
+    .handleAction(actions.fetchMatchingAsync.request, (state) => ({...state, matching: {...state.matching, loading: true}}))
+    .handleAction(actions.fetchMatchingAsync.success, (state,action) => ({...state, matching: {idx: action.payload.data.data.idx, loading: false}}))

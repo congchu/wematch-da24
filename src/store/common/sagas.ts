@@ -32,12 +32,12 @@ export function* fetchVerifyCodeSaga(action: ActionType<typeof actions.fetchVeri
     }
 }
 
-export function* fetchUserInfoInsertSaga(action: ActionType<typeof actions.fetchUserInfoInsert.request>) {
+export function* fetchMoveIdxSaga(action: ActionType<typeof actions.fetchMoveIdx.request>) {
     try {
-        const data = yield call(requests.postUserInfo, action.payload)
-        yield put(actions.fetchUserInfoInsert.success(data.data))
+        const data = yield call(requests.getMoveIdx, action.payload)
+        yield put(actions.fetchMoveIdx.success(data.data.data))
     } catch (e) {
-        yield put(actions.fetchUserInfoInsert.failure())
+        yield put(actions.fetchMoveIdx.failure())
     }
 }
 
@@ -46,6 +46,6 @@ export default function* () {
         takeEvery(actions.fetchAddressListAsync.request, fetchAddressListSaga),
         takeEvery(actions.fetchVerifySendMessageAsync.request, fetchVerifySendMessageSaga),
         takeEvery(actions.fetchVerifyCodeAsync.request, fetchVerifyCodeSaga),
-        takeEvery(actions.fetchUserInfoInsert.request, fetchUserInfoInsertSaga)
+        takeEvery(actions.fetchMoveIdx.request, fetchMoveIdxSaga)
     ])
 }

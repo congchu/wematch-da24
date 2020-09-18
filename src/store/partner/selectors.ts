@@ -7,3 +7,5 @@ export const getPartnerPick = createSelector(getPartnerState, state => state.pic
 export const getPartnerList = createSelector(getPartnerState, state => state.list)
 export const getPartnerDetail = createSelector(getPartnerState, state => state.detail)
 export const getReviewList = createSelector(getPartnerState, state => state.review)
+export const getCartPartnerList = createSelector(getPartnerState, state => state.cart)
+export const getMatchingData = createSelector(getPartnerState, state => state.matching)

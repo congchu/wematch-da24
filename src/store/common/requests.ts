@@ -34,6 +34,6 @@ export const verifyAuthCode = async (phone: string, code: string) => {
     return data
 }
 
-export const postUserInfo = async (formData: types.RequestUserInfoInsert) => {
-    return axios.post('https://zdx4p73tag.execute-api.ap-northeast-2.amazonaws.com/prod/queryhistory', formData)
+export const getMoveIdx = async (formData: types.RequestUserInfoInsert) => {
+    return await axios.post('https://d3heusccn8.execute-api.ap-northeast-2.amazonaws.com/dev/inquiry', formData)
 }

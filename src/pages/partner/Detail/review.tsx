@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Styled, { css } from 'styled-components'
 import { useMedia } from "react-use-media";
 
-import { IconSad, DownArrow, UpArrow } from '../../../components/Icon'
+import { DownArrow, UpArrow } from '../../../components/Icon'
 
 import { getCreatedAt } from 'lib/time'
 import * as colors from 'styles/colors'
@@ -50,7 +50,7 @@ const S = {
 			color:${colors.pointBlue};
 		}
 	`,
-	StarFill: Styled.span`
+	StarFill: Styled.span<{star: number}>`
 		display:block;
     	position:relative;
     	z-index:5;
@@ -60,7 +60,7 @@ const S = {
 		background:url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/icon/star.svg) no-repeat 0 0;
 		.fill{
 			display:block;
-			width:50%;
+			width: ${props => props.star && props.star}%;
 			height:16px;
 			background:url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/icon/starfill.svg) no-repeat 0 0;
 		}
@@ -172,9 +172,10 @@ interface Props {
 	professional: Grade;
 	kind: Grade;
 	price: Grade;
+	star: number;
 }
 
-const Review = ({ id, created_at, memo, reply, professional, kind, price }: Props) => {
+const Review = ({ id, created_at, memo, reply, professional, kind, price, star }: Props) => {
 	const isDesktop = useMedia({
 		minWidth: 1200,
 	})
@@ -189,15 +190,15 @@ const Review = ({ id, created_at, memo, reply, professional, kind, price }: Prop
 
 	const handleLevelText = (level: Grade) => {
 		if (level === 'verygood') {
-			return 'S'
+			return '최고에요'
 		} else if (level === 'good') {
-			return 'A'
+			return '좋아요'
 		} else if (level === 'normal') {
-			return 'B'
+			return '보통이에요'
 		} else if (level === 'bad') {
-			return 'C'
+			return '아쉬어요'
 		} else if (level === 'verybad') {
-			return 'D'
+			return '별로에요 '
 		}
 	}
 
@@ -226,32 +227,24 @@ const Review = ({ id, created_at, memo, reply, professional, kind, price }: Prop
 					<strong>고객번호 {id}</strong>
 					<span>{getCreatedAt(created_at)} 이사</span>
 				</S.UserInfo>
-				{/* <S.Grade>
-					<span className="levetText">최고</span>
-					<S.StarFill>
-						/* .fill class에  width 20% -> 40% -> ... -> 100% 별 채워짐 - 주석처리
+				 <S.Grade>
+					<S.StarFill star={star}>
 						<span className="fill"></span>
 					</S.StarFill>
 					<S.Emotion>
 						<ul>
 							<li>
-								전문성 <span>{professional}</span>
+								전문성 <span>{handleLevelText(professional)}</span>
 							</li>
 							<li>
-								친절도 <span>{kind}</span>
+								친절도 <span>{handleLevelText(kind)}</span>
 							</li>
 							<li>
-								가격도 <span>{price}</span>
+								가격도 <span>{handleLevelText(price)}</span>
 							</li>
 						</ul>
-						<IconSad width="80" height="64"/>
 					</S.Emotion>
-				</S.Grade> */}
-				<S.PartnerValue>
-					<li className={handleLevelText(professional)}>전문성 {handleLevelText(professional)}</li>
-					<li className={handleLevelText(kind)}>친절도 {handleLevelText(kind)}</li>
-					<li className={handleLevelText(price)}>가성비 {handleLevelText(price)}</li>
-				</S.PartnerValue>
+				</S.Grade>
 				<S.Review>
 						<S.ReviewText>{memoText(memo)}</S.ReviewText>
 						{(memo.length >= 45 || isMobile) && (

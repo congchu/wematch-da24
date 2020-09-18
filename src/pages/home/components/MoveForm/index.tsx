@@ -4,7 +4,9 @@ import styled, { css } from 'styled-components'
 import { get, isEmpty, debounce } from 'lodash'
 import { useCookies } from 'react-cookie'
 import queryString from 'query-string'
+import dayjs, {Dayjs} from "dayjs";
 
+import {useRouter} from 'hooks/useRouter'
 import { Checkbox } from 'components/wematch-ui/Checkbox'
 import { Icon } from 'components/wematch-ui'
 import Button from 'components/common/Button'
@@ -14,7 +16,7 @@ import PhoneVerifyPopup from 'components/common/Popup/PhoneVerifyPopup'
 import NoticePopup from 'components/common/Popup/NoticePopup';
 import OneroomNoticePopup from 'components/common/Popup/OneroomNoticePopup'
 import TermsModal from "components/common/Modal/TermsModal"
-import {useRouter} from 'hooks/useRouter'
+import ToastPopup from "components/wematch-ui/ToastPopup";
 import promotionImage from 'assets/images/promotion/promotion_img.svg'
 
 import * as commonSelector from 'store/common/selectors'
@@ -203,7 +205,7 @@ const MoveForm = () => {
     const getFormData = useSelector(formSelector.getFormData)
 
     const getPhoneVerified = useSelector(commonSelector.getPhoneVerified)
-    const getMoveIdx = useSelector(commonSelector.getMoveIdx)
+    const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
 
     const [collapse, setCollapse] = useState<boolean>(false)
     const [visibleTerms, setVisibleTerms] = useState<boolean>(false)
@@ -211,9 +213,9 @@ const MoveForm = () => {
     const [visibleOneroom, setVisibleOneroom] = useState(false)
     const [isVerifySuccess, setIsVerifySuccess] = useState(false)
     const [distance, setDistance] = useState<string | null>(null)
-    const [submitType, setSubmitType] = useState<'quration' | 'select' | null>(null)
+    const [submitType, setSubmitType] = useState<'curation' | 'select' | null>(null)
 
-    const [cookies] = useCookies(['0dj38gepoekf98234aplyadmin'])
+    const [cookies, setCookies, removeCookies] = useCookies(['0dj38gepoekf98234aplyadmin'])
     const router = useRouter();
 
     const validateHouseOrOfficeForm = () => {
@@ -300,7 +302,7 @@ const MoveForm = () => {
             calcRouteByDirectionService({
                 start: getAddress.start,
                 end: getAddress.end
-                }, (distance) => {
+            }, (distance) => {
                 if (distance) {
                     setDistance(distance)
                 } else {
@@ -318,121 +320,83 @@ const MoveForm = () => {
                 }
 
                 const formData:commonTypes.RequestUserInfoInsert = {
-                    movingType: translateMovingType(getMoveType),
-                    movingDate: getMoveDate[0],
-                    floor: `${getFloor.start}층`,
-                    detailAddr: getAddress.detailStart,
+                    moving_type: translateMovingType(getMoveType),
+                    moving_date: getMoveDate[0],
+                    floor: `${getFloor.start}`,
+                    detail_addr: getAddress.detailStart,
                     sido: addressSplit(getAddress.start).sido,
                     gugun: addressSplit(getAddress.start).gugun,
                     dong: addressSplit(getAddress.start).dong,
                     sido2: addressSplit(getAddress.end).sido,
                     gugun2: addressSplit(getAddress.end).gugun,
                     dong2: addressSplit(getAddress.end).dong,
-                    floor2: `${getFloor.end}층`,
-                    detailAddr2: getAddress.detailEnd,
+                    floor2: `${getFloor.end}`,
+                    detail_addr2: getAddress.detailEnd,
                     name: getName,
                     phone1: phoneSplit(getPhone).phone1,
                     phone2: phoneSplit(getPhone).phone2,
                     phone3: phoneSplit(getPhone).phone3,
-                    keepMove: getIsMoveStore,
-                    mktAgree: getAgree.marketing,
-                    distance: distance || '',
-                    agentId: queryString.parse(get(cookies, '0dj38gepoekf98234aplyadmin')).agentid
+                    keep_move: getIsMoveStore,
+                    mkt_agree: getAgree.marketing,
+                    distance: Number(distance) || 1,
+                    agent_id: queryString.parse(get(cookies, '0dj38gepoekf98234aplyadmin')).agentid
                 }
 
                 dispatch(formActions.setFormData(formData))
+
+                if (get(cookies, 'form') !== undefined) {
+                    removeCookies('formData')
+                }
+                setCookies('formData', {...formData, ...getAgree}, {expires: new Date(dayjs().add(2, 'day').format())})
 
             })
 
         }
     }, 500)
 
-    const handleSelectedSubmit = () => {
-        let result = false
-        if (getMoveType === 'house' || getMoveType === 'office') {
-            result = validateHouseOrOfficeForm()
-        } else if (getMoveType === 'oneroom') {
-            result = validateOneroomForm()
-        }
-
-
-        if (result) {
-            calcRouteByDirectionService({
-                start: getAddress.start,
-                end: getAddress.end
-            }, (distance) => {
-                if (distance) {
-                    setDistance(distance)
-                } else {
-                    calcRouteByGeoCoder([getAddress.start, getAddress.end], (coords) => {
-                        if (coords) {
-                            setDistance(String(google.maps.geometry.spherical.computeDistanceBetween(coords[0], coords[1]) / 1000))
-                        }
-                    })
-                }
-
-                const formData:commonTypes.RequestUserInfoInsert = {
-                    movingType: translateMovingType(getMoveType),
-                    movingDate: getMoveDate[0],
-                    floor: `${getFloor.start}층`,
-                    detailAddr: getAddress.detailStart,
-                    sido: addressSplit(getAddress.start).sido,
-                    gugun: addressSplit(getAddress.start).gugun,
-                    dong: addressSplit(getAddress.start).dong,
-                    sido2: addressSplit(getAddress.end).sido,
-                    gugun2: addressSplit(getAddress.end).gugun,
-                    dong2: addressSplit(getAddress.end).dong,
-                    floor2: `${getFloor.end}층`,
-                    detailAddr2: getAddress.detailEnd,
-                    name: getName,
-                    phone1: phoneSplit(getPhone).phone1,
-                    phone2: phoneSplit(getPhone).phone2,
-                    phone3: phoneSplit(getPhone).phone3,
-                    keepMove: getIsMoveStore,
-                    mktAgree: getAgree.marketing,
-                    distance: distance || '',
-                    agentId: queryString.parse(get(cookies, '0dj38gepoekf98234aplyadmin')).agentid
-                }
-
-                dispatch(formActions.setFormData(formData))
-
-            })
-
-        }
+    const handleOnConfirm = ():void => {
+        return router.history.push('/')
     }
     useEffect(() => {
         const { type } = router.query
+        if(cookies.formData) {
+            dispatch(formActions.setInitialFormData(cookies.formData))
+        }
         if(type === 'oneroom') {
             dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
         } else {
             dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp))
         }
+
     }, [])
 
     useEffect(() => {
         if (getPhoneVerified.data.is_verified) {
             setVisibleVerifyPhone(false)
-            dispatch(commonActions.fetchUserInfoInsert.request(getFormData))
+            dispatch(commonActions.fetchMoveIdx.request(getFormData))
         }
 
     }, [getPhoneVerified.data.is_verified])
 
     useEffect(() => {
         if(getFormData && submitType === 'select') {
-            document.location.href = `/partner/list`
+            dispatch(commonActions.fetchMoveIdx.request(getFormData))
         }
 
-        if (submitType === 'quration') {
+        if (submitType === 'curation') {
             setVisibleVerifyPhone(true)
         }
     }, [getFormData])
 
     useEffect(() => {
-        if(getMoveIdx.move_idx && submitType === 'quration') {
-            document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdx.move_idx}`
+        console.log(getMoveIdxData)
+        if(getMoveIdxData.idx && submitType === 'curation') {
+            document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
         }
-    }, [getMoveIdx])
-
+        if(getMoveIdxData.idx && submitType === 'select') {
+            router.history.push(`/partner/list?idx=${getMoveIdxData.idx}`)
+        }
+    }, [getMoveIdxData])
 
     return (
         <Visual.Section>
@@ -457,14 +421,14 @@ const MoveForm = () => {
                     </Description.Container>
                 )}
                 {getMoveType === 'house' && (
-                  <Promotions.Wrapper>
-                      <Promotions.leftBox>
-                          <p className="text1">가정이사 한정!</p>
-                          <p className="text2">방문견적 인증 시 <br/>매트리스 무료 소독 1회권</p>
-                          <p className="text3">기간 8/19~ <a href="https://da24.wematch.com/notice.asp">자세히</a></p>
-                      </Promotions.leftBox>
-                      <Promotions.rightBox/>
-                  </Promotions.Wrapper>
+                    <Promotions.Wrapper>
+                        <Promotions.leftBox>
+                            <p className="text1">가정이사 한정!</p>
+                            <p className="text2">방문견적 인증 시 <br/>매트리스 무료 소독 1회권</p>
+                            <p className="text3">기간 8/19~ <a href="https://da24.wematch.com/notice.asp">자세히</a></p>
+                        </Promotions.leftBox>
+                        <Promotions.rightBox/>
+                    </Promotions.Wrapper>
                 )}
                 {getMoveType === 'oneroom' && (
                     <Description.InfoType>
@@ -530,7 +494,7 @@ const MoveForm = () => {
                     <Terms.SubmitContainer>
                         <Button theme="primary" onClick={() => {
                             handleSubmit()
-                            setSubmitType('quration')
+                            setSubmitType('curation')
                         }}>견적 신청하기</Button>
                         {getMoveType !== 'oneroom' && (
                             <Button theme="default" onClick={() => {

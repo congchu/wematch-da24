@@ -4,6 +4,9 @@ import Styled from 'styled-components'
 import * as colors from '../../styles/colors'
 
 import { Previous, Truck } from '../Icon'
+import {useRouter} from "../../hooks/useRouter";
+import {useSelector} from "react-redux";
+import * as commonSelector from "../../store/common/selectors";
 
 const S = {
 		Container: Styled.div`
@@ -78,13 +81,15 @@ interface Props {
 }
 
 const TopGnb = ({ title, count, onPrevious }: Props) => {
+	const router = useRouter()
+	const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
 	return (
 		<S.Container>
 			<S.BtnPrevious onClick={onPrevious}>
 				<Previous width={11} height={20} color={colors.gray33} />
 			</S.BtnPrevious>
 			<S.HeadTitle>{title}</S.HeadTitle>
-			<S.BtnList>
+			<S.BtnList onClick={() => router.push(`/partner/cart?idx=${getMoveIdxData.idx}`)}>
 				<Truck width={22} height={15} color={colors.black}/>
 				{count > 0 && <S.Count>{count}</S.Count>}
 			</S.BtnList>

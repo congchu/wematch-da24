@@ -13,8 +13,8 @@ export interface CommonState {
         data: types.ResponseVerifyCodeProps;
         loading: boolean;
     };
-    insertInfo: {
-        move_idx: string | null;
+    moveIdxData: {
+        idx: string | null;
         loading: boolean
     }
 }
@@ -30,8 +30,8 @@ const initialState: CommonState = {
         },
         loading: false
     },
-    insertInfo: {
-        move_idx: null,
+    moveIdxData: {
+        idx: null,
         loading: false
     }
 }
@@ -41,6 +41,6 @@ export default createReducer<CommonState, Actions>(initialState)
     .handleAction(actions.fetchAddressListAsync.success, (state, action) => ({ ...state,  addressList: { data: action.payload, loading: false } }))
     .handleAction(actions.fetchVerifyCodeAsync.request, (state) => ({...state, phoneVerify: { ...state.phoneVerify, loading: true }}))
     .handleAction(actions.fetchVerifyCodeAsync.success, (state, action) => ({ ...state, phoneVerify: { data: action.payload, loading: false }}))
-    .handleAction(actions.fetchUserInfoInsert.request, (state) => ({ ...state, insertInfo: { ...state.insertInfo, loading: true }}))
-    .handleAction(actions.fetchUserInfoInsert.success, ((state, action) => ({ ...state, insertInfo: {move_idx: action.payload.move_idx, loading: false}})))
+    .handleAction(actions.fetchMoveIdx.request, (state) => ({ ...state, moveIdxData: { ...state.moveIdxData, loading: true }}))
+    .handleAction(actions.fetchMoveIdx.success, ((state, action) => ({ ...state, moveIdxData: {idx: action.payload.idx, loading: false}})))
     .handleAction(actions.resetAll, (state) => ({ ...state, ...initialState }))

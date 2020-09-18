@@ -32,31 +32,30 @@ export interface ResponseVerifyCodeProps {
 }
 
 export interface RequestUserInfoInsert {
-    movingType: '가정' | '원룸' | '사무실' | undefined
-    movingDate: string;
+    moving_type: '가정' | '원룸' | '사무실' | undefined
+    moving_date: string;
     sido: string;
     gugun: string;
     dong: string;
     floor: string;
-    detailAddr: string;
+    detail_addr: string;
     sido2: string;
     gugun2: string;
     dong2: string;
     floor2: string;
-    detailAddr2: string;
-    distance: string;
+    detail_addr2: string;
+    distance: number;
     name: string;
     phone1: string;
     phone2: string;
     phone3: string;
-    keepMove: boolean;
-    mktAgree: boolean;
-    agentId: string | string[] | null | undefined;
+    keep_move: boolean;
+    mkt_agree: boolean;
+    agent_id: string | string[] | null | undefined;
 }
 
 export interface RequestUserInfoInsertProps {
-    move_idx: string;
-    message: string;
+    idx: string;
 }
 
 export enum MovingType {

@@ -4,8 +4,8 @@ import { API_URL } from 'constants/env'
 export interface ApiResponse<T> {
     data: T;
     err: number;
-    msg: string;
-    result: 'success' | 'failure'
+    msg?: string;
+    result?: 'success' | 'failure'
 }
 
 export class ApiError extends Error {

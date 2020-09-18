@@ -1,4 +1,4 @@
-export type Level = 'S' | 'A' | 'B' | 'C' | 'D' | 'N';
+export type Level = 'S' | 'A' | 'B' | 'C' | 'D' | 'NEW';
 export type Grade = 'verygood' | 'good' | 'normal' | 'bad' | 'verybad';
 
 export type PartnerList = {
@@ -16,7 +16,7 @@ export type PartnerList = {
     review_count: number;
     title: string;
     username: string;
-    company: string;
+    adminname: string;
 }
 
 export type PartnerDetail = {
@@ -32,7 +32,7 @@ export type PartnerDetail = {
     review_count: number;
     title: string;
     username: string;
-    company: string;
+    adminname: string;
 }
 
 export type Review = {
@@ -47,4 +47,5 @@ export type Review = {
     professional: Grade;
     reply: string | null;
     user: string;
+    star: number;
 }

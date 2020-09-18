@@ -60,11 +60,12 @@ const NoticePopup:React.FC<Props> = (props) => {
         border
     } = props
 
-    const getMoveIdx = useSelector(commonSelector.getMoveIdx)
+    const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
+
 
     const onConfirmClick = () => {
-        if(getMoveIdx.move_idx) {
-            document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdx.move_idx}`
+        if(getMoveIdxData.idx) {
+            document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
         }
     }
 

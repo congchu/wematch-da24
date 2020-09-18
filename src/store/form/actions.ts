@@ -26,3 +26,5 @@ export const setAgree = createAction('SET_TERMS_AGREE')<{
 }>();
 
 export const setFormData = createAction('SET_FORM_DATA')<types.RequestUserInfoInsert>()
+
+export const setInitialFormData = createAction('SET_INITIAL_FORM_DATA')<any>()
