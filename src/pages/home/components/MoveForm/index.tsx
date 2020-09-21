@@ -379,22 +379,17 @@ const MoveForm = () => {
     }, [getPhoneVerified.data.is_verified])
 
     useEffect(() => {
-        if(getFormData && submitType === 'select') {
-            dispatch(commonActions.fetchMoveIdx.request(getFormData))
-        }
-
-        if (submitType === 'curation') {
+        if (getFormData && submitType) {
             setVisibleVerifyPhone(true)
         }
     }, [getFormData])
 
     useEffect(() => {
-        console.log(getMoveIdxData)
         if(getMoveIdxData.idx && submitType === 'curation') {
             document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
         }
         if(getMoveIdxData.idx && submitType === 'select') {
-            router.history.push(`/partner/list?idx=${getMoveIdxData.idx}`)
+            router.history.push(`/partner/list`)
         }
     }, [getMoveIdxData])
 

@@ -133,14 +133,14 @@ interface Props {
 	profile_img: string;
 	level: Level;
 	title: string;
-	pick_count: number;
-	review_count: number;
+	pick_cnt: number;
+	feedback_cnt: number;
 	experience: number;
 	onClick: () => void;
 	is_full: boolean;
 }
 
-const PartnerItem = ({ profile_img, level, title, pick_count, review_count, experience, onClick, is_full }: Props) => {
+const PartnerItem = ({ profile_img, level, title, pick_cnt, feedback_cnt, experience, onClick, is_full }: Props) => {
 	return (
 		<S.Box onClick={onClick}>
 			{profile_img ? (
@@ -160,8 +160,8 @@ const PartnerItem = ({ profile_img, level, title, pick_count, review_count, expe
 				<S.LevelTitle><em>{level}등급</em></S.LevelTitle>
 				<S.PartnerWord>{title}</S.PartnerWord>
 				<S.PartnerInfo>
-					<span>고객선택 {pick_count}</span>
-					<span>평가 {review_count}</span>
+					<span>고객선택 {pick_cnt}</span>
+					<span>평가 {feedback_cnt}</span>
 					<span>경력 {experience}년</span>
 				</S.PartnerInfo>
 				<S.CompanyLink>

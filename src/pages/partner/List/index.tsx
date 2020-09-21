@@ -3,7 +3,7 @@ import Styled  from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
-import { some, get, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 
 import MainHeader from 'components/MainHeader'
@@ -24,7 +24,7 @@ import * as values from 'constants/values'
 import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
 import * as formSelector from "../../../store/form/selectors";
-import * as formActions from "../../../store/form/actions";
+import * as commonSelector from "../../../store/common/selectors";
 const S = {
     Container: Styled.div`
         height:100%;
@@ -117,6 +117,7 @@ const PartnerList = () => {
     const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
     const getFormData = useSelector(formSelector.getFormData)
     const getMoveDate = useSelector(formSelector.getDate)
+    const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
 
     const [page, setPage] = useState<number>(2)
     const [visible, setVisible] = useState(false)
@@ -145,26 +146,28 @@ const PartnerList = () => {
         window.open('https://api.happytalk.io/api/kakao/chat_open?yid=%40%EC%9C%84%EB%A7%A4%EC%B9%98&site_id=4000001315&category_id=111561&division_id=111564', '_blank')
     }
 
-    /*useEffect(() => {
+    useEffect(() => {
         if(getFormData.moving_date.length === 0) {
             setVisible(true)
         }
-    }, [])*/
+        if(!getMoveIdxData.idx) {
+            console.log('getMoveIdxData:',getMoveIdxData.idx)
+            setVisible(true)
+        }
+    }, [])
 
     useEffect(() => {
-        dispatch(partnerActions.fetchPartnerListAsync.request({
-            page: values.DEFAULT_PAGE,
-            size: values.DEFAULT_PARTNER_LIST_SIZE,
-            idx: router.query.idx
-        }))
+        if(getMoveIdxData.idx) {
+            dispatch(partnerActions.fetchPartnerListAsync.request({
+                page: values.DEFAULT_PAGE,
+                size: values.DEFAULT_PARTNER_LIST_SIZE,
+                idx: getMoveIdxData.idx
+            }))
+        }
     }, [dispatch])
 
     if (getPartnerList.loading) {
         return <Loading />
-    }
-
-    if (isEmpty(getPartnerList.data)) {
-        return <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다."/>
     }
 
 
@@ -174,27 +177,33 @@ const PartnerList = () => {
             {getFormData.moving_date.length !== 0 && (
                 <SetType count={getPartnerPick.data.length} formData={getFormData}/>
             )}
-            <S.WrapItem>
-                {getPartnerList.data.map((list:any) => {
-                    return (
-                        <PartnerItem key={list.id} profile_img={list.profile_img}
-                             level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
-                             pick_count={list.pick_count} review_count={list.review_count} experience={list.experience} is_full={list.is_full}
-                             onClick={() => {
-                                 history.push(`/partner/detail/${list.adminid}`)
-                             }}
-                        />
-                    )
-                })}
-                <S.ChatText onClick={handleLinkKakao}>
-                    도움이 필요하세요?
-                    <ChatArrow width={20} height={12} />
-                </S.ChatText>
-                <S.BtnKakao onClick={handleLinkKakao}>
-                    <KakaoIcon width={35} height={34} />
-                </S.BtnKakao>
-            </S.WrapItem>
-            {isFetching && <MoreLoading />}
+            {isEmpty(getPartnerList.data)
+                ?   <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다."/>
+                :
+                <>
+                <S.WrapItem>
+                    {getPartnerList.data.map((list:any) => {
+                        return (
+                            <PartnerItem key={list.id} profile_img={list.profile_img}
+                                         level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
+                                         pick_cnt={list.pick_cnt} feedback_cnt={list.feedback_cnt} experience={list.experience} is_full={list.is_full}
+                                         onClick={() => {
+                                             history.push(`/partner/detail/${list.adminid}`)
+                                         }}
+                            />
+                        )
+                    })}
+                    <S.ChatText onClick={handleLinkKakao}>
+                        도움이 필요하세요?
+                        <ChatArrow width={20} height={12} />
+                    </S.ChatText>
+                    <S.BtnKakao onClick={handleLinkKakao}>
+                        <KakaoIcon width={35} height={34} />
+                    </S.BtnKakao>
+                </S.WrapItem>
+                {isFetching && <MoreLoading />}
+                </>
+            }
             <ToastPopup visible={visible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
                 <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
             </ToastPopup>

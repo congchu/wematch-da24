@@ -52,8 +52,12 @@ const NewPartnerDescription =  styled.div`
   }
 `;
 
-const NewPartner = () => {
+interface Props {
+    showQuestionIcon?: boolean
+}
+const NewPartner:React.FC<Props> = (props) => {
     const [visible, setVisible] = useState(false)
+    const { showQuestionIcon } = props
     const isMobile = useMedia({
         maxWidth: 767,
     })
@@ -62,7 +66,9 @@ const NewPartner = () => {
         <NewPartnerWrapper>
             <GradeInfo onClick={() => setVisible(!visible)}>
 						<span>평가등급
-							<Question width={16} height={16} />
+                            {showQuestionIcon && (
+                                <Question width={16} height={16} />
+                            )}
 						</span>
                 <LevelIcon level={'NEW'}/>
             </GradeInfo>

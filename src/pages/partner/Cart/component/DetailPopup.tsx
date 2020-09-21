@@ -7,6 +7,7 @@ import NewPartner from "components/common/NewPartner";
 import {ProfileDefault} from "components/Icon";
 
 import * as colors from "styles/colors";
+import { isEmpty } from 'lodash';
 
 const DetailPopupWrapper = styled.div`
   height: auto;
@@ -16,7 +17,6 @@ const DetailPopupWrapper = styled.div`
 
 const PartnerImg = styled.div`
 	position:relative;
-	float:left;
 	width:56px;
 	height:56px;
 	border-radius:44px;
@@ -52,6 +52,7 @@ const Title = styled.p`
   letter-spacing: -1px;
   margin-top: 24px;
   text-align: left;
+  margin-bottom: 30px;
 `;
 
 const KeywordWrapper = styled.div`
@@ -119,8 +120,8 @@ interface Props {
 }
 
 const DetailPopup:React.FC<Props> = (props) => {
-    const { visible, onClose, partnerData } = props;
-    const keywords = ['정성스루언', '합리적인', '포장', '전문가']
+    const { visible, onClose, partnerData } = props
+    const {description,keywords, level, pick_cnt, feedback_cnt, experience, addition = ''} = partnerData
     return (
         <PopupTemplate visible={visible} onClose={onClose}>
             <DetailPopupWrapper>
@@ -128,35 +129,40 @@ const DetailPopup:React.FC<Props> = (props) => {
                     <span/>
                     <ProfileDefault width={24} height={24} />
                 </PartnerImg>
-                <Title>이사업체 대표문구</Title>
-                <NewPartner />
-                <KeywordWrapper>
-                    <p>고객이 많이 언급한 키워드</p>
-                    <div>
-                        <Keyword>{'정성스러운'}</Keyword>
-                        {keywords.map((keyword, index) => (
-                            <Keyword key={index}>{keyword}</Keyword>
-                        ))}
-                    </div>
-                </KeywordWrapper>
-                <PartnerInfo>
-                    <div className="info">
-                        <div>고객선택</div>
-                        <span>0,000회</span>
-                    </div>
-                    <div className="info">
-                        <div>평가</div>
-                        <span>0,000회</span>
-                    </div>
-                    <div className="info">
-                        <div>이사경력</div>
-                        <span>0,000회</span>
-                    </div>
-                </PartnerInfo>
-                <AdditionalOption>
-                    <p>추가 기능옵션</p>
-                    <span>에어컨탈착/설치,붙박이장,시스템장 분해/설치,벽걸이TV설치,돌침대/흙침대/리클라이너 침대 이동, 안마의자 운반, 비데탈착/설치</span>
-                </AdditionalOption>
+                <Title>{description}</Title>
+                {level === 'NEW' && (<NewPartner showQuestionIcon={false}/>)}
+                {!isEmpty(keywords) &&(
+                    <KeywordWrapper>
+                        <p>고객이 많이 언급한 키워드</p>
+                        <div>
+                            {keywords.map((keyword:string, index:number) => (
+                                <Keyword key={index}>{keyword}</Keyword>
+                            ))}
+                        </div>
+                    </KeywordWrapper>
+                )}
+                {level !== 'NEW' &&
+                    <PartnerInfo>
+                        <div className="info">
+                            <div>고객선택</div>
+                            <span>{pick_cnt | 0} 회</span>
+                        </div>
+                        <div className="info">
+                            <div>평가</div>
+                            <span>{feedback_cnt| 0}회</span>
+                        </div>
+                        <div className="info">
+                            <div>이사경력</div>
+                            <span>{experience | 1} 년</span>
+                        </div>
+                    </PartnerInfo>
+                }
+                {addition.length > 0  && (
+                    <AdditionalOption>
+                        <p>추가 기능옵션</p>
+                        <span>{addition}</span>
+                    </AdditionalOption>
+                )}
             </DetailPopupWrapper>
         </PopupTemplate>
     )

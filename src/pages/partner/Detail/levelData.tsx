@@ -226,10 +226,10 @@ const S = {
 }
 
 interface Props {
-	review_count: number;
+	feedback_cnt: number;
 }
 
-const LevelData = ({ review_count }: Props) => {
+const LevelData = ({ feedback_cnt }: Props) => {
 	const [visibleTermsModal, setVisibleTermsModal] = useState(false)
 
 	const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)

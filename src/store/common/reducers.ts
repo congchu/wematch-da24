@@ -26,7 +26,7 @@ const initialState: CommonState = {
     },
     phoneVerify: {
         data: {
-            "is_verified": undefined
+            "is_verified": false
         },
         loading: false
     },

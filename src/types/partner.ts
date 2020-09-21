@@ -11,9 +11,9 @@ export type PartnerList = {
     keywords: string[];
     level: Level;
     other_img: string;
-    pick_count: number;
+    pick_cnt: number;
     profile_img: string;
-    review_count: number;
+    feedback_cnt: number;
     title: string;
     username: string;
     adminname: string;
@@ -27,9 +27,9 @@ export type PartnerDetail = {
     keywords: string[];
     level: Level;
     other_img: string
-    pick_count: number
+    pick_cnt: number
     profile_img: string;
-    review_count: number;
+    feedback_cnt: number;
     title: string;
     username: string;
     adminname: string;

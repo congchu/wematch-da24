@@ -4,6 +4,8 @@ import { ProfileDefault } from 'components/Icon'
 import * as colors from "styles/colors"
 import { API_URL } from 'constants/env'
 import DetailPopup from "./DetailPopup";
+import {useMedia} from "react-use-media";
+import { isEmpty } from 'lodash'
 
 interface Props {
     list: IList;
@@ -16,6 +18,8 @@ interface IList {
     description: string;
     isChecked?: boolean;
     adminid: string;
+    adminname: string;
+    keywords?: string[];
 }
 interface styleProps {
     checkImage?: string
@@ -99,22 +103,43 @@ const S = {
         color: ${colors.gray66};
         font-size: 12px;
         letter-spacing: -0.86px;
+        margin-right: 2px;
       }
     `,
+    KeywordWrapper: styled.div`
+      display: flex;
+`,
 };
 
 const Card:React.FC<Props> = (props: Props) => {
     const [partnerDetailVisible, setPartnerDetailVisible] = useState(false)
     const {list, onSelect} = props;
-    const { id, title, description= '', isChecked, adminid } = list;
+    const { id, adminname, title, keywords=[], description= '', isChecked, adminid } = list;
+    const isMobile = useMedia({
+        maxWidth: 767,
+    })
     const titleLength = () => {
-        console.log(description)
         if (description.length >= 12) {
             return description.substring(0, 12) + ' . . .'
+        }
+
+        if (description.length === 0) {
+            return '사장님이 소개글을 작성중이에요'
         }
         return description
     };
 
+    const keywordLength = () => {
+        return !isEmpty(keywords) && keywords.map((keyword, index) => {
+            if (isMobile) {
+                if (index < 3) {
+                    return <div className="partner_keyword" key={index}>{keyword.length > 0 && `#${keyword}`}</div>
+                }
+            } else {
+                return <div className="partner_keyword" key={index}>{keyword.length > 0 && `#${keyword}`}</div>
+            }
+        })
+    }
     return (
         <>
             <S.CardContainer>
@@ -127,9 +152,11 @@ const Card:React.FC<Props> = (props: Props) => {
                     <ProfileDefault width={24} height={24} />
                 </S.PartnerImg>
                 <S.Content onClick={() => setPartnerDetailVisible(!partnerDetailVisible)}>
-                    <div className="partner_name">{title}</div>
+                    <div className="partner_name">{adminname}</div>
                     <div className="partner_about">{titleLength()}</div>
-                    <div className="partner_keyword">#키워드, #키워드, #키워드</div>
+                    <S.KeywordWrapper>
+                        {keywordLength()}
+                    </S.KeywordWrapper>
                 </S.Content>
             </S.CardContainer>
             <DetailPopup visible={partnerDetailVisible} onClose={() => setPartnerDetailVisible(!partnerDetailVisible)} partnerData={list}/>

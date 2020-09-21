@@ -20,6 +20,7 @@ import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
 import * as formSelector from "store/form/selectors";
 import {some} from "lodash";
+import { useRouter } from 'hooks/useRouter'
 
 const S = {
     Container: Styled.div``,
@@ -151,6 +152,7 @@ const PartnerDetail = () => {
         maxWidth: 767,
     })
     const history = useHistory()
+    const router = useRouter()
     const params = useParams<{username: string}>()
     const dispatch = useDispatch()
 
@@ -175,9 +177,11 @@ const PartnerDetail = () => {
     };
 
     const handleSelected = () => {
-        if (getPartnerDetail.data)
+        if (getPartnerDetail.data) {
             dispatch(partnerActions.setPartnerPick([getPartnerDetail.data]))
-        history.goBack()
+        }
+
+        router.push('/partner/cart')
     }
 
     const isActive = () => {
@@ -223,9 +227,9 @@ const PartnerDetail = () => {
                     {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()}/>}
                     <UserImage profile_img={getPartnerDetail.data.profile_img } is_full={getPartnerDetail.data.is_full} />
                     <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT}
-                        level={getPartnerDetail.data.level} pick_count={getPartnerDetail.data.pick_count} experience={getPartnerDetail.data.experience}
+                        level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
                         description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname}/>
-                    <LevelData review_count={getPartnerDetail.data.review_count} />
+                    <LevelData feedback_cnt={getPartnerDetail.data.feedback_cnt} />
                     {getReviewList.data.map((review, index) => {
                         if(!review) {
                             return (

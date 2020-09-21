@@ -162,14 +162,14 @@ const S = {
 interface Props {
 	title: string;
 	level: Level
-	pick_count: number;
+	pick_cnt: number;
 	experience: number;
 	description: string;
 	keywords: string[];
 	adminname: string;
 }
 
-const PartnerInfo = ({ title, level, pick_count, experience, description, keywords, adminname }: Props) => {
+const PartnerInfo = ({ title, level, pick_cnt, experience, description, keywords, adminname }: Props) => {
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 	const isMobile = useMedia({
 		maxWidth: 767,
@@ -182,10 +182,10 @@ const PartnerInfo = ({ title, level, pick_count, experience, description, keywor
 		<S.Container>
 			<S.Wrap>
 				{/*<S.LevelDescription>상위 10% 업체</S.LevelDescription>*/}
-				<S.Level>{level === 'NEW' ? '등급산정중' : '고객평가 {level}등급'}</S.Level>
+				<S.Level>{level === 'NEW' ? '등급산정중' : `고객평가 ${level}등급`}</S.Level>
 				<S.PartnerWord>{title}</S.PartnerWord>
 				{level === 'NEW'
-					? <NewPartner/>
+					? <NewPartner showQuestionIcon={true}/>
 					: <S.Info>
 						<S.Card onClick={toggleVisibleLevel}>
 						<span>평가등급
@@ -195,11 +195,11 @@ const PartnerInfo = ({ title, level, pick_count, experience, description, keywor
 						</S.Card>
 						<S.Card>
 							<span>고객선택</span>
-							<em>{pick_count} 회</em>
+							<em>{pick_cnt | 0} 회</em>
 						</S.Card>
 						<S.Card>
 							<span>경력년차</span>
-							<em>{experience} 회</em>
+							<em>{experience | 1} 년</em>
 						</S.Card>
 					</S.Info>
 				}
@@ -208,16 +208,18 @@ const PartnerInfo = ({ title, level, pick_count, experience, description, keywor
 						<strong>사장님 한마디({adminname})</strong>
 						<p>{description !== '' ? description : values.DEFAULT_TEXT}</p>
 					</S.Option>
-					<S.Option>
-						<strong>고객이 많이 언급한 키워드</strong>
-						<ul>
-							{!isEmpty(keywords) && (
-								keywords.map((list, index) => (
-									<li key={index}>{list}</li>
-								))
-							)}
-						</ul>
-					</S.Option>
+					{!isEmpty(keywords && (
+						<S.Option>
+							<strong>고객이 많이 언급한 키워드</strong>
+							<ul>
+								{!isEmpty(keywords) && (
+									keywords.map((list, index) => (
+										<li key={index}>{list}</li>
+									))
+								)}
+							</ul>
+						</S.Option>
+					))}
 					{/* <S.Option>
 						<strong>추가 가능 옵션</strong>
 						<p>설문조사에 수집된 내용대로 모두 노출</p>

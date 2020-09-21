@@ -25,6 +25,8 @@ interface IList {
     description: string;
     isChecked?: boolean;
     adminid: string;
+    adminname: string;
+    keyword?: string[];
 }
 const S = {
     CartWrapper: styled.div`
@@ -220,7 +222,6 @@ const PartnerCart = () => {
     })
 
     useEffect(() => {
-
         if (!isEmpty(getPartnerPickList) && getMoveIdxData.idx) {
             dispatch(partnerActions.fetchCartListAsync.request({idx: getMoveIdxData.idx}))
         }
@@ -289,7 +290,6 @@ const PartnerCart = () => {
         return <div>loading</div>
     }
 
-    console.log('checkedList:',checkedList)
     return (
         <>
         <S.CartWrapper>
@@ -309,7 +309,7 @@ const PartnerCart = () => {
                                 {selectList.map((list:IList) => {
                                     return <Card key={list.id} list={list} onSelect={handleCheck}/>
                                 })}
-                                <S.PartnerMoreBtn onClick={() => history.goBack()}>업체 더 고르기</S.PartnerMoreBtn>
+                                <S.PartnerMoreBtn onClick={() => router.push('/partner/list')}>업체 더 고르기</S.PartnerMoreBtn>
                             </S.CardWrapper>
                         </S.Wrapper>
                         <S.HorizontalLine/>
