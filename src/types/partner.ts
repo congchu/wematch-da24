@@ -7,7 +7,7 @@ export type PartnerList = {
     has_next: boolean;
     has_previous: boolean;
     id: number;
-    is_full: boolean;
+    status: 'selected' | 'available' | 'unavailable';
     keywords: string[];
     level: Level;
     other_img: string;
@@ -23,7 +23,7 @@ export type PartnerDetail = {
     description: string;
     experience: number;
     id: number;
-    is_full: boolean;
+    status: 'selected' | 'available' | 'unavailable';
     keywords: string[];
     level: Level;
     other_img: string

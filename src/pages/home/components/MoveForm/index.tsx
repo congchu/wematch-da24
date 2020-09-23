@@ -371,12 +371,12 @@ const MoveForm = () => {
     }, [])
 
     useEffect(() => {
-        if (getPhoneVerified.data.is_verified) {
+        if (getPhoneVerified.data.is_verified && visibleVerifyPhone) {
             setVisibleVerifyPhone(false)
             dispatch(commonActions.fetchMoveIdx.request(getFormData))
         }
 
-    }, [getPhoneVerified.data.is_verified])
+    }, [getPhoneVerified.data])
 
     useEffect(() => {
         if (getFormData && submitType) {

@@ -103,24 +103,26 @@ const S = {
 
 interface Props {
 	profile_img: string;
-	is_full: boolean;
+	status: 'selected' | 'available' | 'unavailable';
 }
 
-const UserImage = ({ profile_img, is_full }: Props) => {
+const UserImage = ({ profile_img, status }: Props) => {
 	return (
 		<S.WrapImg>
 			<S.Title>
 				<h3>업체<br />직접선택</h3>
 			</S.Title>
 			{profile_img ? (
+				<>
 				<S.ProfileImg profile_img={profile_img}>
 					<span />
 				</S.ProfileImg>
+				</>
 			) : (
 				<S.DefaultProfileImg>
-					{is_full && (<S.Opacity />)}
+					{status === "unavailable" && (<S.Opacity />)}
 					<ProfileDefault width={60} height={60} color={colors.white} />
-					{is_full && (<span>오늘 마감</span>)}
+					{status === "unavailable" && (<span>오늘 마감</span>)}
 				</S.DefaultProfileImg>
 			)}
 		</S.WrapImg>

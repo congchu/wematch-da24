@@ -11,6 +11,7 @@ import NewPartner from 'components/common/NewPartner'
 import { Level } from 'types/partner'
 import {useMedia} from "react-use-media";
 import { isEmpty } from 'lodash'
+import {LevelGradeText} from "../../../lib/levelUtil";
 
 const S = {
 	Container: styled.div`
@@ -169,7 +170,7 @@ interface Props {
 	adminname: string;
 }
 
-const PartnerInfo = ({ title, level, pick_cnt, experience, description, keywords, adminname }: Props) => {
+const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywords, adminname }: Props) => {
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 	const isMobile = useMedia({
 		maxWidth: 767,
@@ -181,7 +182,7 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description, keywords
 	return (
 		<S.Container>
 			<S.Wrap>
-				{/*<S.LevelDescription>상위 10% 업체</S.LevelDescription>*/}
+				<S.LevelDescription>{LevelGradeText(level)}</S.LevelDescription>
 				<S.Level>{level === 'NEW' ? '등급산정중' : `고객평가 ${level}등급`}</S.Level>
 				<S.PartnerWord>{title}</S.PartnerWord>
 				{level === 'NEW'
@@ -206,7 +207,7 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description, keywords
 				<S.Description>
 					<S.Option>
 						<strong>사장님 한마디({adminname})</strong>
-						<p>{description !== '' ? description : values.DEFAULT_TEXT}</p>
+						<p>{description.length !== 0 ? description : values.DEFAULT_TEXT}</p>
 					</S.Option>
 					<S.Option>
 						<strong>고객이 많이 언급한 키워드</strong>

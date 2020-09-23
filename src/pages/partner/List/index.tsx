@@ -186,9 +186,11 @@ const PartnerList = () => {
                         return (
                             <PartnerItem key={list.id} profile_img={list.profile_img}
                                          level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
-                                         pick_cnt={list.pick_cnt} feedback_cnt={list.feedback_cnt} experience={list.experience} is_full={list.is_full}
+                                         pick_cnt={list.pick_cnt} feedback_cnt={list.feedback_cnt} experience={list.experience} status={list.status}
                                          onClick={() => {
-                                             history.push(`/partner/detail/${list.adminid}`)
+                                             if(list.status !== 'unavailable') {
+                                                history.push(`/partner/detail/${list.adminid}`)
+                                             }
                                          }}
                             />
                         )

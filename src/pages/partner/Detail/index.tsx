@@ -66,7 +66,9 @@ const S = {
 			margin-bottom:0;
 		}
 	`,
-    BtnSelect: Styled.button<{is_full: boolean, isSelected: boolean}>`
+
+
+    BtnSelect: Styled.button<{status: 'selected' | 'available' | 'unavailable', isSelected: boolean}>`
 		position:fixed;
 		z-index:5;
 		left:0;
@@ -79,7 +81,7 @@ const S = {
 		background-color: ${props => props.isSelected ? colors.lineDefault : colors.pointBlue};
 		color:${colors.white};
 		cursor:pointer;
-		${props => props.is_full && css`
+		${props => props.status === 'unavailable' && css`
 			background-color:${colors.lineDefault};
 		`};
 		@media screen and (min-width:1200px) {
@@ -189,6 +191,22 @@ const PartnerDetail = () => {
             adminid: params.username
         })
     }
+
+    const isFull = (status: 'selected' | 'available' | 'unavailable') => {
+        return status === "unavailable"
+    }
+
+    const buttonText = (status: 'selected' | 'available' | 'unavailable') => {
+        if (status === 'unavailable') {
+            return '오늘 마감된 업체 입니다.'
+        }
+
+        if (isActive()) {
+            return '이미 선택된 업체 입니다.'
+        }
+
+        return '이 업체에 견적 받아보기'
+    }
     useEffect(() => {
         dispatch(partnerActions.fetchPartnerDetailAsync.request({
             username: params.username,
@@ -225,7 +243,7 @@ const PartnerDetail = () => {
             {getPartnerDetail.data && (
                 <>
                     {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true}/>}
-                    <UserImage profile_img={getPartnerDetail.data.profile_img } is_full={getPartnerDetail.data.is_full} />
+                    <UserImage profile_img={getPartnerDetail.data.profile_img } status={getPartnerDetail.data.status} />
                     <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT}
                         level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
                         description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname}/>
@@ -257,7 +275,7 @@ const PartnerDetail = () => {
                         )}
                         {showScrollView && (
                             <S.ScrollView>
-                                <S.BtnSelect onClick={handleSelected} disabled={isActive()} isSelected={isActive()} is_full={getPartnerDetail.data.is_full}>이 업체에 견적 받아보기</S.BtnSelect>
+                                <S.BtnSelect onClick={handleSelected} disabled={isActive()} isSelected={isActive()} status={getPartnerDetail.data.status}>{buttonText(getPartnerDetail.data.status)}</S.BtnSelect>
                                 <S.TopBtn onClick={handleScrollTop}>
                                     <UpArrow color={colors.pointBlue} width={16} height={16} />
                                 </S.TopBtn>

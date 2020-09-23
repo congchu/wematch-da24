@@ -6,6 +6,7 @@ import { Level } from 'types/partner'
 
 import * as colors from 'styles/colors'
 import { API_URL } from 'constants/env'
+import { LevelGradeText } from 'lib/levelUtil'
 
 const S = {
 	Box: styled.a`
@@ -137,27 +138,27 @@ interface Props {
 	feedback_cnt: number;
 	experience: number;
 	onClick: () => void;
-	is_full: boolean;
+	status: 'selected' | 'available' | 'unavailable';
 }
 
-const PartnerItem = ({ profile_img, level, title, pick_cnt, feedback_cnt, experience, onClick, is_full }: Props) => {
+const PartnerItem = ({ profile_img, level, title, pick_cnt, feedback_cnt, experience, onClick, status }: Props) => {
 	return (
 		<S.Box onClick={onClick}>
 			{profile_img ? (
 				<S.PartnerImg profile_img={profile_img}>
 					<span />
-					{is_full && <S.BgClose is_full={is_full}/>}
+					{status === "unavailable" && <S.BgClose is_full={status === "unavailable"}/>}
 				</S.PartnerImg>
 			) : (
 				<S.PartnerImg>
 					<span />
 					<ProfileDefault width={36} height={36} color={colors.white} />
-					{is_full && <S.BgClose is_full={is_full}/>}
+					{status === "unavailable" && <S.BgClose is_full={status === "unavailable"}/>}
 				</S.PartnerImg>
 			)}
 			<S.CompanyInfo>
 				{/*<S.LevelTitle><em>{level}등급</em> {levelDescription}</S.LevelTitle>*/}
-				<S.LevelTitle><em>{level}등급</em></S.LevelTitle>
+				<S.LevelTitle><em>{level}등급 ({LevelGradeText(level)})</em></S.LevelTitle>
 				<S.PartnerWord>{title}</S.PartnerWord>
 				<S.PartnerInfo>
 					<span>고객선택 {pick_cnt}</span>
