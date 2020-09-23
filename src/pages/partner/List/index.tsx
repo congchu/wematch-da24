@@ -173,7 +173,7 @@ const PartnerList = () => {
 
     return (
         <S.Container>
-            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()}/>}
+            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true}/>}
             {getFormData.moving_date.length !== 0 && (
                 <SetType count={getPartnerPick.data.length} formData={getFormData}/>
             )}

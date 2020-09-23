@@ -78,9 +78,10 @@ interface Props {
 	title: string;
 	count: number;
 	onPrevious: () => void;
+	showTruck: boolean;
 }
 
-const TopGnb = ({ title, count, onPrevious }: Props) => {
+const TopGnb = ({ title, count, onPrevious,showTruck }: Props) => {
 	const router = useRouter()
 	const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
 	return (
@@ -89,10 +90,12 @@ const TopGnb = ({ title, count, onPrevious }: Props) => {
 				<Previous width={11} height={20} color={colors.gray33} />
 			</S.BtnPrevious>
 			<S.HeadTitle>{title}</S.HeadTitle>
-			<S.BtnList onClick={() => router.push(`/partner/cart?idx=${getMoveIdxData.idx}`)}>
-				<Truck width={22} height={15} color={colors.black}/>
-				{count > 0 && <S.Count>{count}</S.Count>}
-			</S.BtnList>
+			{showTruck && (
+				<S.BtnList onClick={() => router.push(`/partner/cart?idx=${getMoveIdxData.idx}`)}>
+					<Truck width={22} height={15} color={colors.black}/>
+					{count > 0 && <S.Count>{count}</S.Count>}
+				</S.BtnList>
+			)}
 		</S.Container>
 	)
 }

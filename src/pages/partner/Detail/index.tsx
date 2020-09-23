@@ -224,25 +224,27 @@ const PartnerDetail = () => {
         <S.Container>
             {getPartnerDetail.data && (
                 <>
-                    {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()}/>}
+                    {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true}/>}
                     <UserImage profile_img={getPartnerDetail.data.profile_img } is_full={getPartnerDetail.data.is_full} />
                     <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT}
                         level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
                         description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname}/>
                     <LevelData feedback_cnt={getPartnerDetail.data.feedback_cnt} />
-                    {getReviewList.data.map((review, index) => {
-                        if(!review) {
-                            return (
-                                <S.ReviewPreview>
-                                    <img src={require(`../../../assets/images/review_${isMobile ? 'm' : 'pc'}.png`)} alt='review_img'/>
-                                </S.ReviewPreview>
-                            )
-                        }
-                        return (
-                            <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional}
-                                kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>
-                        )
-                    })}
+                    {getReviewList.data.length < 5 ? (
+                        <S.ReviewPreview>
+                            <img src={require(`../../../assets/images/review_${isMobile ? 'm' : 'pc'}.png`)} alt='review_img'/>
+                        </S.ReviewPreview>
+                    )
+                        :
+                            <>
+                            {getReviewList.data.map((review, index) => {
+                                return (
+                                    <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional}
+                                            kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>
+                                )
+                            })}
+                            </>
+                    }
                     <S.BottomContainer>
                         {/* 임시용 디자인 없음*/}
                         {getReviewList.moreLoading && (

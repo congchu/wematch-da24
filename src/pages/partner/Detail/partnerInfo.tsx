@@ -208,18 +208,23 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description, keywords
 						<strong>사장님 한마디({adminname})</strong>
 						<p>{description !== '' ? description : values.DEFAULT_TEXT}</p>
 					</S.Option>
-					{!isEmpty(keywords && (
-						<S.Option>
-							<strong>고객이 많이 언급한 키워드</strong>
-							<ul>
-								{!isEmpty(keywords) && (
-									keywords.map((list, index) => (
-										<li key={index}>{list}</li>
-									))
-								)}
-							</ul>
-						</S.Option>
-					))}
+					<S.Option>
+						<strong>고객이 많이 언급한 키워드</strong>
+							{!isEmpty(keywords) ?
+								(
+									<ul>
+										{keywords.map((list, index) => (
+											<li key={index}>{list}</li>
+										))}
+									</ul>
+								)
+								:
+								<>
+									<div>현재 고격평가 취합중입니다.</div>
+									<div>좋은 평가를 위한 의욕적인 서비스를 기대됩니다.</div>
+								</>
+							}
+					</S.Option>
 					{/* <S.Option>
 						<strong>추가 가능 옵션</strong>
 						<p>설문조사에 수집된 내용대로 모두 노출</p>

@@ -92,10 +92,16 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
         }
     };
 
+    const handleClose =  async () => {
+        if (onClose) {
+            await onClose()
+            await setCode('')
+        }
+    }
     return (
         <PopupTemplate visible={visible} onOverlayClose={onOverlayClose}>
             <S.Container>
-                <S.CloseButton onClick={onClose}>
+                <S.CloseButton onClick={() => handleClose()}>
                     <Close size={24} color={colors.white} />
                 </S.CloseButton>
                 <strong>전화번호인증</strong>
@@ -109,8 +115,8 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
                     }} onKeyPress={handleKeyPress} />
                     <Button theme="primary" style={{ width: "80px", fontSize: "15px" }} onClick={handleSubmit}>인증하기</Button>
                 </S.Group>
-                {getPhoneVerified.data.is_verified === false && !getPhoneVerified.loading ? (
-                    <S.ErrorMessage>잘못된 인증번호 입니다</S.ErrorMessage>
+                {getPhoneVerified.data.is_verified === false && !getPhoneVerified.loading && code.length > 0? (
+                    <S.ErrorMessage>잘못된 인증번호입니다</S.ErrorMessage>
                 ) : (
                     <p>인증번호를 입력해 주세요</p>
                 )}

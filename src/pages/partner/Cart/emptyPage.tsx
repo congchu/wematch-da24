@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useHistory } from 'react-router-dom';
 import * as colors from 'styles/colors'
 import {useMedia} from "react-use-media";
+import { useRouter } from 'hooks/useRouter';
 
 const EmptyWrapper = styled.div`
   padding: 24px;
@@ -88,7 +89,7 @@ const Guide = styled.div`
   }
 `;
 const EmptyPage = () => {
-    const history = useHistory();
+    const router = useRouter()
     const isMobile = useMedia({
         maxWidth: 767,
     })
@@ -132,7 +133,7 @@ const EmptyPage = () => {
         <EmptyWrapper>
             <EmptyCard>
                 <img src={require("../../../assets/images/plus.svg")} alt='icon'/>
-                <div onClick={() => history.goBack()}>업체 추가하기</div>
+                <div onClick={() => router.push('/partner/list')}>업체 추가하기</div>
             </EmptyCard>
             <Text>방문 견적을 요청할 업체를 골라주세요 (최대 3개)</Text>
             <GuideWrapper>

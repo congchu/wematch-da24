@@ -18,6 +18,7 @@ import * as partnerSelector from "../../../store/partner/selectors";
 import * as partnerActions from "../../../store/partner/actions";
 import { isEmpty } from 'lodash';
 import * as commonSelector from "../../../store/common/selectors";
+import {configureActions} from "@storybook/addon-actions";
 
 interface IList {
     id: number;
@@ -38,9 +39,7 @@ const S = {
       background-color: #f7f8fa;
       text-align: center;
       min-height: calc(100% - 98px);
-      @media screen and (min-width: 768px) {
-        min-height: calc(100% - 132px);
-      }
+      
       @media screen and (min-width: 768px) {
         min-height: calc(100% - 132px);
       }
@@ -130,9 +129,9 @@ const S = {
       margin-bottom: 15px;
       text-align: left;
     `,
-    OrderBtnWrapper: styled.div`
+    OrderBtnWrapper: styled.div<{position: string}>`
       width: 100%;
-      position: sticky;
+      position: ${props => props.position && props.position};
       bottom: 0;
       
       @media screen and (min-width: 768px) {
@@ -207,6 +206,7 @@ const PartnerCart = () => {
     const [checkedList, setCheckedList]:any = useState([])
     const [selectList, setSelectList]:any = useState([])
     const [recommendedList, setRecommendedList]:any = useState([])
+    const [buttonPosition, setBottomPosition] = useState('absolute')
 
     const router = useRouter()
     const history = useHistory()
@@ -227,6 +227,7 @@ const PartnerCart = () => {
         }
     }, [])
 
+
     useEffect(() => {
         if (!getCartPartnerList.loading && !isEmpty(getPartnerPickList)) {
             initialPartnerList();
@@ -238,6 +239,12 @@ const PartnerCart = () => {
             document.location.href = `http://m.dev.da24.wematch.com/move_step_complete.asp?move_idx=${getMatchingData.idx}`
         }
     }, [getMatchingData])
+
+    useEffect(() => {
+        window.addEventListener('scroll', listenScrollEvent);
+        return () => window.removeEventListener('scroll', listenScrollEvent);
+    }, []);
+
     const initialPartnerList = () => {
         const {selectedList, recommendedList} = getCartPartnerList
         const checkedList:any = [];
@@ -289,11 +296,14 @@ const PartnerCart = () => {
     if (getCartPartnerList.loading || getMatchingData.loading) {
         return <div>loading</div>
     }
+    const listenScrollEvent = () => {
+        setBottomPosition('sticky')
+    }
 
     return (
         <>
         <S.CartWrapper>
-            {isDesktop ? <MainHeader/> : <TopGnb title="방문견적 요청" count={getPartnerPickList.data.length} onPrevious={() => history.goBack()}/>}
+            {isDesktop ? <MainHeader/> : <TopGnb title="방문견적 요청" count={0} onPrevious={() => history.goBack()} showTruck={false}/>}
                 <S.TitleWrapper>
                     <S.Title>
                         <p>내가 선택한 업체</p>
@@ -326,7 +336,7 @@ const PartnerCart = () => {
                                 </S.Wrapper>
                             )
                         }
-                        <S.OrderBtnWrapper>
+                        <S.OrderBtnWrapper position={buttonPosition}>
                             <S.GuideBtn onClick={() => setGuideVisible(!guideVisible)}>
                                 <div>방문없이 가격만 알 순 없나요?</div>
                                 <div>></div>

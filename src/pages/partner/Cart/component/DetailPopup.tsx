@@ -55,16 +55,17 @@ const Title = styled.p`
   margin-bottom: 30px;
 `;
 
+const KeywordTitle = styled.p`
+  text-align: left;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 24px;
+  letter-spacing: -1px;
+  margin-bottom: 10px;
+`;
 const KeywordWrapper = styled.div`
   text-align: left;
   display: inline;
-  p {
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 24px;
-    letter-spacing: -1px;
-    margin-bottom: 10px;
-  }
   
   div {
     display: flex;
@@ -121,7 +122,17 @@ interface Props {
 
 const DetailPopup:React.FC<Props> = (props) => {
     const { visible, onClose, partnerData } = props
-    const {description,keywords, level, pick_cnt, feedback_cnt, experience, addition = ''} = partnerData
+    const {description='',keywords, level, pick_cnt, feedback_cnt, experience, addition = ''} = partnerData
+    const titleLength = () => {
+        if (description.length >= 30) {
+            return description.substring(0,30) + ' . . .'
+        }
+
+        if (description.length === 0) {
+            return '사장님이 소개글을 작성중이에요'
+        }
+        return description
+    };
     return (
         <PopupTemplate visible={visible} onClose={onClose}>
             <DetailPopupWrapper>
@@ -129,16 +140,22 @@ const DetailPopup:React.FC<Props> = (props) => {
                     <span/>
                     <ProfileDefault width={24} height={24} />
                 </PartnerImg>
-                <Title>{description}</Title>
+                <Title>{titleLength()}</Title>
                 {level === 'NEW' && (<NewPartner showQuestionIcon={false}/>)}
-                {!isEmpty(keywords) &&(
+                <KeywordTitle>고객이 많이 언급한 키워드</KeywordTitle>
+                {isEmpty(keywords)
+                    ?
                     <KeywordWrapper>
-                        <p>고객이 많이 언급한 키워드</p>
-                        <div>
+                        <div>현재 고객평가 취합중입니다.</div>
+                        <div>좋은 평가를 위한 의욕적인 서비스를 기대됩니다. </div>
+                    </KeywordWrapper>
+                    :
+                    (<KeywordWrapper>
+                        <span>
                             {keywords.map((keyword:string, index:number) => (
                                 <Keyword key={index}>{keyword}</Keyword>
                             ))}
-                        </div>
+                        </span>
                     </KeywordWrapper>
                 )}
                 {level !== 'NEW' &&
