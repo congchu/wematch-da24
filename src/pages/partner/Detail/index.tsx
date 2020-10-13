@@ -19,8 +19,10 @@ import * as values from 'constants/values'
 import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
 import * as formSelector from "store/form/selectors";
+import * as commonSelector from 'store/common/selectors'
 import {some} from "lodash";
 import { useRouter } from 'hooks/useRouter'
+import ToastPopup from "../../../components/wematch-ui/ToastPopup";
 
 const S = {
     Container: Styled.div``,
@@ -161,8 +163,9 @@ const PartnerDetail = () => {
     const getPartnerDetail = useSelector(partnerSelector.getPartnerDetail)
     const getReviewList = useSelector(partnerSelector.getReviewList)
     const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
-    const getFormData = useSelector(formSelector.getFormData)
+    const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
 
+    const [sessionVisible, setSessionVisible] = useState(false)
 
     const checkScrollTop = () => {
         if (!showScrollView && window.pageYOffset > 300){
@@ -207,6 +210,12 @@ const PartnerDetail = () => {
 
         return '이 업체에 견적 받아보기'
     }
+
+    useEffect(() => {
+        if(!getMoveIdxData.idx) {
+            setSessionVisible(true)
+        }
+    }, [])
     useEffect(() => {
         dispatch(partnerActions.fetchPartnerDetailAsync.request({
             username: params.username,
@@ -246,7 +255,7 @@ const PartnerDetail = () => {
                     <UserImage profile_img={getPartnerDetail.data.profile_img } status={getPartnerDetail.data.status} />
                     <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT}
                         level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
-                        description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname}/>
+                        description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname} addition={getPartnerDetail.data.addition}/>
                     <LevelData feedback_cnt={getPartnerDetail.data.feedback_cnt} />
                     {getReviewList.data.length < 5 ? (
                         <S.ReviewPreview>
@@ -275,13 +284,16 @@ const PartnerDetail = () => {
                         )}
                         {showScrollView && (
                             <S.ScrollView>
-                                <S.BtnSelect onClick={handleSelected} disabled={isActive()} isSelected={isActive()} status={getPartnerDetail.data.status}>{buttonText(getPartnerDetail.data.status)}</S.BtnSelect>
+                                <S.BtnSelect onClick={handleSelected} disabled={isActive()} isSelected={isActive()} status={getPartnerDetail.data.status} id="dsl_booking_detail_cta">{buttonText(getPartnerDetail.data.status)}</S.BtnSelect>
                                 <S.TopBtn onClick={handleScrollTop}>
                                     <UpArrow color={colors.pointBlue} width={16} height={16} />
                                 </S.TopBtn>
                             </S.ScrollView>
                         )}
                     </S.BottomContainer>
+                    <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
+                        <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
+                    </ToastPopup>
               </>
             )}
         </S.Container>

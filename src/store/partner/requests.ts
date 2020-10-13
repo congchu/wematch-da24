@@ -30,10 +30,10 @@ export const getReviewList = async (username:string, page: number, size: number)
     return data.data
 }
 
-export const getRecommendedPartnerList = async (idx: string) => {
+export const getRecommendedPartnerList = async (idx: string, admin_id: string[]) => {
     const { data } = await api.request<ApiResponse<any>>({
         method: 'get',
-        url: `/da24/cart?idx=${idx}`
+        url: `/da24/cart?idx=${idx}&admin_id=${admin_id}`
     })
 
     return data

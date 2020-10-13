@@ -339,7 +339,7 @@ const MoveForm = () => {
                     keep_move: getIsMoveStore,
                     mkt_agree: getAgree.marketing,
                     distance: Number(distance) || 1,
-                    agent_id: queryString.parse(get(cookies, '0dj38gepoekf98234aplyadmin')).agentid
+                    agent_id: queryString.parse(get(cookies, '0dj38gepoekf98234aplyadmin')).agentid,
                 }
 
                 dispatch(formActions.setFormData(formData))
@@ -373,7 +373,12 @@ const MoveForm = () => {
     useEffect(() => {
         if (getPhoneVerified.data.is_verified && visibleVerifyPhone) {
             setVisibleVerifyPhone(false)
-            dispatch(commonActions.fetchMoveIdx.request(getFormData))
+            if (submitType === 'curation') {
+                dispatch(commonActions.fetchMoveIdx.request({...getFormData, legacy: true}))
+            }
+            if (submitType === 'select') {
+                dispatch(commonActions.fetchMoveIdx.request(getFormData))
+            }
         }
 
     }, [getPhoneVerified.data])

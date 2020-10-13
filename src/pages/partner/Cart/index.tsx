@@ -12,13 +12,14 @@ import Card from "./component/Card";
 import AlertModal from "components/Modal/AlertModal";
 import EmptyPage from "./emptyPage";
 import GuidePopup from "./component/GuidePopup";
-import GradeToastPopup from 'components/common/GradePopup';
 import {useRouter} from "hooks/useRouter";
 import * as partnerSelector from "../../../store/partner/selectors";
 import * as partnerActions from "../../../store/partner/actions";
 import { isEmpty } from 'lodash';
 import * as commonSelector from "../../../store/common/selectors";
-import {configureActions} from "@storybook/addon-actions";
+import Loading from "../../../components/Loading";
+import ToastPopup from "../../../components/wematch-ui/ToastPopup";
+import ConfirmPopup from "./component/ConfirmPopup";
 
 interface IList {
     id: number;
@@ -203,10 +204,13 @@ const S = {
 const PartnerCart = () => {
     const [alertVisible, setAlertVisible] = useState(false)
     const [guideVisible, setGuideVisible] = useState(false)
+    const [sessionVisible, setSessionVisible] = useState(false)
+    const [orderConfirmVisible, setOrderConfirmVisible] = useState(false)
     const [checkedList, setCheckedList]:any = useState([])
     const [selectList, setSelectList]:any = useState([])
     const [recommendedList, setRecommendedList]:any = useState([])
     const [buttonPosition, setBottomPosition] = useState('absolute')
+
 
     const router = useRouter()
     const history = useHistory()
@@ -223,7 +227,14 @@ const PartnerCart = () => {
 
     useEffect(() => {
         if (!isEmpty(getPartnerPickList) && getMoveIdxData.idx) {
-            dispatch(partnerActions.fetchCartListAsync.request({idx: getMoveIdxData.idx}))
+            const selectedId = getPartnerPickList.data.map(list => list.adminid)
+            if(!isEmpty(selectedId)) {
+                dispatch(partnerActions.fetchCartListAsync.request({idx: getMoveIdxData.idx, admin_id: selectedId}))
+            }
+        }
+
+        if (!getMoveIdxData.idx) {
+            setSessionVisible(true)
         }
     }, [])
 
@@ -294,7 +305,7 @@ const PartnerCart = () => {
     };
 
     if (getCartPartnerList.loading || getMatchingData.loading) {
-        return <div>loading</div>
+        return <Loading text={'견적요청 페이지로 이동 중입니다.'}/>
     }
     const listenScrollEvent = () => {
         setBottomPosition('sticky')
@@ -319,7 +330,7 @@ const PartnerCart = () => {
                                 {selectList.map((list:IList) => {
                                     return <Card key={list.id} list={list} onSelect={handleCheck}/>
                                 })}
-                                <S.PartnerMoreBtn onClick={() => router.push('/partner/list')}>업체 더 고르기</S.PartnerMoreBtn>
+                                <S.PartnerMoreBtn onClick={() => router.push('/partner/list')} id="dsl_booking_cart_more">업체 더 고르기</S.PartnerMoreBtn>
                             </S.CardWrapper>
                         </S.Wrapper>
                         <S.HorizontalLine/>
@@ -337,11 +348,11 @@ const PartnerCart = () => {
                             )
                         }
                         <S.OrderBtnWrapper position={buttonPosition}>
-                            <S.GuideBtn onClick={() => setGuideVisible(!guideVisible)}>
+                            <S.GuideBtn onClick={() => setGuideVisible(!guideVisible)} id="dsl_booking_cart_content">
                                 <div>방문없이 가격만 알 순 없나요?</div>
                                 <div>></div>
                             </S.GuideBtn>
-                            <S.OrderBtn onClick={() => handleSubmit()}>
+                            <S.OrderBtn onClick={() => setOrderConfirmVisible(true)} id="dsl_booking_cart_cta">
                                 {checkedList.length > 0 && (
                                     <div>{checkedList.length}</div>
                                 )}
@@ -353,8 +364,15 @@ const PartnerCart = () => {
             </S.CartContainer>
         </S.CartWrapper>
         <AlertModal visible={alertVisible} onConfirm={() => setAlertVisible(!alertVisible)} title={"3개 비교할 때 \n 만족도가 가장 높아요!"} subTitle={"더 많은 업체 비교를 원하시면\n고객센터(1522-2483)에 문의해주세요"}/>
-        {/*<PartnerDetailPopup visible={partnerDetailVisible} onClose={() => setPartnerDetailVisible(!partnerDetailVisible)}/>*/}
         <GuidePopup visible={guideVisible} onClose={() => setGuideVisible(!guideVisible)}/>
+        <ConfirmPopup visible={orderConfirmVisible} showHeaderCancelButton={true} confirmClick={() => {
+            handleSubmit();
+            setOrderConfirmVisible(false);
+            }} orderCount={checkedList.length}
+        />
+        <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
+            <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
+        </ToastPopup>
         </>
     )
 };

@@ -1,7 +1,6 @@
 import { createAction, createAsyncAction } from 'typesafe-actions'
 import { PartnerList, PartnerDetail, Review } from 'types/partner'
 import { Pagination } from 'types/pagination'
-import {create} from "domain";
 
 interface ListType {
     data: PartnerList[];
@@ -48,7 +47,7 @@ export const fetchCartListAsync = createAsyncAction(
     'FETCH_CART_LIST_REQUEST',
     'FETCH_CART_LIST_RESPONSE',
     'FETCH_CART_LIST_FAILURE',
-)<{idx: string},any,undefined>()
+)<{idx: string, admin_id: any | undefined},any,undefined>()
 
 export const fetchMatchingAsync = createAsyncAction(
     'FETCH_MATCHING_REQUEST',

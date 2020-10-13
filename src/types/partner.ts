@@ -33,6 +33,8 @@ export type PartnerDetail = {
     title: string;
     username: string;
     adminname: string;
+    addition?: string;
+    adminid?: string;
 }
 
 export type Review = {

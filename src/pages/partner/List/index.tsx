@@ -16,7 +16,6 @@ import ToastPopup from "components/wematch-ui/ToastPopup";
 import SetType from './setType'
 import PartnerItem from './item'
 import {useCookies} from "react-cookie";
-import {useRouter} from 'hooks/useRouter'
 
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
@@ -123,15 +122,13 @@ const PartnerList = () => {
     const [visible, setVisible] = useState(false)
     const [cookies] = useCookies(['formData'])
 
-    const router = useRouter()
-
     const fetchMoreListItems = () => {
-        if (getPartnerList.hasMore) {
+        if (getMoveIdxData.idx && getPartnerList.hasMore) {
             setPage(page + 1)
             dispatch(partnerActions.fetchPartnerMoreListAsync.request({
                 page: page,
                 size: values.DEFAULT_PARTNER_LIST_SIZE,
-                idx: router.query.idx
+                idx: getMoveIdxData.idx
             }))
             setTimeout(() => {
                 // @ts-ignore
@@ -151,7 +148,6 @@ const PartnerList = () => {
             setVisible(true)
         }
         if(!getMoveIdxData.idx) {
-            console.log('getMoveIdxData:',getMoveIdxData.idx)
             setVisible(true)
         }
     }, [])
@@ -167,7 +163,7 @@ const PartnerList = () => {
     }, [dispatch])
 
     if (getPartnerList.loading) {
-        return <Loading />
+        return <Loading text={'조건에 맞는 업체 찾는 중..'}/>
     }
 
 
@@ -199,11 +195,11 @@ const PartnerList = () => {
                         도움이 필요하세요?
                         <ChatArrow width={20} height={12} />
                     </S.ChatText>
-                    <S.BtnKakao onClick={handleLinkKakao}>
+                    <S.BtnKakao onClick={handleLinkKakao} id="dsl_booking_list_katalk">
                         <KakaoIcon width={35} height={34} />
                     </S.BtnKakao>
                 </S.WrapItem>
-                {isFetching && <MoreLoading />}
+                {(isFetching && getPartnerList.hasMore) && <MoreLoading />}
                 </>
             }
             <ToastPopup visible={visible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>

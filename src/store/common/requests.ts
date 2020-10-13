@@ -16,7 +16,7 @@ export const verifySendMessage = async (phone: string) => {
         method: 'post',
         url: `/msg/auth`,
         data: {
-            'send_phone': 'INTERIOR',
+            'send_phone': 'DA24_CUSTOMER',
             'dest_phone': `${phone}`
         }
     })

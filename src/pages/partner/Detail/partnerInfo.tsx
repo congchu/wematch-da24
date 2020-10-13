@@ -168,9 +168,10 @@ interface Props {
 	description: string;
 	keywords: string[];
 	adminname: string;
+	addition?: string;
 }
 
-const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywords, adminname }: Props) => {
+const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition='' }: Props) => {
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 	const isMobile = useMedia({
 		maxWidth: 767,
@@ -188,7 +189,7 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 				{level === 'NEW'
 					? <NewPartner showQuestionIcon={true}/>
 					: <S.Info>
-						<S.Card onClick={toggleVisibleLevel}>
+						<S.Card onClick={toggleVisibleLevel} id="dsl_booking_detail_info">
 						<span>평가등급
 							<Question width={16} height={16} />
 						</span>
@@ -211,7 +212,7 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 					</S.Option>
 					<S.Option>
 						<strong>고객이 많이 언급한 키워드</strong>
-							{!isEmpty(keywords) ?
+							{!isEmpty(keywords) &&
 								(
 									<ul>
 										{keywords.map((list, index) => (
@@ -219,17 +220,14 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 										))}
 									</ul>
 								)
-								:
-								<>
-									<div>현재 고격평가 취합중입니다.</div>
-									<div>좋은 평가를 위한 의욕적인 서비스를 기대됩니다.</div>
-								</>
 							}
 					</S.Option>
-					{/* <S.Option>
-						<strong>추가 가능 옵션</strong>
-						<p>설문조사에 수집된 내용대로 모두 노출</p>
-					</S.Option> */}
+					{addition.length > 0 && (
+						<S.Option>
+							<strong>추가 가능 옵션</strong>
+							<p>{addition}</p>
+						</S.Option>
+					)}
 				</S.Description>
 			</S.Wrap>
 			<S.Border />

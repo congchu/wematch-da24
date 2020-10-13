@@ -3,7 +3,7 @@ import {
     Switch,
     Route,
 } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import {Provider} from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 
 import store from 'store/index'
@@ -14,6 +14,7 @@ import Home from "pages/home";
 import PartnerList from 'pages/partner/List/index'
 import PartnerDetail from 'pages/partner/Detail/index'
 import PartnerCart from "pages/partner/Cart";
+
 
 function AppRoute() {
     return (

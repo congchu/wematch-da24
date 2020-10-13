@@ -77,15 +77,6 @@ export default createReducer<PartnerState, Actions>(initialState)
     .handleAction(actions.fetchReviewMoreListAsync.request, (state) => ({ ...state, review: { ...state.review, loading: false, moreLoading: true }}))
     .handleAction(actions.fetchReviewMoreListAsync.success, (state, action) => ({ ...state, review: { data: [...state.review.data, ...action.payload.data], loading: false, moreLoading: false, hasMore: action.payload.has_more}}))
     .handleAction(actions.fetchCartListAsync.request, (state => ({...state, cart: {selectedList: state.pick.data, loading: true}})))
-    .handleAction(actions.fetchCartListAsync.success, (state,action) => (
-            {
-                ...state,
-                cart: {
-                    recommendedList: action.payload.data.filter(({ id: id1 } : any) => !state.cart.selectedList.some(({ id: id2 }: any) => id2 === id1)),
-                    loading: false,
-                    selectedList: state.cart.selectedList
-                }
-            }
-            ))
+    .handleAction(actions.fetchCartListAsync.success, (state,action) => ({...state, cart: {recommendedList: action.payload.data, loading: false, selectedList: state.cart.selectedList}}))
     .handleAction(actions.fetchMatchingAsync.request, (state) => ({...state, matching: {...state.matching, loading: true}}))
     .handleAction(actions.fetchMatchingAsync.success, (state,action) => ({...state, matching: {idx: action.payload.data.data.idx, loading: false}}))

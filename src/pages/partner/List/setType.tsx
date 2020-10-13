@@ -84,7 +84,7 @@ const SetType:React.FC<Props> = ({count, formData}) => {
 				<span className="type">{moving_type}이사 / </span>
 				<span className="type">{dayjs(moving_date).format('MM.DD')} / </span>
 				<span className="type">{dong}</span>
-				<S.ReSelect onClick={() => router.history.push('/')}>
+				<S.ReSelect onClick={() => router.history.push('/')} id="dsl_booking_list_date">
 					날짜변경
 				</S.ReSelect>
 				<S.CompareList onClick={() => router.push(`/partner/cart?idx=${getMoveIdxData.idx}`)}>선택한 업체비교함

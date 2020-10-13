@@ -15,10 +15,13 @@ const S = {
     `
 }
 
-const Loading = () => {
+interface Props {
+    text?: string
+}
+const Loading:React.FC<Props> = ({text}) => {
     return (
         <S.Container>
-            로딩중
+            {text ? text : '로딩중'}
         </S.Container>
     )
 }

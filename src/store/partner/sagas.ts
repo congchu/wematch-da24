@@ -51,7 +51,7 @@ export function* fetchReviewMoreListSaga(action: ActionType<typeof actions.fetch
 
 export function* fetchRecommendedPartnerListSaga(action: ActionType<typeof actions.fetchCartListAsync.request>) {
     try {
-        const data = yield call(request.getRecommendedPartnerList, action.payload.idx)
+        const data = yield call(request.getRecommendedPartnerList, action.payload.idx, action.payload.admin_id)
         yield put(actions.fetchCartListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchCartListAsync.failure())
