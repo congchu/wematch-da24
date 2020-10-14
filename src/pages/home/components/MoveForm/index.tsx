@@ -390,10 +390,10 @@ const MoveForm = () => {
     }, [getFormData])
 
     useEffect(() => {
-        if(getMoveIdxData.idx && submitType === 'curation') {
+        if(getMoveIdxData.idx && submitType === 'curation' && !getMoveIdxData.loading) {
             document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
         }
-        if(getMoveIdxData.idx && submitType === 'select') {
+        if(getMoveIdxData.idx && submitType === 'select' && !getMoveIdxData.loading) {
             router.history.push(`/partner/list`)
         }
     }, [getMoveIdxData])

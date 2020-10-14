@@ -14,7 +14,7 @@ export const LevelGradeText = (level:'S' | 'A' | 'B' | 'C' | 'D' | 'NEW') => {
         case "C":
             return '평균 수준'
         case "NEW":
-            return '평균 이상 수'
+            return '평균 이상 수준'
         default:
             return "평균 수준"
     }

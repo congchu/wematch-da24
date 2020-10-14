@@ -143,16 +143,17 @@ const S = {
         position: relative;
       };
     `,
-    OrderBtn: styled.div`
+    OrderBtn: styled.div<{disabled: boolean}>`
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
       height: 64px;
-      background-color: #1672f7;
+      background-color: ${props => props.disabled ? '#D7DBE2': '#1672f7'};
+      pointer-events: ${props => props.disabled && 'none'};
       &:hover {
         cursor: pointer;
-      };
+      }
       div {
         width: 25px;
         height: 25px;
@@ -257,7 +258,7 @@ const PartnerCart = () => {
     }, []);
 
     const initialPartnerList = () => {
-        const {selectedList, recommendedList} = getCartPartnerList
+        const {selectedList, recommendedList: recommended} = getCartPartnerList
         const checkedList:any = [];
             const b = selectedList.map((list:any) => {
                 if(checkedList.length < 3) {
@@ -268,8 +269,8 @@ const PartnerCart = () => {
                 }
                 return list
             });
-            if (!isEmpty(recommendedList)) {
-                const c = recommendedList.map((list:any) => {
+            if (!isEmpty(recommended)) {
+                const c = recommended.map((list:any) => {
                     if(checkedList.length < 3) {
                         list.isChecked = true;
                         checkedList.push(list.adminid)
@@ -279,6 +280,8 @@ const PartnerCart = () => {
                     return list
                 });
                 setRecommendedList(c)
+            } else {
+                setRecommendedList([])
             }
             setSelectList(b)
             setCheckedList(checkedList)
@@ -352,11 +355,11 @@ const PartnerCart = () => {
                                 <div>방문없이 가격만 알 순 없나요?</div>
                                 <div>></div>
                             </S.GuideBtn>
-                            <S.OrderBtn onClick={() => setOrderConfirmVisible(true)} id="dsl_booking_cart_cta">
+                            <S.OrderBtn onClick={() => setOrderConfirmVisible(true)} id="dsl_booking_cart_cta" disabled={checkedList.length === 0}>
                                 {checkedList.length > 0 && (
                                     <div>{checkedList.length}</div>
                                 )}
-                                <span>방문견적(무료) 요청보내기</span>
+                                <span>{checkedList.length === 0 ? '업체를 선택해주세요' : '방문견적(무료) 요청보내기'}</span>
                             </S.OrderBtn>
                         </S.OrderBtnWrapper>
                     </>
@@ -365,7 +368,7 @@ const PartnerCart = () => {
         </S.CartWrapper>
         <AlertModal visible={alertVisible} onConfirm={() => setAlertVisible(!alertVisible)} title={"3개 비교할 때 \n 만족도가 가장 높아요!"} subTitle={"더 많은 업체 비교를 원하시면\n고객센터(1522-2483)에 문의해주세요"}/>
         <GuidePopup visible={guideVisible} onClose={() => setGuideVisible(!guideVisible)}/>
-        <ConfirmPopup visible={orderConfirmVisible} showHeaderCancelButton={true} confirmClick={() => {
+        <ConfirmPopup visible={orderConfirmVisible} showHeaderCancelButton={true} cancelClick={() => setOrderConfirmVisible(!orderConfirmVisible)} confirmClick={() => {
             handleSubmit();
             setOrderConfirmVisible(false);
             }} orderCount={checkedList.length}

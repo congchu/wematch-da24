@@ -142,15 +142,17 @@ const DetailPopup:React.FC<Props> = (props) => {
                 </PartnerImg>
                 <Title>{titleLength()}</Title>
                 {level === 'NEW' && (<NewPartner showQuestionIcon={false}/>)}
-                <KeywordTitle>고객이 많이 언급한 키워드</KeywordTitle>
-                {!isEmpty(keywords) &&
-                    (<KeywordWrapper>
+                {!isEmpty(keywords) && (
+                    <>
+                    <KeywordTitle>고객이 많이 언급한 키워드</KeywordTitle>
+                    <KeywordWrapper>
                         <span>
                             {keywords.map((keyword:string, index:number) => (
                                 <Keyword key={index}>{keyword}</Keyword>
                             ))}
                         </span>
                     </KeywordWrapper>
+                    </>
                 )}
                 {level !== 'NEW' &&
                     <PartnerInfo>

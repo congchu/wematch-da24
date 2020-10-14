@@ -48,6 +48,7 @@ const Header = styled.div`
     line-height: 22px;
     letter-spacing: -0.01px;
     margin-right: 10px;
+    cursor: pointer;
     
     @media screen and (min-width: 720px) {
       margin-right: 51px;
@@ -166,7 +167,7 @@ const ToastPopup:React.FC<Props> = (props) => {
                 <ToastContent>
                     <Header>
                         {showHeaderCancelButton &&
-                        <button onClick={cancelClick}>닫기</button>
+                            <button onClick={cancelClick}>닫기</button>
                         }
                     </Header>
                     <Content>

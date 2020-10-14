@@ -18,6 +18,7 @@
     "axios": "0.19.2",
     "connected-react-router": "6.8.0",
     "dayjs": "1.8.28",
+    "dotenv-cli": "^4.0.0",
     "lodash": "4.17.15",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
@@ -39,6 +40,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-dev": "dotenv -e .env.development react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",

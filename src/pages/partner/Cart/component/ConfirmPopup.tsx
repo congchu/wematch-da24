@@ -7,11 +7,12 @@ interface Props {
     showHeaderCancelButton: boolean;
     orderCount: number;
     confirmClick: () => void;
+    cancelClick: () => void;
 }
 const ConfirmPopup:React.FC<Props> = (props) => {
-    const { visible, showHeaderCancelButton, orderCount, confirmClick} = props
+    const { visible, showHeaderCancelButton, orderCount, confirmClick, cancelClick} = props
     return (
-        <ToastPopup visible={visible} showHeaderCancelButton={showHeaderCancelButton} confirmText={'네, 보내주세요'} confirmClick={confirmClick}>
+        <ToastPopup visible={visible} showHeaderCancelButton={showHeaderCancelButton} confirmText={'네, 보내주세요'} confirmClick={confirmClick} cancelClick={cancelClick}>
             <h1>{`선택하신 ${orderCount}개 업체에 방문견적 요청을 보내시겠습니까?`}</h1>
         </ToastPopup>
     )

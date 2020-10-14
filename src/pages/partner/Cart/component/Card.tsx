@@ -124,7 +124,7 @@ const Card:React.FC<Props> = (props: Props) => {
         }
 
         if (description.length === 0) {
-            return '사장님이 소개글을 작성중이에요'
+            return '사장님이 소개글을 작성중이에요'.substring(0, 12) + ' . . .'
         }
         return description
     };

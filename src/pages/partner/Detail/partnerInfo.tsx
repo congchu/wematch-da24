@@ -210,18 +210,16 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 						<strong>사장님 한마디({adminname})</strong>
 						<p>{description.length !== 0 ? description : values.DEFAULT_TEXT}</p>
 					</S.Option>
+					{!isEmpty(keywords) &&
 					<S.Option>
 						<strong>고객이 많이 언급한 키워드</strong>
-							{!isEmpty(keywords) &&
-								(
-									<ul>
-										{keywords.map((list, index) => (
-											<li key={index}>{list}</li>
-										))}
-									</ul>
-								)
-							}
+						<ul>
+							{keywords.map((list, index) => (
+								<li key={index}>{list}</li>
+							))}
+						</ul>
 					</S.Option>
+					}
 					{addition.length > 0 && (
 						<S.Option>
 							<strong>추가 가능 옵션</strong>

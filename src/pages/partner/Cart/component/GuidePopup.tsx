@@ -146,7 +146,7 @@ const GuidePopup:React.FC<Props> = (props) => {
                 </ContentBox>
                 <ContentBox>
                     <Tip>Tip 03</Tip>
-                    <h1>비교건적은 몇 개가 적당한가요?</h1>
+                    <h1>비교견적은 몇 개가 적당한가요?</h1>
                     <p>같은 조건에도 업체마다 서비스와 이사비용이 크게 다르기 때문에, 가능하다면 3개 업체 비교를 권장 드립니다.</p>
                     <p style={{marginTop: '20px'}}>실제 위매치에서 이용자 만족도를 분석한 결과, 3개 업체 비교 시 만족도가 가장 높았습니다.</p>
                     <img src={require('assets/images/guide_3.png')} alt={'guide'} />
