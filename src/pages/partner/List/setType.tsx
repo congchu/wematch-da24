@@ -7,8 +7,9 @@ import {useRouter} from 'hooks/useRouter'
 
 import * as colors from  'styles/colors'
 import * as commonTypes from "store/common/types"
-import {useSelector} from "react-redux";
-import * as commonSelector from "../../../store/common/selectors";
+import {useDispatch, useSelector} from "react-redux";
+import * as commonSelector from "store/common/selectors";
+import * as partnerActions from "store/partner/actions";
 
 
 const S = {
@@ -76,6 +77,7 @@ interface Props {
 
 const SetType:React.FC<Props> = ({count, formData}) => {
 	const router = useRouter()
+	const dispatch = useDispatch()
 	const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
 	const {dong, moving_type, moving_date} = formData
 	return (
@@ -84,7 +86,10 @@ const SetType:React.FC<Props> = ({count, formData}) => {
 				<span className="type">{moving_type}이사 / </span>
 				<span className="type">{dayjs(moving_date).format('MM.DD')} / </span>
 				<span className="type">{dong}</span>
-				<S.ReSelect onClick={() => router.history.push('/')} id="dsl_booking_list_date">
+				<S.ReSelect onClick={() => {
+					dispatch(partnerActions.cartReset())
+					router.history.push('/')}
+				} id="dsl_booking_list_date">
 					날짜변경
 				</S.ReSelect>
 				<S.CompareList onClick={() => router.push(`/partner/cart?idx=${getMoveIdxData.idx}`)}>선택한 업체비교함

@@ -54,3 +54,5 @@ export const fetchMatchingAsync = createAsyncAction(
     'FETCH_MATCHING_RESPONSE',
     'FETCH_MATCHING_FAILURE'
 )<any, any, undefined>()
+
+export const cartReset = createAction('CART_RESET')()

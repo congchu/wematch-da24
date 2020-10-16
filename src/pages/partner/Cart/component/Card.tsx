@@ -82,10 +82,14 @@ const S = {
 			background-repeat:no-repeat;
 		}
 		@media screen and (min-width:1200px) {
-          margin-right: 16px;
+		
           width:64px;
 		  height:64px;
-      };
+        };
+        @media screen and (max-width: 359px) {
+          width: 44px;
+          height: 44px;
+        }
 	`,
     Content: styled.div`
       display: block;
@@ -95,11 +99,17 @@ const S = {
         font-size: 14px;
         line-height: 1.43;
         letter-spacing: -1px;
+        @media screen and (max-width: 359px) {
+          font-size: 13px;
+        }
       },
       .partner_about {
         color: ${colors.gray66};
       },
       .partner_keyword {
+        @media screen and (max-width: 359px) {
+          font-size: 11px;
+        }
         color: ${colors.gray66};
         font-size: 12px;
         letter-spacing: -0.86px;

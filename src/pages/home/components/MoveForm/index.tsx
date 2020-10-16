@@ -20,11 +20,12 @@ import ToastPopup from "components/wematch-ui/ToastPopup";
 import promotionImage from 'assets/images/promotion/promotion_img.svg'
 
 import * as commonSelector from 'store/common/selectors'
+import * as commonActions from 'store/common/actions'
+import * as commonTypes from 'store/common/types'
 import * as formSelector from 'store/form/selectors'
 import * as formActions from 'store/form/actions'
+import * as partnerActions from 'store/partner/actions'
 import * as colors from 'styles/colors'
-import * as commonActions from '../../../../store/common/actions'
-import * as commonTypes from 'store/common/types'
 import { addressSplit, phoneSplit, translateMovingType } from 'components/wematch-ui/utils/form'
 
 import { calcRouteByDirectionService, calcRouteByGeoCoder } from 'lib/distanceUtil'

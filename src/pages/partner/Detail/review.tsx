@@ -190,15 +190,15 @@ const Review = ({ id, created_at, memo, reply, professional, kind, price, star }
 
 	const handleLevelText = (level: Grade) => {
 		if (level === 'verygood') {
-			return '최고에요'
+			return '최고예요'
 		} else if (level === 'good') {
 			return '좋아요'
 		} else if (level === 'normal') {
 			return '보통이에요'
 		} else if (level === 'bad') {
-			return '아쉬어요'
+			return '아쉬워요'
 		} else if (level === 'verybad') {
-			return '별로에요 '
+			return '별로예요 '
 		}
 	}
 
