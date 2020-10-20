@@ -29,9 +29,8 @@ const S = {
     Ul: styled.ul<{direction: DirectionProp, type: TypeProp}>`
       display: flex;
       flex-direction: ${(({ direction }) => direction === 'row' ? 'row' : 'column')};
-      max-height: 500px;
       overflow-y: auto;
-      
+      max-height: calc(${window.innerHeight}px - 99px - 48px);
       @media (min-width: 768px) {
         max-height: 1200px;
         overflow-y: auto;

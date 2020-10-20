@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useLayoutEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import {useMedia} from "react-use-media";
@@ -80,9 +80,13 @@ const S = {
         padding-left: 102px;
       };
     `,
-    Wrapper: styled.div`
+    Wrapper: styled.div<{marginBottom?: number | null}>`
       display: inline-block;
       width: 100%;
+
+      @media screen and (max-width: 768px) {
+        margin-bottom: ${props => props.marginBottom && props.marginBottom}px;
+      }
 
 
       @media screen and (min-width: 1200px) {
@@ -130,9 +134,9 @@ const S = {
       margin-bottom: 15px;
       text-align: left;
     `,
-    OrderBtnWrapper: styled.div<{position: string}>`
+    OrderBtnWrapper: styled.div`
       width: 100%;
-      position: ${props => props.position && props.position};
+      position: fixed;
       bottom: 0;
       
       @media screen and (min-width: 768px) {
@@ -210,8 +214,8 @@ const PartnerCart = () => {
     const [checkedList, setCheckedList]:any = useState([])
     const [selectList, setSelectList]:any = useState([])
     const [recommendedList, setRecommendedList]:any = useState([])
-    const [buttonPosition, setBottomPosition] = useState('absolute')
 
+    const recommendCart = React.useRef<HTMLDivElement>(null)
 
     const router = useRouter()
     const history = useHistory()
@@ -251,11 +255,6 @@ const PartnerCart = () => {
             document.location.href = `http://m.dev.da24.wematch.com/move_step_complete.asp?move_idx=${getMatchingData.idx}`
         }
     }, [getMatchingData])
-
-    useEffect(() => {
-        window.addEventListener('scroll', listenScrollEvent);
-        return () => window.removeEventListener('scroll', listenScrollEvent);
-    }, []);
 
     const initialPartnerList = () => {
         const {selectedList, recommendedList: recommended} = getCartPartnerList
@@ -310,10 +309,8 @@ const PartnerCart = () => {
     if (getCartPartnerList.loading || getMatchingData.loading) {
         return <Loading text={'견적요청 페이지로 이동 중입니다.'}/>
     }
-    const listenScrollEvent = () => {
-        setBottomPosition('sticky')
-    }
 
+    console.log(recommendCart.current?.offsetHeight)
     return (
         <>
         <S.CartWrapper>
@@ -328,7 +325,7 @@ const PartnerCart = () => {
                     ? <EmptyPage />
                     :
                     <>
-                        <S.Wrapper>
+                        <S.Wrapper marginBottom={isEmpty(recommendedList) ? recommendCart.current?.offsetHeight : null}>
                             <S.CardWrapper>
                                 {selectList.map((list:IList) => {
                                     return <Card key={list.id} list={list} onSelect={handleCheck}/>
@@ -336,10 +333,10 @@ const PartnerCart = () => {
                                 <S.PartnerMoreBtn onClick={() => router.push('/partner/list')} id="dsl_booking_cart_more">업체 더 고르기</S.PartnerMoreBtn>
                             </S.CardWrapper>
                         </S.Wrapper>
-                        <S.HorizontalLine/>
+                        {!isEmpty(recommendedList) && <S.HorizontalLine/>}
                         {
                             !isEmpty(recommendedList) && (
-                                <S.Wrapper>
+                                <S.Wrapper marginBottom={recommendCart.current?.offsetHeight}>
                                     <S.CardWrapper>
                                         <S.CurationTitle>이런 업체는 어떠세요?</S.CurationTitle>
                                         <S.CurationSubTitle>고객의 가성비, 평가 키워드, 선택률 데이터 기준으로 추천드려요.</S.CurationSubTitle>
@@ -350,7 +347,7 @@ const PartnerCart = () => {
                                 </S.Wrapper>
                             )
                         }
-                        <S.OrderBtnWrapper position={buttonPosition}>
+                        <S.OrderBtnWrapper ref={recommendCart}>
                             <S.GuideBtn onClick={() => setGuideVisible(!guideVisible)} id="dsl_booking_cart_content">
                                 <div>방문없이 가격만 알 순 없나요?</div>
                                 <div>></div>

@@ -35,8 +35,7 @@ const S = {
         display: flex;
         justify-content: center;
         flex-direction: column;
-        margin-top: 35px;
-        padding: 0 24px 6px;
+        padding: 35px 24px 6px;
     `,
     Empty: Styled.div`
         padding: 26px 0 0 16px;    
