@@ -364,6 +364,10 @@ const MoveForm = () => {
             dispatch(formActions.setInitialFormData(cookies.formData))
         }
         if(type === 'oneroom') {
+            const time = new Date().getTime()
+            if(type === 'oneroom') {
+                time % 2 ? document.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
+            }
             dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
         } else {
             dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp))
