@@ -95,7 +95,7 @@ const ButtonGroup: React.FC<Props> = (props) => {
         }
     };
     return (
-        <S.Container direction={direction} {...restProps}>
+        <S.Container direction={direction} {...restProps} id="dsl_movemain_tab_types">
             {groups.map((group:GroupProp, idx:number) =>
                 <S.Button
                   key={idx}

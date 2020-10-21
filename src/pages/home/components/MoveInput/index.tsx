@@ -156,7 +156,7 @@ const MoveInput: React.FC<Props> = (props) => {
     return (
         <S.Container {...restProps}>
             {(type === "house" || type === "office") && (
-                <S.Form>
+                <S.Form id="dsl_movemain_input_terms">
                     <Input theme="primary" border readOnly placeholder="이사예정일" onClick={toggleCalendarConfirm} value={getMoveDate} />
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <Input theme="default" border readOnly placeholder="출발지" rootStyle={{ width: "58%", marginRight: "2%" }} onClick={toggleStartAddress} value={getMoveAddress.start} />

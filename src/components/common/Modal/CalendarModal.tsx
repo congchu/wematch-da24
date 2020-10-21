@@ -12,7 +12,7 @@ interface Props {
     onClose?: () => void;
     onOverlayClose?: () => void;
     onConfirm?: () => void;
-    onSelect? (date: CalendarDate): void;
+    onSelect?: (date: CalendarDate) => void;
     selected?: string[] | undefined;
 }
 

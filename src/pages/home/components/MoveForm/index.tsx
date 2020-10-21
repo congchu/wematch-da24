@@ -422,11 +422,11 @@ const MoveForm = () => {
                     </Description.Container>
                 )}
                 {getMoveType === 'house' && (
-                    <Promotions.Wrapper>
+                    <Promotions.Wrapper id="dsl_movemain_banner_link">
                         <Promotions.leftBox>
                             <p className="text1">가정이사 한정!</p>
                             <p className="text2">방문견적 인증 시 <br/>매트리스 무료 소독 1회권</p>
-                            <p className="text3">기간 8/19~ <a href="https://da24.wematch.com/notice.asp">자세히</a></p>
+                            <p className="text3">기간 8/19~ <a href="https://da24.wematch.com/notice.asp" target="_blank">자세히</a></p>
                         </Promotions.leftBox>
                         <Promotions.rightBox/>
                     </Promotions.Wrapper>
@@ -492,7 +492,7 @@ const MoveForm = () => {
                             }))}/>
                         </Terms.Collapse>
                     </Terms.Container>
-                    <Terms.SubmitContainer>
+                    <Terms.SubmitContainer id="dsl_movemain_button_requests">
                         <Button theme="primary" onClick={() => {
                             handleSubmit()
                             setSubmitType('curation')
