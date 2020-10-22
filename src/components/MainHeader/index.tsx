@@ -16,8 +16,6 @@ const MainHeader = ({}: Props) => {
                             <li><a href={constants.MOVE_URL}>이사</a></li>
                             <li><a href={constants.CLEAN_URL}>청소</a></li>
                             <li><a href={constants.INTERIOR_URL}>인테리어</a></li>
-                            <li><a href={constants.LAND_URL}>부동산</a></li>
-                            <li><a href={constants.MONEY_URL}>금융</a></li>
                         </ul>
                     </div>
                     <div id="wmLnb">
