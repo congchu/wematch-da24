@@ -1,4 +1,6 @@
 export const API_URL = process.env.REACT_APP_API_URL
+export const API_BOOKING_URL = process.env.REACT_APP_BOOKING_URL
+export const API_MIDDLEWARE_URL = process.env.REACT_APP_MIDDLEWARE_URL
 
 export const MOVE_URL = process.env.REACT_APP_MOVE_URL
 export const CLEAN_URL = process.env.REACT_APP_CLEAN_URL

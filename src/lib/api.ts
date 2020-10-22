@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { API_URL } from 'constants/env'
+import {API_BOOKING_URL, API_MIDDLEWARE_URL, API_URL} from 'constants/env'
 
 export interface ApiResponse<T> {
     data: T;
@@ -17,11 +17,17 @@ export class ApiError extends Error {
         this.msg = msg || ''
     }
 }
-
-const api = axios.create({
+export const api = axios.create({
     baseURL: API_URL
 })
 
+export const bookingApi = axios.create({
+    baseURL: API_BOOKING_URL
+})
+
+export const middlewareApi = axios.create({
+    baseURL: API_MIDDLEWARE_URL
+})
 api.interceptors.response.use((response) => {
     return response
 }, (error: AxiosError) => {
@@ -30,4 +36,4 @@ api.interceptors.response.use((response) => {
     }
 })
 
-export default api
+export default {bookingApi, api, middlewareApi}

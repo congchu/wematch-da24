@@ -1,6 +1,7 @@
-import api from 'lib/api'
+import {api} from 'lib/api'
 import axios from 'axios';
 import * as types from './types'
+import {API_MIDDLEWARE_URL} from "constants/env";
 
 export const getAddress = async (dong: string) => {
     const { data } = await api.request<types.RequestAddressProps[]>({
@@ -35,5 +36,5 @@ export const verifyAuthCode = async (phone: string, code: string) => {
 }
 
 export const getMoveIdx = async (formData: types.RequestUserInfoInsert) => {
-    return await axios.post('https://d3heusccn8.execute-api.ap-northeast-2.amazonaws.com/dev/inquiry', formData)
+    return await axios.post(`${API_MIDDLEWARE_URL}/inquiry`, formData)
 }
