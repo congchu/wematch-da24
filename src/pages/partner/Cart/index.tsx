@@ -30,6 +30,7 @@ interface IList {
     adminname: string;
     keyword?: string[];
 }
+
 const S = {
     CartWrapper: styled.div`
       height: 100%;
@@ -347,7 +348,7 @@ const PartnerCart = () => {
                                 </S.Wrapper>
                             )
                         }
-                        <S.OrderBtnWrapper ref={recommendCart}>
+                        <S.OrderBtnWrapper ref={recommendCart} id="dsl_booking_cart_buttons">
                             <S.GuideBtn onClick={() => setGuideVisible(!guideVisible)} id="dsl_booking_cart_content">
                                 <div>방문없이 가격만 알 순 없나요?</div>
                                 <div>></div>

@@ -131,9 +131,9 @@ const EmptyPage = () => {
     }
     return (
         <EmptyWrapper>
-            <EmptyCard>
+            <EmptyCard id="dsl_booking_cart_add">
                 <img src={require("../../../assets/images/plus.svg")} alt='icon'/>
-                <div onClick={() => router.push('/partner/list')} id="dsl_booking_cart_add">업체 추가하기</div>
+                <div onClick={() => router.push('/partner/list')}>업체 추가하기</div>
             </EmptyCard>
             <Text>방문 견적을 요청할 업체를 골라주세요 (최대 3개)</Text>
             <GuideWrapper>

@@ -85,13 +85,13 @@ const TopGnb = ({ title, count, onPrevious,showTruck }: Props) => {
 	const router = useRouter()
 	const routerPath = router.pathname.split('/partner/')[1];
 	return (
-		<S.Container>
-			<S.BtnPrevious onClick={onPrevious} id={`dsl_booking_${routerPath}_back`}>
+		<S.Container id={`dsl_booking_${routerPath}_header`}>
+			<S.BtnPrevious onClick={onPrevious}>
 				<Previous width={11} height={20} color={colors.gray33} />
 			</S.BtnPrevious>
 			<S.HeadTitle>{title}</S.HeadTitle>
 			{showTruck && (
-				<S.BtnList onClick={() => router.push(`/partner/cart`)} id={`dsl_booking_${routerPath}_truck`}>
+				<S.BtnList onClick={() => router.push(`/partner/cart`)}>
 					<Truck width={22} height={15} color={colors.black}/>
 					{count > 0 && <S.Count>{count}</S.Count>}
 				</S.BtnList>

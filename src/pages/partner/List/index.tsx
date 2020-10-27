@@ -177,7 +177,7 @@ const PartnerList = () => {
                 ?   <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다."/>
                 :
                 <>
-                <S.WrapItem>
+                <S.WrapItem id="dsl_booking_list_partner">
                     {getPartnerList.data.map((list:any) => {
                         return (
                             <PartnerItem key={list.id} profile_img={list.profile_img}
@@ -191,7 +191,7 @@ const PartnerList = () => {
                             />
                         )
                     })}
-                    <S.ChatText onClick={handleLinkKakao}>
+                    <S.ChatText onClick={handleLinkKakao} id="dsl_booking_list_katalk2">
                         도움이 필요하세요?
                         <ChatArrow width={20} height={12} />
                     </S.ChatText>
