@@ -3,23 +3,25 @@ import {useHistory} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import {useMedia} from "react-use-media";
 import styled from 'styled-components'
+import { isEmpty } from 'lodash';
 
 import MainHeader from "components/MainHeader";
 import TopGnb from "components/TopGnb";
-
-import * as colors from 'styles/colors'
+import Loading from "components/Loading";
+import ToastPopup from "components/wematch-ui/ToastPopup";
+import ConfirmPopup from "./component/ConfirmPopup";
 import Card from "./component/Card";
 import AlertModal from "components/Modal/AlertModal";
 import EmptyPage from "./emptyPage";
 import GuidePopup from "./component/GuidePopup";
+
 import {useRouter} from "hooks/useRouter";
-import * as partnerSelector from "../../../store/partner/selectors";
-import * as partnerActions from "../../../store/partner/actions";
-import { isEmpty } from 'lodash';
-import * as commonSelector from "../../../store/common/selectors";
-import Loading from "../../../components/Loading";
-import ToastPopup from "../../../components/wematch-ui/ToastPopup";
-import ConfirmPopup from "./component/ConfirmPopup";
+import {dataLayer} from "lib/dataLayerUtil";
+
+import * as colors from 'styles/colors'
+import * as partnerSelector from "store/partner/selectors";
+import * as partnerActions from "store/partner/actions";
+import * as commonSelector from "store/common/selectors";
 
 interface IList {
     id: number;
@@ -242,6 +244,8 @@ const PartnerCart = () => {
         if (!getMoveIdxData.idx) {
             setSessionVisible(true)
         }
+
+        dataLayer({event: 'pageview_cart'})
     }, [])
 
 

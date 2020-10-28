@@ -83,9 +83,8 @@ interface Props {
 
 const TopGnb = ({ title, count, onPrevious,showTruck }: Props) => {
 	const router = useRouter()
-	const routerPath = router.pathname.split('/partner/')[1];
 	return (
-		<S.Container id={`dsl_booking_${routerPath}_header`}>
+		<S.Container id={`dsl_booking_detail_header`}>
 			<S.BtnPrevious onClick={onPrevious}>
 				<Previous width={11} height={20} color={colors.gray33} />
 			</S.BtnPrevious>

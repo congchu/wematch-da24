@@ -24,6 +24,7 @@ import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
 import * as formSelector from "../../../store/form/selectors";
 import * as commonSelector from "../../../store/common/selectors";
+import {dataLayer} from "lib/dataLayerUtil";
 const S = {
     Container: Styled.div`
         height:100%;
@@ -150,6 +151,7 @@ const PartnerList = () => {
         if(!getMoveIdxData.idx) {
             setVisible(true)
         }
+        dataLayer({event: 'pageview_list'})
     }, [])
 
     useEffect(() => {

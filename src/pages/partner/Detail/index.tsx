@@ -22,7 +22,8 @@ import * as formSelector from "store/form/selectors";
 import * as commonSelector from 'store/common/selectors'
 import {some} from "lodash";
 import { useRouter } from 'hooks/useRouter'
-import ToastPopup from "../../../components/wematch-ui/ToastPopup";
+import ToastPopup from "components/wematch-ui/ToastPopup";
+import {dataLayer} from "lib/dataLayerUtil";
 
 const S = {
     Container: Styled.div``,
@@ -215,6 +216,7 @@ const PartnerDetail = () => {
         if(!getMoveIdxData.idx) {
             setSessionVisible(true)
         }
+        dataLayer({event: 'pageview_detail'})
     }, [])
     useEffect(() => {
         dispatch(partnerActions.fetchPartnerDetailAsync.request({
