@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import styled from 'styled-components/macro'
 
-import { gray33, gray66 } from 'styles/colors'
+import { gray33, gray66, pointBlue } from 'styles/colors'
 
 const S = {
   Container: styled.section`
@@ -37,24 +37,29 @@ const S = {
   `
 }
 
-const Dots = styled.ul`
-  display: flex;
-  margin-top: 20px;
-  justify-content: center;
-`;
-
-const Dot = styled.li<{ active: boolean }>`
-  width: ${props => props.active ? '14px' : '8px'};
-  height: 8px;
-  background-color: ${props => props.active ? '#1672F7' : '#C4C9D1'};
-  border-radius: ${props => props.active ? '40px' : '50%'};
-  transition: background-color 0.3s ease-in-out;
-  margin-right: 4px;  
-`
-
 const Image = styled.img`
   width: 312px;
   height: 210px;
+`
+
+const CustomSwiper = styled(Swiper)`
+  .swiper-wrapper{
+    padding-bottom: 15px;
+  }
+
+  .swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction{
+    bottom: 0px !important;
+  }
+  
+  .swiper-pagination-bullet {
+    color: #C4C9D1;
+  }
+  
+  .swiper-pagination-bullet-active {
+    width: 14px;
+    border-radius: 40px;
+    background: ${pointBlue};
+  }
 `
 
 function Review() {
@@ -78,12 +83,13 @@ function Review() {
             <S.Text>이사 후 고객이 평가한 업체멸 만족도</S.Text>
             <S.More href="https://da24.wematch.com/comment2.asp">더보기</S.More>
           </S.Group>
-          <Swiper
+          <CustomSwiper
             centeredSlides={true}
             centeredSlidesBounds={true}
-            onSlideChange={(swiper) => (
-              swiper.activeIndex === reviews.length + 1 ? setCurIndex(1) : swiper.activeIndex === 0 ? setCurIndex(5) : setCurIndex(swiper.activeIndex)
-            )}
+            pagination={{ clickable: true }}
+            onSlideChange={(swiper) => {
+                console.log(swiper.activeIndex)
+            }}
             width={312}
             loop={true}
             autoplay={autoPlayOptions}
@@ -94,14 +100,9 @@ function Review() {
                 <Image src={review} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,S등급" />
               </SwiperSlide>
               ))}
-              <span slot="container-end">
-                <Dots>
-                  {reviews.map((item, i) => (
-                    <Dot key={i} active={curIndex === i + 1} />
-                  ))}
-                </Dots>
-              </span>
-            </Swiper>
+              <div className="swiper-wrapper"></div>
+              <div className="swiper-pagination"></div>
+            </CustomSwiper>
         </S.Container>
     )
 }
