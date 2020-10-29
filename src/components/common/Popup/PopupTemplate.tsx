@@ -1,9 +1,10 @@
 import React from 'react'
+import { createPortal }  from 'react-dom'
 import Styled, { css } from 'styled-components'
 
 import Button from 'components/common/Button'
 
-import * as colors from "../../../styles/colors";
+import * as colors from 'styles/colors'
 
 interface Props {
     /** 모달 visible */
@@ -108,24 +109,24 @@ const PopupTemplate:React.FC<Props> = (props) => {
 
     return (
         <>
-            {visible && (
-               <S.Container>
-                   <S.Overlay onClick={onOverlayClose} />
-                   <S.Panel border={border}>
-                       {children}
-                       {footerButton && (
-                           <S.ButtonGroup>
-                               <Button theme="default" onClick={onCancelClick} style={leftCustomButtonStyle ? leftCustomButtonStyle : customButtonStyles.left}>
-                                   {onCancelButtonText}
-                               </Button>
-                               <Button theme="primary" onClick={onConfirmClick} style={rightCustomButtonStyle ? rightCustomButtonStyle : customButtonStyles.right}>
-                                   {onConfirmButtonText}
-                               </Button>
-                           </S.ButtonGroup>
-                       )}
-                   </S.Panel>
-               </S.Container>
-            )}
+            {visible && createPortal((
+                <S.Container>
+                    <S.Overlay onClick={onOverlayClose} />
+                    <S.Panel border={border}>
+                        {children}
+                        {footerButton && (
+                            <S.ButtonGroup>
+                                <Button theme="default" onClick={onCancelClick} style={leftCustomButtonStyle ? leftCustomButtonStyle : customButtonStyles.left}>
+                                    {onCancelButtonText}
+                                </Button>
+                                <Button theme="primary" onClick={onConfirmClick} style={rightCustomButtonStyle ? rightCustomButtonStyle : customButtonStyles.right}>
+                                    {onConfirmButtonText}
+                                </Button>
+                            </S.ButtonGroup>
+                        )}
+                    </S.Panel>
+                </S.Container>
+            ), document.body)}
         </>
     )
 }

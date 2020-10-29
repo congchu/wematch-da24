@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
+
 import styled, { keyframes, css } from 'styled-components'
 
 import { Icon } from 'components/wematch-ui'
@@ -115,7 +117,7 @@ const S = {
             margin-left: -180px;
         }
     `,
-        Header: styled.header`
+    Header: styled.header`
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -218,7 +220,7 @@ const Modal: React.FC<Props> = (props) => {
 
     if (!animate && !localVisible) return null;
 
-    return (
+    return createPortal((
         <S.Container {...restProps}>
             <S.Overlay onClick={onOverlayClose} visible={!visible} />
             <S.Panel visible={!visible}>
@@ -246,7 +248,7 @@ const Modal: React.FC<Props> = (props) => {
                 )}
             </S.Panel>
         </S.Container>
-    )
+    ), document.body)
 }
 
 export default Modal

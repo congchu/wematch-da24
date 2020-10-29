@@ -8,18 +8,20 @@ interface Props extends React.HTMLAttributes<HTMLButtonElement> {
     theme: 'default' | 'primary',
     /** 비활성화 여부 */
     disabled?: boolean;
+    border?: boolean;
+    bold?: boolean;
 }
 
 const S = {
-    StyledButton: Styled.button`
+    StyledButton: Styled.button<{ border: boolean; bold: boolean }>`
         display: block;
         width: 100%;
         height: 56px;
-        font-size: 18px;
-        font-weight: 400;
+        font-size: 16px;
+        line-height: 23px;
+        letter-spacing: -0.03em;
+        font-weight: ${props => props.bold ? 'bold' : '400'};
         text-align: center;
-        letter-spacing: -1px;
-        line-height: 58px;
         cursor: pointer;
         
         ${({ theme }) => theme === 'default' && css`
@@ -30,6 +32,10 @@ const S = {
         ${({ theme }) => theme === 'primary' && css`
           background-color: ${colors.pointBlue};
           color: ${colors.white};
+        `}
+        
+        ${({ border }) => border && css`
+          border-radius: 8px;
         `}
         
         &:disabled {
@@ -43,12 +49,14 @@ const Button: React.FC<Props> = (props) => {
     const {
         theme = 'default',
         disabled = false,
+        border = false,
+        bold = false,
         children,
         ...restProps
     } = props
 
     return (
-        <S.StyledButton theme={theme} disabled={disabled} {...restProps}>
+        <S.StyledButton theme={theme} disabled={disabled} border={border} bold={bold} {...restProps}>
             {children}
         </S.StyledButton>
     )

@@ -11,17 +11,35 @@ import store from 'store/index'
 import browserHistory from 'lib/history'
 import GlobalStyled from 'styles/global'
 
-import Home from "pages/home";
+import Home from 'pages/home'
+import New from 'pages/new'
 import PartnerList from 'pages/partner/List/index'
 import PartnerDetail from 'pages/partner/Detail/index'
-import PartnerCart from "pages/partner/Cart";
-import useScript from "./hooks/useScript";
+import PartnerCart from 'pages/partner/Cart'
+import useScript from 'hooks/useScript'
 
+//swiper lib
+import SwiperCore, { Pagination, Autoplay } from 'swiper'
+import 'swiper/swiper.scss'
+import 'swiper/components/pagination/pagination.scss'
+
+SwiperCore.use([Pagination, Autoplay])
 
 function AppRoute() {
     const [script, setScript] = useState('');
     const location = useLocation()
     const customScript = useScript(script)
+
+    // ie redirection to edge
+    if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+        window.open('microsoft-edge:' + 'https://da24.wematch.com', '_blank')
+
+        setTimeout(function() {
+            window.opener='self'
+            window.open('','_parent','')
+            window.close();
+        }, 1)
+    }
 
     const getPathname = () => {
         let pathname = 5
@@ -58,6 +76,7 @@ function AppRoute() {
     return (
         <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/new" component={New} />
             <Route exact path="/partner/list" component={PartnerList} />
             <Route exact path="/partner/detail/:username" component={PartnerDetail} />
             <Route exact path="/partner/cart" component={PartnerCart}/>
