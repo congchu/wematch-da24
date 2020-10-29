@@ -16,6 +16,10 @@ import New from 'pages/new'
 import PartnerList from 'pages/partner/List/index'
 import PartnerDetail from 'pages/partner/Detail/index'
 import PartnerCart from 'pages/partner/Cart'
+import Intro from 'pages/banner/Intro'
+import Customer from 'pages/banner/Customer'
+import Grade from 'pages/banner/Grade'
+
 import useScript from 'hooks/useScript'
 
 //swiper lib
@@ -80,6 +84,9 @@ function AppRoute() {
             <Route exact path="/partner/list" component={PartnerList} />
             <Route exact path="/partner/detail/:username" component={PartnerDetail} />
             <Route exact path="/partner/cart" component={PartnerCart}/>
+            <Route exact path="/banner/intro" component={Intro} />
+            <Route exact path="/banner/customer" component={Customer} />
+            <Route exact path="/banner/grade" component={Grade} />
         </Switch>
     )
 }
