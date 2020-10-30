@@ -16,9 +16,8 @@ import NoticePopup from 'components/common/Popup/NoticePopup'
 import OneroomNoticePopup from 'components/common/Popup/OneroomNoticePopup'
 import TermsModal from 'components/common/Modal/TermsModal'
 
-//v2 custom
-import ButtonGroup from 'components/da24/v2/ButtonGroup'
-import MoveInput  from 'components/da24/v2/MoveInput'
+import ButtonGroup from 'pages/new/components/ButtonGroup'
+import MoveInput  from 'pages/new/components/MoveInput'
 
 import * as commonSelector from 'store/common/selectors'
 import * as commonActions from 'store/common/actions'

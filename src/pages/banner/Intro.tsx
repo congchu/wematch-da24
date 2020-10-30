@@ -4,7 +4,7 @@ import { useMedia } from 'react-use-media'
 
 import styled from 'styled-components/macro'
 
-import BannerLayout from 'components/da24/v2/layout/BannerLayout'
+import BannerLayout from './layout/BannerLayout'
 
 import * as colors from 'styles/colors'
 

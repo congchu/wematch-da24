@@ -2,7 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import BannerLayout from 'components/da24/v2/layout/BannerLayout'
+import BannerLayout from './layout/BannerLayout'
 
 import * as colors from 'styles/colors'
 

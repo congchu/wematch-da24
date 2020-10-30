@@ -6,9 +6,10 @@ const useHashToggle = (hash: string): [boolean, React.Dispatch<boolean>] =>  {
     const toggleOpenModal = (isToggle: boolean) => {
         if (isToggle) {
             window.location.assign(hash);
-        } else {
-            window.location.replace('#');
         }
+        // } else {
+        //     window.location.replace('#');
+        // }
     }
 
     const handleOnHashChange = () => {
