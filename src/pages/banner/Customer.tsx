@@ -10,7 +10,7 @@ const S = {
     Container: styled.div`
       font-style: normal;
       font-weight: normal;
-      margin: 30px 24px 105px;
+      margin: 86px 24px 105px;
             
       .title {
         font-size: 22px;
@@ -65,6 +65,19 @@ const S = {
           }
         }
       }
+      
+      .mobile-enter {
+        display: block;
+      }
+      
+      @media screen and (min-width: 768px) {
+         width: 720px;
+         margin: 80px auto 60px;
+         
+         .mobile-enter {
+           display: none;
+         }
+      }
     `
 }
 
@@ -114,7 +127,7 @@ export default function Customer() {
         <BannerLayout title="위매치 고객의 소리" onBack={() => history.goBack()}>
             <S.Container>
                 <p className="title">
-                    <strong>'긴가민가 위매치'</strong>가 <br />
+                    <strong>'긴가민가 위매치'</strong>가 <br className="mobile-enter" />
                     <strong>'두번한다 위매치'</strong>로
                 </p>
                 <p style={{ marginTop: 20, marginBottom: 32 }}>
@@ -126,10 +139,10 @@ export default function Customer() {
                         <img src={require('assets/images/banner/smile.png')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,S등급" />
                         <h2 className="point bold">{review.title}</h2>
                         {review.data.map((d, i) => (
-                            <>
+                            <div key={i}>
                                 <h3 className="bold" key={i}>{d.title}</h3>
                                 <p dangerouslySetInnerHTML={{ __html: d.review }} />
-                            </>
+                            </div>
                         ))}
                     </div>
                 ))}

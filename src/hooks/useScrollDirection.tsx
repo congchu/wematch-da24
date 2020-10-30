@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const useDirection = (): [boolean, React.Dispatch<boolean>] => {
+const useScrollDirection = (): [boolean, React.Dispatch<boolean>] => {
     const [isFixed, setIsFixed] = useState<boolean>(false)
     let lastScrollTop = 0
 
@@ -30,4 +30,4 @@ const useDirection = (): [boolean, React.Dispatch<boolean>] => {
     return [isFixed, setIsFixed];
 };
 
-export default useDirection;
+export default useScrollDirection;

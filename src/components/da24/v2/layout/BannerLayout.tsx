@@ -1,21 +1,34 @@
 import React from 'react'
-import Button from 'components/common/Button'
+import { useMedia } from 'react-use-media'
+import { useRouter } from 'hooks/useRouter'
 import styled from 'styled-components/macro'
+
+import Button from 'components/common/Button'
+import MainHeader from 'components/da24/v2/MainHeader'
+import MainFooter from 'components/da24/v2/MainFooter'
 
 import * as colors from 'styles/colors'
 import { Previous } from 'components/wematch-ui/Icon'
 
-import { useRouter } from 'hooks/useRouter'
-
 const S = {
-    Container: styled.div``,
+    Container: styled.div`
+      margin-top: 56px;
+      
+      @media screen and (min-width: 768px) {
+        margin-top: 0;
+      }
+    `,
     Header: styled.header`
+      position: fixed;
+      top: 0;
+      left: 0;
       height: 56px;
-      position: relative;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      
+      background: ${colors.white};
+            
       .icon {
         position: absolute;
         left: 24px;
@@ -36,6 +49,13 @@ const S = {
       bottom: 0;
       left: 0;
       width: 100%;
+      
+      @media screen and (min-width: 768px) {
+        position: relative;
+        width: 720px;
+        
+        margin: 0 auto 100px;
+      }
     `
 }
 
@@ -47,19 +67,25 @@ interface Props {
 
 export default function BannerLayout({ title, onBack, children, ...restProps }: Props) {
     const router = useRouter()
+    const isDesktop = useMedia({
+        minWidth: 1200,
+    })
 
     return (
         <S.Container {...restProps}>
-            <S.Header>
-                <div className="icon" onClick={onBack}>
-                    <Previous size={16} color={colors.black} />
-                </div>
-                <h1>{title}</h1>
-            </S.Header>
+            {isDesktop ? <MainHeader isFixed={true} border={true} /> : (
+                <S.Header>
+                    <div className="icon" onClick={onBack}>
+                        <Previous size={16} color={colors.black} />
+                    </div>
+                    <h1>{title}</h1>
+                </S.Header>
+            )}
             {children}
             <S.Bottom>
                 <Button theme="primary" bold onClick={() => router.history.push('/')}>위매치 이용하러 가기</Button>
             </S.Bottom>
+            {isDesktop && <MainFooter />}
         </S.Container>
     )
 }

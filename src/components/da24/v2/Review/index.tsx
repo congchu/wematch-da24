@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import styled from 'styled-components/macro'
@@ -75,7 +75,6 @@ function Review() {
       delay: 3000
     }
 
-    const [curIndex, setCurIndex] = useState(0)
     return (
         <S.Container>
           <S.Title>이사업체 고객 평가</S.Title>
@@ -87,9 +86,6 @@ function Review() {
             centeredSlides={true}
             centeredSlidesBounds={true}
             pagination={{ clickable: true }}
-            onSlideChange={(swiper) => {
-                console.log(swiper.activeIndex)
-            }}
             width={312}
             loop={true}
             autoplay={autoPlayOptions}
@@ -100,8 +96,8 @@ function Review() {
                 <Image src={review} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,S등급" />
               </SwiperSlide>
               ))}
-              <div className="swiper-wrapper"></div>
-              <div className="swiper-pagination"></div>
+              <div className="swiper-wrapper" />
+              <div className="swiper-pagination" />
             </CustomSwiper>
         </S.Container>
     )

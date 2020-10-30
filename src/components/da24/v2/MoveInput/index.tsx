@@ -157,33 +157,37 @@ const MoveInput: React.FC<Props> = (props) => {
         <S.Container {...restProps}>
             {(type === "house" || type === "office") && (
                 <S.Form>
-                    <Input theme="default" border readOnly placeholder="이사예정일" onClick={toggleCalendarConfirm} value={getMoveDate} />
+                    <Input theme="default" border readOnly placeholder="이사예정일" onClick={toggleCalendarConfirm} value={getMoveDate} style={{ backgroundColor: "transparent" }} />
                     <div style={{ display: "flex", flexDirection: "row" }}>
-                        <Input theme="default" border readOnly placeholder="출발지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleStartAddress} value={getMoveAddress.start} />
-                        <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "49%" }} onClick={toggleStartFloor} value={getMoveFloor.start ? getMoveFloor.start + '층' : getMoveFloor.start} />
+                        <Input theme="default" border readOnly placeholder="출발지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleStartAddress} value={getMoveAddress.start} style={{ backgroundColor: "transparent" }} />
+                        <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "49%" }} onClick={toggleStartFloor} value={getMoveFloor.start ? getMoveFloor.start + '층' : getMoveFloor.start} style={{ backgroundColor: "transparent" }} />
                     </div>
                     {getMoveAddress?.start && (
                         <Input theme="default" border placeholder="출발지 상세주소" value={getMoveAddress.detailStart} onChange={(e) => dispatch(formActions.setAddress({
                             ...getMoveAddress,
                             detailStart: e.target.value
-                        }))}/>
+                        }))} style={{ backgroundColor: "transparent" }} />
                     )}
                     {getMoveAddress?.start && (
                         <div style={{ display: "flex", flexDirection: "row" }}>
-                            <Input theme="default" border readOnly placeholder="도착지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleEndAddress} value={getMoveAddress.end} />
-                            <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "49%" }} onClick={toggleEndFloor} value={getMoveFloor.end ? getMoveFloor.end + '층' : getMoveFloor.end} />
+                            <Input theme="default" border readOnly placeholder="도착지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleEndAddress} value={getMoveAddress.end} style={{ backgroundColor: "transparent" }} />
+                            <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "49%" }} onClick={toggleEndFloor} value={getMoveFloor.end ? getMoveFloor.end + '층' : getMoveFloor.end} style={{ backgroundColor: "transparent" }} />
                         </div>
                     )}
                     {getMoveAddress?.end && (
                         <Input theme="default" border placeholder="도착지 상세주소" value={getMoveAddress.detailEnd} onChange={(e) => dispatch(formActions.setAddress({
                             ...getMoveAddress,
                             detailEnd: e.target.value
-                        }))}/>
+                        }))} style={{ backgroundColor: "transparent" }} />
                     )}
                     <div style={{ display: "flex", flexDirection: "row" }}>
-                        <Input theme="default" border placeholder="이름" rootStyle={{ width: "49%", marginRight: "2%" }} maxLength={20} onChange={(e) => dispatch(formActions.setName(e.target.value))} value={getName} />
+                        <Input theme="default" border placeholder="이름" rootStyle={{ width: "49%", marginRight: "2%" }}
+                               maxLength={20} onChange={(e) => dispatch(formActions.setName(e.target.value))} value={getName}
+                               style={{ backgroundColor: "transparent" }}
+                        />
                         <Input theme="default" type="tel" pattern="[0-9]*" inputMode="numeric"
-                               placeholder="연락처(-없이 입력)" border rootStyle={{ width: "49%" }} maxLength={13} value={getPhone} onChange={handlePhone} />
+                               placeholder="연락처(-없이 입력)" border rootStyle={{ width: "49%" }} maxLength={13} value={getPhone} onChange={handlePhone}
+                               style={{ backgroundColor: "transparent" }} />
                     </div>
                     {getMoveAddress?.end && (
                         <S.TextContainer>

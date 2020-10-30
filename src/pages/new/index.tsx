@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useCookies } from 'react-cookie'
 import queryString from 'query-string'
 import { RouteComponentProps } from 'react-router'
-import useDirection from 'hooks/useDirection'
+import useScrollDirection from 'hooks/useScrollDirection'
 
 import MainHeader from 'components/da24/v2/MainHeader'
 import MoveForm from 'components/da24/v2/MoveForm'
@@ -42,7 +42,7 @@ const S = {
 const Home:React.FC<RouteComponentProps> = ({ location}) => {
     const [cookies, setCookie] = useCookies(['0dj38gepoekf98234aplyadmin'])
     const HomeRef = useRef<HTMLDivElement>(null)
-    const [isFixed, setIsFixed] = useDirection()
+    const [isFixed, setIsFixed] = useScrollDirection()
 
     useEffect(() => {
         const mda = queryString.parse(location.search).mda || '';

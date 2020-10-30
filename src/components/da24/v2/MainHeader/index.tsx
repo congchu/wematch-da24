@@ -5,7 +5,8 @@ import * as colors from 'styles/colors'
 import * as constants from 'constants/env'
 
 interface Props {
-    isFixed?: boolean | undefined
+    isFixed?: boolean | undefined;
+    border?: boolean;
 }
 
 const S = {
@@ -15,18 +16,21 @@ const S = {
       top: 0;
       width: 100%;
       z-index: 100;
-      overflow: hidden;
+      //overflow: hidden;
       min-width: 320px;
 
       @media screen and (min-width: 1200px) {
-        //position: static;
         position: ${props => props.isFixed ? 'fixed' : 'static'};
         background: #fff;
       }
     `,
-    HeaderWrapper: styled.div`
+    HeaderWrapper: styled.div<{ border: boolean }>`
       overflow: hidden;
       position: relative;
+      
+      ${props => props.border && css`
+        box-shadow: inset 0 -1px 0 ${colors.lineDefault};
+      `};
     `,
     Header: styled.div<{ isFixed: boolean }>`
       position: relative;
@@ -44,7 +48,8 @@ const S = {
         ${props => props.isFixed && css`
           //width: 100%;
           width: 992px;
-          margin: 0 auto
+          margin: 0 auto;
+          background-color: transparent;
         `};
       }
   `,
@@ -205,10 +210,10 @@ const S = {
   `,
 }
 
-const MainHeader = ({ isFixed = false }: Props) => {
+const MainHeader = ({ isFixed = false, border = false }: Props) => {
     return (
       <S.Wrapper isFixed={isFixed}>
-          <S.HeaderWrapper>
+          <S.HeaderWrapper border={border}>
               <S.Header isFixed={isFixed}>
                   <S.Logo><a href="https://wematch.com/"><span>위매치</span></a></S.Logo>
                   <S.Categories>
