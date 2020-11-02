@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 
 const useHashToggle = (hash: string): [boolean, React.Dispatch<boolean>] =>  {
     const [isToggle, setIsToggle] = useState<boolean>(false);
 
-    const toggleOpenModal = (isToggle: boolean) => {
+    const toggleOpenModal = useCallback((isToggle: boolean) => {
         if (isToggle) {
             window.location.assign(hash);
+        } else {
+            window.history.replaceState(null, '', ' ')
         }
-        // } else {
-        //     window.location.replace('#');
-        // }
-    }
+    }, [isToggle])
 
     const handleOnHashChange = () => {
         const isHashMatch = window.location.hash === hash;

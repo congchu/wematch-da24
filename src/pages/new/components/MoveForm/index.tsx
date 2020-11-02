@@ -30,6 +30,7 @@ import { addressSplit, phoneSplit, translateMovingType } from 'components/wematc
 
 import { calcRouteByDirectionService, calcRouteByGeoCoder } from 'lib/distanceUtil'
 import { MOVE_URL, MAIN_URL } from 'constants/env'
+import useHashToggle from 'hooks/useHashToggle'
 
 const Visual = {
     Section: styled.section`
@@ -200,7 +201,8 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
     const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
 
     const [collapse, setCollapse] = useState<boolean>(false)
-    const [visibleTerms, setVisibleTerms] = useState<boolean>(false)
+    // const [visibleTerms, setVisibleTerms] = useState<boolean>(false)
+    const [visibleTerms, setVisibleTerms] = useHashToggle('#terms')
     const [visibleVerifyPhone, setVisibleVerifyPhone] = useState(false)
     const [visibleOneroom, setVisibleOneroom] = useState(false)
     const [isVerifySuccess, setIsVerifySuccess] = useState(false)
