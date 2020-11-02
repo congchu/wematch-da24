@@ -19,6 +19,7 @@ import PartnerCart from 'pages/partner/Cart'
 import Intro from 'pages/banner/Intro'
 import Customer from 'pages/banner/Customer'
 import Grade from 'pages/banner/Grade'
+import UnSupported from 'pages/unsupported'
 
 import useScript from 'hooks/useScript'
 
@@ -42,7 +43,7 @@ function AppRoute() {
             window.opener='self'
             window.open('','_parent','')
             window.close();
-        }, 1)
+        }, 100)
     }
 
     const getPathname = () => {
@@ -87,6 +88,7 @@ function AppRoute() {
             <Route exact path="/banner/intro" component={Intro} />
             <Route exact path="/banner/customer" component={Customer} />
             <Route exact path="/banner/grade" component={Grade} />
+            <Route exact path="/unsupported" component={UnSupported} />
         </Switch>
     )
 }
