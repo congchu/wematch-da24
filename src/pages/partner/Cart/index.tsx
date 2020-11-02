@@ -31,6 +31,7 @@ interface IList {
     adminid: string;
     adminname: string;
     keyword?: string[];
+    profile_img: string;
 }
 
 const S = {

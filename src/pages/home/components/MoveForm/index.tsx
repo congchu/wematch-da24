@@ -287,6 +287,11 @@ const MoveForm = () => {
             alert('도착지 층수를 입력해 주세요.')
             return false;
         }
+        if (!getAgree.terms || !getAgree.privacy) {
+            alert('이용약관 및 개인정보처리방침에 동의해 주세요.')
+            return false;
+        }
+
         return true;
     }
 

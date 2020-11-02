@@ -15,7 +15,7 @@ const DetailPopupWrapper = styled.div`
   padding: 40px;
 `;
 
-const PartnerImg = styled.div`
+const PartnerImg = styled.div<{profile_img?: string}>`
 	position:relative;
 	width:56px;
 	height:56px;
@@ -122,7 +122,7 @@ interface Props {
 
 const DetailPopup:React.FC<Props> = (props) => {
     const { visible, onClose, partnerData } = props
-    const {description='',keywords, level, pick_cnt, feedback_cnt, experience, addition = ''} = partnerData
+    const {description='',keywords, level, pick_cnt, feedback_cnt, experience, addition = '', profile_img} = partnerData
     const titleLength = () => {
         if (description.length >= 30) {
             return description.substring(0,30) + ' . . .'
@@ -136,21 +136,26 @@ const DetailPopup:React.FC<Props> = (props) => {
     return (
         <PopupTemplate visible={visible} onClose={onClose}>
             <DetailPopupWrapper>
-                <PartnerImg>
-                    <span/>
-                    <ProfileDefault width={24} height={24} />
-                </PartnerImg>
+                {profile_img
+                  ? <PartnerImg profile_img={profile_img}>
+                      <span/>
+                    </PartnerImg>
+                  : <PartnerImg>
+                      <span/>
+                      <ProfileDefault width={24} height={24} />
+                    </PartnerImg>
+                }
                 <Title>{titleLength()}</Title>
                 {level === 'NEW' && (<NewPartner showQuestionIcon={false}/>)}
                 {!isEmpty(keywords) && (
                     <>
                     <KeywordTitle>고객이 많이 언급한 키워드</KeywordTitle>
                     <KeywordWrapper>
-                        <span>
+                        <div>
                             {keywords.map((keyword:string, index:number) => (
                                 <Keyword key={index}>{keyword}</Keyword>
                             ))}
-                        </span>
+                        </div>
                     </KeywordWrapper>
                     </>
                 )}
