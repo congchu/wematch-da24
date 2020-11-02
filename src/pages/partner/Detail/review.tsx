@@ -225,7 +225,7 @@ const Review = ({ id, created_at, memo, reply, professional, kind, price, star }
 			<S.Wrap>
 				<S.UserInfo>
 					<strong>고객번호 {id}</strong>
-					<span>{getCreatedAt(created_at)} 이사</span>
+					<span>{getCreatedAt(created_at)}</span>
 				</S.UserInfo>
 				 <S.Grade>
 					<S.StarFill star={star}>
