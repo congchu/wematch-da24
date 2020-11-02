@@ -20,6 +20,7 @@ interface IList {
     adminid: string;
     adminname: string;
     keywords?: string[];
+    profile_img: string;
 }
 interface styleProps {
     checkImage?: string
@@ -57,7 +58,7 @@ const S = {
       background-image: url(${props => props.checkImage});
       background-size: cover;
     `,
-    PartnerImg: styled.div`
+    PartnerImg: styled.div<{profile_img?: string | undefined}>`
 		position:relative;
 		float:left;
 		width:56px;
@@ -81,15 +82,28 @@ const S = {
 			background-size:cover;
 			background-repeat:no-repeat;
 		}
+		@media screen and (max-width: 359px) {
+        width: 44px;
+        height: 44px;
+	  span {
+	    width: 44px;
+	    height: 44px;
+	  }
+	}
+	@media screen and (min-width:1200px) {
+      margin-right: 16px;
+      width:64px;
+	    height:64px;
+	    
+	    span {
+	      width:64px;
+	      height:64px;
+      };
+    }
 		@media screen and (min-width:1200px) {
-		
-          width:64px;
+      width:64px;
 		  height:64px;
-        };
-        @media screen and (max-width: 359px) {
-          width: 44px;
-          height: 44px;
-        }
+    };
 	`,
     Content: styled.div`
       display: block;
@@ -124,7 +138,7 @@ const S = {
 const Card:React.FC<Props> = (props: Props) => {
     const [partnerDetailVisible, setPartnerDetailVisible] = useState(false)
     const {list, onSelect} = props;
-    const { id, adminname, title, keywords=[], description= '', isChecked, adminid } = list;
+    const { id, adminname, title, keywords=[], description= '', isChecked, adminid, profile_img } = list;
     const isMobile = useMedia({
         maxWidth: 767,
     })
@@ -157,10 +171,15 @@ const Card:React.FC<Props> = (props: Props) => {
                     onClick={() => onSelect(list, adminid)}
                     checkImage={require(`assets/images/check_circle_${isChecked ? "on" : "off"}.svg`)}
                 />
-                <S.PartnerImg>
-                    <span/>
-                    <ProfileDefault width={24} height={24} />
-                </S.PartnerImg>
+                {profile_img
+                  ? <S.PartnerImg profile_img={profile_img}>
+                      <span />
+                      </S.PartnerImg>
+                  : <S.PartnerImg>
+                        <span />
+                        <ProfileDefault width={24} height={24} />
+                    </S.PartnerImg>
+                }
                 <S.Content onClick={() => setPartnerDetailVisible(!partnerDetailVisible)}>
                     <div className="partner_name">{adminname}</div>
                     <div className="partner_about">{titleLength()}</div>
