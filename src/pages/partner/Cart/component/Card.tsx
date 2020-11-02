@@ -82,15 +82,28 @@ const S = {
 			background-size:cover;
 			background-repeat:no-repeat;
 		}
+		@media screen and (max-width: 359px) {
+        width: 44px;
+        height: 44px;
+	  span {
+	    width: 44px;
+	    height: 44px;
+	  }
+	}
+	@media screen and (min-width:1200px) {
+      margin-right: 16px;
+      width:64px;
+	    height:64px;
+	    
+	    span {
+	      width:64px;
+	      height:64px;
+      };
+    }
 		@media screen and (min-width:1200px) {
-		
-          width:64px;
+      width:64px;
 		  height:64px;
-        };
-        @media screen and (max-width: 359px) {
-          width: 44px;
-          height: 44px;
-        }
+    };
 	`,
     Content: styled.div`
       display: block;

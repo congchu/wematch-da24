@@ -38,11 +38,16 @@ const PartnerImg = styled.div<{profile_img?: string}>`
 		background-size:cover;
 		background-repeat:no-repeat;
 	}
+	
 	@media screen and (min-width:1200px) {
       margin-right: 16px;
       width:64px;
-	  height:64px;
-    };
+	    height:64px;
+	    
+	    span {
+	      width:64px;
+	      height:64px;
+      };
 }
 `;
 const Title = styled.p`
