@@ -56,7 +56,7 @@ const Visual = {
     `,
     ButtonGroupContainer: styled.div`
         //margin: 40px 0 24px 0;
-        margin-top: 20px;
+        margin-top: 26px;
     `,
 }
 
@@ -145,22 +145,33 @@ const Terms = {
         flex-direction: column;
         
         .text {
-          display: none;
+          margin: 24px 0;
+          text-align: center;
+          
+          .mobile-enter {
+            display: initial; 
+          }
+          
+          p {
+            text-align: center;
+            font-size: 14px;
+            line-height: 21px;
+          }
+                
+          strong {
+            font-weight: bold;
+          }
         }
         
         @media screen and (min-width:1200px) {
             .text {
-                display: block;
-                p {
-                  text-align: center;
-                  font-size: 14px;
-                  line-height: 21px;
-                  margin: 30px 0;
-                }
-                
-                strong {
-                  font-weight: bold;
-                }
+              .mobile-enter {
+                display: none; 
+              }
+              
+              p {
+                margin: 30px 0;
+              }
             }
         }
     `
@@ -420,10 +431,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                 )}
                 {getMoveType === 'oneroom' && (
                     <Description.InfoType>
-                        <p>
-                            거주자 1인, 1톤 트럭 이내 <br />
-                            포장이사 견적을 신청합니다
-                        </p>
+                        <p>거주자 1명, 짐량 1톤 트럭 이내</p>
                         <a href={MAIN_URL + '/용달_화물'}>단순 운반 차량만 필요하다면 ?</a>
                     </Description.InfoType>
                 )}
@@ -479,7 +487,8 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     <Terms.SubmitContainer>
                         <div className="text">
                             <p>
-                                내 조건에 맞는 업체<strong>(최대 3개)</strong>에 비용산정을 위한 <strong>무료 방문견적</strong>을 신청합니다
+                                내 조건에 맞는 업체<strong>(최대 3개)</strong>에 <br className="mobile-enter" />
+                                비용산정을 위한 <strong>무료 방문견적</strong>을 신청합니다
                             </p>
                         </div>
                         <Button theme="primary" bold border onClick={() => {

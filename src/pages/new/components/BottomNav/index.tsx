@@ -20,7 +20,7 @@ export default function BottomNav() {
   if (!isWmClientApp) {
     return (
       <ResponsiveBottomNav>
-        <BaseBottomMenu to="/" replace exact>
+        <BaseBottomMenu to="/new" replace exact>
           <Home size={24} />
           <span>홈</span>
         </BaseBottomMenu>

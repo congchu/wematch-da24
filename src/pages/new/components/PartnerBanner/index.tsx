@@ -55,7 +55,7 @@ const Banner = styled.section`
       background-image: url(${require('assets/images/partner_banner.svg')});
       background-repeat: no-repeat;
       background-size: cover;
-      width: 174px;
+      width: 124px;
       height: 80px;
       position: absolute;
       top: 0;

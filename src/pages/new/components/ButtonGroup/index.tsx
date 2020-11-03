@@ -27,13 +27,14 @@ interface Props  {
 interface buttonProps {
     active: boolean
 }
+
 const S = {
     Container: Styled.div<StyleProps>`
         display: flex;
         flex-direction: row;
         border: 1px solid ${colors.pointBlue};
         border-radius: 8px;
-        box-shadow: 0 4px 10px 4px rgba(0, 104, 255, 0.1);
+        //box-shadow: 0 4px 10px 4px rgba(0, 104, 255, 0.1);
         background-color: white;
         height: 64px;
 
