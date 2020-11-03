@@ -22,8 +22,8 @@ import * as values from 'constants/values'
 
 import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
-import * as formSelector from "../../../store/form/selectors";
-import * as commonSelector from "../../../store/common/selectors";
+import * as formSelector from "store/form/selectors";
+import * as commonSelector from "store/common/selectors";
 import {dataLayer} from "lib/dataLayerUtil";
 const S = {
     Container: Styled.div`
