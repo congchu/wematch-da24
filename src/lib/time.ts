@@ -6,7 +6,6 @@ export const getCreatedAt = (date: string | Date | Dayjs) => {
 
   const diffDay = now.diff(createdAt, 'day')
 
-  console.log('diffDay:',diffDay)
   if(diffDay < 30) {
     return '1달 내 이사'
   } else if (30 <= diffDay && diffDay < 60) {
