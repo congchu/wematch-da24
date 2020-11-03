@@ -136,8 +136,11 @@ const ButtonGroup: React.FC<Props> = (props) => {
                   ref={buttonRef}
                   active={group.type === getMoveType}
                   onClick={() => {
-                      scrollToButton();
-                      if(onClick) {
+                      if (group.type !== "oneroom") {
+                          scrollToButton();
+                      }
+
+                      if (onClick) {
                           onClick(group.type)
                       }
                   }}

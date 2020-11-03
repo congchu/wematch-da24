@@ -205,19 +205,6 @@ const MoveInput: React.FC<Props> = (props) => {
                     )}
                 </S.Form>
             )}
-            {type === "oneroom" && (
-                <S.Form>
-                    <Input theme="default" border readOnly placeholder="이사예정일" onClick={toggleCalendarConfirm} value={getMoveDate} style={{ backgroundColor: "transparent" }} />
-                    <S.Group>
-                        <Input theme="default" border readOnly placeholder="출발지" rootStyle={{ width: "58%", marginRight: "2%" }} onClick={toggleStartAddress} value={getMoveAddress.start} style={{ backgroundColor: "transparent" }} />
-                        <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "40%" }} onClick={toggleStartFloor} value={getMoveFloor.start ? getMoveFloor.start + ' 층' : getMoveFloor.start} style={{ backgroundColor: "transparent" }} />
-                    </S.Group>
-                    <S.Group>
-                        <Input theme="default" border readOnly placeholder="도착지" rootStyle={{ width: "58%", marginRight: "2%" }} onClick={toggleEndAddress} value={getMoveAddress.end} style={{ backgroundColor: "transparent" }} />
-                        <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "40%" }} onClick={toggleEndFloor} value={getMoveFloor.end ? getMoveFloor.end + ' 층' : getMoveFloor.end} style={{ backgroundColor: "transparent" }} />
-                    </S.Group>
-                </S.Form>
-            )}
 
             <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?" onClose={toggleCalendarCancel}
                 onConfirm={toggleCalendarConfirm} onSelect={onSelectDate} selected={getMoveDate}/>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useCookies } from 'react-cookie'
 import { useRouter } from 'hooks/useRouter'
@@ -29,7 +29,7 @@ import * as colors from 'styles/colors'
 import { addressSplit, phoneSplit, translateMovingType } from 'components/wematch-ui/utils/form'
 
 import { calcRouteByDirectionService, calcRouteByGeoCoder } from 'lib/distanceUtil'
-import { MOVE_URL, MAIN_URL } from 'constants/env'
+import { MOVE_URL, MAIN_URL, ONEROOM_URL } from 'constants/env'
 import useHashToggle from 'hooks/useHashToggle'
 
 const Visual = {
@@ -270,36 +270,10 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
         return true
     }
 
-    const validateOneroomForm = () => {
-        if (isEmpty(getMoveDate)) {
-            alert('날짜를 선택해 주세요.')
-            return false;
-        }
-        if (isEmpty(getAddress.start)) {
-            alert('출발지를 입력해 주세요.')
-            return false;
-        }
-        if (isEmpty(getFloor.start)) {
-            alert('출발지를 층수를 입력해 주세요.')
-            return false;
-        }
-        if (isEmpty(getAddress.end)) {
-            alert('도착지를 입력해 주세요.')
-            return false;
-        }
-        if (isEmpty(getFloor.end)) {
-            alert('도착지 층수를 입력해 주세요.')
-            return false;
-        }
-        return true;
-    }
-
     const handleSubmit = debounce(() => {
         let result = false
         if (getMoveType === 'house' || getMoveType === 'office') {
             result = validateHouseOrOfficeForm()
-        } else if (getMoveType === 'oneroom') {
-            result = validateOneroomForm()
         }
 
 
@@ -316,12 +290,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                             setDistance(String(google.maps.geometry.spherical.computeDistanceBetween(coords[0], coords[1]) / 1000))
                         }
                     })
-                }
-
-                if (getMoveType === 'oneroom') {
-                    // default_legacy.asp?movingtype=oneroom&keepmove=ok&start_adr=서울특별시 금천구 시흥제1동&start_flr=4층&arrive_adr=서울특별시 금천구 시흥제1동&arrive_flr=4층&distance=10.0&movingdate=2020/09/01
-                    document.location.href = `${MOVE_URL}/default_legacy.asp?movingType=${getMoveType}&keepMove=${getIsMoveStore}&address=${getAddress.start}&floor=${getFloor.start}&address2=${getAddress.end}&floor2=${getFloor.end}&distance=${distance}&movingDate=${getMoveDate[0]}`
-                    return
                 }
 
                 const formData:commonTypes.RequestUserInfoInsert = {
@@ -359,17 +327,13 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
         }
     }, 500)
 
-    const handleOnConfirm = ():void => {
-        return router.history.push('/')
-    }
     useEffect(() => {
         const { type } = router.query
-        if(cookies.formData) {
+        if (cookies.formData) {
             dispatch(formActions.setInitialFormData(cookies.formData))
         }
-        if(type === 'oneroom') {
-            dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
-        }else if (type === 'house') {
+
+        if (type === 'house') {
             dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp))
         }
 
@@ -409,6 +373,10 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                 <strong>이사 종류를 선택해주세요.</strong>
             </Visual.Container>
             <ButtonGroup headerRef={headerRef} isFixed={isFixed} setIsFixed={setIsFixed} onClick={(type: 'house' | 'oneroom' | 'office' | undefined) => {
+                if (type === 'oneroom') {
+                    document.location.href = `${ONEROOM_URL}`
+                    return
+                }
                 dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
             }}/>
             <Visual.ButtonGroupContainer>
@@ -428,12 +396,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     <HouseTitle>
                         <strong>거주자 2명이상, 투룸 이상의 짐량</strong>
                     </HouseTitle>
-                )}
-                {getMoveType === 'oneroom' && (
-                    <Description.InfoType>
-                        <p>거주자 1명, 짐량 1톤 트럭 이내</p>
-                        <a href={MAIN_URL + '/용달_화물'}>단순 운반 차량만 필요하다면 ?</a>
-                    </Description.InfoType>
                 )}
                 {getMoveType === "office" && (
                     <Description.InfoType style={{ marginBottom: 0 }}>
