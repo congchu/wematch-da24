@@ -72,14 +72,14 @@ function Review() {
     ]
 
     const autoPlayOptions = {
-      delay: 3000
+      delay: 4000
     }
 
     return (
         <S.Container>
           <S.Title>이사업체 고객 평가</S.Title>
           <S.Group>
-            <S.Text>이사 후 고객이 평가한 업체멸 만족도</S.Text>
+            <S.Text>이사 후 고객이 평가한 업체별 만족도</S.Text>
             <S.More href="https://da24.wematch.com/comment2.asp">더보기</S.More>
           </S.Group>
           <CustomSwiper
