@@ -369,7 +369,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
         }
         if(type === 'oneroom') {
             dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
-        } else {
+        }else if (type === 'house') {
             dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp))
         }
 
