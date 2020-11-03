@@ -83,7 +83,7 @@ export default function BannerLayout({ title, onBack, children, ...restProps }: 
             )}
             {children}
             <S.Bottom>
-                <Button theme="primary" bold onClick={() => router.history.push('/')}>위매치 이용하러 가기</Button>
+                <Button theme="primary" bold onClick={() => router.history.goBack()}>위매치 이용하러 가기</Button>
             </S.Bottom>
             {isDesktop && <MainFooter />}
         </S.Container>
