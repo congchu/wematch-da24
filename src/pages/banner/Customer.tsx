@@ -131,7 +131,7 @@ export default function Customer() {
                     <strong>'두번한다 위매치'</strong>로
                 </p>
                 <p style={{ marginTop: 20, marginBottom: 32 }}>
-                    왜 대한민국 10명 중 1명은 <br />
+                    왜 대한민국 10명 중 1명은 <br className="mobile-enter"/>
                     이사할 때 위매치를 찾아주셨을까요? <br />
                 </p>
                 {reviews.map((review) => (
