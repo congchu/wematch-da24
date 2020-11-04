@@ -22,6 +22,7 @@ import * as colors from 'styles/colors'
 import * as partnerSelector from "store/partner/selectors";
 import * as partnerActions from "store/partner/actions";
 import * as commonSelector from "store/common/selectors";
+import * as constants from 'constants/env'
 
 interface IList {
     id: number;
@@ -258,7 +259,7 @@ const PartnerCart = () => {
 
     useEffect(() => {
         if (getMatchingData.idx.length > 0) {
-            document.location.href = `http://m.dev.da24.wematch.com/move_step_complete.asp?move_idx=${getMatchingData.idx}`
+            document.location.href = `${constants.MOVE_URL}/move_step_complete.asp?move_idx=${getMatchingData.idx}`
         }
     }, [getMatchingData])
 
@@ -316,7 +317,6 @@ const PartnerCart = () => {
         return <Loading text={'견적요청 페이지로 이동 중입니다.'}/>
     }
 
-    console.log(recommendCart.current?.offsetHeight)
     return (
         <>
         <S.CartWrapper>
