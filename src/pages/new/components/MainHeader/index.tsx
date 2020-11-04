@@ -212,7 +212,7 @@ const S = {
 
 const MainHeader = ({ isFixed = false, border = false }: Props) => {
     return (
-      <S.Wrapper isFixed={isFixed}>
+      <S.Wrapper isFixed={isFixed} id="dsl_move_header_1">
           <S.HeaderWrapper border={border}>
               <S.Header isFixed={isFixed}>
                   <S.Logo><a href="https://wematch.com/"><span>위매치</span></a></S.Logo>

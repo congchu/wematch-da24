@@ -19,6 +19,11 @@ interface Props {
     onOverlayClose?: () => void;
     /** 핸드폰 번호 */
     phone: string
+    /** 이벤트 태깅 구분 - 인증하기 */
+    tags?: {
+        authBtn?: string;
+        closeBtn?: string;
+    }
 }
 
 const S = {
@@ -61,7 +66,8 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
         visible,
         onClose,
         onOverlayClose,
-        phone
+        phone,
+        tags,
     } = props
     const dispatch = useDispatch()
 
@@ -101,7 +107,7 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
     return (
         <PopupTemplate visible={visible} onOverlayClose={onOverlayClose}>
             <S.Container>
-                <S.CloseButton onClick={() => handleClose()} id="dsl_movemain_button_verify_x">
+                <S.CloseButton onClick={() => handleClose()} id={tags?.closeBtn}>
                     <Close size={24} color={colors.white} />
                 </S.CloseButton>
                 <strong>전화번호인증</strong>
@@ -113,7 +119,7 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
                     <Input theme="default" maxLength={4} value={code} onChange={(e) => {
                         setCode(e.target.value)
                     }} onKeyPress={handleKeyPress} />
-                    <Button theme="primary" style={{ width: "80px", fontSize: "15px" }} onClick={handleSubmit} id="dsl_movemain_button_verify">인증하기</Button>
+                    <Button theme="primary" style={{ width: "80px", fontSize: "15px" }} onClick={handleSubmit} id={tags?.authBtn}>인증하기</Button>
                 </S.Group>
                 {getPhoneVerified.data.is_verified === false && !getPhoneVerified.loading && code.length > 0? (
                     <S.ErrorMessage>잘못된 인증번호입니다</S.ErrorMessage>

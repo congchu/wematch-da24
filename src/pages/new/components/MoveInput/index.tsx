@@ -161,7 +161,7 @@ const MoveInput: React.FC<Props> = (props) => {
     }
 
     return (
-        <S.Container {...restProps}>
+        <S.Container id="dsl_move_input_terms_1" {...restProps}>
             {(type === "house" || type === "office") && (
                 <S.Form>
                     <Input theme="default" border readOnly placeholder="이사예정일" onClick={toggleCalendarConfirm} value={getMoveDate} style={{ backgroundColor: "transparent" }} />

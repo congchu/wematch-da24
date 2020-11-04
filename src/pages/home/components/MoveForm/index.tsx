@@ -519,7 +519,10 @@ const MoveForm = () => {
                     </Terms.SubmitContainer>
                 </>
             )}
-            <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone} onClose={() => setVisibleVerifyPhone(!visibleVerifyPhone)} />
+            <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone} onClose={() => setVisibleVerifyPhone(!visibleVerifyPhone)} tags={{
+                closeBtn: "dsl_movemain_button_verify_x",
+                authBtn: "dsl_movemain_button_verify"
+            }} />
             <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
             <OneroomNoticePopup visible={visibleOneroom} footerButton border onClose={() => setVisibleOneroom(!visibleOneroom)} />

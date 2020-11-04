@@ -453,20 +453,25 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                                 비용산정을 위한 <strong>무료 방문견적</strong>을 신청합니다
                             </p>
                         </div>
-                        <Button theme="primary" bold border onClick={() => {
-                            handleSubmit()
-                            setSubmitType('curation')
-                        }}>무료 방문견적 신청</Button>
-                        {getMoveType !== 'oneroom' && (
-                            <Button theme="default" onClick={() => {
+                        <div id="dsl_move_button_requests_1">
+                            <Button theme="primary" bold border onClick={() => {
                                 handleSubmit()
-                                setSubmitType('select')
-                            }}>업체 직접고르기</Button>
-                        )}
+                                setSubmitType('curation')
+                            }}>무료 방문견적 신청</Button>
+                            {getMoveType !== 'oneroom' && (
+                                <Button theme="default" onClick={() => {
+                                    handleSubmit()
+                                    setSubmitType('select')
+                                }}>업체 직접고르기</Button>
+                            )}
+                        </div>
                     </Terms.SubmitContainer>
                 </>
             )}
-            <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone} onClose={() => setVisibleVerifyPhone(!visibleVerifyPhone)} />
+            <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone} onClose={() => setVisibleVerifyPhone(!visibleVerifyPhone)} tags={{
+                authBtn: "dsl_move_button_verify_1",
+                closeBtn: "dsl_move_button_verify_X_1"
+            }} />
             <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
             <OneroomNoticePopup visible={visibleOneroom} footerButton border onClose={() => setVisibleOneroom(!visibleOneroom)} />

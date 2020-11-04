@@ -76,7 +76,7 @@ function Review() {
     }
 
     return (
-        <S.Container>
+        <S.Container id="dsl_move_review_more_1">
           <S.Title>이사업체 고객 평가</S.Title>
           <S.Group>
             <S.Text>이사 후 고객이 평가한 업체별 만족도</S.Text>
