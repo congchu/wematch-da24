@@ -35,17 +35,6 @@ function AppRoute() {
     const location = useLocation()
     const customScript = useScript(script)
 
-    // ie redirection to edge
-    if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
-        window.open('microsoft-edge:' + 'https://da24.wematch.com', '_blank')
-
-        setTimeout(function() {
-            window.opener='self'
-            window.open('','_parent','')
-            window.close();
-        }, 100)
-    }
-
     const getPathname = () => {
         let pathname = 5
         switch (location.pathname) {
@@ -77,6 +66,19 @@ function AppRoute() {
             return customScript
         }
     }, [script])
+
+    // ie redirection to edge
+    useEffect(() => {
+        if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+            window.open('microsoft-edge:' + `https://da24.wematch.com${location.pathname}`, '_blank')
+
+            setTimeout(function() {
+                window.opener='self'
+                window.open('','_parent','')
+                window.close();
+            }, 1)
+        }
+    }, [navigator.userAgent])
 
     return (
         <Switch>
