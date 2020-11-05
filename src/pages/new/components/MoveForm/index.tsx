@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useCookies } from 'react-cookie'
 import { useRouter } from 'hooks/useRouter'
@@ -29,7 +29,8 @@ import * as colors from 'styles/colors'
 import { addressSplit, phoneSplit, translateMovingType } from 'components/wematch-ui/utils/form'
 
 import { calcRouteByDirectionService, calcRouteByGeoCoder } from 'lib/distanceUtil'
-import { MOVE_URL, MAIN_URL, ONEROOM_URL } from 'constants/env'
+import { dataLayer } from 'lib/dataLayerUtil'
+import { MOVE_URL, ONEROOM_URL } from 'constants/env'
 import useHashToggle from 'hooks/useHashToggle'
 
 const Visual = {
@@ -55,7 +56,6 @@ const Visual = {
         }
     `,
     ButtonGroupContainer: styled.div`
-        //margin: 40px 0 24px 0;
         margin-top: 26px;
     `,
 }
@@ -270,7 +270,15 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
         return true
     }
 
-    const handleSubmit = debounce(() => {
+    const getMoveTypeText = useCallback(() => {
+        if (getMoveType === 'house') {
+            return '가정'
+        } else if (getMoveType === 'office') {
+            return '사무실'
+        }
+    }, [getMoveType])
+
+    const handleSubmit = debounce((submitType: 'curation' | 'select') => {
         let result = false
         if (getMoveType === 'house' || getMoveType === 'office') {
             result = validateHouseOrOfficeForm()
@@ -322,6 +330,13 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                 }
                 setCookies('formData', {...formData, ...getAgree}, {expires: new Date(dayjs().add(2, 'day').format())})
 
+                dataLayer({
+                    event: 'request',
+                    category: '다이사_메인_신청_1',
+                    action: submitType === 'curation' ? '업체 바로매칭' : '업체 직접고르기',
+                    CD5: getIsMoveStore ? '보관이사 필요 체크 O' : '보관이사 필요 체크 x',
+                    CD6: getMoveTypeText()
+                })
             })
 
         }
@@ -455,12 +470,12 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                         </div>
                         <div id="dsl_move_button_requests_1">
                             <Button theme="primary" bold border onClick={() => {
-                                handleSubmit()
+                                handleSubmit('curation')
                                 setSubmitType('curation')
                             }}>무료 방문견적 신청</Button>
                             {getMoveType !== 'oneroom' && (
                                 <Button theme="default" onClick={() => {
-                                    handleSubmit()
+                                    handleSubmit('select')
                                     setSubmitType('select')
                                 }}>업체 직접고르기</Button>
                             )}
@@ -471,6 +486,20 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
             <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone} onClose={() => setVisibleVerifyPhone(!visibleVerifyPhone)} tags={{
                 authBtn: "dsl_move_button_verify_1",
                 closeBtn: "dsl_move_button_verify_X_1"
+            }} onDataLayerAuth={() => {
+                return dataLayer({
+                    event: 'certificate',
+                    action: '번호인증',
+                    CD5: getIsMoveStore ? '보관이사 필요 체크 O' : '보관이사 필요 체크 x',
+                    CD6: getMoveTypeText()
+                })
+            }} onDataLayerClose={() => {
+                return dataLayer({
+                    event: 'certificate',
+                    action: '번호인증 닫기',
+                    CD5: getIsMoveStore ? '보관이사 필요 체크 O' : '보관이사 필요 체크 x',
+                    CD6: getMoveTypeText()
+                })
             }} />
             <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />

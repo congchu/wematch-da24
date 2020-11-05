@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
+import React, {useCallback, useState} from 'react'
 import Styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Input from 'components/common/Input'
-import Select from "components/common/Select";
-import CalendarModal from "components/common/Modal/CalendarModal";
-import AddressModal from "components/common/Modal/AddressModal";
+import Select from 'components/common/Select'
+import CalendarModal from 'components/common/Modal/CalendarModal'
+import AddressModal from 'components/common/Modal/AddressModal'
 
 import { CalendarDate } from 'components/wematch-ui/utils/date'
 import * as colors from 'styles/colors'
 import * as formSelector from 'store/form/selectors'
 import * as formActions from 'store/form/actions'
-import { isExceedDiffDay } from 'lib/dateUtil';
+import { isExceedDiffDay } from 'lib/dateUtil'
+import { dataLayer } from 'lib/dataLayerUtil'
 import { CALENDAR_MAX_DAYS } from 'constants/values'
 import useHashToggle from 'hooks/useHashToggle'
 
@@ -71,6 +72,7 @@ const MoveInput: React.FC<Props> = (props) => {
 
     const dispatch = useDispatch()
 
+    const getMoveType = useSelector(formSelector.getType)
     const getMoveDate = useSelector(formSelector.getDate)
     const getMoveAddress = useSelector(formSelector.getAddress)
     const getMoveFloor = useSelector(formSelector.getFloor)
@@ -117,11 +119,26 @@ const MoveInput: React.FC<Props> = (props) => {
     const [visibleEndAddressModal, setVisibleEndAddressModal] = useHashToggle('#endAddress')
     const [visibleEndFloorModal, setVisibleEndFloorModal] = useHashToggle('#endFloor')
 
+    const getMoveTypeText = useCallback(() => {
+        if (getMoveType === 'house') {
+            return '가정'
+        } else if (getMoveType === 'office') {
+            return '사무실'
+        }
+    }, [getMoveType])
+
     const toggleCalendarCancel = () => {
         dispatch(formActions.setMoveDate([]))
         setVisibleCalendarModal(!visibleCalendarModal)
     }
     const toggleCalendarConfirm = () => {
+        dataLayer({
+            event: 'input_info',
+            category: '다이사_메인_입력창_1',
+            label: getMoveDate[0],
+            action: '이사날짜',
+            CD6: getMoveTypeText()
+        })
         setVisibleCalendarModal(!visibleCalendarModal)
     }
     const toggleStartAddress = () => setVisibleStartAddressModal(!visibleStartAddressModal)
@@ -142,13 +159,36 @@ const MoveInput: React.FC<Props> = (props) => {
         dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
     }
 
-    const onSelectDepartAddress = (data: string) => {
+    const onSelectStartAddress = (data: string) => {
         dispatch(formActions.setAddress({
             ...getMoveAddress,
             start: data
         }))
 
+        dataLayer({
+            event: 'input_info',
+            category: '다이사_메인_입력창_1',
+            label: data,
+            action: '출발지',
+            CD6: getMoveTypeText()
+        })
+
         toggleStartAddress();
+    }
+    
+    const onSelectStartFloorAddress = (data: string) => {
+        dispatch(formActions.setFloor({
+            ...getMoveFloor,
+            start: data
+        }))
+
+        dataLayer({
+            event: 'input_info',
+            category: '다이사_메인_입력창_1',
+            label: data + '층',
+            action: '출발지_층수',
+            CD6: getMoveTypeText()
+        })
     }
 
     const onSelectEndAddress = (data: string) => {
@@ -157,7 +197,30 @@ const MoveInput: React.FC<Props> = (props) => {
             end: data
         }))
 
+        dataLayer({
+            event: 'input_info',
+            category: '다이사_메인_입력창_1',
+            label: data,
+            action: '도착지',
+            CD6: getMoveTypeText()
+        })
+
         toggleEndAddress();
+    }
+
+    const onSelectEndFloorAddress = (data: string) => {
+        dispatch(formActions.setFloor({
+            ...getMoveFloor,
+            end: data
+        }))
+
+        dataLayer({
+            event: 'input_info',
+            category: '다이사_메인_입력창_1',
+            label: data + '층',
+            action: '도착지_층수',
+            CD6: getMoveTypeText()
+        })
     }
 
     return (
@@ -173,7 +236,17 @@ const MoveInput: React.FC<Props> = (props) => {
                         <Input theme="default" border placeholder="출발지 상세주소" value={getMoveAddress.detailStart} onChange={(e) => dispatch(formActions.setAddress({
                             ...getMoveAddress,
                             detailStart: e.target.value
-                        }))} style={{ backgroundColor: "transparent" }} />
+                        }))} style={{ backgroundColor: "transparent" }} onBlur={(e) => {
+                            if (getMoveAddress.detailStart.length > 2) {
+                                dataLayer({
+                                    event: 'input_info',
+                                    category: '다이사_메인_입력창_1',
+                                    label: getMoveAddress.detailStart,
+                                    action: '출발지_상세주소',
+                                    CD6: getMoveTypeText()
+                                })
+                            }
+                        }} />
                     )}
                     {getMoveAddress?.start && (
                         <div style={{ display: "flex", flexDirection: "row" }}>
@@ -185,16 +258,47 @@ const MoveInput: React.FC<Props> = (props) => {
                         <Input theme="default" border placeholder="도착지 상세주소" value={getMoveAddress.detailEnd} onChange={(e) => dispatch(formActions.setAddress({
                             ...getMoveAddress,
                             detailEnd: e.target.value
-                        }))} style={{ backgroundColor: "transparent" }} />
+                        }))} style={{ backgroundColor: "transparent" }} onBlur={(e) => {
+                            if (getMoveAddress.detailEnd.length > 2) {
+                                dataLayer({
+                                    event: 'input_info',
+                                    category: '다이사_메인_입력창_1',
+                                    label: getMoveAddress.detailEnd,
+                                    action: '도착지_상세주소',
+                                    CD6: getMoveTypeText()
+                                })
+                            }
+                        }} />
                     )}
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <Input theme="default" border placeholder="이름" rootStyle={{ width: "49%", marginRight: "2%" }}
                                maxLength={20} onChange={(e) => dispatch(formActions.setName(e.target.value))} value={getName}
-                               style={{ backgroundColor: "transparent" }}
+                               style={{ backgroundColor: "transparent" }} onBlur={(e) => {
+                                    if (getName.length > 2) {
+                                        dataLayer({
+                                            event: 'input_info',
+                                            category: '다이사_메인_입력창_1',
+                                            label: '고객명',
+                                            action: '이름',
+                                            CD6: getMoveTypeText()
+                                        })
+                                    }
+                                }}
                         />
                         <Input theme="default" type="tel" pattern="[0-9]*" inputMode="numeric"
                                placeholder="연락처(-없이 입력)" border rootStyle={{ width: "49%" }} maxLength={13} value={getPhone} onChange={handlePhone}
-                               style={{ backgroundColor: "transparent" }} />
+                               style={{ backgroundColor: "transparent" }} onBlur={(e) => {
+                                    if (getPhone.length > 2) {
+                                        dataLayer({
+                                            event: 'input_info',
+                                            category: '다이사_메인_입력창_1',
+                                            label: '전화번호',
+                                            action: '연락처',
+                                            CD6: getMoveTypeText()
+                                        })
+                                    }
+                                }}
+                        />
                     </div>
                     {getMoveAddress?.end && (
                         <S.TextContainer>
@@ -209,17 +313,11 @@ const MoveInput: React.FC<Props> = (props) => {
             <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?" onClose={toggleCalendarCancel}
                 onConfirm={toggleCalendarConfirm} onSelect={onSelectDate} selected={getMoveDate}/>
             <AddressModal visible={visibleStartAddressModal} title="주소 검색" onClose={toggleStartAddress}
-                onConfirm={toggleStartAddress} onClick={toggleStartAddress} onSelect={onSelectDepartAddress} />
-            <Select visible={visibleStartFloorModal} items={floorItems} onOverlayClose={toggleStartFloor} onClose={toggleStartFloor} onSelect={(floor) => dispatch(formActions.setFloor({
-                ...getMoveFloor,
-                start: floor
-            }))} headerTitle="층수 선택" />
+                onConfirm={toggleStartAddress} onClick={toggleStartAddress} onSelect={onSelectStartAddress} />
+            <Select visible={visibleStartFloorModal} items={floorItems} onOverlayClose={toggleStartFloor} onClose={toggleStartFloor} onSelect={onSelectStartFloorAddress} headerTitle="층수 선택" />
             <AddressModal visible={visibleEndAddressModal} title="주소 검색" onClose={toggleEndAddress}
                 onConfirm={toggleEndAddress} onClick={toggleEndAddress} onSelect={onSelectEndAddress} />
-            <Select visible={visibleEndFloorModal} items={floorItems} onOverlayClose={toggleEndFloor} onClose={toggleEndFloor} onSelect={(floor) => dispatch(formActions.setFloor({
-                ...getMoveFloor,
-                end: floor
-            }))} headerTitle="층수 선택" />
+            <Select visible={visibleEndFloorModal} items={floorItems} onOverlayClose={toggleEndFloor} onClose={toggleEndFloor} onSelect={onSelectEndFloorAddress} headerTitle="층수 선택" />
         </S.Container>
     )
 }

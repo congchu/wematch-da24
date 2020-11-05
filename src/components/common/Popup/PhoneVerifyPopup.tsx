@@ -10,6 +10,7 @@ import PopupTemplate from 'components/common/Popup/PopupTemplate'
 import * as colors from 'styles/colors'
 import * as commonActions from 'store/common/actions'
 import * as commonSelector from 'store/common/selectors'
+import {dataLayer} from "../../../lib/dataLayerUtil";
 
 interface Props {
     visible: boolean,
@@ -24,6 +25,8 @@ interface Props {
         authBtn?: string;
         closeBtn?: string;
     }
+    onDataLayerAuth?: () => void;
+    onDataLayerClose?: () => void;
 }
 
 const S = {
@@ -68,6 +71,8 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
         onOverlayClose,
         phone,
         tags,
+        onDataLayerAuth,
+        onDataLayerClose
     } = props
     const dispatch = useDispatch()
 
@@ -90,6 +95,10 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
             phone,
             code
         }))
+
+        if (onDataLayerAuth) {
+            onDataLayerAuth()
+        }
     }
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -98,7 +107,10 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
         }
     };
 
-    const handleClose =  async () => {
+    const handleClose = async () => {
+        if (onDataLayerClose) {
+            onDataLayerClose()
+        }
         if (onClose) {
             await onClose()
             await setCode('')
@@ -107,7 +119,7 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
     return (
         <PopupTemplate visible={visible} onOverlayClose={onOverlayClose}>
             <S.Container>
-                <S.CloseButton onClick={() => handleClose()} id={tags?.closeBtn}>
+                <S.CloseButton id={tags?.closeBtn} onClick={() => handleClose()}>
                     <Close size={24} color={colors.white} />
                 </S.CloseButton>
                 <strong>전화번호인증</strong>
