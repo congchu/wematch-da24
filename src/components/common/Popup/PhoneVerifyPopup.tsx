@@ -10,7 +10,6 @@ import PopupTemplate from 'components/common/Popup/PopupTemplate'
 import * as colors from 'styles/colors'
 import * as commonActions from 'store/common/actions'
 import * as commonSelector from 'store/common/selectors'
-import {dataLayer} from "../../../lib/dataLayerUtil";
 
 interface Props {
     visible: boolean,
@@ -133,7 +132,7 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
                     }} onKeyPress={handleKeyPress} />
                     <Button theme="primary" style={{ width: "80px", fontSize: "15px" }} onClick={handleSubmit} id={tags?.authBtn}>인증하기</Button>
                 </S.Group>
-                {getPhoneVerified.data.is_verified === false && !getPhoneVerified.loading && code.length > 0? (
+                {getPhoneVerified.data.is_verified === false && !getPhoneVerified.loading && code.length > 0 ? (
                     <S.ErrorMessage>잘못된 인증번호입니다</S.ErrorMessage>
                 ) : (
                     <p>인증번호를 입력해 주세요</p>

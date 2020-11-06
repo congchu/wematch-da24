@@ -341,7 +341,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     event: 'request',
                     category: '다이사_메인_신청_1',
                     action: submitType === 'curation' ? '업체 바로매칭' : '업체 직접고르기',
-                    CD5: getIsMoveStore ? '보관이사 필요 체크 O' : '보관이사 필요 체크 x',
+                    CD5: getIsMoveStore ? 'Y' : 'N',
                     CD6: getMoveTypeText()
                 })
             })
