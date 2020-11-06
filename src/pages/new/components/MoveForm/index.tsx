@@ -42,13 +42,14 @@ const Visual = {
         padding-bottom: 16px;
         
         strong {
+          display: block;
           font-style: normal;
           font-weight: bold;
           font-size: 20px;
           line-height: 29px;
           letter-spacing: -0.03em;
           color: ${colors.gray33};
-          margin-bottom: 5px;
+          margin-bottom: 8px;
         }
         
         p {
@@ -392,7 +393,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
     return (
         <Visual.Section>
             <Visual.Container>
-                <strong>우수 업체 추천받기</strong>
+                <strong>무료 견적 신청하기</strong>
                 <p>이사 종류를 선택해주세요.</p>
             </Visual.Container>
             <ButtonGroup headerRef={headerRef} isFixed={isFixed} setIsFixed={setIsFixed} onClick={(type: 'house' | 'oneroom' | 'office' | undefined) => {

@@ -16,7 +16,7 @@ const Banner = styled.section`
     line-height: 29px;
     letter-spacing: -0.03em;
     color: ${colors.gray33};
-    margin-bottom: 5px;
+    margin-bottom: 8px;
   }
   p {
     font-style: normal;
@@ -49,6 +49,10 @@ const Banner = styled.section`
       .title {
         font-weight: 500;
       }
+      
+      .text {
+        font-size: 14px;
+      }
     }
     
     &:after {
@@ -56,7 +60,7 @@ const Banner = styled.section`
       background-image: url(${require('assets/images/partner_banner.svg')});
       background-repeat: no-repeat;
       background-size: cover;
-      width: 124px;
+      width: 115px;
       height: 80px;
       position: absolute;
       top: 0;

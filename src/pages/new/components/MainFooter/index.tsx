@@ -12,14 +12,13 @@ const S = {
     font-style: normal;
     line-height: normal;
     letter-spacing: -1px;
-    background-color: #fefefe;
+    background-color: #FBFCFD;
     border-top: 1px solid ${lineDefault};
   `,
   Container: styled.div`
     position: relative;
     margin: 0 auto;
     padding: 33px 0 37px;
-    margin-bottom: 57px;
     .desktop {
       display: none;
     }
@@ -311,13 +310,13 @@ export default function MainFooter() {
                 </S.Description>
                 <S.Copyright>copyrightⓒwematch inc. All rights reserved.</S.Copyright>
                 <S.WrapSnsLinks>
-                    <BlankLink className="sns facebook" href="https://www.facebook.com/officialwematch" />{/* eslint-disable-line */}
-                    <BlankLink className="sns blog" href="https://blog.naver.com/wematch" />{/* eslint-disable-line */}
-                    <BlankLink className="sns youtube" href="https://www.youtube.com/channel/UCNDJGdsSbLNUf53-8dMWx2w?view_as=subscriber" />{/* eslint-disable-line */}
-                    {!isIos && <BlankLink className="desktop store playstore" href="https://play.google.com/store/apps/details?id=com.goodthought.da24">&nbsp;&nbsp;구글플레이</BlankLink>}
+                    <BlankLink className="sns facebook" href="https://www.facebook.com/officialwematch" />
+                    <BlankLink className="sns blog" href="https://blog.naver.com/wematch" />
+                    <BlankLink className="sns youtube" href="https://www.youtube.com/channel/UCNDJGdsSbLNUf53-8dMWx2w?view_as=subscriber" />
+                    <BlankLink className="desktop store playstore" href="https://play.google.com/store/apps/details?id=com.goodthought.da24">&nbsp;&nbsp;구글플레이</BlankLink>
                     <BlankLink className="desktop store appstore" href="https://itunes.apple.com/kr/app/%EB%8B%A4%EC%9D%B4%EC%82%AC/id1066642270?mt=8">&nbsp;&nbsp;앱스토어</BlankLink>
-                    {!isIos && <BlankLink className="mobile store playstore" href="https://play.google.com/store/apps/details?id=com.goodthought.da24" />}{/* eslint-disable-line */}
-                    <BlankLink className="mobile store appstore" href="https://itunes.apple.com/kr/app/%EB%8B%A4%EC%9D%B4%EC%82%AC/id1066642270?mt=8" />{/* eslint-disable-line */}
+                    <BlankLink className="mobile store playstore" href="https://play.google.com/store/apps/details?id=com.goodthought.da24" />
+                    <BlankLink className="mobile store appstore" href="https://itunes.apple.com/kr/app/%EB%8B%A4%EC%9D%B4%EC%82%AC/id1066642270?mt=8" />
                 </S.WrapSnsLinks>
             </S.Container>
         </S.Footer>

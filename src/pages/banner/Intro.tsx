@@ -61,7 +61,7 @@ const S = {
       
       @media screen and (min-width: 768px) {
          width: 720px;
-         margin: 72px auto 60px;
+         margin: 72px auto 100px;
          
          .mobile-enter {
            display: none;

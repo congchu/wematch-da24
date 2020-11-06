@@ -26,7 +26,7 @@ const S = {
       border-top-left-radius: 32px;
       border-top-right-radius: 32px;
       background: ${colors.white};
-      box-shadow: 0px -4px 30px rgba(0, 0, 0, 0.2);
+      //box-shadow: 0px -4px 30px rgba(0, 0, 0, 0.2);
       
       @media (min-width: 1200px) {
         max-width: 768px;

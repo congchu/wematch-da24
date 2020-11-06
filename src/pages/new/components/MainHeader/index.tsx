@@ -96,7 +96,7 @@ const S = {
       color: ${colors.gray33};
     
       li {
-        margin-left: 18px;
+        margin-left: 30px;
         padding: 13px 2px 11px;
         font-size: 16px;
         line-height: 23px;
@@ -124,7 +124,7 @@ const S = {
       @media screen and (min-width: 1200px) {
         left: 152px;
         position: absolute;
-        top: 26px;
+        top: 25px;
         width: auto;
         height: auto;
         border-top: 0 none;
@@ -147,7 +147,7 @@ const S = {
       color: ${colors.gray66};
     
       @media screen and (min-width: 1200px) {
-        top: 19px; 
+        top: 18px; 
         right: 0;
       }
   `,
@@ -215,7 +215,7 @@ const MainHeader = ({ isFixed = false, border = false }: Props) => {
       <S.Wrapper isFixed={isFixed} id="dsl_move_header_1">
           <S.HeaderWrapper border={border}>
               <S.Header isFixed={isFixed}>
-                  <S.Logo><a href="https://wematch.com/"><span>위매치</span></a></S.Logo>
+                  <S.Logo><a href={constants.MOVE_URL}><span>위매치</span></a></S.Logo>
                   <S.Categories>
                       <li className="on"><a href={constants.MOVE_URL}>이사</a></li>
                       <li><a href={constants.CLEAN_URL}>청소</a></li>

@@ -5,7 +5,6 @@ import styled from 'styled-components/macro'
 
 import Button from 'components/common/Button'
 import MainHeader from 'pages/new/components/MainHeader'
-import MainFooter from 'pages/new/components/MainFooter'
 
 import * as colors from 'styles/colors'
 import { Previous } from 'components/wematch-ui/Icon'
@@ -51,10 +50,10 @@ const S = {
       width: 100%;
       
       @media screen and (min-width: 768px) {
-        position: relative;
         width: 720px;
-        
-        margin: 0 auto 100px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
       }
     `
 }
@@ -85,7 +84,6 @@ export default function BannerLayout({ title, onBack, children, ...restProps }: 
             <S.Bottom>
                 <Button theme="primary" bold onClick={() => router.history.goBack()}>위매치 이용하러 가기</Button>
             </S.Bottom>
-            {isDesktop && <MainFooter />}
         </S.Container>
     )
 }
