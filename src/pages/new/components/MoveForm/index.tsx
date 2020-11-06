@@ -481,7 +481,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                             <Button theme="primary" bold border onClick={() => {
                                 handleSubmit('curation')
                                 setSubmitType('curation')
-                            }}>무료 방문견적 신청</Button>
+                            }}>우수 업체 추천받기</Button>
                             {getMoveType !== 'oneroom' && (
                                 <Button theme="default" onClick={() => {
                                     handleSubmit('select')
