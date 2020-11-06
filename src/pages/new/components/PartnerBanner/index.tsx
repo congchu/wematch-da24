@@ -4,7 +4,7 @@ import styled from 'styled-components/macro'
 import * as colors from 'styles/colors'
 
 const Banner = styled.section`
-  padding: 50px 24px;
+  padding: 50px 24px 73px;
   
   a {
     cursor: pointer;
@@ -12,16 +12,17 @@ const Banner = styled.section`
   
   h3 {
     font-weight: bold;
-    font-size: 18px;
-    line-height: 26px;
+    font-size: 20px;
+    line-height: 29px;
     letter-spacing: -0.03em;
     color: ${colors.gray33};
+    margin-bottom: 5px;
   }
   p {
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
-    line-height: 21px;
+    font-size: 16px;
+    line-height: 24px;
     letter-spacing: -0.03em;
     color: ${colors.gray66};
   }

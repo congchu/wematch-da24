@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React, { useCallback } from 'react'
 import Styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -32,6 +32,15 @@ interface Props extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> {
 
 const S = {
     Container: Styled.div``,
+    Title: Styled.h3`
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: -0.03em;
+      color: ${colors.gray66};
+      margin-bottom: 16px;
+    `,
     Form: Styled.form`
         display: flex;
         flex-direction: column;
@@ -175,7 +184,7 @@ const MoveInput: React.FC<Props> = (props) => {
 
         toggleStartAddress();
     }
-    
+
     const onSelectStartFloorAddress = (data: string) => {
         dispatch(formActions.setFloor({
             ...getMoveFloor,
@@ -227,6 +236,7 @@ const MoveInput: React.FC<Props> = (props) => {
         <S.Container id="dsl_move_input_terms_1" {...restProps}>
             {(type === "house" || type === "office") && (
                 <S.Form>
+                    <S.Title>이사정보를 입력해주세요.</S.Title>
                     <Input theme="default" border readOnly placeholder="이사예정일" onClick={toggleCalendarConfirm} value={getMoveDate} style={{ backgroundColor: "transparent" }} />
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <Input theme="default" border readOnly placeholder="출발지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleStartAddress} value={getMoveAddress.start} style={{ backgroundColor: "transparent" }} />

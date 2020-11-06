@@ -35,24 +35,29 @@ import useHashToggle from 'hooks/useHashToggle'
 
 const Visual = {
     Section: styled.section`
-        padding: 0 24px 24px;
+        padding: 0 24px 80px;
     `,
     Container: styled.div`
-        padding-top: 30px;
-        padding-bottom: 20px;
-        color: ${colors.black};
-        font-size: 24px;
-        font-weight: 700;
-        text-align: center;
-        letter-spacing: 0;
+        padding-top: 32px;
+        padding-bottom: 16px;
         
         strong {
           font-style: normal;
           font-weight: bold;
-          font-size: 16px;
-          line-height: 23px;
+          font-size: 20px;
+          line-height: 29px;
           letter-spacing: -0.03em;
           color: ${colors.gray33};
+          margin-bottom: 5px;
+        }
+        
+        p {
+          font-style: normal;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: -0.03em;
+          color: ${colors.gray66};
         }
     `,
     ButtonGroupContainer: styled.div`
@@ -154,8 +159,10 @@ const Terms = {
           
           p {
             text-align: center;
-            font-size: 14px;
-            line-height: 21px;
+            font-size: 16px;
+            line-height: 24px;
+            letter-spacing: -0.03em;
+            color: ${colors.gray66};
           }
                 
           strong {
@@ -385,7 +392,8 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
     return (
         <Visual.Section>
             <Visual.Container>
-                <strong>이사 종류를 선택해주세요.</strong>
+                <strong>우수 업체 추천받기</strong>
+                <p>이사 종류를 선택해주세요.</p>
             </Visual.Container>
             <ButtonGroup headerRef={headerRef} isFixed={isFixed} setIsFixed={setIsFixed} onClick={(type: 'house' | 'oneroom' | 'office' | undefined) => {
                 if (type === 'oneroom') {
@@ -417,7 +425,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                         <p>빌딩, 공장, 상가 등 짐량 1톤 트럭 초과</p>
                     </Description.InfoType>
                 )}
-                <MoveInput type={getMoveType} style={{ marginTop: 16 }} />
+                <MoveInput type={getMoveType} style={{ marginTop: 30 }} />
             </Visual.ButtonGroupContainer>
             {getMoveType !== undefined && (
                 <>
