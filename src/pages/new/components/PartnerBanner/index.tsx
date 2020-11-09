@@ -28,7 +28,7 @@ const Banner = styled.section`
   }
   .banner {
     position: relative;
-    min-width: 312px;
+    //min-width: 312px;
     width: 100%;
     height: 80px;
     background-color: #f7f7f7;
@@ -67,6 +67,13 @@ const Banner = styled.section`
       right: 0;
       border-top-right-radius: 8px;
       border-bottom-right-radius: 8px;
+    }
+  }
+  @media screen and (max-width:320px) {
+    .banner {
+      &:after {
+         width: 80px;
+      }
     }
   }
   
