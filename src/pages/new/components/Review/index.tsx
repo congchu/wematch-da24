@@ -89,6 +89,7 @@ function Review() {
             width={312}
             loop={true}
             autoplay={autoPlayOptions}
+            loopAdditionalSlides={1}
             breakpoints={{ 768: { slidesPerView: 3, centeredSlides: false, centeredSlidesBounds: false, width: 910 }}}
           >
             {reviews.map((review, i) => (
