@@ -122,6 +122,7 @@ function MainVisual() {
 
     return (
         <CustomSwiper
+            id="dsl_move_banner_1"
             slidesPerView={1}
             pagination={{ clickable: true }}
             onSlideChange={(e) => {
