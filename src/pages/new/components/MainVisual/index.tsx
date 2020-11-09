@@ -100,6 +100,17 @@ const EventSlide = styled(Slide)`
     font-size: 22px;
     line-height: 32px;
   }
+  @media screen and (min-width: 1200px) {
+    span {
+      font-size: 18px;
+      line-height: 27px;
+    } 
+    
+    p {
+      font-size: 36px;
+      line-height: 52px;
+    } 
+  }
 `
 
 function MainVisual() {
