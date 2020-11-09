@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Styled from 'styled-components'
 
-import { Close } from 'components/wematch-ui/Icon'
+import Close from 'components/Icon/generated/Close'
 import Button from 'components/common/Button'
 import Input from 'components/common/Input'
 import PopupTemplate from 'components/common/Popup/PopupTemplate'
@@ -119,7 +119,8 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
         <PopupTemplate visible={visible} onOverlayClose={onOverlayClose}>
             <S.Container>
                 <S.CloseButton id={tags?.closeBtn} onClick={() => handleClose()}>
-                    <Close size={24} color={colors.white} />
+                    {/*<Close width={24} height={24} color={colors.white} />*/}
+                    <img src={require('assets/images/new/Close.svg')} alt="닫기" />
                 </S.CloseButton>
                 <strong>전화번호인증</strong>
                 <p>

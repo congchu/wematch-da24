@@ -247,7 +247,8 @@ const MoveInput: React.FC<Props> = (props) => {
                             ...getMoveAddress,
                             detailStart: e.target.value
                         }))} style={{ backgroundColor: "transparent" }} onBlur={(e) => {
-                            if (getMoveAddress.detailStart.length > 2) {
+                            console.log(e.target.value.length)
+                            if (e.target.value.length >= 2) {
                                 dataLayer({
                                     event: 'input_info',
                                     category: '다이사_메인_입력창_1',
@@ -269,7 +270,7 @@ const MoveInput: React.FC<Props> = (props) => {
                             ...getMoveAddress,
                             detailEnd: e.target.value
                         }))} style={{ backgroundColor: "transparent" }} onBlur={(e) => {
-                            if (getMoveAddress.detailEnd.length > 2) {
+                            if (e.target.value.length >= 2) {
                                 dataLayer({
                                     event: 'input_info',
                                     category: '다이사_메인_입력창_1',
