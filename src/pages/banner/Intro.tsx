@@ -16,7 +16,7 @@ const S = {
       line-height: 22px;
       letter-spacing: -0.03em;
       color: ${colors.gray33};
-      margin-bottom: 56px;
+      padding-bottom: 125px;
       
       img {
         width: calc(100% - 48px);
@@ -51,6 +51,10 @@ const S = {
         margin: 0 24px;
       }
       
+      .last {
+        padding-bottom: 125px;
+      }
+      
       .mobile-enter {
         display: block;
       }
@@ -61,7 +65,8 @@ const S = {
       
       @media screen and (min-width: 768px) {
          width: 720px;
-         margin: 72px auto 100px;
+         margin: 72px auto 0;
+         padding-bottom: 100px;
          
          .mobile-enter {
            display: none;
@@ -81,9 +86,6 @@ const S = {
            p {
               width: calc(50% - 20px);
               margin-left: 20px;
-           }
-           
-           .inner {
            }
          }
          .box-inner {
@@ -196,7 +198,7 @@ export default function Intro() {
                 </p>
                 <img className="full" src={require('assets/images/banner/intro_07.png')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,S등급" />
                 <h3 className="bold">3. 단 1분만에 나만의 이삿짐센터 후보 확인!</h3>
-                <p style={{ marginBottom: 125 }}>
+                <p>
                     <br />
                     클릭 몇 번으로 내 조건에 맞는 <br />
                     맞춤형 이사업체 실시간 매칭! <br />
@@ -230,7 +232,7 @@ export default function Intro() {
                     단 1분만에 찾는 꿀팁! <br />
                 </p>
                 <div className="box">
-                    <img src={require('assets/images/banner/intro_02.png')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,S등급" />
+                    <img src={require('assets/images/banner/intro_02.png')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,S등급" style={{ height: 248 }} />
                     <p>
                         <em className="point bold">유명 프랜차이즈가 최고?</em> <br />
                         <em className="point bold">업체 이름만 믿었다가는 낭패보기 십상!</em> <br />
@@ -238,7 +240,7 @@ export default function Intro() {
                     </p>
                 </div>
                 <div className="box">
-                    <img src={require('assets/images/banner/intro_03.png')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,S등급"  />
+                    <img src={require('assets/images/banner/intro_03.png')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,S등급" style={{ height: 248 }} />
                     <p>
                         <em className="point bold">광고 아닌척 하는 가짜후기 말고 진짜 정보를 찾자!</em> <br />
                         어딜봐도 넘쳐나는 광고, 허위후기들이 <br />
@@ -248,7 +250,7 @@ export default function Intro() {
                     </p>
                 </div>
                 <div className="box">
-                    <img src={require('assets/images/banner/intro_04.png')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,S등급" />
+                    <img src={require('assets/images/banner/intro_04.png')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,S등급" style={{ height: 248 }} />
                     <p>
                         <em className="point bold">여러 업체 비교는 필수!</em> <br />
                         바빠서, 혹은 대충 다 비슷할 거란 생각에 <br />

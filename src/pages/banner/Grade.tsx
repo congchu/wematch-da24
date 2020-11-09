@@ -11,7 +11,8 @@ const S = {
     Container: styled.div`
       font-style: normal;
       font-weight: normal;
-      margin: 86px 0 106px;
+      margin: 86px 0 0;
+      padding-bottom: 60px;
       word-break: keep-all;
       
       section {
@@ -48,7 +49,8 @@ const S = {
       
       @media screen and (min-width: 768px) {
          width: 720px;
-         margin: 152px auto 100px;
+         margin: 152px auto 0;
+         padding-bottom: 60px;
          
          .mobile-enter {
             display: none;
@@ -157,7 +159,7 @@ const S = {
     Utility: styled.div`
       letter-spacing: -1px;
       color: ${colors.gray33};
-      
+
       h2 {
         font-size: 18px;
         margin-bottom: 20px;

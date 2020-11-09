@@ -26,13 +26,13 @@ const S = {
     padding: 0 24px;
   `,
   Text: styled.p`
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 16px;
+    line-height: 23px;
     color: ${gray66};
   `,
   More: styled.a`
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 16px;
+    line-height: 23px;
     color: ${gray66};
   `
 }

@@ -4,7 +4,7 @@ import styled from 'styled-components/macro'
 import * as colors from 'styles/colors'
 
 const Banner = styled.section`
-  padding: 50px 24px 73px;
+  padding: 80px 24px 73px;
   
   a {
     cursor: pointer;
@@ -57,7 +57,7 @@ const Banner = styled.section`
     
     &:after {
       content: '';
-      background-image: url(${require('assets/images/partner_banner.svg')});
+      background-image: url(${require('assets/images/partner_banner.png')});
       background-repeat: no-repeat;
       background-size: cover;
       width: 115px;
@@ -94,6 +94,7 @@ const Banner = styled.section`
       &:after {
         width: 204px;
         height: 120px;
+        background-image: url(${require('assets/images/partner_banner.svg')});
       }
     }
   }

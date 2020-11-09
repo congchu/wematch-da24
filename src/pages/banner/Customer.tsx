@@ -10,8 +10,9 @@ const S = {
     Container: styled.div`
       font-style: normal;
       font-weight: normal;
-      margin: 86px 24px 105px;
-            
+      margin: 86px 24px 0;
+      padding-bottom: 60px;  
+                          
       .title {
         font-size: 22px;
         line-height: 33px;
@@ -64,6 +65,10 @@ const S = {
             font-weight: bold;
           }
         }
+        
+        .last {
+          padding-bottom: 125px;
+        }
       }
       
       .mobile-enter {
@@ -72,7 +77,7 @@ const S = {
       
       @media screen and (min-width: 768px) {
          width: 720px;
-         margin: 100px auto 100px;
+         margin: 100px auto 0;
          
          .mobile-enter {
            display: none;
