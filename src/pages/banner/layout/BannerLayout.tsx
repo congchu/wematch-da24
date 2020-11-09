@@ -31,7 +31,9 @@ const S = {
       .icon {
         position: absolute;
         left: 24px;
-        top: 19px;  
+        top: 19px;
+        width: 24px;
+        height: 24px;
       }
       
       h1 {

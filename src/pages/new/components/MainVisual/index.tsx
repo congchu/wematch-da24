@@ -95,6 +95,13 @@ const Slide = styled.div<{image: string}>`
   }
 `
 
+const EventSlide = styled(Slide)`
+  p {
+    font-size: 22px;
+    line-height: 32px;
+  }
+`
+
 function MainVisual() {
     const router = useRouter()
 
@@ -119,11 +126,11 @@ function MainVisual() {
             pagination={{ clickable: true }}
             onSlideChange={(e) => {
                 reset()
-                if (e.activeIndex === 1 || e.activeIndex === 4) {
+                if (e.activeIndex === 1 || e.activeIndex === 5) {
                     update(5402531)
-                } else if (e.activeIndex === 2) {
-                    update(1036351)
                 } else if (e.activeIndex === 3) {
+                    update(1036351)
+                } else if (e.activeIndex === 4) {
                     update(111267)
                 }
             }}
@@ -141,6 +148,17 @@ function MainVisual() {
                         <a>자세히</a>
                     </div>
                 </Slide>
+            </SwiperSlide>
+            <SwiperSlide>
+                <EventSlide image="mattress_event" onClick={() => window.location.href = 'https://da24.wematch.com/notice.asp'}>
+                    <div className="wrapper">
+                        <span>놓칠 수 없는 혜택!</span>
+                        <p>
+                            이사 견적서 올리면, <br /><strong>매트리스 소독권</strong> 또는 <strong>편의점 상품권!</strong>
+                        </p>
+                        <a>자세히</a>
+                    </div>
+                </EventSlide>
             </SwiperSlide>
             <SwiperSlide>
                 <Slide image="main_visual_02" onClick={() => router.history.push('/banner/customer')}>

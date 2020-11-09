@@ -393,7 +393,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
     return (
         <Visual.Section>
             <Visual.Container>
-                <strong>무료 견적 신청하기</strong>
+                <strong>무료 견적상담 신청하기</strong>
                 <p>이사 종류를 선택해주세요.</p>
             </Visual.Container>
             <ButtonGroup headerRef={headerRef} isFixed={isFixed} setIsFixed={setIsFixed} onClick={(type: 'house' | 'oneroom' | 'office' | undefined) => {
