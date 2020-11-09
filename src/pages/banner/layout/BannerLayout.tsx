@@ -62,9 +62,13 @@ interface Props {
     title: string;
     onBack: () => void;
     children: React.ReactNode;
+    tags?: {
+        back?: string;
+        home?: string;
+    }
 }
 
-export default function BannerLayout({ title, onBack, children, ...restProps }: Props) {
+export default function BannerLayout({ title, onBack, children, tags, ...restProps }: Props) {
     const router = useRouter()
     const isDesktop = useMedia({
         minWidth: 1200,
@@ -74,7 +78,7 @@ export default function BannerLayout({ title, onBack, children, ...restProps }: 
         <S.Container {...restProps}>
             {isDesktop ? <MainHeader isFixed={true} border={true} /> : (
                 <S.Header>
-                    <div className="icon" onClick={onBack}>
+                    <div id={tags?.back} className="icon" onClick={onBack}>
                         <Previous size={16} color={colors.black} />
                     </div>
                     <h1>{title}</h1>
@@ -82,7 +86,7 @@ export default function BannerLayout({ title, onBack, children, ...restProps }: 
             )}
             {children}
             <S.Bottom>
-                <Button theme="primary" bold onClick={() => router.history.goBack()}>위매치 이용하러 가기</Button>
+                <Button id={tags?.home} theme="primary" bold onClick={() => router.history.goBack()}>위매치 이용하러 가기</Button>
             </S.Bottom>
         </S.Container>
     )

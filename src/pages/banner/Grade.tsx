@@ -284,7 +284,10 @@ export default function Grade() {
     ]
 
     return (
-        <BannerLayout title="소비자평가등급이란" onBack={() => history.goBack()}>
+        <BannerLayout title="소비자평가등급이란" onBack={() => history.goBack()} tags={{
+            back: 'dsl_movesub_grade_back_1',
+            home: 'dsl_movesub_grade_home_1'
+        }}>
             <S.Container>
                 <section>
                     <h2><strong>평가 등급</strong>과 <strong>만족도</strong></h2>

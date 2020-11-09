@@ -213,7 +213,10 @@ export default function Intro() {
     }
 
     return (
-        <BannerLayout title="이사업체 잘 고르는 공식, 위매치" onBack={() => history.goBack()}>
+        <BannerLayout title="이사업체 잘 고르는 공식, 위매치" onBack={() => history.goBack()} tags={{
+            back: 'dsl_movesub_intro_back_1',
+            home: 'dsl_movesub_intro_home_1'
+        }}>
             <S.Container>
                 <img className="full" src={require('assets/images/banner/intro_01.png')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,S등급" />
                 <p>

@@ -129,7 +129,10 @@ export default function Customer() {
     ]
 
     return (
-        <BannerLayout title="위매치 고객의 소리" onBack={() => history.goBack()}>
+        <BannerLayout title="위매치 고객의 소리" onBack={() => history.goBack()} tags={{
+            back: 'dsl_movesub_customer_back_1',
+            home: 'dsl_movesub_customer_home_1'
+        }}>
             <S.Container>
                 <p className="title">
                     <strong>'긴가민가 위매치'</strong>가 <br className="mobile-enter" />
