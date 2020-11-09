@@ -247,7 +247,6 @@ const MoveInput: React.FC<Props> = (props) => {
                             ...getMoveAddress,
                             detailStart: e.target.value
                         }))} style={{ backgroundColor: "transparent" }} onBlur={(e) => {
-                            console.log(e.target.value.length)
                             if (e.target.value.length >= 2) {
                                 dataLayer({
                                     event: 'input_info',
