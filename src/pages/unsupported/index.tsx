@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
-
+import useUserAgent from 'hooks/useUserAgent'
 import * as colors from 'styles/colors'
 
 const S = {
@@ -95,6 +95,20 @@ const S = {
 }
 
 export default function UnSupported() {
+    const { isIE } = useUserAgent()
+    // ie redirection to edge
+    useEffect(() => {
+        if (isIE) {
+            window.open('microsoft-edge:https://da24.wematch.com', '_blank')
+
+            setTimeout(function() {
+                window.opener='self'
+                window.open('','_parent','')
+                window.close();
+            }, 1)
+        }
+    }, [isIE])
+
     return (
         <S.Container>
             <div className="logo">

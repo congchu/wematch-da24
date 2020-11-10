@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react'
 import {
     Switch,
     Route,
+    Redirect,
     useLocation
 } from 'react-router-dom'
 import {Provider} from 'react-redux'
@@ -22,6 +23,7 @@ import Grade from 'pages/banner/Grade'
 import UnSupported from 'pages/unsupported'
 
 import useScript from 'hooks/useScript'
+import useUserAgent from 'hooks/useUserAgent'
 
 //swiper lib
 import SwiperCore, { Pagination, Autoplay } from 'swiper'
@@ -34,6 +36,7 @@ function AppRoute() {
     const [script, setScript] = useState('');
     const location = useLocation()
     const customScript = useScript(script)
+    const { isIE } = useUserAgent()
 
     const getPathname = () => {
         let pathname = 5
@@ -67,32 +70,29 @@ function AppRoute() {
         }
     }, [script])
 
-    // ie redirection to edge
-    useEffect(() => {
-        if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
-            window.open('microsoft-edge:' + `https://da24.wematch.com${location.pathname}`, '_blank')
-
-            setTimeout(function() {
-                window.opener='self'
-                window.open('','_parent','')
-                window.close();
-            }, 1)
-        }
-    }, [navigator.userAgent])
-
-    return (
-        <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/new" component={New} />
-            <Route exact path="/partner/list" component={PartnerList} />
-            <Route exact path="/partner/detail/:username" component={PartnerDetail} />
-            <Route exact path="/partner/cart" component={PartnerCart}/>
-            <Route exact path="/banner/intro" component={Intro} />
-            <Route exact path="/banner/customer" component={Customer} />
-            <Route exact path="/banner/grade" component={Grade} />
-            <Route exact path="/unsupported" component={UnSupported} />
-        </Switch>
-    )
+    // ie인 경우 무조건 unsupported로 보낸다.
+    if (isIE) {
+        return (
+            <Switch>
+                <Route exact path="/unsupported" component={UnSupported} />
+                <Redirect path="/" to="/unsupported" />
+            </Switch>
+        )
+    } else {
+        return (
+            <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/new" component={New} />
+                <Route exact path="/partner/list" component={PartnerList} />
+                <Route exact path="/partner/detail/:username" component={PartnerDetail} />
+                <Route exact path="/partner/cart" component={PartnerCart}/>
+                <Route exact path="/banner/intro" component={Intro} />
+                <Route exact path="/banner/customer" component={Customer} />
+                <Route exact path="/banner/grade" component={Grade} />
+                <Route exact path="/unsupported" component={UnSupported} />
+            </Switch>
+        )
+    }
 }
 
 function App() {
