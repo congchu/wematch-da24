@@ -247,7 +247,6 @@ const PartnerCart = () => {
             setSessionVisible(true)
         }
 
-        dataLayer({event: 'pageview_cart'})
     }, [])
 
 
@@ -294,6 +293,7 @@ const PartnerCart = () => {
     };
     const handleSubmit = () => {
         dispatch(partnerActions.fetchMatchingAsync.request({idx:getMoveIdxData.idx, partners:checkedList}))
+        dataLayer({event: 'request_approve'})
     }
     const handleCheck = (list:IList, id:string) => {
         if(list.isChecked) {
@@ -358,7 +358,10 @@ const PartnerCart = () => {
                                 <div>방문없이 가격만 알 순 없나요?</div>
                                 <div>></div>
                             </S.GuideBtn>
-                            <S.OrderBtn onClick={() => setOrderConfirmVisible(true)} id="dsl_booking_cart_cta" disabled={checkedList.length === 0}>
+                            <S.OrderBtn onClick={() => {
+                                setOrderConfirmVisible(true)
+                                dataLayer({event: 'request_cta'})
+                            }} id="dsl_booking_cart_cta" disabled={checkedList.length === 0}>
                                 {checkedList.length > 0 && (
                                     <div>{checkedList.length}</div>
                                 )}
