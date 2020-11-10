@@ -5,10 +5,7 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -40,7 +37,7 @@
 
     <!-- Start Anti-flicker snippet (recommended)  -->
     <style>.async-hide { opacity: 0 !important} </style>
-    <script>
+    <script defer>
       (function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
         h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
         (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
@@ -49,7 +46,7 @@
     <!-- End Anti-flicker snippet (recommended)  -->
 
     <!-- Google Tag Manager -비앙카 [2020.09.07] -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    <script defer>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
@@ -57,7 +54,7 @@
     <!-- End Google Tag Manager -->
 
     <!-- Start 구글맵 get distance -->
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDXWvSMLZF5NjfcQW8W3sFSTYBBfL2ynjo"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDXWvSMLZF5NjfcQW8W3sFSTYBBfL2ynjo"></script>
     <!-- End 구글맵 -->
   </head>
   <body>
