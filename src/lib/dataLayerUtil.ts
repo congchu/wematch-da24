@@ -5,12 +5,15 @@ interface Props {
   category?: string;
   action?: string;
   label?: string;
+  CD9?: string;
+  CD8?: string;
+  CD7?: string;
 }
 
-export const dataLayer = ({ event, category, action, label }: Props) => {
+export const dataLayer = ({ event, category, action, label, CD7, CD8, CD9 }: Props) => {
   TagManager.dataLayer({
     dataLayer: {
-      event, category, action, label
+      event, category, action, label, CD7, CD8, CD9
     }
   })
 }
