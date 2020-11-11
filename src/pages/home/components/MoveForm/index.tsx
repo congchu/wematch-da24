@@ -369,10 +369,10 @@ const MoveForm = () => {
             dispatch(formActions.setInitialFormData(cookies.formData))
         }
         if(type === 'oneroom') {
-            const time = new Date().getTime()
+            /*const time = new Date().getTime()
             if(type === 'oneroom') {
                 time % 2 ? document.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
-            }
+            }*/
             dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
         } else if (type === 'house') {
             dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp))
@@ -415,10 +415,10 @@ const MoveForm = () => {
                 <em>이사종류를 선택해주세요.</em>
             </Visual.Container>
             <ButtonGroup onClick={(type: 'house' | 'oneroom' | 'office' | undefined) => {
-                const time = new Date().getTime()
+                /*const time = new Date().getTime()
                 if(type === 'oneroom') {
                     time % 2 ? document.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
-                }
+                }*/
                 dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
             }}/>
             <Visual.ButtonGroupContainer>
