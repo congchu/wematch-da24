@@ -22,6 +22,7 @@ import * as colors from 'styles/colors'
 import * as partnerSelector from "store/partner/selectors";
 import * as partnerActions from "store/partner/actions";
 import * as commonSelector from "store/common/selectors";
+import * as constants from 'constants/env'
 
 interface IList {
     id: number;
@@ -246,7 +247,6 @@ const PartnerCart = () => {
             setSessionVisible(true)
         }
 
-        dataLayer({event: 'pageview_cart'})
     }, [])
 
 
@@ -258,7 +258,7 @@ const PartnerCart = () => {
 
     useEffect(() => {
         if (getMatchingData.idx.length > 0) {
-            document.location.href = `http://m.dev.da24.wematch.com/move_step_complete.asp?move_idx=${getMatchingData.idx}`
+            document.location.href = `${constants.MOVE_URL}/move_step_complete.asp?move_idx=${getMatchingData.idx}`
         }
     }, [getMatchingData])
 
@@ -293,6 +293,24 @@ const PartnerCart = () => {
     };
     const handleSubmit = () => {
         dispatch(partnerActions.fetchMatchingAsync.request({idx:getMoveIdxData.idx, partners:checkedList}))
+        dataLayer({event: 'request_approve'})
+    }
+
+    const handleOrderBtn = () => {
+        const selectPartners = checkedList.filter((id:string) => {
+            let result = 0
+            selectList.map((list:any) => {list.adminid === id && result++})
+            return result
+        })
+
+        const recommendPartners = checkedList.filter((id:string) => {
+            let result = 0
+            recommendedList.map((list:any) => {list.adminid === id && result++})
+            return result
+        })
+
+        dataLayer({event: 'request_cta', CD9: `선택업체_${selectPartners.length}-${selectList.length},추천업체_${recommendPartners.length}-${recommendedList.length}`})
+        setOrderConfirmVisible(true)
     }
     const handleCheck = (list:IList, id:string) => {
         if(list.isChecked) {
@@ -316,7 +334,6 @@ const PartnerCart = () => {
         return <Loading text={'견적요청 페이지로 이동 중입니다.'}/>
     }
 
-    console.log(recommendCart.current?.offsetHeight)
     return (
         <>
         <S.CartWrapper>
@@ -358,7 +375,7 @@ const PartnerCart = () => {
                                 <div>방문없이 가격만 알 순 없나요?</div>
                                 <div>></div>
                             </S.GuideBtn>
-                            <S.OrderBtn onClick={() => setOrderConfirmVisible(true)} id="dsl_booking_cart_cta" disabled={checkedList.length === 0}>
+                            <S.OrderBtn onClick={() => handleOrderBtn()} id="dsl_booking_cart_cta" disabled={checkedList.length === 0}>
                                 {checkedList.length > 0 && (
                                     <div>{checkedList.length}</div>
                                 )}
