@@ -101,11 +101,11 @@ export default function UnSupported() {
         if (isIE) {
             window.open('microsoft-edge:https://da24.wematch.com', '_blank')
 
-            setTimeout(function() {
-                window.opener='self'
-                window.open('','_parent','')
-                window.close();
-            }, 1)
+            // setTimeout(function() {
+            //     window.opener='self'
+            //     window.open('','_parent','')
+            //     window.close();
+            // }, 1)
         }
     }, [isIE])
 
