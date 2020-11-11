@@ -499,14 +499,18 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
             }} onDataLayerAuth={() => {
                 return dataLayer({
                     event: 'request',
-                    action: '번호인증',
+                    category: '다이사_메인_번호인증_1',
+                    action: '인증하기',
+                    label: '인증팝업',
                     CD5: getIsMoveStore ? '보관이사 필요 체크 O' : '보관이사 필요 체크 x',
                     CD6: getMoveTypeText()
                 })
             }} onDataLayerClose={() => {
                 return dataLayer({
                     event: 'request',
-                    action: '번호인증 닫기',
+                    category: '다이사_메인_번호인증_1',
+                    action: '닫기',
+                    label: '인증팝업',
                     CD5: getIsMoveStore ? '보관이사 필요 체크 O' : '보관이사 필요 체크 x',
                     CD6: getMoveTypeText()
                 })
