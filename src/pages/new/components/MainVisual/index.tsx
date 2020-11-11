@@ -5,6 +5,7 @@ import { useCountUp } from 'react-countup'
 import styled, { css } from 'styled-components/macro'
 
 import { useRouter } from 'hooks/useRouter'
+import { dataLayer } from 'lib/dataLayerUtil'
 import { pointBlue, gray33, gray66 } from 'styles/colors'
 
 const CustomSwiper = styled(Swiper)`  
@@ -150,7 +151,15 @@ function MainVisual() {
             autoplay={autoPlayOptions}
         >
             <SwiperSlide>
-                <Slide image="main_visual_01" onClick={() => router.history.push('/banner/intro')}>
+                <Slide image="main_visual_01" onClick={() => {
+                    dataLayer({
+                        event: 'header_banner',
+                        category: '다이사_메인_상단배너_1',
+                        action: '잘하는 이사업체 1분만에 찾았다',
+                        label: '1'
+                    })
+                    router.history.push('/banner/intro')
+                }}>
                     <div className="wrapper">
                         <span>
                             누적 고객수&nbsp;
@@ -162,7 +171,15 @@ function MainVisual() {
                 </Slide>
             </SwiperSlide>
             <SwiperSlide>
-                <EventSlide image="mattress_event" onClick={() => window.location.href = 'https://da24.wematch.com/notice.asp'}>
+                <EventSlide image="mattress_event" onClick={() => {
+                    dataLayer({
+                        event: 'header_banner',
+                        category: '다이사_메인_상단배너_1',
+                        action: '이사 견적서 올리면, 매트리스 소독권 또는 편의점 상품권!',
+                        label: '2'
+                    })
+                    window.location.href = 'https://da24.wematch.com/notice.asp'
+                }}>
                     <div className="wrapper">
                         <span>놓칠 수 없는 혜택!</span>
                         <p>
@@ -173,7 +190,15 @@ function MainVisual() {
                 </EventSlide>
             </SwiperSlide>
             <SwiperSlide>
-                <Slide image="main_visual_02" onClick={() => router.history.push('/banner/customer')}>
+                <Slide image="main_visual_02" onClick={() => {
+                    dataLayer({
+                        event: 'header_banner',
+                        category: '다이사_메인_상단배너_1',
+                        action: '혹시나 하고 이용했는데 대만족이에요',
+                        label: '3'
+                    })
+                    router.history.push('/banner/customer')
+                }}>
                     <div className="wrapper">
                         <span>
                             누적 고객수&nbsp;
@@ -185,7 +210,15 @@ function MainVisual() {
                 </Slide>
             </SwiperSlide>
             <SwiperSlide>
-                <Slide image="main_visual_03" onClick={() => router.history.push('/banner/grade')}>
+                <Slide image="main_visual_03" onClick={() => {
+                    dataLayer({
+                        event: 'header_banner',
+                        category: '다이사_메인_상단배너_1',
+                        action: '허위후기/광고 없이 진짜 데이터로 고르자',
+                        label: '4'
+                    })
+                    router.history.push('/banner/grade')
+                }}>
                     <div className="wrapper">
                         <span>
                             누적 고객수&nbsp;
