@@ -151,7 +151,6 @@ const PartnerList = () => {
         if(!getMoveIdxData.idx) {
             setVisible(true)
         }
-        dataLayer({event: 'pageview_list'})
     }, [])
 
     useEffect(() => {
@@ -180,7 +179,7 @@ const PartnerList = () => {
                 :
                 <>
                 <S.WrapItem id="dsl_booking_list_partner">
-                    {getPartnerList.data.map((list:any) => {
+                    {getPartnerList.data.map((list:any, index: number) => {
                         return (
                             <PartnerItem key={list.id} profile_img={list.profile_img}
                                          level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
@@ -189,6 +188,7 @@ const PartnerList = () => {
                                              if(list.status !== 'unavailable') {
                                                 history.push(`/partner/detail/${list.adminid}`)
                                              }
+                                             dataLayer({event: 'partner_select', label: `${getPartnerList.data.length}_${index+1}`, CD7: `${list.level}등급`, CD8: `${list.title}`})
                                          }}
                             />
                         )

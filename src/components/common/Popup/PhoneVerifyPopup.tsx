@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Styled from 'styled-components'
 
-import { Close } from 'components/wematch-ui/Icon'
+import Close from 'components/Icon/generated/Close'
 import Button from 'components/common/Button'
 import Input from 'components/common/Input'
 import PopupTemplate from 'components/common/Popup/PopupTemplate'
@@ -19,6 +19,13 @@ interface Props {
     onOverlayClose?: () => void;
     /** 핸드폰 번호 */
     phone: string
+    /** 이벤트 태깅 구분 - 인증하기 */
+    tags?: {
+        authBtn?: string;
+        closeBtn?: string;
+    }
+    onDataLayerAuth?: () => void;
+    onDataLayerClose?: () => void;
 }
 
 const S = {
@@ -61,7 +68,10 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
         visible,
         onClose,
         onOverlayClose,
-        phone
+        phone,
+        tags,
+        onDataLayerAuth,
+        onDataLayerClose
     } = props
     const dispatch = useDispatch()
 
@@ -84,6 +94,10 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
             phone,
             code
         }))
+
+        if (onDataLayerAuth) {
+            onDataLayerAuth()
+        }
     }
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -92,7 +106,10 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
         }
     };
 
-    const handleClose =  async () => {
+    const handleClose = async () => {
+        if (onDataLayerClose) {
+            onDataLayerClose()
+        }
         if (onClose) {
             await onClose()
             await setCode('')
@@ -101,8 +118,9 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
     return (
         <PopupTemplate visible={visible} onOverlayClose={onOverlayClose}>
             <S.Container>
-                <S.CloseButton onClick={() => handleClose()} id="dsl_movemain_button_verify_x">
-                    <Close size={24} color={colors.white} />
+                <S.CloseButton id={tags?.closeBtn} onClick={() => handleClose()}>
+                    {/*<Close width={24} height={24} color={colors.white} />*/}
+                    <img src={require('assets/images/new/Close.svg')} alt="닫기" />
                 </S.CloseButton>
                 <strong>전화번호인증</strong>
                 <p>
@@ -113,9 +131,9 @@ const PhoneVerifyPopup:React.FC<Props> = (props) => {
                     <Input theme="default" maxLength={4} value={code} onChange={(e) => {
                         setCode(e.target.value)
                     }} onKeyPress={handleKeyPress} />
-                    <Button theme="primary" style={{ width: "80px", fontSize: "15px" }} onClick={handleSubmit} id="dsl_movemain_button_verify">인증하기</Button>
+                    <Button theme="primary" style={{ width: "80px", fontSize: "15px" }} onClick={handleSubmit} id={tags?.authBtn}>인증하기</Button>
                 </S.Group>
-                {getPhoneVerified.data.is_verified === false && !getPhoneVerified.loading && code.length > 0? (
+                {getPhoneVerified.data.is_verified === false && !getPhoneVerified.loading && code.length > 0 ? (
                     <S.ErrorMessage>잘못된 인증번호입니다</S.ErrorMessage>
                 ) : (
                     <p>인증번호를 입력해 주세요</p>
