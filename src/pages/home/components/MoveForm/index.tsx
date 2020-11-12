@@ -373,7 +373,8 @@ const MoveForm = () => {
             if(type === 'oneroom') {
                 time % 2 ? document.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
             }*/
-            dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
+            // dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
+            type === 'oneroom' ? window.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
         } else if (type === 'house') {
             dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp))
         }
@@ -419,7 +420,7 @@ const MoveForm = () => {
                 if(type === 'oneroom') {
                     time % 2 ? document.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
                 }*/
-                dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
+                type === 'oneroom' ? window.document.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
             }}/>
             <Visual.ButtonGroupContainer>
                 {getMoveType === undefined && (
