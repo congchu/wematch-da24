@@ -156,7 +156,7 @@ const Promotions = {
         font-size: 15px; 
       }
       .text2 {
-        width: 182px;
+        width: 210px;
         font-size: 18px;
         font-weight: 700;
       }
