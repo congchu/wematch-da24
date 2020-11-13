@@ -185,11 +185,16 @@ const PartnerList = () => {
                             <PartnerItem key={list.id} profile_img={list.profile_img}
                                          level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
                                          pick_cnt={list.pick_cnt} feedback_cnt={list.feedback_cnt} experience={list.experience} status={list.status}
+<<<<<<< Updated upstream
                                          onClick={() => {
                                              if(list.status !== 'unavailable') {
                                                 history.push(`/partner/detail/${list.adminid}`)
                                              }
                                          }}
+=======
+                                         adminid={list.adminid}
+                                         onClick={() => history.push(`/partner/detail/${list.adminid}`)}
+>>>>>>> Stashed changes
                             />
                         )
                     })}

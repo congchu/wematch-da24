@@ -1,23 +1,31 @@
 import React from 'react'
+import {useSelector} from "react-redux";
 import styled, { css } from 'styled-components'
 
 import { NextArrow, ProfileDefault } from 'components/Icon'
 import { Level } from 'types/partner'
 
 import * as colors from 'styles/colors'
-import { API_URL } from 'constants/env'
 import { LevelGradeText } from 'lib/levelUtil'
+import {some} from "lodash";
+import * as partnerSelector from "store/partner/selectors";
 
 const S = {
-	Box: styled.a`
+	Box: styled.a<{isSelected: boolean, isFull:boolean}>`
 		display:block;
 		overflow:hidden;
 		padding:24px;
 		border-bottom:1px solid ${colors.lineDefault};
-		background:${colors.white};
+		background-color: ${props => props.isSelected ? colors.grayBg : colors.white};
+		
+		* {
+			color: ${props => props.isFull && colors.gray66};
+		}
+		
 		@media screen and (min-width:768px) {
 			padding:24px 40px;
 		}
+		
 	`,
 	PartnerImg: styled.div<{profile_img?: string}>`
 		position:relative;
@@ -69,6 +77,30 @@ const S = {
 		box-sizing:border-box;
 		&:after {
 			content: "오늘\\a마감";
+			white-space: pre-line;
+		}
+		@media screen and (max-width: 320px) {
+			padding-top:23px;
+		}
+	`,
+	BgSelected: styled.div<{isSelected: boolean}>`
+		display:inline-block;
+		position:absolute;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		padding-top:33px;
+		border-radius:44px;
+		font-weight:700;
+		color:${colors.white};
+		${props => props.isSelected && css`
+			background-color: rgba(22, 114, 247, 0.6);
+		`};
+		text-align:center;
+		box-sizing:border-box;
+		&:after {
+			content: "선택";
 			white-space: pre-line;
 		}
 		@media screen and (max-width: 320px) {
@@ -138,22 +170,33 @@ interface Props {
 	feedback_cnt: number;
 	experience: number;
 	onClick: () => void;
+	adminid: string;
 	status: 'selected' | 'available' | 'unavailable';
 }
 
-const PartnerItem = ({ profile_img, level, title, pick_cnt, feedback_cnt, experience, onClick, status }: Props) => {
+const PartnerItem = ({ profile_img, level, title, pick_cnt, feedback_cnt, experience, onClick, status, adminid }: Props) => {
+	const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
+
+	const partnerStatus = () => {
+		const isSelected = some(getPartnerPick.data, {adminid: adminid});
+		if(isSelected) return 'isSelected'
+		return status
+	};
+
 	return (
-		<S.Box onClick={onClick}>
+		<S.Box onClick={onClick} isSelected={partnerStatus() === 'isSelected'} isFull={partnerStatus() === "unavailable"}>
 			{profile_img ? (
 				<S.PartnerImg profile_img={profile_img}>
 					<span />
-					{status === "unavailable" && <S.BgClose is_full={status === "unavailable"}/>}
+					{partnerStatus() === "unavailable" && <S.BgClose is_full={partnerStatus() === "unavailable"}/>}
+					{partnerStatus() === "isSelected" && <S.BgSelected isSelected={partnerStatus() === "isSelected"}/>}
 				</S.PartnerImg>
 			) : (
 				<S.PartnerImg>
 					<span />
 					<ProfileDefault width={36} height={36} color={colors.white} />
-					{status === "unavailable" && <S.BgClose is_full={status === "unavailable"}/>}
+					{partnerStatus() === "unavailable" && <S.BgClose is_full={partnerStatus() === "unavailable"}/>}
+					{partnerStatus() === "isSelected" && <S.BgSelected isSelected={partnerStatus() === "isSelected"}/>}
 				</S.PartnerImg>
 			)}
 			<S.CompanyInfo>

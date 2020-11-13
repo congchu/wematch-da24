@@ -24,6 +24,7 @@ import {some} from "lodash";
 import { useRouter } from 'hooks/useRouter'
 import ToastPopup from "components/wematch-ui/ToastPopup";
 import {dataLayer} from "lib/dataLayerUtil";
+import SetType from "../List/setType";
 
 const S = {
     Container: Styled.div``,
@@ -165,6 +166,7 @@ const PartnerDetail = () => {
     const getReviewList = useSelector(partnerSelector.getReviewList)
     const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
     const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
+    const getFormData = useSelector(formSelector.getFormData)
 
     const [sessionVisible, setSessionVisible] = useState(false)
 
@@ -254,6 +256,9 @@ const PartnerDetail = () => {
             {getPartnerDetail.data && (
                 <>
                     {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true}/>}
+                    {getFormData.moving_date.length !== 0 && (
+                      <SetType count={getPartnerPick.data.length} formData={getFormData}/>
+                    )}
                     <UserImage profile_img={getPartnerDetail.data.profile_img } status={getPartnerDetail.data.status} />
                     <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT}
                         level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
