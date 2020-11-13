@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Styled, { css, keyframes } from 'styled-components'
-import ScrollLock from 'react-scrolllock'
+import ScrollLock, { TouchScrollable } from 'react-scrolllock'
 
 import * as colors from 'styles/colors'
 
@@ -271,16 +271,18 @@ const Select:React.FC<Props> = (props) => {
                         <strong>{headerTitle}</strong>
                         <button onClick={onClose}>닫기</button>
                     </S.Header>
-                    <S.List>
-                        {values.map((value, index) =>
-                            <S.Item key={index} onClick={(e) => {
-                                handleOnSelect(keyList[index])
-                                handleOnClose(e)
-                            }}>
-                                {value}
-                            </S.Item>
-                        )}
-                    </S.List>
+                    <TouchScrollable>
+                        <S.List>
+                            {values.map((value, index) =>
+                                <S.Item key={index} onClick={(e) => {
+                                    handleOnSelect(keyList[index])
+                                    handleOnClose(e)
+                                }}>
+                                    {value}
+                                </S.Item>
+                            )}
+                        </S.List>
+                    </TouchScrollable>
                 </S.SelectBox>
             </S.Container>
         </ScrollLock>
