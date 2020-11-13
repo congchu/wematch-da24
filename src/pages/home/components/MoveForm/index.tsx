@@ -141,6 +141,35 @@ const Terms = {
     SubmitContainer: styled.div`
         display: flex;
         flex-direction: column;
+        
+        .text {
+          margin: 24px 0;
+          text-align: center;
+          
+          .mobile-enter {
+            display: initial; 
+          }
+          
+          p {
+            text-align: center;
+            font-size: 16px;
+            line-height: 24px;
+            letter-spacing: -0.03em;
+            color: ${colors.gray66};
+          }
+                
+          strong {
+            font-weight: bold;
+          }
+        }
+        
+        @media screen and (min-width:1200px) {
+            .text {
+              .mobile-enter {
+                display: none; 
+              }
+            }
+        }
     `,
 }
 
@@ -507,6 +536,12 @@ const MoveForm = () => {
                         </Terms.Collapse>
                     </Terms.Container>
                     <Terms.SubmitContainer id="dsl_movemain_button_requests">
+                        <div className="text">
+                            <p>
+                                내 조건에 맞는 업체<strong>(최대 3개)</strong>에 <br className="mobile-enter" />
+                                비용산정을 위한 <strong>무료 방문견적</strong>을 신청합니다
+                            </p>
+                        </div>
                         <Button theme="primary" onClick={() => {
                             handleSubmit()
                             setSubmitType('curation')

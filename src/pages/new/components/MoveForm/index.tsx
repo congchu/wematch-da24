@@ -176,10 +176,6 @@ const Terms = {
               .mobile-enter {
                 display: none; 
               }
-              
-              p {
-                margin: 30px 0;
-              }
             }
         }
     `
@@ -482,7 +478,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                             <Button theme="primary" bold border onClick={() => {
                                 handleSubmit('curation')
                                 setSubmitType('curation')
-                            }}>우수 업체 추천받기</Button>
+                            }}>견적 신청하기</Button>
                             {getMoveType !== 'oneroom' && (
                                 <Button theme="default" onClick={() => {
                                     handleSubmit('select')
