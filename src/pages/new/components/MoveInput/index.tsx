@@ -14,7 +14,7 @@ import * as formActions from 'store/form/actions'
 import { isExceedDiffDay } from 'lib/dateUtil'
 import { dataLayer } from 'lib/dataLayerUtil'
 import { CALENDAR_MAX_DAYS } from 'constants/values'
-// import useHashToggle from 'hooks/useHashToggle'
+import useHashToggle from 'hooks/useHashToggle'
 
 type MoveInputProps = {
     departAddress: string;
@@ -116,17 +116,17 @@ const MoveInput: React.FC<Props> = (props) => {
         { key: '25', value: '25층 이상' },
     ]
 
-    const [visibleCalendarModal, setVisibleCalendarModal] = useState<boolean>(false)
-    const [visibleStartAddressModal, setVisibleStartAddressModal] = useState<boolean>(false)
-    const [visibleStartFloorModal, setVisibleStartFloorModal] = useState<boolean>(false)
-    const [visibleEndAddressModal, setVisibleEndAddressModal] = useState<boolean>(false)
-    const [visibleEndFloorModal, setVisibleEndFloorModal] = useState<boolean>(false)
+    // const [visibleCalendarModal, setVisibleCalendarModal] = useState<boolean>(false)
+    // const [visibleStartAddressModal, setVisibleStartAddressModal] = useState<boolean>(false)
+    // const [visibleStartFloorModal, setVisibleStartFloorModal] = useState<boolean>(false)
+    // const [visibleEndAddressModal, setVisibleEndAddressModal] = useState<boolean>(false)
+    // const [visibleEndFloorModal, setVisibleEndFloorModal] = useState<boolean>(false)
 
-    // const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar')
-    // const [visibleStartAddressModal, setVisibleStartAddressModal] = useHashToggle('#startAddress')
-    // const [visibleStartFloorModal, setVisibleStartFloorModal] = useHashToggle('#startFloor')
-    // const [visibleEndAddressModal, setVisibleEndAddressModal] = useHashToggle('#endAddress')
-    // const [visibleEndFloorModal, setVisibleEndFloorModal] = useHashToggle('#endFloor')
+    const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar')
+    const [visibleStartAddressModal, setVisibleStartAddressModal] = useHashToggle('#startAddress')
+    const [visibleStartFloorModal, setVisibleStartFloorModal] = useHashToggle('#startFloor')
+    const [visibleEndAddressModal, setVisibleEndAddressModal] = useHashToggle('#endAddress')
+    const [visibleEndFloorModal, setVisibleEndFloorModal] = useHashToggle('#endFloor')
 
     const getMoveTypeText = useCallback(() => {
         if (getMoveType === 'house') {
