@@ -31,7 +31,7 @@ const Slide = styled.div<{image: string}>`
   
   height: 400px;
   ${props => props.image && css`
-    background-image: url(${require('assets/images/components/MainVisual/' + props.image + '.png')});
+    background-image: url(${require('assets/images/components/MainVisual/' + props.image + '.jpg')});
   `};
   background-size: cover;
   background-position: center center;
@@ -79,7 +79,7 @@ const Slide = styled.div<{image: string}>`
   
   @media screen and (min-width: 768px) {
     ${props => props.image && css`
-      background-image: url(${require('assets/images/components/MainVisual/' + props.image + '_pc.png')});
+      background-image: url(${require('assets/images/components/MainVisual/' + props.image + '_pc.jpg')});
     `};
   }
   
