@@ -21,6 +21,7 @@ const S = {
 		* {
 			color: ${props => props.isFull && colors.gray66};
 		}
+        
 		
 		@media screen and (min-width:768px) {
 			padding:24px 40px;
@@ -204,9 +205,18 @@ const PartnerItem = ({ profile_img, level, title, pick_cnt, feedback_cnt, experi
 				<S.LevelTitle><em>{level}등급 ({LevelGradeText(level)})</em></S.LevelTitle>
 				<S.PartnerWord>{title}</S.PartnerWord>
 				<S.PartnerInfo>
-					<span>고객선택 {pick_cnt}</span>
-					<span>평가 {feedback_cnt}</span>
-					<span>경력 {experience}년</span>
+					{level === 'NEW' ?
+						<>
+							<span>평가수집중</span>
+							<span>경력 {experience}년</span>
+						</>
+						:
+						<>
+							<span>고객선택 {pick_cnt}</span>
+							<span>평가 {feedback_cnt}</span>
+							<span>경력 {experience}년</span>
+						</>
+					}
 				</S.PartnerInfo>
 				<S.CompanyLink>
 					자세히 보기

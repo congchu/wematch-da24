@@ -23,6 +23,7 @@ import * as partnerSelector from "store/partner/selectors";
 import * as partnerActions from "store/partner/actions";
 import * as commonSelector from "store/common/selectors";
 import * as constants from 'constants/env'
+import CheckAlertPopup from "./component/CheckAlertPopup";
 
 interface IList {
     id: number;
@@ -57,7 +58,7 @@ const S = {
     TitleWrapper: styled.div`
       background-color: white;
       border-bottom: 1px solid ${colors.lineDefault};
-     
+      border-top: 1px solid ${colors.lineDefault};
     `,
     Title: styled.div`
       display: inline-block;
@@ -369,16 +370,16 @@ const PartnerCart = () => {
                 }
             </S.CartContainer>
         </S.CartWrapper>
-        <AlertModal visible={alertVisible} onConfirm={() => setAlertVisible(!alertVisible)} title={"3개 비교할 때 \n 만족도가 가장 높아요!"} subTitle={"더 많은 업체 비교를 원하시면\n고객센터(1522-2483)에 문의해주세요"}/>
         <GuidePopup visible={guideVisible} onClose={() => setGuideVisible(!guideVisible)}/>
+        <CheckAlertPopup visible={alertVisible} showHeaderCancelButton={true} cancelClick={() => setAlertVisible(!alertVisible)}/>
         <ConfirmPopup visible={orderConfirmVisible} showHeaderCancelButton={true} cancelClick={() => setOrderConfirmVisible(!orderConfirmVisible)} confirmClick={() => {
             handleSubmit();
             setOrderConfirmVisible(false);
             }} orderCount={checkedList.length}
         />
-        <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
+        {/*<ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
             <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
-        </ToastPopup>
+        </ToastPopup>*/}
         </>
     )
 };
