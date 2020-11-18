@@ -10,14 +10,6 @@ import * as commonSelector from "../../store/common/selectors";
 
 const S = {
 		Container: Styled.div`
-			:after{
-				content:'';
-				display:block;
-				width:100%;
-				height:8px;
-				background-color:${colors.grayBg};
-				box-shadow:inset 0 1px 0 ${colors.lineDeco};
-			}
 		`,
 		BtnPrevious: Styled.a`
 			position:absolute;

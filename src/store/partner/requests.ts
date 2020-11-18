@@ -12,10 +12,10 @@ export const getPartnerList = async (page: number, size: number, idx?: string) =
     return data.data
 }
 
-export const getPartnerDetail = async (username: string) => {
+export const getPartnerDetail = async (username: string, idx: string) => {
     const { data } = await bookingApi.request<ApiResponse<PartnerDetail>>({
         method: 'get',
-        url: `/partners/${username}`
+        url: `/partners/${username}?idx=${idx}`
     })
 
     return data.data
