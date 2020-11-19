@@ -55,7 +55,6 @@ const S = {
 	`,
     ReviewContainer: styled.div`
       display: block;
-      
     `,
     MoreList: styled.button`
 		width:100%;
@@ -239,8 +238,8 @@ const PartnerDetail = () => {
     }, [dispatch, params.username])
 
     useEffect(() => {
-        if(getMoveIdxData.idx && getPartnerDetail?.data?.status === 'unavailable') {
-            setUnavailableCheck(true)
+        if(getMoveIdxData.idx && getPartnerDetail?.data?.status === 'unavailable' && !getPartnerDetail.loading && getPartnerDetail?.data?.adminid === params.username) {
+           setUnavailableCheck(true)
         }
     }, [getPartnerDetail.loading])
     useEffect(() => {
