@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Styled  from 'styled-components'
+import styled, {css} from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
@@ -26,10 +26,10 @@ import * as formSelector from "store/form/selectors";
 import * as commonSelector from "store/common/selectors";
 import {dataLayer} from "lib/dataLayerUtil";
 const S = {
-    Container: Styled.div`
+    Container: styled.div`
         height:100%;
     `,
-    WrapItem: Styled.div`
+    WrapItem: styled.div`
         @media screen and (min-width:768px) {
             width:608px;
             margin:0 auto;
@@ -38,31 +38,41 @@ const S = {
             width:720px;
         }
     `,
-	BtnKakao: Styled.a`
+    PartnerItemContainer: styled.div<{hasMore: boolean}>`
+      a {
+        ${props => !props.hasMore && css`
+           &:nth-last-child(1) {
+			    	 padding-bottom: 160px;
+  			  }
+      `}}
+        @media screen and (min-width:380px) {
+        }
+`,
+	BtnKakao: styled.a`
 		display:inline-block;
 		position:fixed;
-        bottom:24px;
-        right:24px;
-        width:62px;
-        height:62px;
-        border-radius:62px;
-        border:1px solid #f6df0d;
-        background-color:#ffe500;
-        box-shadow:0 4px 10px 0 rgba(0, 0, 0, 0.1);
-        text-align:center;
-        z-index:2;
-        svg {
-            margin-top:17px;
-        }
-        @media screen and (min-width:768px) {
-            right:10%;
-            bottom:48px;
-        }
-        @media screen and (min-width:1200px) {
-            bottom:72px;
-        }
+    bottom:24px;
+    right:24px;
+    width:62px;
+    height:62px;
+    border-radius:62px;
+    border:1px solid #f6df0d;
+    background-color:#ffe500;
+    box-shadow:0 4px 10px 0 rgba(0, 0, 0, 0.1);
+    text-align:center;
+    z-index:2;
+    svg {
+        margin-top:17px;
+    }
+    @media screen and (min-width:768px) {
+        right:10%;
+        bottom:48px;
+    }
+    @media screen and (min-width:1200px) {
+        bottom:72px;
+    }
     `,
-    ChatText: Styled.a`
+    ChatText: styled.a`
         display:inline-block;
         position:fixed;
         bottom:110px;
@@ -88,7 +98,7 @@ const S = {
             bottom:158px;
         }
     `,
-    More: Styled.div`
+    More: styled.div`
         display:flex;
         justify-content:center;
         font-size:16px;
@@ -179,20 +189,21 @@ const PartnerList = () => {
                 :
                 <>
                 <S.WrapItem id="dsl_booking_list_partner">
-                    {getPartnerList.data.map((list:any, index: number) => {
-                        return (
-                            <PartnerItem key={list.id} profile_img={list.profile_img}
-                                         level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
-                                         pick_cnt={list.pick_cnt} feedback_cnt={list.feedback_cnt} experience={list.experience} status={list.status}
-                                         onClick={() => {
-                                             if(list.status !== 'unavailable') {
-                                                history.push(`/partner/detail/${list.adminid}`)
-                                             }
-                                             dataLayer({event: 'partner_select', label: `${getPartnerList.data.length}_${index+1}`, CD7: `${list.level}등급`, CD8: `${list.title}`})
-                                         }}
-                            />
-                        )
-                    })}
+                    <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
+                        {getPartnerList.data.map((list:any, index:number) => {
+                            return (
+                                <PartnerItem key={list.id} profile_img={list.profile_img}
+                                             level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
+                                             pick_cnt={list.pick_cnt} feedback_cnt={list.feedback_cnt} experience={list.experience} status={list.status}
+                                             adminid={list.adminid}
+                                             onClick={() => {
+                                                 history.push(`/partner/detail/${list.adminid}`)
+                                                 dataLayer({event: 'partner_select', label: `${getPartnerList.data.length}_${index+1}`, CD7: `${list.level}등급`, CD8: `${list.title}`})
+                                                 }}
+                                />
+                            )
+                        })}
+                    </S.PartnerItemContainer>
                     <S.ChatText onClick={handleLinkKakao} id="dsl_booking_list_katalk2">
                         도움이 필요하세요?
                         <ChatArrow width={20} height={12} />

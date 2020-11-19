@@ -24,7 +24,7 @@ export function* fetchPartnerMoreListSaga(action: ActionType<typeof actions.fetc
 
 export function* fetchPartnerDetailSaga(action: ActionType<typeof actions.fetchPartnerDetailAsync.request>) {
     try {
-        const data = yield call(request.getPartnerDetail, action.payload.username)
+        const data = yield call(request.getPartnerDetail, action.payload.username, action.payload.idx)
         yield put(actions.fetchPartnerDetailAsync.success(data))
     } catch (e) {
         yield put(actions.fetchPartnerDetailAsync.failure())

@@ -64,7 +64,11 @@ const NewPartner:React.FC<Props> = (props) => {
     return (
         <>
         <NewPartnerWrapper>
-            <GradeInfo onClick={() => setVisible(!visible)}>
+            <GradeInfo onClick={() => {
+                if (showQuestionIcon) {
+                    setVisible(!visible)
+                }
+            }}>
 						<span>평가등급
                             {showQuestionIcon && (
                                 <Question width={16} height={16} />

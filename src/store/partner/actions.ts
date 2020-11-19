@@ -27,7 +27,7 @@ export const fetchPartnerDetailAsync = createAsyncAction(
     'FETCH_PARTNER_DETAIL_REQUEST',
     'FETCH_PARTNER_DETAIL_RESPONSE',
     'FETCH_PARTNER_DETAIL_FAILURE'
-)<{username: string}, PartnerDetail, undefined>()
+)<{username: string, idx: string}, PartnerDetail, undefined>()
 
 export const fetchReviewListAsync = createAsyncAction(
     'FETCH_REVIEW_LIST_REQUEST',

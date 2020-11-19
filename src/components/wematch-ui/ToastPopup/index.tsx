@@ -63,7 +63,7 @@ const Header = styled.div`
 const Content = styled.div`
   display: flex;
   background-color: #FFF;
-  min-height: 218px;
+  //min-height: 218px;
   padding: 24px;
   box-sizing: border-box;
   flex-direction: column;
@@ -87,6 +87,13 @@ const Text = styled.div`
   margin-top: 6px;
   white-space: pre-wrap;
   
+  span {
+    margin-top: 15px;
+    font-size: 16px;
+    color: ${colors.gray66};
+    line-height: 23px;
+    white-space: pre-wrap;
+  }
   @media screen and (min-width: 720px) {
     text-align: center;
   }
