@@ -10,6 +10,12 @@ import { Grade } from 'types/partner';
 
 const S = {
 	Container: styled.div`
+
+		&:nth-child(1) {
+       * {
+        		border: none;
+        }
+    }
 		@media screen and (min-width:1200px) {
 			width:720px;
 			margin:0 auto;
