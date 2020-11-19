@@ -43,7 +43,11 @@ const Text = styled.p`
   color: ${colors.gray33};
   margin-top: 16px;
   text-align: left;
+  padding-bottom: 63px;
   
+  @media screen and (min-width: 768px) {
+    margin-bottom: 0px;
+  }
   @media screen and (min-width: 1200px) {
     text-align: center;
     margin-top: 24px;
@@ -51,16 +55,19 @@ const Text = styled.p`
 `;
 
 const GuideWrapper = styled.div`
-  position: absolute;
-  padding: inherit;
-  box-sizing: border-box;
   text-align: center;
+  box-sizing: border-box;
   width: 100%;
   bottom: 0;
   left: 0;
   
+  @media screen and (min-width: 768px) {
+    position: absolute;
+    padding: inherit;
+  }
   @media screen and (min-width: 1200px) {
     position: relative;
+    padding: inherit;
     box-sizing: initial;
     width: 720px;
     margin: 0 auto;
@@ -131,9 +138,9 @@ const EmptyPage = () => {
     }
     return (
         <EmptyWrapper>
-            <EmptyCard id="dsl_booking_cart_add">
+            <EmptyCard id="dsl_booking_cart_add" onClick={() => router.push('/partner/list')}>
                 <img src={require("../../../assets/images/plus.svg")} alt='icon'/>
-                <div onClick={() => router.push('/partner/list')}>업체 추가하기</div>
+                <div>업체 추가하기</div>
             </EmptyCard>
             <Text>방문 견적을 요청할 업체를 골라주세요 (최대 3개)</Text>
             <GuideWrapper>
