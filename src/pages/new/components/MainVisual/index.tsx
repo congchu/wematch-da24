@@ -31,7 +31,7 @@ const Slide = styled.div<{image: string}>`
   
   height: 400px;
   ${props => props.image && css`
-    background-image: url(${require('assets/images/components/MainVisual/' + props.image + '.png')});
+    background-image: url(${require('assets/images/components/MainVisual/' + props.image + '.jpg')});
   `};
   background-size: cover;
   background-position: center center;
@@ -79,7 +79,7 @@ const Slide = styled.div<{image: string}>`
   
   @media screen and (min-width: 768px) {
     ${props => props.image && css`
-      background-image: url(${require('assets/images/components/MainVisual/' + props.image + '_pc.png')});
+      background-image: url(${require('assets/images/components/MainVisual/' + props.image + '_pc.jpg')});
     `};
   }
   
@@ -201,7 +201,7 @@ function MainVisual() {
                 }}>
                     <div className="wrapper">
                         <span>
-                            누적 고객수&nbsp;
+                            누적 매칭수&nbsp;
                             <strong>{countUp}</strong>
                         </span>
                         <p dangerouslySetInnerHTML={{ __html: "“혹시나 하고 이용했는데 <br /> <strong>대만족</strong>이에요”" }} />
@@ -221,7 +221,7 @@ function MainVisual() {
                 }}>
                     <div className="wrapper">
                         <span>
-                            누적 고객수&nbsp;
+                            누적 평가수&nbsp;
                             <strong>{countUp}</strong>
                         </span>
                         <p dangerouslySetInnerHTML={{ __html: "<strong>허위후기/광고 없이</strong><br />진짜 데이터로 고르자" }} />
