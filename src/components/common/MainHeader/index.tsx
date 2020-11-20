@@ -178,12 +178,12 @@ const TopHeader = ({}: Props) => {
                   <S.Categories>
                       <li><a href={constants.MOVE_URL} className="on">이사</a></li>
                       <li><a href={constants.CLEAN_URL}>청소</a></li>
-                      <li><a href={constants.INTERIOR_URL}>인테리어</a></li>
+                      {/*<li><a href={constants.INTERIOR_URL}>인테리어</a></li>*/}
                   </S.Categories>
                   <S.Lnb>
                       <S.QuickGnb>
-                          <a href="https://wematch.com/service_search.html">서비스찾기</a>
-                          <a href="https://wematch.com/inquiry" className="divide">내 신청내역 확인</a>
+                          {/*<a href="https://wematch.com/service_search.html">서비스찾기</a>*/}
+                          <a href="https://wematch.com/inquiry">내 신청내역 확인</a>
                       </S.QuickGnb>
                       <S.Partner>
                           <a href="https://wematch.com/partner_gate.html">파트너 가입</a>
