@@ -11,22 +11,11 @@ const ResponsiveBottomNav = styled(BaseBottomNav)`
 `
 
 export default function BottomNav() {
-  const userAgent = window.navigator.userAgent
-
-  const isWmClientApp = React.useMemo(() => {
-    return userAgent.indexOf('WmClientApp') > -1
-  }, [userAgent])
-
-  if (!isWmClientApp) {
     return (
       <ResponsiveBottomNav>
         <BaseBottomMenu to="/new" replace exact>
           <Home size={24} />
           <span>홈</span>
-        </BaseBottomMenu>
-        <BaseBottomMenu to="https://wematch.com/service_search.html" isHref replace>
-          <Search size={24} />
-          <span>서비스 찾기</span>
         </BaseBottomMenu>
         <BaseBottomMenu to="https://wematch.com/inquiry" isHref replace>
           <Report size={24} />
@@ -34,7 +23,4 @@ export default function BottomNav() {
         </BaseBottomMenu>
       </ResponsiveBottomNav>
     )
-  }
-
-  return null
 }

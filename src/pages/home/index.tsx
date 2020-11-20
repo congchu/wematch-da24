@@ -210,14 +210,14 @@ const Home:React.FC<RouteComponentProps> = ({location}) => {
             <S.Container>
                 <S.Content>
                     <MoveForm />
-                    <ServiceList.Section>
-                        <ServiceList.Title>이런 서비스도 필요하신가요?</ServiceList.Title>
-                        <ServiceList.Tags id="dsl_movemain_button_services">
-                            <ServiceList.Tag><a href={constants.MAIN_URL + '/용달_화물'}>용달/화물</a></ServiceList.Tag>
-                            <ServiceList.Tag><a href={constants.MAIN_URL + '/도어락'}>도어락</a></ServiceList.Tag>
-                            <ServiceList.Tag><a href={constants.MAIN_URL + '/줄눈시공'}>줄눈시공</a></ServiceList.Tag>
-                        </ServiceList.Tags>
-                    </ServiceList.Section>
+                    {/*<ServiceList.Section>*/}
+                    {/*    <ServiceList.Title>이런 서비스도 필요하신가요?</ServiceList.Title>*/}
+                    {/*    <ServiceList.Tags id="dsl_movemain_button_services">*/}
+                    {/*        <ServiceList.Tag><a href={constants.MAIN_URL + '/용달_화물'}>용달/화물</a></ServiceList.Tag>*/}
+                    {/*        <ServiceList.Tag><a href={constants.MAIN_URL + '/도어락'}>도어락</a></ServiceList.Tag>*/}
+                    {/*        <ServiceList.Tag><a href={constants.MAIN_URL + '/줄눈시공'}>줄눈시공</a></ServiceList.Tag>*/}
+                    {/*    </ServiceList.Tags>*/}
+                    {/*</ServiceList.Section>*/}
                     <TipList title="좋은 이사업체를 잘 찾는 공식" />
                     <S.CheckListBanner>
                         <a href={`${constants.MOVE_URL}/checklist.asp`}>
