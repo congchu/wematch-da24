@@ -12,7 +12,6 @@ import TipList from 'components/da24/main/TipList'
 import ServiceCenterList from 'components/da24/main/ServiceCenterList'
 import * as colors from 'styles/colors';
 import * as constants from 'constants/env';
-import ConfirmPopup from 'pages/partner/Cart/component/ConfirmPopup'
 
 const S = {
     Container: styled.div`
