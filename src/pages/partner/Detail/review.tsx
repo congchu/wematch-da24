@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components'
 import { useMedia } from "react-use-media";
 
 import { DownArrow, UpArrow } from '../../../components/Icon'
@@ -9,14 +9,20 @@ import * as colors from 'styles/colors'
 import { Grade } from 'types/partner';
 
 const S = {
-	Container: Styled.div`
+	Container: styled.div`
+
+		&:nth-child(1) {
+       * {
+        		border: none;
+        }
+    }
 		@media screen and (min-width:1200px) {
 			width:720px;
 			margin:0 auto;
 			padding-left:272px;
 		}
 	`,
-	Wrap: Styled.div`
+	Wrap: styled.div`
 		margin:0 24px 24px;
 		border-top:1px solid #d7dbe2;
 		@media screen and (min-width: 768px) {
@@ -27,7 +33,7 @@ const S = {
 			width:656px;
 		}
 	`,
-	UserInfo: Styled.div`
+	UserInfo: styled.div`
 		padding-top:27px;
 		strong{
 			font-size:14px;
@@ -40,7 +46,7 @@ const S = {
 			color:${colors.gray66};
 		}
 	`,
-	Grade: Styled.div`
+	Grade: styled.div`
 		margin-top:18px;
 		.levelText{
 			display:block;
@@ -50,7 +56,7 @@ const S = {
 			color:${colors.pointBlue};
 		}
 	`,
-	StarFill: Styled.span<{star: number}>`
+	StarFill: styled.span<{star: number}>`
 		display:block;
     	position:relative;
     	z-index:5;
@@ -65,7 +71,7 @@ const S = {
 			background:url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/icon/starfill.svg) no-repeat 0 0;
 		}
 	`,
-	Emotion: Styled.div`
+	Emotion: styled.div`
 		overflow:hidden;
 		margin-top:26px;
 		ul{
@@ -83,7 +89,7 @@ const S = {
 			float:right;
 		}
 	`,
-	PartnerValue: Styled.ul`
+	PartnerValue: styled.ul`
 		margin-top:24px;
 		li{
 			display:inline-block;
@@ -116,8 +122,8 @@ const S = {
 			color:${colors.levelD}
 		}
 	`,
-	Review: Styled.div``,
-	ReviewText: Styled.p`
+	Review: styled.div``,
+	ReviewText: styled.p`
 		display:-webkit-box;
     overflow:hidden;
     width:100%;
@@ -130,7 +136,7 @@ const S = {
     //-webkit-box-orient:vertical;
     word-wrap:break-word;
 	`,
-	MoreReview: Styled.button`
+	MoreReview: styled.button`
 		margin-top:7px;
 		cursor:pointer;
 		svg{
@@ -145,7 +151,7 @@ const S = {
 			margin-top:10px;
 		}
 	`,
-	Answer: Styled.div`
+	Answer: styled.div`
 		margin-top:16px;
 		padding:16px 16px 14px;
 		border-radius:4px;
@@ -175,7 +181,7 @@ interface Props {
 	star: number;
 }
 
-const Review = ({ id, created_at, memo, reply, professional, kind, price, star }: Props) => {
+const  Review = ({ id, created_at, memo, reply, professional, kind, price, star }: Props) => {
 	const isDesktop = useMedia({
 		minWidth: 1200,
 	})
