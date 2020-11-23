@@ -12,15 +12,15 @@ const ResponsiveBottomNav = styled(BaseBottomNav)`
 
 export default function BottomNav() {
     return (
-      <ResponsiveBottomNav>
-        <BaseBottomMenu to="/" replace exact>
-          <Home size={24} />
-          <span>홈</span>
-        </BaseBottomMenu>
-        <BaseBottomMenu to="https://wematch.com/inquiry" isHref replace>
-          <Report size={24} />
-          <span>내 신청서</span>
-        </BaseBottomMenu>
-      </ResponsiveBottomNav>
+        <ResponsiveBottomNav>
+            <BaseBottomMenu to="/new" replace exact>
+                <Home size={24} />
+                <span>홈</span>
+            </BaseBottomMenu>
+            <BaseBottomMenu to="https://wematch.com/inquiry" isHref replace>
+                <Report size={24} />
+                <span>내 신청서</span>
+            </BaseBottomMenu>
+        </ResponsiveBottomNav>
     )
 }

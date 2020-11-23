@@ -1,60 +1,68 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useCookies } from 'react-cookie'
+import { useRouter } from 'hooks/useRouter'
+import queryString from 'query-string'
 import styled, { css } from 'styled-components'
 import { get, isEmpty, debounce } from 'lodash'
-import { useCookies } from 'react-cookie'
-import queryString from 'query-string'
-import dayjs, {Dayjs} from "dayjs";
+import dayjs from 'dayjs'
 
-import {useRouter} from 'hooks/useRouter'
-import { Checkbox } from 'components/wematch-ui/Checkbox'
 import { Icon } from 'components/wematch-ui'
+import { Checkbox } from 'components/wematch-ui/Checkbox'
+
 import Button from 'components/common/Button'
+import PhoneVerifyPopup from 'components/common/Popup/PhoneVerifyPopup'
+import NoticePopup from 'components/common/Popup/NoticePopup'
+import OneroomNoticePopup from 'components/common/Popup/OneroomNoticePopup'
+import TermsModal from 'components/common/Modal/TermsModal'
+
 import ButtonGroup from 'components/common/ButtonGroup'
 import MoveInput  from 'pages/home/components/MoveInput'
-import PhoneVerifyPopup from 'components/common/Popup/PhoneVerifyPopup'
-import NoticePopup from 'components/common/Popup/NoticePopup';
-import OneroomNoticePopup from 'components/common/Popup/OneroomNoticePopup'
-import TermsModal from "components/common/Modal/TermsModal"
-import ToastPopup from "components/wematch-ui/ToastPopup";
-import promotionImage from 'assets/images/promotion/promotion_img.svg'
 
 import * as commonSelector from 'store/common/selectors'
 import * as commonActions from 'store/common/actions'
 import * as commonTypes from 'store/common/types'
 import * as formSelector from 'store/form/selectors'
 import * as formActions from 'store/form/actions'
-import * as partnerActions from 'store/partner/actions'
+
 import * as colors from 'styles/colors'
 import { addressSplit, phoneSplit, translateMovingType } from 'components/wematch-ui/utils/form'
 
 import { calcRouteByDirectionService, calcRouteByGeoCoder } from 'lib/distanceUtil'
-import { MOVE_URL, MAIN_URL } from 'constants/env'
+import { dataLayer } from 'lib/dataLayerUtil'
+import { MOVE_URL, ONEROOM_URL } from 'constants/env'
+import useHashToggle from 'hooks/useHashToggle'
 
 const Visual = {
     Section: styled.section`
-        padding: 0 24px 24px;
-        border-bottom: 8px solid ${colors.lineDeco};
+        padding: 0 24px 80px;
     `,
     Container: styled.div`
-        padding-top: 46px;
-        color: ${colors.black};
-        font-size: 24px;
-        font-weight: 700;
-        text-align: center;
-        letter-spacing: 0;
+        padding-top: 32px;
+        padding-bottom: 16px;
         
-        em {
-            display: block;
-            padding-top: 35px;
-            padding-bottom: 20px;
-            font-size: 16px;
-            font-weight: 400;
-        } 
+        strong {
+          display: block;
+          font-style: normal;
+          font-weight: bold;
+          font-size: 20px;
+          line-height: 29px;
+          letter-spacing: -0.03em;
+          color: ${colors.gray33};
+          margin-bottom: 8px;
+        }
+        
+        p {
+          font-style: normal;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: -0.03em;
+          color: ${colors.gray66};
+        }
     `,
     ButtonGroupContainer: styled.div`
-        //margin: 40px 0 24px 0;
-        margin-top: 40px;
+        margin-top: 26px;
     `,
 }
 
@@ -72,7 +80,7 @@ const Description = {
         margin-bottom: 16px;
         
         strong {
-            font-weight: 700;
+          font-weight: 700;
         }  
         ul {
           padding-top: 10px;
@@ -119,12 +127,12 @@ const Terms = {
     `,
     Collapse: styled.div<{ isShow: boolean }>`
         display: none;
-        ${({isShow}) => isShow && css`
+        ${props => props.isShow && css`
             display: flex;
             flex-direction: column;
             border-top: 1px solid #d7d8e2;
             margin-top: 16px;
-        `}
+        `};
     `,
     NewLink: styled.div`
         display: flex;
@@ -170,58 +178,28 @@ const Terms = {
               }
             }
         }
-    `,
+    `
 }
 
-const Promotions = {
-    Wrapper: styled.div`
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    `,
-    leftBox: styled.div`
-      line-height: 1.5;
-      .text1 {
-        font-size: 15px; 
-      }
-      .text2 {
-        width: 210px;
-        font-size: 18px;
-        font-weight: 700;
-      }
-      .text3 {
-        font-size: 14px;
-        padding-top: 5px;
-      }
-      a {
-        display: inline-block;
-        margin-left: 5px;
-        color: #1672f7;
-        text-decoration: underline;
-      }
-      @media screen and (min-width: 1200px) {
-        .text1 {
-          font-size: 17px;
-        }
-        .text2 {
-          width: 450px;
-          font-size: 20px;
-          margin-top: 4px;
-        }
-        .text3 {
-          font-size: 16px;
-        }
-      }
-    `,
-    rightBox: styled.div`
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      background: url(${promotionImage}) no-repeat 0 0;
-    `,
+const HouseTitle = styled.div`
+  text-align: center;
+  strong {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.03em;
+    color: ${colors.gray33};
+  }  
+`
+
+interface Props {
+    headerRef?: React.RefObject<HTMLDivElement>;
+    isFixed?: boolean;
+    setIsFixed?: React.Dispatch<boolean>;
 }
 
-const MoveForm = () => {
+const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
     const dispatch = useDispatch()
 
     const getMoveType = useSelector(formSelector.getType)
@@ -238,7 +216,8 @@ const MoveForm = () => {
     const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
 
     const [collapse, setCollapse] = useState<boolean>(false)
-    const [visibleTerms, setVisibleTerms] = useState<boolean>(false)
+    // const [visibleTerms, setVisibleTerms] = useState<boolean>(false)
+    const [visibleTerms, setVisibleTerms] = useHashToggle('#terms')
     const [visibleVerifyPhone, setVisibleVerifyPhone] = useState(false)
     const [visibleOneroom, setVisibleOneroom] = useState(false)
     const [isVerifySuccess, setIsVerifySuccess] = useState(false)
@@ -295,41 +274,18 @@ const MoveForm = () => {
         return true
     }
 
-    const validateOneroomForm = () => {
-        if (isEmpty(getMoveDate)) {
-            alert('날짜를 선택해 주세요.')
-            return false;
+    const getMoveTypeText = useCallback(() => {
+        if (getMoveType === 'house') {
+            return '가정'
+        } else if (getMoveType === 'office') {
+            return '사무실'
         }
-        if (isEmpty(getAddress.start)) {
-            alert('출발지를 입력해 주세요.')
-            return false;
-        }
-        if (isEmpty(getFloor.start)) {
-            alert('출발지를 층수를 입력해 주세요.')
-            return false;
-        }
-        if (isEmpty(getAddress.end)) {
-            alert('도착지를 입력해 주세요.')
-            return false;
-        }
-        if (isEmpty(getFloor.end)) {
-            alert('도착지 층수를 입력해 주세요.')
-            return false;
-        }
-        if (!getAgree.terms || !getAgree.privacy) {
-            alert('이용약관 및 개인정보처리방침에 동의해 주세요.')
-            return false;
-        }
+    }, [getMoveType])
 
-        return true;
-    }
-
-    const handleSubmit = debounce(() => {
+    const handleSubmit = debounce((submitType: 'curation' | 'select') => {
         let result = false
         if (getMoveType === 'house' || getMoveType === 'office') {
             result = validateHouseOrOfficeForm()
-        } else if (getMoveType === 'oneroom') {
-            result = validateOneroomForm()
         }
 
 
@@ -346,12 +302,6 @@ const MoveForm = () => {
                             setDistance(String(google.maps.geometry.spherical.computeDistanceBetween(coords[0], coords[1]) / 1000))
                         }
                     })
-                }
-
-                if (getMoveType === 'oneroom') {
-                    // default_legacy.asp?movingtype=oneroom&keepmove=ok&start_adr=서울특별시 금천구 시흥제1동&start_flr=4층&arrive_adr=서울특별시 금천구 시흥제1동&arrive_flr=4층&distance=10.0&movingdate=2020/09/01
-                    document.location.href = `${MOVE_URL}/default_legacy.asp?movingType=${getMoveType}&keepMove=${getIsMoveStore}&address=${getAddress.start}&floor=${getFloor.start}&address2=${getAddress.end}&floor2=${getFloor.end}&distance=${distance}&movingDate=${getMoveDate[0]}`
-                    return
                 }
 
                 const formData:commonTypes.RequestUserInfoInsert = {
@@ -384,27 +334,26 @@ const MoveForm = () => {
                 }
                 setCookies('formData', {...formData, ...getAgree}, {expires: new Date(dayjs().add(2, 'day').format())})
 
+                dataLayer({
+                    event: 'request',
+                    category: '다이사_메인_신청_1',
+                    label: '매칭신청',
+                    action: submitType === 'curation' ? '업체_바로매칭' : '업체_직접고르기',
+                    CD5: getIsMoveStore ? 'Y' : 'N',
+                    CD6: getMoveTypeText()
+                })
             })
 
         }
     }, 500)
 
-    const handleOnConfirm = ():void => {
-        return router.history.push('/')
-    }
     useEffect(() => {
         const { type } = router.query
-        if(cookies.formData) {
+        if (cookies.formData) {
             dispatch(formActions.setInitialFormData(cookies.formData))
         }
-        if(type === 'oneroom') {
-            /*const time = new Date().getTime()
-            if(type === 'oneroom') {
-                time % 2 ? document.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
-            }*/
-            // dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
-            type === 'oneroom' ? window.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
-        } else if (type === 'house') {
+
+        if (type === 'house') {
             dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp))
         }
 
@@ -441,15 +390,15 @@ const MoveForm = () => {
     return (
         <Visual.Section>
             <Visual.Container>
-                <strong>어떤 이사업체를 찾으세요?</strong>
-                <em>이사종류를 선택해주세요.</em>
+                <strong>무료 견적상담 신청하기</strong>
+                <p>이사 종류를 선택해주세요.</p>
             </Visual.Container>
-            <ButtonGroup onClick={(type: 'house' | 'oneroom' | 'office' | undefined) => {
-                /*const time = new Date().getTime()
-                if(type === 'oneroom') {
-                    time % 2 ? document.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
-                }*/
-                type === 'oneroom' ? window.document.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
+            <ButtonGroup headerRef={headerRef} isFixed={isFixed} setIsFixed={setIsFixed} onClick={(type: 'house' | 'oneroom' | 'office' | undefined) => {
+                if (type === 'oneroom') {
+                    document.location.href = `${ONEROOM_URL}`
+                    return
+                }
+                dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
             }}/>
             <Visual.ButtonGroupContainer>
                 {getMoveType === undefined && (
@@ -465,33 +414,16 @@ const MoveForm = () => {
                     </Description.Container>
                 )}
                 {getMoveType === 'house' && (
-                    <Promotions.Wrapper id="dsl_movemain_banner_link">
-                        <Promotions.leftBox>
-                            <p className="text1">놓칠 수 없는 혜택!</p>
-                            <p className="text2">이사 견적서 올리면 <br/>매트리스 소독권 or 상품권</p>
-                            <p className="text3"><a href="https://da24.wematch.com/notice.asp" target="_blank">자세히</a></p>
-                        </Promotions.leftBox>
-                        <Promotions.rightBox/>
-                    </Promotions.Wrapper>
-                )}
-                {getMoveType === 'oneroom' && (
-                    <Description.InfoType>
-                        <p>
-                            거주자 1인, 1톤 트럭 이내 <br />
-                            포장이사 견적을 신청합니다
-                        </p>
-                        <a href={MAIN_URL + '/용달_화물'}>단순 운반 차량만 필요하다면 ?</a>
-                    </Description.InfoType>
+                    <HouseTitle>
+                        <strong>거주자 2명이상, 투룸 이상의 짐량</strong>
+                    </HouseTitle>
                 )}
                 {getMoveType === "office" && (
-                    <Description.InfoType>
-                        <p>
-                            빌딩, 공장, 상가 등 <br />
-                            포장이사 견적을 신청합니다
-                        </p>
+                    <Description.InfoType style={{ marginBottom: 0 }}>
+                        <p>빌딩, 공장, 상가 등 짐량 1톤 트럭 초과</p>
                     </Description.InfoType>
                 )}
-                <MoveInput type={getMoveType} style={{ marginTop: 40 }} />
+                <MoveInput type={getMoveType} style={{ marginTop: 30 }} />
             </Visual.ButtonGroupContainer>
             {getMoveType !== undefined && (
                 <>
@@ -535,29 +467,49 @@ const MoveForm = () => {
                             }))}/>
                         </Terms.Collapse>
                     </Terms.Container>
-                    <Terms.SubmitContainer id="dsl_movemain_button_requests">
+                    <Terms.SubmitContainer>
                         <div className="text">
                             <p>
                                 내 조건에 맞는 업체<strong>(최대 3개)</strong>에 <br className="mobile-enter" />
                                 비용산정을 위한 <strong>무료 방문견적</strong>을 신청합니다
                             </p>
                         </div>
-                        <Button theme="primary" onClick={() => {
-                            handleSubmit()
-                            setSubmitType('curation')
-                        }}>견적 신청하기</Button>
-                        {getMoveType !== 'oneroom' && (
-                            <Button theme="default" onClick={() => {
-                                handleSubmit()
-                                setSubmitType('select')
-                            }}>업체 직접고르기</Button>
-                        )}
+                        <div id="dsl_move_button_requests_1">
+                            <Button theme="primary" bold border onClick={() => {
+                                handleSubmit('curation')
+                                setSubmitType('curation')
+                            }}>견적 신청하기</Button>
+                            {getMoveType !== 'oneroom' && (
+                                <Button theme="default" onClick={() => {
+                                    handleSubmit('select')
+                                    setSubmitType('select')
+                                }}>업체 직접고르기</Button>
+                            )}
+                        </div>
                     </Terms.SubmitContainer>
                 </>
             )}
             <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone} onClose={() => setVisibleVerifyPhone(!visibleVerifyPhone)} tags={{
-                closeBtn: "dsl_movemain_button_verify_x",
-                authBtn: "dsl_movemain_button_verify"
+                authBtn: "dsl_move_button_verify_1",
+                closeBtn: "dsl_move_button_verify_X_1"
+            }} onDataLayerAuth={() => {
+                return dataLayer({
+                    event: 'request',
+                    category: '다이사_메인_번호인증_1',
+                    action: '인증하기',
+                    label: '인증팝업',
+                    CD5: getIsMoveStore ? 'Y' : 'N',
+                    CD6: getMoveTypeText()
+                })
+            }} onDataLayerClose={() => {
+                return dataLayer({
+                    event: 'request',
+                    category: '다이사_메인_번호인증_1',
+                    action: '닫기',
+                    label: '인증팝업',
+                    CD5: getIsMoveStore ? 'Y' : 'N',
+                    CD6: getMoveTypeText()
+                })
             }} />
             <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />

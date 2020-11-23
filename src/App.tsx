@@ -82,7 +82,6 @@ function AppRoute() {
         return (
             <Switch>
                 <Route exact path="/" component={Home} />
-                <Route exact path="/new" component={New} />
                 <Route exact path="/partner/list" component={PartnerList} />
                 <Route exact path="/partner/detail/:username" component={PartnerDetail} />
                 <Route exact path="/partner/cart" component={PartnerCart}/>
