@@ -224,10 +224,11 @@ const MainHeader = ({ isFixed = false, border = false }: Props) => {
                     <S.Lnb>
                         <S.QuickGnb>
                             {/*<a href="https://wematch.com/service_search.html">서비스찾기</a>*/}
-                            <a href="https://wematch.com/inquiry">내 신청내역 확인</a>
+                            {/* 2020.11.23 삭제 요쳥 (kaya) */}
+                            {/*<a href="https://wematch.com/inquiry">내 신청내역 확인</a>*/}
                         </S.QuickGnb>
                         <S.Partner>
-                            <a href="https://da24.wematch.com/myconsult.asp">내 신청내역</a>
+                            <a href="https://wematch.com/inquiry">내 신청내역</a>
                         </S.Partner>
                     </S.Lnb>
                 </S.Header>
