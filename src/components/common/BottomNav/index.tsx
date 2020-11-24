@@ -13,7 +13,7 @@ const ResponsiveBottomNav = styled(BaseBottomNav)`
 export default function BottomNav() {
     return (
         <ResponsiveBottomNav>
-            <BaseBottomMenu to="/new" replace exact>
+            <BaseBottomMenu to="/" replace exact>
                 <Home size={24} />
                 <span>홈</span>
             </BaseBottomMenu>

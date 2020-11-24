@@ -13,7 +13,6 @@ import browserHistory from 'lib/history'
 import GlobalStyled from 'styles/global'
 
 import Home from 'pages/home'
-import New from 'pages/new'
 import PartnerList from 'pages/partner/List/index'
 import PartnerDetail from 'pages/partner/Detail/index'
 import PartnerCart from 'pages/partner/Cart'
