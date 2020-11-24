@@ -8,10 +8,9 @@ import { DownArrow, UpArrow } from 'components/Icon'
 import Loading from 'components/Loading'
 import MainHeader from 'components/MainHeader'
 import TopGnb from 'components/TopGnb'
-import UserImage from './userImage'
-import PartnerInfo from './partnerInfo'
-import LevelData from './levelData'
-import Review from './review'
+import UserImage from './components/userImage'
+import PartnerInfo from './components/partnerInfo'
+import LevelData from './components/levelData'
 
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
@@ -25,6 +24,7 @@ import { useRouter } from 'hooks/useRouter'
 import ToastPopup from "components/wematch-ui/ToastPopup";
 import {dataLayer} from "lib/dataLayerUtil";
 import SetType from "../List/setType";
+import ReviewContainer from "./components/reviewContainer/index";
 
 const S = {
     Container: styled.div``,
@@ -53,9 +53,6 @@ const S = {
 			padding-left:272px;
 		}
 	`,
-    ReviewContainer: styled.div`
-      display: block;
-    `,
     MoreList: styled.button`
 		width:100%;
 		height:52px;
@@ -216,19 +213,19 @@ const PartnerDetail = () => {
     }
 
     useEffect(() => {
-        if(!getMoveIdxData.idx) {
+        /*if(!getMoveIdxData.idx) {
             setSessionVisible(true)
-        }
+        }*/
         dataLayer({event: 'pageview_detail'})
     }, [])
 
     useEffect(() => {
-        if(getMoveIdxData.idx) {
             dispatch(partnerActions.fetchPartnerDetailAsync.request({
                 username: params.username,
-                idx: getMoveIdxData.idx
+                idx: 'gAAAAABfu2sUHhhebc7dm2cM3CD2XdepAmU2tkANbWO7vlpYgXiWeotEcKoRnLZjD5RM-DGPxRhSWnDJIVLvRdHDFn_eQ01tfA=='
             }))
-        }
+        /*if(getMoveIdxData.idx) {
+        }*/
 
         dispatch(partnerActions.fetchReviewListAsync.request({
             username: params.username,
@@ -242,6 +239,7 @@ const PartnerDetail = () => {
            setUnavailableCheck(true)
         }
     }, [getPartnerDetail.loading])
+
     useEffect(() => {
         window.addEventListener('scroll', checkScrollTop);
         return () => {
@@ -274,8 +272,9 @@ const PartnerDetail = () => {
                     <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT}
                         level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
                         description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname} addition={getPartnerDetail.data.addition}/>
-                    <LevelData feedback_cnt={getPartnerDetail.data.feedback_cnt} />
-                    <S.ReviewContainer>
+                    <LevelData />
+                    <ReviewContainer />
+                    {/*<>
                         {getReviewList.data.length < 5 ? (
                             <S.ReviewPreview>
                                 <img src={require(`../../../assets/images/review_${isMobile ? 'm' : 'pc'}.png`)} alt='review_img'/>
@@ -291,7 +290,7 @@ const PartnerDetail = () => {
                               })}
                           </>
                         }
-                    </S.ReviewContainer>
+                    </>*/}
                     <S.BottomContainer>
                         {getReviewList.moreLoading && (
                           <S.ReviewMoreLoading>

@@ -8,10 +8,8 @@ import { isEmpty } from 'lodash';
 import MainHeader from "components/MainHeader";
 import TopGnb from "components/TopGnb";
 import Loading from "components/Loading";
-import ToastPopup from "components/wematch-ui/ToastPopup";
 import ConfirmPopup from "./component/ConfirmPopup";
 import Card from "./component/Card";
-import AlertModal from "components/Modal/AlertModal";
 import EmptyPage from "./emptyPage";
 import GuidePopup from "./component/GuidePopup";
 

@@ -123,15 +123,14 @@ const PartnerList = () => {
 
     const history = useHistory()
     const dispatch = useDispatch()
+
     const getPartnerList = useSelector(partnerSelector.getPartnerList)
     const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
     const getFormData = useSelector(formSelector.getFormData)
-    const getMoveDate = useSelector(formSelector.getDate)
     const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
 
     const [page, setPage] = useState<number>(2)
     const [visible, setVisible] = useState(false)
-    const [cookies] = useCookies(['formData'])
 
     const fetchMoreListItems = () => {
         if (getMoveIdxData.idx && getPartnerList.hasMore) {

@@ -78,7 +78,7 @@ const S = {
 			width:56px;
 			height:56px;
 			border-radius:44px;
-			background-image:url(${(props:any) => props.profile_img});
+			background-image:url(${(props) => props.profile_img});
 			background-size:cover;
 			background-repeat:no-repeat;
 		}

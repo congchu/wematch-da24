@@ -225,11 +225,8 @@ const S = {
 
 }
 
-interface Props {
-	feedback_cnt: number;
-}
 
-const LevelData = ({ feedback_cnt }: Props) => {
+const LevelData = () => {
 	const [visibleTermsModal, setVisibleTermsModal] = useState(false)
 
 	const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
@@ -241,34 +238,7 @@ const LevelData = ({ feedback_cnt }: Props) => {
 					<p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
 				</S.Box>
 				<S.Average>
-					<strong>고객평가 {/* {review_count}건 */}</strong>
-					{/* <S.WrapGraph>
-						<S.LevelImg>
-							<img src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/level_txt_s.png" alt="levelImage"/>
-							<span>최고</span>
-						</S.LevelImg>
-						<S.SkillGraph>
-							<S.SkillList>
-								<strong>전문성 <em>S</em></strong>
-								<S.Graph>
-									<span className="graph_s"><em></em></span>
-								</S.Graph>
-							</S.SkillList>
-							<S.SkillList>
-								<strong>친절도 <em>S</em></strong>
-								<S.Graph>
-									<span className="graph_b"><em></em></span>
-								</S.Graph>
-							</S.SkillList>
-							<S.SkillList>
-								<strong>가격도 <em>S</em></strong>
-								<S.Graph>
-									<span className="graph_c"><em></em></span>
-								</S.Graph>
-							</S.SkillList>
-						</S.SkillGraph>
-						<S.DataText>위매치 빅데이터를 분석한 결과입니다<Question width="16" height="16" /></S.DataText>
-					</S.WrapGraph> */}
+					<strong>고객평가</strong>
 				</S.Average>
 			</S.Wrap>
 			<TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />

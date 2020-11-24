@@ -1,10 +1,10 @@
 import axios from 'axios'
 import {bookingApi, ApiResponse} from 'lib/api'
-import { PartnerList, PartnerDetail, Review } from 'types/partner'
+import { IPartnerList, IPartnerDetail, IReview, IRecommendedList } from 'types/partner'
 import {API_MIDDLEWARE_URL} from 'constants/env'
 
 export const getPartnerList = async (page: number, size: number, idx?: string) => {
-    const { data } = await bookingApi.request<ApiResponse<PartnerList>>({
+    const { data } = await bookingApi.request<ApiResponse<IPartnerList>>({
         method: 'get',
         url: `/curation?page=${page}&size=${size}&idx=${idx}`
     })
@@ -13,7 +13,7 @@ export const getPartnerList = async (page: number, size: number, idx?: string) =
 }
 
 export const getPartnerDetail = async (username: string, idx: string) => {
-    const { data } = await bookingApi.request<ApiResponse<PartnerDetail>>({
+    const { data } = await bookingApi.request<ApiResponse<IPartnerDetail>>({
         method: 'get',
         url: `/partners/${username}?idx=${idx}`
     })
@@ -22,7 +22,7 @@ export const getPartnerDetail = async (username: string, idx: string) => {
 }
 
 export const getReviewList = async (username:string, page: number, size: number) => {
-    const { data } = await bookingApi.request<ApiResponse<Review[]>>({
+    const { data } = await bookingApi.request<ApiResponse<IReview[]>>({
         method: 'get',
         url: `/reviews/${username}?page=${page}&size=${size}`
     })
@@ -31,7 +31,7 @@ export const getReviewList = async (username:string, page: number, size: number)
 }
 
 export const getRecommendedPartnerList = async (idx: string, admin_id: string[]) => {
-    const { data } = await bookingApi.request<ApiResponse<any>>({
+    const { data } = await bookingApi.request<ApiResponse<IRecommendedList[]>>({
         method: 'get',
         url: `/cart?idx=${idx}&admin_id=${admin_id}`
     })

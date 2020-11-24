@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useMedia } from "react-use-media";
 
-import { DownArrow, UpArrow } from '../../../components/Icon'
+import { DownArrow, UpArrow } from 'components/Icon'
 
 import { getCreatedAt } from 'lib/time'
 import * as colors from 'styles/colors'

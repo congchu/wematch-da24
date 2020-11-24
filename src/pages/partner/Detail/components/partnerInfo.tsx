@@ -1,17 +1,17 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
+import {useMedia} from "react-use-media";
+import { isEmpty } from 'lodash'
+
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
 
-import { Question } from 'components/Icon'
 import LevelModal from 'components/Modal/LevelModal'
 import LevelIcon from 'components/LevelIcon'
 import NewPartner from 'components/common/NewPartner'
-import { Level } from 'types/partner'
-import {useMedia} from "react-use-media";
-import { isEmpty } from 'lodash'
-import {LevelGradeText} from "../../../lib/levelUtil";
+import { Question } from 'components/Icon'
+import { Level, LevelText } from 'types/partner'
 
 const S = {
 	Container: styled.div`
@@ -183,7 +183,7 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 	return (
 		<S.Container>
 			<S.Wrap>
-				<S.LevelDescription>{LevelGradeText(level)}</S.LevelDescription>
+				<S.LevelDescription>{LevelText[level]}</S.LevelDescription>
 				<S.Level>{level === 'NEW' ? '등급산정중' : `고객평가 ${level}등급`}</S.Level>
 				<S.PartnerWord>{title}</S.PartnerWord>
 				{level === 'NEW'
