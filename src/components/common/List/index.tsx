@@ -1,4 +1,5 @@
-import React, {HTMLAttributes} from 'react'
+import React from 'react'
+import { TouchScrollable } from 'react-scrolllock'
 import styled, { css } from 'styled-components'
 
 import { Icon } from 'components/wematch-ui'
@@ -29,10 +30,12 @@ const S = {
     Ul: styled.ul<{direction: DirectionProp, type: TypeProp}>`
       display: flex;
       flex-direction: ${(({ direction }) => direction === 'row' ? 'row' : 'column')};
-      overflow-y: auto;
       max-height: calc(${window.innerHeight}px - 99px - 48px);
+      overflow-y: auto;
+      
       @media (min-width: 768px) {
         max-height: 1200px;
+        min-height: 810px;
         overflow-y: auto;
       }
       @media (min-width: 1200px) {
@@ -55,7 +58,8 @@ const S = {
         `)};
         
         ${(({ type }) => type === 'address' && css`
-            padding: 17px 0 16px 16px;
+            padding-left: 16px;
+            min-height: 51px;
             border-bottom: 1px solid #d8d8d8; 
         `)};
         
@@ -65,7 +69,7 @@ const S = {
     `,
     A: styled.a<{type: TypeProp}>`
         letter-spacing: -1px;
-        
+
         em {
             color: ${colors.pointBlue};
         }
@@ -101,18 +105,20 @@ const List: React.FC<Props> = (props) => {
     }
 
     return (
-        <S.Ul type={type} direction={direction} {...restProps}>
-            {items.map((item) => {
-                return (
-                    <S.Li type={type} onClick={() => {
-                        handleOnSelect(item.value)
-                    }} key={item.id}>
-                        <S.A type={type} dangerouslySetInnerHTML={{__html: item.label}} />
-                        <Icon.Next size={15} color={colors.gray66} style={{marginRight:'15px'}}/>
-                    </S.Li>
-                )
-            })}
-        </S.Ul>
+        <TouchScrollable>
+            <S.Ul type={type} direction={direction} {...restProps}>
+                {items.map((item) => {
+                    return (
+                        <S.Li type={type} onClick={() => {
+                            handleOnSelect(item.value)
+                        }} key={item.id}>
+                            <S.A type={type} dangerouslySetInnerHTML={{__html: item.label}} />
+                            <Icon.Next size={15} color={colors.gray66} style={{marginRight:'15px'}}/>
+                        </S.Li>
+                    )
+                })}
+            </S.Ul>
+        </TouchScrollable>
     )
 }
 
