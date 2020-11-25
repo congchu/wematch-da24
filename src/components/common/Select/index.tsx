@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import Styled, { css, keyframes } from 'styled-components'
+import ScrollLock, { TouchScrollable } from 'react-scrolllock'
 
 import * as colors from 'styles/colors'
+
 
 type SelectItemProp = {
     key: string;
@@ -61,26 +64,26 @@ const slideDown = keyframes`
 
 const S = {
     Container: Styled.div`
-        position:fixed;
-        bottom:0;
-        left:0;
-        width:100%;
-        padding:14px 24px 24px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 14px 24px 24px;
         background-color: ${colors.white};
-        box-sizing:border-box;
-        z-index:20;
+        box-sizing: border-box;
+        z-index: 200;
         
         @media (min-width: 1200px) {
-            top: 50%;
-            left: 50%;
-            width: 360px;
-            height: 380px;
-            max-height: none; 
-            margin-top: -189px; 
-            margin-left: -180px;
-            border-bottom-right-radius: 16px;
-            border-bottom-left-radius: 16px;
-            background-color: inherit;
+            // top: 50%;
+            // left: 50%;
+            // width: 360px;
+            // height: 380px;
+            // max-height: none; 
+            // margin-top: -189px; 
+            // margin-left: -180px;
+            // border-bottom-right-radius: 16px;
+            // border-bottom-left-radius: 16px;
+            // background-color: inherit;
         }
     `,
     Overlay: Styled.div<{visible: boolean}>`
@@ -123,7 +126,7 @@ const S = {
         width: 100%;
         background-color: ${colors.white};
         box-sizing: border-box; 
-        z-index: 20;
+        z-index: 200;
         
         animation-duration: 0.25s;
         animation-timing-function: ease-out;
@@ -225,8 +228,9 @@ const Select:React.FC<Props> = (props) => {
         onSelect
     } = props
 
-    const [animate, setAnimate] = useState(false);
-    const [localVisible, setLocalVisible] = useState(visible);
+    const [animate, setAnimate] = useState(false)
+    const [localVisible, setLocalVisible] = useState(visible)
+    // const [lockScroll, setLockScroll] = useState(true)
 
     const handleOnSelect = (data: string) => {
         if (onSelect) {
@@ -258,27 +262,31 @@ const Select:React.FC<Props> = (props) => {
         return item.value
     })
 
-    return (
-        <S.Container>
-            <S.Overlay visible={!visible} onClick={onOverlayClose} />
-            <S.SelectBox visible={!visible}>
-                <S.Header>
-                    <strong>{headerTitle}</strong>
-                    <button onClick={onClose}>닫기</button>
-                </S.Header>
-                <S.List>
-                    {values.map((value, index) =>
-                        <S.Item key={index} onClick={(e) => {
-                            handleOnSelect(keyList[index])
-                            handleOnClose(e)
-                        }}>
-                            {value}
-                        </S.Item>
-                    )}
-                </S.List>
-            </S.SelectBox>
-        </S.Container>
-    )
+    return createPortal((
+        <ScrollLock>
+            <S.Container>
+                <S.Overlay visible={!visible} onClick={onOverlayClose} />
+                <S.SelectBox visible={!visible}>
+                    <S.Header>
+                        <strong>{headerTitle}</strong>
+                        <button onClick={onClose}>닫기</button>
+                    </S.Header>
+                    <TouchScrollable>
+                        <S.List>
+                            {values.map((value, index) =>
+                                <S.Item key={index} onClick={(e) => {
+                                    handleOnSelect(keyList[index])
+                                    handleOnClose(e)
+                                }}>
+                                    {value}
+                                </S.Item>
+                            )}
+                        </S.List>
+                    </TouchScrollable>
+                </S.SelectBox>
+            </S.Container>
+        </ScrollLock>
+    ), document.body)
 }
 
 export default Select

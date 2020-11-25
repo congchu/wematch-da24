@@ -141,6 +141,35 @@ const Terms = {
     SubmitContainer: styled.div`
         display: flex;
         flex-direction: column;
+        
+        .text {
+          margin: 24px 0;
+          text-align: center;
+          
+          .mobile-enter {
+            display: initial; 
+          }
+          
+          p {
+            text-align: center;
+            font-size: 16px;
+            line-height: 24px;
+            letter-spacing: -0.03em;
+            color: ${colors.gray66};
+          }
+                
+          strong {
+            font-weight: bold;
+          }
+        }
+        
+        @media screen and (min-width:1200px) {
+            .text {
+              .mobile-enter {
+                display: none; 
+              }
+            }
+        }
     `,
 }
 
@@ -156,7 +185,7 @@ const Promotions = {
         font-size: 15px; 
       }
       .text2 {
-        width: 182px;
+        width: 210px;
         font-size: 18px;
         font-weight: 700;
       }
@@ -373,7 +402,8 @@ const MoveForm = () => {
             if(type === 'oneroom') {
                 time % 2 ? document.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
             }*/
-            dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
+            // dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
+            type === 'oneroom' ? window.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
         } else if (type === 'house') {
             dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp))
         }
@@ -419,7 +449,7 @@ const MoveForm = () => {
                 if(type === 'oneroom') {
                     time % 2 ? document.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
                 }*/
-                dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
+                type === 'oneroom' ? window.document.location.href = 'https://oneroom.wematch.com/requests/order' : dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
             }}/>
             <Visual.ButtonGroupContainer>
                 {getMoveType === undefined && (
@@ -437,9 +467,9 @@ const MoveForm = () => {
                 {getMoveType === 'house' && (
                     <Promotions.Wrapper id="dsl_movemain_banner_link">
                         <Promotions.leftBox>
-                            <p className="text1">가정이사 한정!</p>
-                            <p className="text2">방문견적 인증 시 <br/>매트리스 무료 소독 1회권</p>
-                            <p className="text3">기간 8/19~ <a href="https://da24.wematch.com/notice.asp" target="_blank">자세히</a></p>
+                            <p className="text1">놓칠 수 없는 혜택!</p>
+                            <p className="text2">이사 견적서 올리면 <br/>매트리스 소독권 or 상품권</p>
+                            <p className="text3"><a href="https://da24.wematch.com/notice.asp" target="_blank">자세히</a></p>
                         </Promotions.leftBox>
                         <Promotions.rightBox/>
                     </Promotions.Wrapper>
@@ -506,6 +536,12 @@ const MoveForm = () => {
                         </Terms.Collapse>
                     </Terms.Container>
                     <Terms.SubmitContainer id="dsl_movemain_button_requests">
+                        <div className="text">
+                            <p>
+                                내 조건에 맞는 업체<strong>(최대 3개)</strong>에 <br className="mobile-enter" />
+                                비용산정을 위한 <strong>무료 방문견적</strong>을 신청합니다
+                            </p>
+                        </div>
                         <Button theme="primary" onClick={() => {
                             handleSubmit()
                             setSubmitType('curation')
@@ -519,7 +555,10 @@ const MoveForm = () => {
                     </Terms.SubmitContainer>
                 </>
             )}
-            <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone} onClose={() => setVisibleVerifyPhone(!visibleVerifyPhone)} />
+            <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone} onClose={() => setVisibleVerifyPhone(!visibleVerifyPhone)} tags={{
+                closeBtn: "dsl_movemain_button_verify_x",
+                authBtn: "dsl_movemain_button_verify"
+            }} />
             <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
             <OneroomNoticePopup visible={visibleOneroom} footerButton border onClose={() => setVisibleOneroom(!visibleOneroom)} />

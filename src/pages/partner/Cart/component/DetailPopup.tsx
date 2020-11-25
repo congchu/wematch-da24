@@ -127,16 +127,16 @@ interface Props {
 
 const DetailPopup:React.FC<Props> = (props) => {
     const { visible, onClose, partnerData } = props
-    const {description='',keywords, level, pick_cnt, feedback_cnt, experience, addition = '', profile_img} = partnerData
+    const {description='',keywords, level, pick_cnt, feedback_cnt, experience, addition = '', profile_img, title=''} = partnerData
     const titleLength = () => {
-        if (description.length >= 30) {
-            return description.substring(0,30) + ' . . .'
+        if (title.length >= 30) {
+            return title.substring(0,30) + ' . . .'
         }
 
-        if (description.length === 0) {
+        if (title.length === 0) {
             return '사장님이 소개글을 작성중이에요'
         }
-        return description
+        return title
     };
     return (
         <PopupTemplate visible={visible} onClose={onClose}>

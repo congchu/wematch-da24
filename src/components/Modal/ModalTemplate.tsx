@@ -172,6 +172,13 @@ const ModalTemplate: React.FC<Props> = (props) => {
     const [localVisible, setLocalVisible] = useState(visible);
 
     useEffect(() => {
+        if (visible) {
+            document.body.style.overflow = 'hidden'
+        }
+
+        return () => document.body.removeAttribute('style')
+    })
+    useEffect(() => {
         if (localVisible && !visible) {
             setAnimate(true);
             setTimeout(() => setAnimate(false), 250);

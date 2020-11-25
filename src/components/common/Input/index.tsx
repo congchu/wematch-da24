@@ -39,7 +39,7 @@ const S = {
         width: 100%;
         height: 56px;
         margin-bottom: 8px;
-        padding: 0 35px 0 16px;
+        padding: 0 16px 0 16px;
         line-height: 56px;
         font-size: 15px;
         overflow: hidden;
