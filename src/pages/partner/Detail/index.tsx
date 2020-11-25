@@ -219,7 +219,6 @@ const PartnerDetail = () => {
         if(!getMoveIdxData.idx) {
             setSessionVisible(true)
         }
-        dataLayer({event: 'pageview_detail'})
     }, [])
 
     useEffect(() => {
