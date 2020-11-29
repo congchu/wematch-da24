@@ -223,7 +223,7 @@ const PartnerDetail = () => {
         if(getMoveIdxData.idx) {
             dispatch(partnerActions.fetchPartnerDetailAsync.request({
                 username: params.username,
-                idx: 'gAAAAABfu2sUHhhebc7dm2cM3CD2XdepAmU2tkANbWO7vlpYgXiWeotEcKoRnLZjD5RM-DGPxRhSWnDJIVLvRdHDFn_eQ01tfA=='
+                idx: getMoveIdxData.idx
             }))
         }
 
