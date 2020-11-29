@@ -55,6 +55,7 @@ const PopupWrapper = styled.div`
   position: relative;
   height: 100%;
   overflow-y: auto;
+  background-color: white;
   
   @media screen and (min-width: 768px) {
     width: 360px;

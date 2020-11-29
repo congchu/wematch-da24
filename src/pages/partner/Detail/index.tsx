@@ -8,10 +8,8 @@ import { DownArrow, UpArrow } from 'components/Icon'
 import Loading from 'components/Loading'
 import MainHeader from 'components/MainHeader'
 import TopGnb from 'components/TopGnb'
-import UserImage from './userImage'
-import PartnerInfo from './partnerInfo'
-import LevelData from './levelData'
-import Review from './review'
+import PartnerInfo from './components/partnerInfo/index'
+import ReviewContainer from "./components/reviewContainer/index";
 
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
@@ -24,7 +22,7 @@ import {some} from "lodash";
 import { useRouter } from 'hooks/useRouter'
 import ToastPopup from "components/wematch-ui/ToastPopup";
 import {dataLayer} from "lib/dataLayerUtil";
-import SetType from "../List/setType";
+import SetType from "components/SetType";
 
 const S = {
     Container: styled.div``,
@@ -53,9 +51,6 @@ const S = {
 			padding-left:272px;
 		}
 	`,
-    ReviewContainer: styled.div`
-      display: block;
-    `,
     MoreList: styled.button`
 		width:100%;
 		height:52px;
@@ -93,7 +88,10 @@ const S = {
 			pointer-events: none;  
 		`};
 		@media screen and (min-width:1200px) {
-			position:relative;
+			//position:relative;
+			width: 720px;
+			margin: 0 auto;
+			left: 272px;
 		}
 	`,
     TopBtn: styled.span`
@@ -152,14 +150,10 @@ const S = {
 
 const PartnerDetail = () => {
     const nextPage = useRef(1)
-    const [showScrollView, setShowScrollView] = useState(false)
+    const [showScrollView, setShowScrollView] = useState(true)
 
     const isDesktop = useMedia({
         minWidth: 1200,
-    })
-
-    const isMobile = useMedia({
-        maxWidth: 767,
     })
     const history = useHistory()
     const router = useRouter()
@@ -177,10 +171,13 @@ const PartnerDetail = () => {
 
     const checkScrollTop = () => {
         if (!showScrollView && window.pageYOffset > 300){
+            console.log('if- 1',window.pageYOffset);
             setShowScrollView(true)
         } else if (showScrollView && window.pageYOffset <= 300){
+            console.log('if- 2',window.pageYOffset);
             setShowScrollView(false)
         } else if (window.pageYOffset === 0) {
+            console.log('if- 3',window.pageYOffset);
             setShowScrollView(false)
         }
     };
@@ -241,6 +238,7 @@ const PartnerDetail = () => {
            setUnavailableCheck(true)
         }
     }, [getPartnerDetail.loading])
+
     useEffect(() => {
         window.addEventListener('scroll', checkScrollTop);
         return () => {
@@ -266,31 +264,12 @@ const PartnerDetail = () => {
             {getPartnerDetail.data && (
                 <>
                     {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true}/>}
-                    {getFormData.moving_date.length !== 0 && (
-                      <SetType count={getPartnerPick.data.length} formData={getFormData}/>
-                    )}
-                    <UserImage profile_img={getPartnerDetail.data.profile_img } status={getPartnerDetail.data.status} />
-                    <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT}
-                        level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
-                        description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname} addition={getPartnerDetail.data.addition}/>
-                    <LevelData feedback_cnt={getPartnerDetail.data.feedback_cnt} />
-                    <S.ReviewContainer>
-                        {getReviewList.data.length < 5 ? (
-                            <S.ReviewPreview>
-                                <img src={require(`../../../assets/images/review_${isMobile ? 'm' : 'pc'}.png`)} alt='review_img'/>
-                            </S.ReviewPreview>
-                          )
-                          :
-                          <>
-                              {getReviewList.data.map((review, index) => {
-                                  return (
-                                    <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional}
-                                            kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>
-                                  )
-                              })}
-                          </>
-                        }
-                    </S.ReviewContainer>
+                    <SetType count={getPartnerPick.data.length} formData={getFormData}/>
+                    <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetail.data.profile_img } status={getPartnerDetail.data.status}
+                           level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
+                           description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname} addition={getPartnerDetail.data.addition}/>
+                    {/*Review Container*/}
+                    <ReviewContainer />
                     <S.BottomContainer>
                         {getReviewList.moreLoading && (
                           <S.ReviewMoreLoading>
@@ -302,7 +281,7 @@ const PartnerDetail = () => {
                         )}
                         {showScrollView && (
                             <S.ScrollView>
-                                <S.BtnSelect onClick={handleSelected} disabled={isActive()} isSelected={isActive()} status={getPartnerDetail.data.status} id="dsl_booking_detail_cta">{buttonText(getPartnerDetail.data.status)}</S.BtnSelect>
+                                <S.BtnSelect onClick={handleSelected} isSelected={isActive()} status={getPartnerDetail.data.status} id="dsl_booking_detail_cta">{buttonText(getPartnerDetail.data.status)}</S.BtnSelect>
                                 <S.TopBtn onClick={handleScrollTop}>
                                     <UpArrow color={colors.pointBlue} width={16} height={16} />
                                 </S.TopBtn>

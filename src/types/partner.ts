@@ -1,7 +1,7 @@
-export type Level = 'S' | 'A' | 'B' | 'C' | 'D' | 'NEW';
+export type Level = 'S' | 'A' | 'B' | 'C' | 'NEW';
 export type Grade = 'verygood' | 'good' | 'normal' | 'bad' | 'verybad';
 
-export type PartnerList = {
+export type IPartnerList = {
     description: string;
     experience: number;
     has_next: boolean;
@@ -19,7 +19,7 @@ export type PartnerList = {
     adminname: string;
 }
 
-export type PartnerDetail = {
+export type IPartnerDetail = {
     description: string;
     experience: number;
     id: number;
@@ -37,7 +37,7 @@ export type PartnerDetail = {
     adminid?: string;
 }
 
-export type Review = {
+export type IReview = {
     created_at: string;
     has_next: boolean;
     has_previous: boolean;
@@ -50,4 +50,30 @@ export type Review = {
     reply: string | null;
     user: string;
     star: number;
+}
+
+export type IRecommendedList = {
+  adminname: string;
+  adminid: string;
+  experience: number;
+  pick_cnt: number;
+  feedback_cnt: number;
+  level: Level;
+  meta: boolean;
+  id: number;
+  title: string;
+  description: string;
+  addition: string;
+  profile_img: string;
+  keywords: string[];
+  level_text: string;
+}
+
+
+export enum LevelText {
+    NEW = "평균 이상 수준",
+    S = "고객평가 상위 10%",
+    A = "고객평가 상위 38%",
+    B = "평균 수준",
+    C = "평균 수준",
 }
