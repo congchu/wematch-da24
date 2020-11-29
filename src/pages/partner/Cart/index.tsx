@@ -12,6 +12,8 @@ import ConfirmPopup from "./component/ConfirmPopup";
 import Card from "./component/Card";
 import EmptyPage from "./emptyPage";
 import GuidePopup from "./component/GuidePopup";
+import ToastPopup from "components/wematch-ui/ToastPopup";
+
 
 import {useRouter} from "hooks/useRouter";
 import {dataLayer} from "lib/dataLayerUtil";
@@ -392,9 +394,9 @@ const PartnerCart = () => {
             setOrderConfirmVisible(false);
             }} orderCount={checkedList.length}
         />
-        {/*<ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
+        <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
             <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
-        </ToastPopup>*/}
+        </ToastPopup>
         </>
     )
 };
