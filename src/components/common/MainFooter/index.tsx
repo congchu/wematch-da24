@@ -4,6 +4,7 @@ import { gray33, gray66, gray88, lineDefault, pointBlue, lineDeco } from 'styles
 import { Down, Up } from 'components/wematch-ui/Icon'
 import { checkIos } from 'lib/checkDevice'
 import BlankLink from 'components/base/BlankLink'
+import * as constants from 'constants/env'
 
 const S = {
     Footer: styled.footer`
@@ -263,7 +264,7 @@ export default function MainFooter() {
                     <S.ExternalLink href="https://marketdesigners.com/">
                         회사소개
                     </S.ExternalLink>
-                    <S.ExternalLink href="https://wematch.com/terms">
+                    <S.ExternalLink href={constants.MOVE_URL + "/terms"}>
                         이용약관
                     </S.ExternalLink>
                     <S.ExternalLink href="https://wematch.com/terms#privacy">

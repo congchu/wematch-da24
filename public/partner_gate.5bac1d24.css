@@ -1,0 +1,511 @@
+#wematchIndex {
+  display: none;
+  overflow: hidden;
+  position: absolute;
+  left: -9999px;
+  width: 0;
+  height: 1px;
+  margin: 0;
+  padding: 0
+}
+
+#wematchWrap {
+  position: relative;
+  min-width: 320px
+}
+
+.ir_pm {
+  font-size: 0;
+  line-height: 0;
+  text-indent: -9999px
+}
+
+.ir_pm,
+.ir_wa {
+  display: block;
+  overflow: hidden
+}
+
+.ir_wa {
+  position: relative;
+  z-index: -10;
+  width: 100%;
+  height: 100%
+}
+
+.screen_out {
+  overflow: hidden;
+  position: absolute;
+  width: 0;
+  height: 0;
+  line-height: 0;
+  text-indent: -9999px
+}
+
+.screen_hide {
+  visibility: hidden
+}
+
+.cl_b,
+.screen_hide {
+  font-size: 0;
+  line-height: 0
+}
+
+.cl_b {
+  width: 0;
+  height: 0;
+  clear: both
+}
+
+.show {
+  display: block
+}
+
+.hide {
+  display: none
+}
+
+.tbl {
+  border-collapse: collapse;
+  border-spacing: 0
+}
+
+.clear_g {
+  overflow: visible;
+  width: auto;
+  *zoom: 1
+}
+
+.clear_g,
+.clear_g:after {
+  display: block;
+  clear: both
+}
+
+.clear_g:after {
+  visibility: hidden;
+  height: 0;
+  font-size: 0;
+  content: ""
+}
+
+.ico_arr,
+.ico_comm {
+  display: inline-block;
+  overflow: hidden;
+  font-size: 1px;
+  line-height: 1px;
+  text-indent: -9999px;
+  background-repeat: no-repeat;
+  vertical-align: top;
+  color: transparent
+}
+
+.ico_comm {
+  background-image: url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/common/ico_comm_200416.png);
+  -webkit-background-size: 400px 300px;
+  background-size: 400px 300px
+}
+
+.ico_arr {
+  background-image: url(https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/common/ico_arr_x1.png);
+  -webkit-background-size: 22px 570px;
+  background-size: 22px 570px
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio:1.5),
+only screen and (min-device-pixel-ratio:1.5),
+only screen and (min-resolution:1.5dppx) {
+  .ico_comm {
+    background-image: url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/common/ico_comm_2_200416.png);
+    -webkit-background-size: 400px 300px;
+    background-size: 400px 300px
+  }
+  .ico_arr {
+    background-image: url(https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/common/ico_arr_x2.png)
+  }
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio:2),
+only screen and (min-device-pixel-ratio:2),
+only screen and (min-resolution:2dppx) {
+  .ico_comm {
+    background-image: url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/common/ico_comm_3_200416.png);
+    -webkit-background-size: 400px 300px;
+    background-size: 400px 300px
+  }
+  .ico_arr {
+    background-image: url(https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/common/ico_arr_x3.png)
+  }
+}
+
+.br_m {
+  display: block
+}
+
+.tit_head {
+  width: 100%;
+  height: 56px;
+  border-bottom: 1px solid #d7dbe2;
+  text-align: center
+}
+
+.tit_head img {
+  width: 87px;
+  height: 16px;
+  margin-top: 20px
+}
+
+.tit_box {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  line-height: normal;
+  letter-spacing: -1px
+}
+
+.box_visual {
+  overflow: hidden;
+  height: 497px;
+  background-color: #ebeef2;
+  letter-spacing: -1px
+}
+
+.box_visual .inner_box {
+  position: relative;
+  padding: 150px 14px 0 24px
+}
+
+.box_visual .img_model {
+  position: absolute;
+  top: 20px;
+  right: -64px;
+  width: 342px
+}
+
+.wrap_visual {
+  position: relative;
+  z-index: 1
+}
+
+.wrap_visual h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  line-height: 34px
+}
+
+.txt_visual {
+  padding: 10px 0 40px;
+  font-size: 15px;
+  font-weight: 400;
+  color: #666;
+  line-height: normal
+}
+
+.list_service {
+  overflow: hidden
+}
+
+.list_service li {
+  float: left;
+  width: 33.333%;
+  height: 106px;
+  margin-bottom: 10px;
+  text-align: center
+}
+
+.list_service .box_service {
+  display: block;
+  height: 100%;
+  margin-right: 11px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .1)
+}
+
+.list_service img {
+  width: 40px;
+  height: 40px;
+  margin: 16px 0 9px
+}
+
+.list_service strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -1px
+}
+
+.list_service .ico_arr {
+  width: 10px;
+  height: 16px;
+  margin-top: -4px;
+  margin-left: 8px;
+  background-position: 0 -380px;
+  vertical-align: middle
+}
+
+.box_partner {
+  overflow: hidden;
+  position: relative;
+  padding: 56px 24px 31px
+}
+
+.pattern_small {
+  position: absolute;
+  width: 224px;
+  top: 159px;
+  right: -85px
+}
+
+.list_partner {
+  position: relative;
+  z-index: 1;
+  margin-top: 10px;
+  border-top: 2px solid #333
+}
+
+.list_partner a {
+  display: block;
+  position: relative;
+  padding: 22px 54px 17px 0;
+  border-bottom: 1px solid #d7dbe2;
+  font-size: 15px;
+  color: #666;
+  line-height: 24px;
+  letter-spacing: -1px
+}
+
+.list_partner li:last-child a {
+  border-bottom: 0
+}
+
+.list_partner strong {
+  display: block;
+  padding-bottom: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #333
+}
+
+.list_partner .ico_comm {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  background-position: -118px -270px
+}
+
+.box_content .inner_box {
+  position: relative
+}
+
+.pattern_big {
+  position: absolute;
+  width: 358px;
+  top: -220px;
+  left: -132px
+}
+
+.vod_iframe {
+  position: relative;
+  width: 100%;
+  height: 202px
+}
+
+.list_thumb {
+  overflow: hidden
+}
+
+.list_thumb li {
+  float: left;
+  width: 50%;
+  height: 180px;
+  font-size: 15px;
+  background-color: grey;
+  color: #fff;
+  line-height: 22px;
+  letter-spacing: -1px;
+  text-align: center
+}
+
+.list_thumb em {
+  display: block;
+  padding: 55px 0 13px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f1fe24;
+  line-height: normal;
+  letter-spacing: -1px
+}
+
+.fst_thumb {
+  background: url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/wematch/thumb/img_escalator.png) no-repeat 0 0;
+  background-size: cover
+}
+
+.lst_thumb {
+  background: url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/wematch/thumb/img_jcurve.png) no-repeat 71% 0;
+  background-size: cover
+}
+
+.box_review {
+  padding: 56px 24px 50px;
+  background-color: #ebeef2
+}
+
+.list_review li {
+  position: relative;
+  margin-top: 20px;
+  padding: 22px 20px 17px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 400;
+  background-color: #fff;
+  color: #666;
+  line-height: 24px;
+  letter-spacing: -1px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .1)
+}
+
+.list_review strong {
+  display: block;
+  padding-bottom: 18px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  line-height: 27px;
+  letter-spacing: -1px
+}
+
+.list_review img {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px
+}
+
+@media screen and (min-width:768px) {
+  .inner_box {
+    width: 608px;
+    margin: 0 auto
+  }
+  .box_visual .inner_box {
+    width: 619px
+  }
+}
+
+@media screen and (min-width:1200px) {
+  .br_m {
+    display: inline
+  }
+  .tit_head {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    height: 60px;
+    background-color: #fff;
+    opacity: .9
+  }
+  .tit_head img {
+    width: auto;
+    height: 20px
+  }
+  .inner_box {
+    width: 720px
+  }
+  .box_visual {
+    height: 577px
+  }
+  .box_visual .inner_box {
+    width: 731px;
+    padding-top: 150px
+  }
+  .box_visual .img_model {
+    top: 21px;
+    right: 28px;
+    width: 436px
+  }
+  .wrap_visual {
+    width: 332px
+  }
+  .wrap_visual h3 {
+    width: 110%;
+    font-size: 32px;
+    line-height: 46px
+  }
+  .txt_visual {
+    padding: 12px 0 50px;
+    font-size: 18px
+  }
+  .list_service li {
+    height: 120px
+  }
+  .list_service img {
+    margin: 20px 0 15px
+  }
+  .list_service li:last-child img {
+    top: 12px
+  }
+  .pattern_small {
+    top: -148px;
+    left: 50%;
+    margin-left: 92px
+  }
+  .list_partner {
+    overflow: hidden
+  }
+  .list_partner li {
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box
+  }
+  .list_partner li:nth-child(2n) a {
+    margin-left: 20px
+  }
+  .list_partner li:nth-child(odd) a {
+    margin-right: 20px
+  }
+  .list_partner a {
+    padding-top: 33px;
+    height: 132px;
+    box-sizing: border-box;
+  }
+  .vod_iframe {
+    height: 403px
+  }
+  .list_thumb li {
+    font-size: 18px;
+    line-height: 28px
+  }
+  .list_thumb em {
+    padding-top: 48px 0 12px;
+    font-size: 20px
+  }
+  .list_review {
+    overflow: hidden
+  }
+  .list_review li {
+    float: left;
+    width: 186px;
+    height: 377px;
+    margin-right: 21px;
+    padding-bottom: 0
+  }
+  .list_review li:last-child {
+    margin-right: 0
+  }
+}
+
+
+/*# sourceMappingURL=/partner_gate.5bac1d24.css.map */
