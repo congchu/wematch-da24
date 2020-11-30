@@ -35,7 +35,6 @@ const S = {
       
       @media (min-width: 768px) {
         max-height: 1200px;
-        min-height: 810px;
         overflow-y: auto;
       }
       @media (min-width: 1200px) {
