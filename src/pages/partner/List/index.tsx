@@ -3,7 +3,7 @@ import styled, {css} from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
-import { isEmpty } from 'lodash'
+import {isEmpty, some} from 'lodash'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 
 import MainHeader from 'components/MainHeader'
@@ -13,7 +13,7 @@ import Loading from 'components/Loading'
 import { KakaoIcon, ChatArrow } from 'components/Icon'
 import ToastPopup from "components/wematch-ui/ToastPopup";
 
-import SetType from './setType'
+import SetType from 'components/SetType'
 import PartnerItem from './item'
 import {useCookies} from "react-cookie";
 
@@ -123,15 +123,14 @@ const PartnerList = () => {
 
     const history = useHistory()
     const dispatch = useDispatch()
+
     const getPartnerList = useSelector(partnerSelector.getPartnerList)
     const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
     const getFormData = useSelector(formSelector.getFormData)
-    const getMoveDate = useSelector(formSelector.getDate)
     const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
 
     const [page, setPage] = useState<number>(2)
     const [visible, setVisible] = useState(false)
-    const [cookies] = useCookies(['formData'])
 
     const fetchMoreListItems = () => {
         if (getMoveIdxData.idx && getPartnerList.hasMore) {
@@ -152,6 +151,12 @@ const PartnerList = () => {
 
     const handleLinkKakao = () => {
         window.open('https://api.happytalk.io/api/kakao/chat_open?yid=%40%EC%9C%84%EB%A7%A4%EC%B9%98&site_id=4000001315&category_id=111561&division_id=111564', '_blank')
+    }
+
+    const  isFull = () => {
+        return !some(getPartnerList.data, {
+            status: 'available'
+        })
     }
 
     useEffect(() => {
@@ -177,13 +182,10 @@ const PartnerList = () => {
         return <Loading text={'조건에 맞는 업체 찾는 중..'}/>
     }
 
-
     return (
         <S.Container>
             {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true}/>}
-            {getFormData.moving_date.length !== 0 && (
-                <SetType count={getPartnerPick.data.length} formData={getFormData}/>
-            )}
+            <SetType count={getPartnerPick.data.length} formData={getFormData}/>
             {isEmpty(getPartnerList.data)
                 ?   <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다."/>
                 :
@@ -205,7 +207,7 @@ const PartnerList = () => {
                         })}
                     </S.PartnerItemContainer>
                     <S.ChatText onClick={handleLinkKakao} id="dsl_booking_list_katalk2">
-                        도움이 필요하세요?
+                        {isFull() ? "가능업체를 찾아드릴까요?":"도움이 필요하세요?"}
                         <ChatArrow width={20} height={12} />
                     </S.ChatText>
                     <S.BtnKakao onClick={handleLinkKakao} id="dsl_booking_list_katalk">

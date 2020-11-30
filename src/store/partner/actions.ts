@@ -1,14 +1,14 @@
 import { createAction, createAsyncAction } from 'typesafe-actions'
-import { PartnerList, PartnerDetail, Review } from 'types/partner'
+import { IPartnerList, IPartnerDetail, IReview } from 'types/partner'
 import { Pagination } from 'types/pagination'
 
 interface ListType {
-    data: PartnerList[];
+    data: IPartnerList[];
     has_more: boolean;
 }
 
 interface ReviewType {
-    data: Review[];
+    data: IReview[];
     has_more: boolean;
 }
 export const fetchPartnerListAsync = createAsyncAction(
@@ -27,7 +27,7 @@ export const fetchPartnerDetailAsync = createAsyncAction(
     'FETCH_PARTNER_DETAIL_REQUEST',
     'FETCH_PARTNER_DETAIL_RESPONSE',
     'FETCH_PARTNER_DETAIL_FAILURE'
-)<{username: string, idx: string}, PartnerDetail, undefined>()
+)<{username: string, idx: string}, IPartnerDetail, undefined>()
 
 export const fetchReviewListAsync = createAsyncAction(
     'FETCH_REVIEW_LIST_REQUEST',
@@ -41,7 +41,7 @@ export const fetchReviewMoreListAsync = createAsyncAction(
     'FETCH_REVIEW_MORE_LIST_FAILURE'
 )<{ username: string, page: number, size: number }, ReviewType, undefined>()
 
-export const setPartnerPick = createAction('SET_PARTNER_PICK')<PartnerDetail[]>()
+export const setPartnerPick = createAction('SET_PARTNER_PICK')<IPartnerDetail[]>()
 
 export const fetchCartListAsync = createAsyncAction(
     'FETCH_CART_LIST_REQUEST',

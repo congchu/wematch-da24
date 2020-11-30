@@ -8,12 +8,12 @@ import { isEmpty } from 'lodash';
 import MainHeader from "components/MainHeader";
 import TopGnb from "components/TopGnb";
 import Loading from "components/Loading";
-import ToastPopup from "components/wematch-ui/ToastPopup";
 import ConfirmPopup from "./component/ConfirmPopup";
 import Card from "./component/Card";
-import AlertModal from "components/Modal/AlertModal";
 import EmptyPage from "./emptyPage";
 import GuidePopup from "./component/GuidePopup";
+import ToastPopup from "components/wematch-ui/ToastPopup";
+
 
 import {useRouter} from "hooks/useRouter";
 import {dataLayer} from "lib/dataLayerUtil";
@@ -309,10 +309,10 @@ const PartnerCart = () => {
             recommendedList.map((list:any) => {list.adminid === id && result++})
             return result
         })
-
-        dataLayer({event: 'request_cta', CD9: `선택업체_${selectPartners.length}-${selectList.length},추천업체_${recommendPartners.length}-${recommendedList.length}`})
+        dataLayer({event: 'request_cta', CD9: `선택업체_${selectList.length}-${selectPartners.length},추천업체_${recommendedList.length}-${recommendPartners.length}`})
         setOrderConfirmVisible(true)
     }
+
     const handleCheck = (list:IList, id:string) => {
         if(list.isChecked) {
             // 이미 선택이 되어있는 경우 삭제하는 로직
@@ -394,9 +394,9 @@ const PartnerCart = () => {
             setOrderConfirmVisible(false);
             }} orderCount={checkedList.length}
         />
-        {/*<ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
+        <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
             <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
-        </ToastPopup>*/}
+        </ToastPopup>
         </>
     )
 };

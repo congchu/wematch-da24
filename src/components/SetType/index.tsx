@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 import { Truck } from 'components/Icon'
 import {useRouter} from 'hooks/useRouter'
 
-import * as colors from  'styles/colors'
+import * as colors from 'styles/colors'
 import * as commonTypes from "store/common/types"
 import {useDispatch, useSelector} from "react-redux";
 import * as commonSelector from "store/common/selectors";
@@ -80,6 +80,11 @@ const SetType:React.FC<Props> = ({count, formData}) => {
 	const dispatch = useDispatch()
 	const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
 	const {dong, moving_type, moving_date} = formData
+
+	if (!getMoveIdxData.idx) {
+		return <></>
+	}
+
 	return (
 		<S.TypeSet>
 			<S.BoxSet>

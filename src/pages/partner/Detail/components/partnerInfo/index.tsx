@@ -1,17 +1,18 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
+import {useMedia} from "react-use-media";
+import { isEmpty } from 'lodash'
+
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
 
-import { Question } from 'components/Icon'
 import LevelModal from 'components/Modal/LevelModal'
 import LevelIcon from 'components/LevelIcon'
 import NewPartner from 'components/common/NewPartner'
-import { Level } from 'types/partner'
-import {useMedia} from "react-use-media";
-import { isEmpty } from 'lodash'
-import {LevelGradeText} from "../../../lib/levelUtil";
+import { Question } from 'components/Icon'
+import { Level, LevelText } from 'types/partner'
+import UserImage from "./userImage";
 
 const S = {
 	Container: styled.div`
@@ -169,9 +170,11 @@ interface Props {
 	keywords: string[];
 	adminname: string;
 	addition?: string;
+	profile_img: string;
+	status: 'selected' | 'available' | 'unavailable';
 }
 
-const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition='' }: Props) => {
+const Index = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition='', status, profile_img }: Props) => {
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 	const isMobile = useMedia({
 		maxWidth: 767,
@@ -181,57 +184,60 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 
 
 	return (
-		<S.Container>
-			<S.Wrap>
-				<S.LevelDescription>{LevelGradeText(level)}</S.LevelDescription>
-				<S.Level>{level === 'NEW' ? '등급산정중' : `고객평가 ${level}등급`}</S.Level>
-				<S.PartnerWord>{title}</S.PartnerWord>
-				{level === 'NEW'
-					? <NewPartner showQuestionIcon={true}/>
-					: <S.Info>
-						<S.Card onClick={toggleVisibleLevel} id="dsl_booking_detail_info">
+		<>
+			<UserImage profile_img={profile_img} status={status} />
+			<S.Container>
+				<S.Wrap>
+					<S.LevelDescription>{LevelText[level]}</S.LevelDescription>
+					<S.Level>{level === 'NEW' ? '등급산정중' : `고객평가 ${level}등급`}</S.Level>
+					<S.PartnerWord>{title}</S.PartnerWord>
+					{level === 'NEW'
+						? <NewPartner showQuestionIcon={true}/>
+						: <S.Info>
+							<S.Card onClick={toggleVisibleLevel} id="dsl_booking_detail_info">
 						<span>평가등급
 							<Question width={16} height={16} />
 						</span>
-							<LevelIcon level={level}/>
-						</S.Card>
-						<S.Card>
-							<span>고객선택</span>
-							<em>{pick_cnt | 0} 회</em>
-						</S.Card>
-						<S.Card>
-							<span>경력년차</span>
-							<em>{experience | 1} 년</em>
-						</S.Card>
-					</S.Info>
-				}
-				<S.Description>
-					<S.Option>
-						<strong>사장님 한마디({adminname})</strong>
-						<p>{description.length !== 0 ? description : values.DEFAULT_TEXT}</p>
-					</S.Option>
-					{!isEmpty(keywords) &&
-					<S.Option>
-						<strong>고객이 많이 언급한 키워드</strong>
-						<ul>
-							{keywords.map((list, index) => (
-								<li key={index}>{list}</li>
-							))}
-						</ul>
-					</S.Option>
+								<LevelIcon level={level}/>
+							</S.Card>
+							<S.Card>
+								<span>고객선택</span>
+								<em>{pick_cnt | 0} 회</em>
+							</S.Card>
+							<S.Card>
+								<span>경력년차</span>
+								<em>{experience | 1} 년</em>
+							</S.Card>
+						</S.Info>
 					}
-					{addition.length > 0 && (
+					<S.Description>
 						<S.Option>
-							<strong>추가 가능 옵션</strong>
-							<p>{addition}</p>
+							<strong>사장님 한마디({adminname})</strong>
+							<p>{description.length !== 0 ? description : values.DEFAULT_TEXT}</p>
 						</S.Option>
-					)}
-				</S.Description>
-			</S.Wrap>
-			<S.Border />
-			<LevelModal visible={visibleLevelModal} onClose={toggleVisibleLevel} />
-		</S.Container>
+						{!isEmpty(keywords) &&
+						<S.Option>
+							<strong>고객이 많이 언급한 키워드</strong>
+							<ul>
+								{keywords.map((list, index) => (
+									<li key={index}>{list}</li>
+								))}
+							</ul>
+						</S.Option>
+						}
+						{addition.length > 0 && (
+							<S.Option>
+								<strong>추가 가능 옵션</strong>
+								<p>{addition}</p>
+							</S.Option>
+						)}
+					</S.Description>
+				</S.Wrap>
+				<S.Border />
+				<LevelModal visible={visibleLevelModal} onClose={toggleVisibleLevel} />
+			</S.Container>
+		</>
 	)
 }
 
-export default PartnerInfo
+export default Index
