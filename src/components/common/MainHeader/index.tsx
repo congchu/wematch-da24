@@ -228,7 +228,7 @@ const MainHeader = ({ isFixed = false, border = false }: Props) => {
                             {/*<a href="https://wematch.com/inquiry">내 신청내역 확인</a>*/}
                         </S.QuickGnb>
                         <S.Partner>
-                            <a href="https://wematch.com/inquiry">내 신청내역</a>
+                            <a href={constants.MOVE_URL + "/myconsult.asp"}>내 신청내역</a>
                         </S.Partner>
                     </S.Lnb>
                 </S.Header>

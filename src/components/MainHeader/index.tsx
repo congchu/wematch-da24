@@ -21,7 +21,7 @@ const MainHeader = ({}: Props) => {
                     <div id="wmLnb">
                         <div className="quick_gnb">
                             {/*<a href="https://wematch.com/service_search.html" className="link_find">서비스찾기</a>*/}
-                            <a href="https://wematch.com/inquiry" className="link_report">내 신청내역 확인</a>
+                            <a href={constants.MOVE_URL + "/myconsult.asp"} className="link_report">내 신청내역 확인</a>
                         </div>
                         <div className="head_info">
                             <a href="https://wematch.com/partner_gate.html" className="link_partner">파트너 가입</a>

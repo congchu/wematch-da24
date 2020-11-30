@@ -20,6 +20,7 @@ import Intro from 'pages/banner/Intro'
 import Customer from 'pages/banner/Customer'
 import Grade from 'pages/banner/Grade'
 import UnSupported from 'pages/unsupported'
+import Terms from 'pages/terms'
 
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
@@ -88,6 +89,7 @@ function AppRoute() {
                 <Route exact path="/banner/customer" component={Customer} />
                 <Route exact path="/banner/grade" component={Grade} />
                 <Route exact path="/unsupported" component={UnSupported} />
+                <Route exact path="/terms" component={Terms} />
             </Switch>
         )
     }
