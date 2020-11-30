@@ -211,7 +211,7 @@ only screen and (min-resolution:2dppx) {
 
 .list_service li {
   float: left;
-  width: 33.333%;
+  width: 50%;
   height: 106px;
   margin-bottom: 10px;
   text-align: center
