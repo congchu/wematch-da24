@@ -1,13 +1,12 @@
 import React from 'react'
 import {useSelector} from "react-redux";
 import styled, { css } from 'styled-components'
+import {some} from "lodash";
 
 import { NextArrow, ProfileDefault } from 'components/Icon'
-import { Level } from 'types/partner'
+import { Level, LevelText } from 'types/partner'
 
 import * as colors from 'styles/colors'
-import { LevelGradeText } from 'lib/levelUtil'
-import {some} from "lodash";
 import * as partnerSelector from "store/partner/selectors";
 
 const S = {
@@ -202,7 +201,7 @@ const PartnerItem = ({ profile_img, level, title, pick_cnt, feedback_cnt, experi
 			)}
 			<S.CompanyInfo>
 				{/*<S.LevelTitle><em>{level}등급</em> {levelDescription}</S.LevelTitle>*/}
-				<S.LevelTitle><em>{level}등급 ({LevelGradeText(level)})</em></S.LevelTitle>
+				<S.LevelTitle><em>{`${level}등급 (${LevelText[level]})`}</em></S.LevelTitle>
 				<S.PartnerWord>{title}</S.PartnerWord>
 				<S.PartnerInfo>
 					{level === 'NEW' ?

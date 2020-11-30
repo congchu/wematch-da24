@@ -15,13 +15,13 @@ const MainHeader = ({}: Props) => {
                         <ul className="list_services">
                             <li><a href={constants.MOVE_URL}>이사</a></li>
                             <li><a href={constants.CLEAN_URL}>청소</a></li>
-                            <li><a href={constants.INTERIOR_URL}>인테리어</a></li>
+                            {/*<li><a href={constants.INTERIOR_URL}>인테리어</a></li>*/}
                         </ul>
                     </div>
                     <div id="wmLnb">
                         <div className="quick_gnb">
-                            <a href="https://wematch.com/service_search.html" className="link_find">서비스찾기</a>
-                            <a href="https://wematch.com/inquiry" className="link_report">내 신청내역 확인</a>
+                            {/*<a href="https://wematch.com/service_search.html" className="link_find">서비스찾기</a>*/}
+                            <a href={constants.MOVE_URL + "/myconsult.asp"} className="link_report">내 신청내역 확인</a>
                         </div>
                         <div className="head_info">
                             <a href="https://wematch.com/partner_gate.html" className="link_partner">파트너 가입</a>

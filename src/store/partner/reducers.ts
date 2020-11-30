@@ -1,7 +1,7 @@
 import { createReducer, ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
-import { PartnerList, PartnerDetail, Review } from 'types/partner'
+import { IPartnerList, IPartnerDetail, IReview } from 'types/partner'
 
 import { DEFAULT_REVIEW_LIST_SIZE } from 'constants/values'
 
@@ -9,20 +9,20 @@ export type Actions = ActionType<typeof actions>
 
 export interface PartnerState {
     pick: {
-        data: PartnerDetail[];
+        data: IPartnerDetail[];
     },
     list: {
-        data: PartnerDetail[];
+        data: IPartnerDetail[];
         loading: boolean;
         moreLoading?: boolean;
         hasMore: boolean;
     }
     detail: {
-        data: PartnerDetail | undefined;
+        data: IPartnerDetail | undefined;
         loading: boolean;
     },
     review: {
-        data: Review[];
+        data: IReview[];
         loading: boolean;
         moreLoading?: boolean;
         hasMore: boolean;

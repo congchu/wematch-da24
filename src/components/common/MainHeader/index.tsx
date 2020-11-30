@@ -1,27 +1,56 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import * as colors from 'styles/colors'
 import * as constants from 'constants/env'
 
-interface Props {}
+interface Props {
+    isFixed?: boolean | undefined;
+    border?: boolean;
+}
 
 const S = {
-    Wrapper: styled.div`
-      overflow: hidden;
+    Wrapper: styled.div<{ isFixed: boolean }>`
+      position: ${props => props.isFixed ? 'fixed' : 'absolute'};
+      left: 0;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      //overflow: hidden;
       min-width: 320px;
+
+      @media screen and (min-width: 1200px) {
+        position: ${props => props.isFixed ? 'fixed' : 'static'};
+        background: #fff;
+      }
     `,
-    HeaderWrapper: styled.div`
+    HeaderWrapper: styled.div<{ border: boolean }>`
       overflow: hidden;
       position: relative;
-      box-shadow: inset 0 -1px 0 #d7dbe2;
-      letter-spacing: -1px;
-  `,
-    Header: styled.div`
+      
+      ${props => props.border && css`
+        box-shadow: inset 0 -1px 0 ${colors.lineDefault};
+      `};
+    `,
+    Header: styled.div<{ isFixed: boolean }>`
       position: relative;
-      @media screen and (min-width:1200px) {
+      
+      ${props => props.isFixed && css`
+        background-color: ${colors.white};
+        opacity: 0.96;
+        transition: background-color 0.25s ease;
+      `};
+      
+      @media screen and (min-width: 1200px) {
         width: 992px;
         margin: 0 auto;
+        
+        ${props => props.isFixed && css`
+          //width: 100%;
+          width: 992px;
+          margin: 0 auto;
+          background-color: transparent;
+        `};
       }
   `,
     Logo: styled.h1`
@@ -46,18 +75,15 @@ const S = {
         background-size: 100% auto;
         color: transparent;
       }
-      @media screen and (min-width:768px) {
+
+      @media screen and (min-width:1200px) {
         height: 72px;
-        padding: 0 32px;
-      
+        padding: 0;
         a {
           width: 108px;
           height: 20px;
           padding-top: 26px;
         }
-      }
-      @media screen and (min-width:1200px) {
-        padding: 0px;
       }
     `,
     Categories: styled.ul`
@@ -68,33 +94,41 @@ const S = {
       height: auto;
       font-size: 18px;
       color: ${colors.gray33};
-      border-top: 1px solid #d7dbe2;
     
       li {
-        margin-left: 18px;
+        margin-left: 30px;
         padding: 13px 2px 11px;
-        font-size: 15px;
-        line-height: 16px;
+        font-size: 16px;
+        line-height: 23px;
         color: ${colors.gray33};
-        letter-spacing: -1px;
+        letter-spacing: -0.01em;
+        
         &:first-child {
-            margin-left: 22px;
+          margin-left: 22px;
         }
         
-        .on {
+        &.on {
           color: ${colors.pointBlue};
-          box-shadow: none;
+          padding-bottom: 8px;
+          border-bottom: 2px solid ${colors.pointBlue};
+          font-weight: bold;
+        }
+        
+        @media screen and (min-width: 1200px) {
+          &.on {
+            border-bottom: 0;
+          }
         }
       }
     
-      @media screen and (min-width:768px) {
+      @media screen and (min-width: 1200px) {
+        left: 152px;
         position: absolute;
-        top: 26px;
-        left: 168px;
+        top: 25px;
         width: auto;
         height: auto;
         border-top: 0 none;
-      
+
         li {
           margin-left: 20px;
           padding: 0;
@@ -105,9 +139,6 @@ const S = {
           }
         }
       }
-      @media screen and (min-width:1200px) {
-        left: 152px;
-      }
     `,
     Lnb: styled.div`
       position: absolute;
@@ -115,26 +146,36 @@ const S = {
       right: 25px;
       color: ${colors.gray66};
     
-      @media screen and (min-width:768px) {
-        top: 20px;
-        right: 32px;
-      }
-      @media screen and (min-width:1200px) {
+      @media screen and (min-width: 1200px) {
+        top: 18px; 
         right: 0;
       }
   `,
     Partner: styled.div`
       display: inline-block;
-      padding: 8px 14px 5px;
-      border: 1px solid #c3c7d0;
-      border-radius: 15px;
+      padding: 6px 10px 7px;
+      border: 1px solid #C4C9D1;
+      border-radius: 28px;
       font-size: 14px;
       letter-spacing: -1px;
-      @media screen and (min-width:768px) {
-        margin-left: 14px;  
+      background: rgba(255, 255, 255, 0.5);
+      
+      a {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        color: ${colors.gray33};
       }
+
       @media screen and (min-width:1200px) {
         margin-left: 32px;
+        
+        a {
+          font-weight: normal;
+          font-size: 15px;
+          color: ${colors.gray66};
+          padding: 8px 10px;
+        }
       }
     `,
     QuickGnb: styled.div`
@@ -158,8 +199,8 @@ const S = {
         }
       }
               
-      @media screen and (min-width: 768px) {
-       display: block;
+      @media screen and (min-width: 1200px) {
+        display: block;
         float: left;
         a {
           padding-top: 9px;
@@ -169,30 +210,31 @@ const S = {
   `,
 }
 
-const TopHeader = ({}: Props) => {
+const MainHeader = ({ isFixed = false, border = false }: Props) => {
     return (
-      <S.Wrapper>
-          <S.HeaderWrapper>
-              <S.Header>
-                  <S.Logo><a href="https://wematch.com/"><span>위매치</span></a></S.Logo>
-                  <S.Categories>
-                      <li><a href={constants.MOVE_URL} className="on">이사</a></li>
-                      <li><a href={constants.CLEAN_URL}>청소</a></li>
-                      <li><a href={constants.INTERIOR_URL}>인테리어</a></li>
-                  </S.Categories>
-                  <S.Lnb>
-                      <S.QuickGnb>
-                          <a href="https://wematch.com/service_search.html">서비스찾기</a>
-                          <a href="https://wematch.com/inquiry" className="divide">내 신청내역 확인</a>
-                      </S.QuickGnb>
-                      <S.Partner>
-                          <a href="https://wematch.com/partner_gate.html">파트너 가입</a>
-                      </S.Partner>
-                  </S.Lnb>
-              </S.Header>
-          </S.HeaderWrapper>
-      </S.Wrapper>
+        <S.Wrapper isFixed={isFixed} id="dsl_move_header_1">
+            <S.HeaderWrapper border={border}>
+                <S.Header isFixed={isFixed}>
+                    <S.Logo><a href={constants.MOVE_URL}><span>위매치</span></a></S.Logo>
+                    <S.Categories>
+                        <li className="on"><a href={constants.MOVE_URL}>이사</a></li>
+                        <li><a href={constants.CLEAN_URL}>청소</a></li>
+                        {/*<li><a href={constants.INTERIOR_URL}>인테리어</a></li>*/}
+                    </S.Categories>
+                    <S.Lnb>
+                        <S.QuickGnb>
+                            {/*<a href="https://wematch.com/service_search.html">서비스찾기</a>*/}
+                            {/* 2020.11.23 삭제 요쳥 (kaya) */}
+                            {/*<a href="https://wematch.com/inquiry">내 신청내역 확인</a>*/}
+                        </S.QuickGnb>
+                        <S.Partner>
+                            <a href={constants.MOVE_URL + "/myconsult.asp"}>내 신청내역</a>
+                        </S.Partner>
+                    </S.Lnb>
+                </S.Header>
+            </S.HeaderWrapper>
+        </S.Wrapper>
     )
 }
 
-export default TopHeader
+export default MainHeader
