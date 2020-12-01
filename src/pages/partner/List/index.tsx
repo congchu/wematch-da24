@@ -154,8 +154,8 @@ const PartnerList = () => {
     }
 
     const  isFull = () => {
-        return !some(getPartnerList.data, {
-            status: 'available'
+        return some(getPartnerList.data, {
+            status: 'unavailable'
         })
     }
 
@@ -207,7 +207,7 @@ const PartnerList = () => {
                         })}
                     </S.PartnerItemContainer>
                     <S.ChatText onClick={handleLinkKakao} id="dsl_booking_list_katalk2">
-                        {isFull() ? "가능업체를 찾아드릴까요?":"도움이 필요하세요?"}
+                        {!isFull() ? "가능업체를 찾아드릴까요?":"도움이 필요하세요?"}
                         <ChatArrow width={20} height={12} />
                     </S.ChatText>
                     <S.BtnKakao onClick={handleLinkKakao} id="dsl_booking_list_katalk">
