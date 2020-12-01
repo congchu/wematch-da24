@@ -4,7 +4,7 @@ import { useRouter } from 'hooks/useRouter'
 import styled from 'styled-components/macro'
 
 import Button from 'components/common/Button'
-import MainHeader from 'pages/new/components/MainHeader'
+import MainHeader from 'components/common/MainHeader'
 
 import * as colors from 'styles/colors'
 import { Previous } from 'components/wematch-ui/Icon'

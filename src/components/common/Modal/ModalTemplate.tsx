@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-
+import ScrollLock from 'react-scrolllock'
 import styled, { keyframes, css } from 'styled-components'
 
 import { Icon } from 'components/wematch-ui'
@@ -221,33 +221,35 @@ const Modal: React.FC<Props> = (props) => {
     if (!animate && !localVisible) return null;
 
     return createPortal((
-        <S.Container {...restProps}>
-            <S.Overlay onClick={onOverlayClose} visible={!visible} />
-            <S.Panel visible={!visible}>
-                <S.Header>
-                    <strong>{title}</strong>
-                    <button onClick={onClose}>
-                        <Icon.Close size={15} color={colors.white} />
-                    </button>
-                </S.Header>
-                <S.Body>
-                    {children}
-                </S.Body>
-                {footer && (
-                    <S.Footer>
-                        {warning && (
-                            <S.Warning>
-                                <p>손없는날/금/토요일은 가격이 비쌀 수 있어요!</p>
-                                <span>손없는날</span>
-                            </S.Warning>
-                        )}
-                        <Button theme="primary" onClick={onConfirm} style={bottomButtonStyles}>
-                            확인
-                        </Button>
-                    </S.Footer>
-                )}
-            </S.Panel>
-        </S.Container>
+        <ScrollLock>
+            <S.Container {...restProps}>
+                <S.Overlay onClick={onOverlayClose} visible={!visible} />
+                <S.Panel visible={!visible}>
+                    <S.Header>
+                        <strong>{title}</strong>
+                        <button onClick={onClose}>
+                            <Icon.Close size={15} color={colors.white} />
+                        </button>
+                    </S.Header>
+                    <S.Body>
+                        {children}
+                    </S.Body>
+                    {footer && (
+                        <S.Footer>
+                            {warning && (
+                                <S.Warning>
+                                    <p>손없는날/금/토요일은 가격이 비쌀 수 있어요!</p>
+                                    <span>손없는날</span>
+                                </S.Warning>
+                            )}
+                            <Button theme="primary" onClick={onConfirm} style={bottomButtonStyles}>
+                                확인
+                            </Button>
+                        </S.Footer>
+                    )}
+                </S.Panel>
+            </S.Container>
+        </ScrollLock>
     ), document.body)
 }
 

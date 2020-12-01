@@ -13,7 +13,6 @@ import browserHistory from 'lib/history'
 import GlobalStyled from 'styles/global'
 
 import Home from 'pages/home'
-import New from 'pages/new'
 import PartnerList from 'pages/partner/List/index'
 import PartnerDetail from 'pages/partner/Detail/index'
 import PartnerCart from 'pages/partner/Cart'
@@ -21,6 +20,7 @@ import Intro from 'pages/banner/Intro'
 import Customer from 'pages/banner/Customer'
 import Grade from 'pages/banner/Grade'
 import UnSupported from 'pages/unsupported'
+import Terms from 'pages/terms'
 
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
@@ -82,7 +82,6 @@ function AppRoute() {
         return (
             <Switch>
                 <Route exact path="/" component={Home} />
-                <Route exact path="/new" component={New} />
                 <Route exact path="/partner/list" component={PartnerList} />
                 <Route exact path="/partner/detail/:username" component={PartnerDetail} />
                 <Route exact path="/partner/cart" component={PartnerCart}/>
@@ -90,6 +89,7 @@ function AppRoute() {
                 <Route exact path="/banner/customer" component={Customer} />
                 <Route exact path="/banner/grade" component={Grade} />
                 <Route exact path="/unsupported" component={UnSupported} />
+                <Route exact path="/terms" component={Terms} />
             </Switch>
         )
     }

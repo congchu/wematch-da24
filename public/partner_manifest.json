@@ -1,0 +1,14 @@
+{
+  "short_name": "위매치파트너",
+  "name": "위매치파트너",
+  "icons": [
+    {
+      "src": "/icon_128.png",
+      "sizes": "128x128"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

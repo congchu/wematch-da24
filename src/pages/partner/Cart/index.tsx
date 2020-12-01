@@ -309,10 +309,10 @@ const PartnerCart = () => {
             recommendedList.map((list:any) => {list.adminid === id && result++})
             return result
         })
-
-        dataLayer({event: 'request_cta', CD9: `선택업체_${selectPartners.length}-${selectList.length},추천업체_${recommendPartners.length}-${recommendedList.length}`})
+        dataLayer({event: 'request_cta', CD9: `선택업체_${selectList.length}-${selectPartners.length},추천업체_${recommendedList.length}-${recommendPartners.length}`})
         setOrderConfirmVisible(true)
     }
+
     const handleCheck = (list:IList, id:string) => {
         if(list.isChecked) {
             // 이미 선택이 되어있는 경우 삭제하는 로직
