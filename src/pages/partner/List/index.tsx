@@ -153,12 +153,6 @@ const PartnerList = () => {
         window.open('https://api.happytalk.io/api/kakao/chat_open?yid=%40%EC%9C%84%EB%A7%A4%EC%B9%98&site_id=4000001315&category_id=111561&division_id=111564', '_blank')
     }
 
-    const  isFull = () => {
-        return !some(getPartnerList.data, {
-            status: 'available'
-        })
-    }
-
     useEffect(() => {
         if(getFormData.moving_date.length === 0) {
             setVisible(true)
@@ -207,7 +201,7 @@ const PartnerList = () => {
                         })}
                     </S.PartnerItemContainer>
                     <S.ChatText onClick={handleLinkKakao} id="dsl_booking_list_katalk2">
-                        {isFull() ? "가능업체를 찾아드릴까요?":"도움이 필요하세요?"}
+                        {getPartnerList.data[0].status === 'unavailable' ? "가능업체를 찾아드릴까요?":"도움이 필요하세요?"}
                         <ChatArrow width={20} height={12} />
                     </S.ChatText>
                     <S.BtnKakao onClick={handleLinkKakao} id="dsl_booking_list_katalk">

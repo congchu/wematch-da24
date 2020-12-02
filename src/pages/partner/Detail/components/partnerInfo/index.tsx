@@ -133,6 +133,7 @@ const S = {
 			font-size:16px;
 			color:${colors.gray33};
 			line-height:24px;
+			white-space: pre-line;
 		}
 		ul{
 			overflow:hidden;
