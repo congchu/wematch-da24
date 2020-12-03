@@ -20,7 +20,7 @@ export default function BottomNav() {
             </BaseBottomMenu>
             <BaseBottomMenu to={constants.MOVE_URL + "/myconsult.asp"} isHref replace>
                 <Report size={24} />
-                <span>내 신청서</span>
+                <span>내신청내역</span>
             </BaseBottomMenu>
         </ResponsiveBottomNav>
     )
