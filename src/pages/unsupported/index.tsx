@@ -99,7 +99,7 @@ export default function UnSupported() {
     // ie redirection to edge
     useEffect(() => {
         if (isIE) {
-            window.open('microsoft-edge:https://da24.wematch.com', '_blank')
+            window.open('microsoft-edge:https://wematch.com', '_blank')
 
             // setTimeout(function() {
             //     window.opener='self'
