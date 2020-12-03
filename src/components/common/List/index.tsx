@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components'
 
 import { Icon } from 'components/wematch-ui'
 import * as colors from 'styles/colors'
+import { checkApp, checkMobile } from 'lib/checkDevice'
 
 interface Props extends Omit<React.HTMLAttributes<HTMLUListElement>, 'onSelect'> {
     /* 리스트 타입 정의 */
@@ -42,7 +43,7 @@ const S = {
         overflow-y: auto;
       }
     `,
-    Li: styled.li<{type: TypeProp}>`
+    Li: styled.li<{type: TypeProp, isApp: boolean}>`
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -64,6 +65,9 @@ const S = {
         
         &:last-child {
           border: none;
+          ${(props) => props.isApp && css`
+            margin-bottom: 350px; // 키보드 가림 때문에 마진값이 들어갔음.
+          `};
         }
     `,
     A: styled.a<{type: TypeProp}>`
@@ -110,7 +114,7 @@ const List: React.FC<Props> = (props) => {
                     return (
                         <S.Li type={type} onClick={() => {
                             handleOnSelect(item.value)
-                        }} key={item.id}>
+                        }} key={item.id} isApp={checkMobile() || checkApp()}>
                             <S.A type={type} dangerouslySetInnerHTML={{__html: item.label}} />
                             <Icon.Next size={15} color={colors.gray66} style={{marginRight:'15px'}}/>
                         </S.Li>
