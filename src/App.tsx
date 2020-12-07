@@ -32,6 +32,12 @@ import 'swiper/components/pagination/pagination.scss'
 
 SwiperCore.use([Pagination, Autoplay])
 
+declare global {
+    interface Window {
+        ReactNativeWebView: any; // eslint-disable-line
+    }
+}
+
 function AppRoute() {
     const [script, setScript] = useState('');
     const location = useLocation()
