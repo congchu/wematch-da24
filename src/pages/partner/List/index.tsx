@@ -3,9 +3,9 @@ import styled, {css} from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
-import {isEmpty, some} from 'lodash'
-import useInfiniteScroll from 'hooks/useInfiniteScroll'
+import {isEmpty} from 'lodash'
 
+import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import MainHeader from 'components/MainHeader'
 import TopGnb from 'components/TopGnb'
 import EmptyPage from 'components/EmptyPage'
@@ -15,7 +15,6 @@ import ToastPopup from "components/wematch-ui/ToastPopup";
 
 import SetType from 'components/SetType'
 import PartnerItem from './item'
-import {useCookies} from "react-cookie";
 
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
