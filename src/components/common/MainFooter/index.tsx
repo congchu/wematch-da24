@@ -264,10 +264,10 @@ export default function MainFooter() {
                     <S.ExternalLink href="https://marketdesigners.com/">
                         회사소개
                     </S.ExternalLink>
-                    <S.ExternalLink href="https://wematch.com/terms">
+                    <S.ExternalLink href="https://da24.wematch.com/terms">
                         이용약관
                     </S.ExternalLink>
-                    <S.ExternalLink href="https://wematch.com/terms#privacy">
+                    <S.ExternalLink href="https://da24.wematch.com/terms#privacy">
                         개인정보처리방침
                     </S.ExternalLink>
                     <S.ExternalLink className="companyInfo">
@@ -284,16 +284,16 @@ export default function MainFooter() {
                     <S.ExternalLink href="https://marketdesigners.com/" target="_blank">
                         회사소개
                     </S.ExternalLink>
-                    <S.ExternalLink href="https://wematch.com/terms" target="_blank">
+                    <S.ExternalLink href="https://da24.wematch.com/terms" target="_blank">
                         이용약관 및 개인정보처리방침
                     </S.ExternalLink><br />
-                    <S.ExternalLink href="https://wematch.com/faq.asp">
+                    <S.ExternalLink href="https://da24.wematch.com/faq.asp">
                         자주묻는 질문
                     </S.ExternalLink>
-                    <S.ExternalLink href="https://wematch.com/suggest.asp">
+                    <S.ExternalLink href="https://da24.wematch.com/suggest.asp">
                         문의하기
                     </S.ExternalLink>
-                    <S.ExternalLink href="https://wematch.com/notice.asp">
+                    <S.ExternalLink href="https://da24.wematch.com/notice.asp">
                         공지사항
                     </S.ExternalLink>
                     <S.ExternalLink onClick={handleVisibleDescription} className="companyInfo">
