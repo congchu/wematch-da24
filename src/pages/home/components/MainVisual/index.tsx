@@ -178,7 +178,7 @@ function MainVisual() {
                         action: '이사 견적서 올리면, 매트리스 소독권 또는 편의점 상품권!',
                         label: '2'
                     })
-                    window.location.href = 'https://wematch.com/notice.asp'
+                    window.location.href = 'https://da24.wematch.com/notice.asp'
                 }}>
                     <div className="wrapper">
                         <span>놓칠 수 없는 혜택!</span>
