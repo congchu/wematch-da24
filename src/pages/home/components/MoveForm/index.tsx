@@ -87,7 +87,8 @@ const Description = {
           line-height: 26px;
         }
     `,
-    InfoType: styled.div`
+    InfoType: styled.div<{selectMoveType: 'house' | 'oneroom' | 'office' | undefined}>`
+        display: ${props => props.selectMoveType === 'office' ? 'block' : 'none' };
         text-align: center;
         margin-bottom: 28px;
         p {
@@ -108,9 +109,9 @@ const Description = {
 }
 
 const Terms = {
-    Container: styled.div`
+    Container: styled.div<{selectMoveType: boolean}>`
         position: relative;
-        display: flex;
+        display: ${props => props.selectMoveType ? 'flex' : 'none' };
         flex-direction: column;
         margin-bottom: 14px;
         label {
@@ -146,8 +147,8 @@ const Terms = {
             margin-bottom: -2px;
         }
     `,
-    SubmitContainer: styled.div`
-        display: flex;
+    SubmitContainer: styled.div<{selectMoveType: boolean}>`
+        display: ${props => props.selectMoveType ? 'flex' : 'none' };
         flex-direction: column;
         
         .text {
@@ -181,7 +182,8 @@ const Terms = {
     `
 }
 
-const HouseTitle = styled.div`
+const HouseTitle = styled.div<{selectMoveType: 'house' | 'oneroom' | 'office' | undefined}>`
+  display: ${props => props.selectMoveType === 'house' ? 'block' : 'none' };
   text-align: center;
   strong {
     font-style: normal;
@@ -413,82 +415,76 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                         </Description.Box>
                     </Description.Container>
                 )}
-                {getMoveType === 'house' && (
-                    <HouseTitle>
+                    <HouseTitle selectMoveType={getMoveType}>
                         <strong>거주자 2명이상, 투룸 이상의 짐량</strong>
                     </HouseTitle>
-                )}
-                {getMoveType === "office" && (
-                    <Description.InfoType style={{ marginBottom: 0 }}>
+                    <Description.InfoType style={{ marginBottom: 0 }} selectMoveType={getMoveType}>
                         <p>빌딩, 공장, 상가 등 짐량 1톤 트럭 초과</p>
                     </Description.InfoType>
-                )}
                 <MoveInput type={getMoveType} style={{ marginTop: 30 }} />
             </Visual.ButtonGroupContainer>
-            {getMoveType !== undefined && (
-                <>
-                    <Terms.Container>
-                        <Checkbox label="보관이사 필요" checked={getIsMoveStore} onChange={() => dispatch(formActions.setIsMoveStore(!getIsMoveStore))}/>
-                        <Terms.CheckWrapper>
-                            <Checkbox label="전체동의 필요" checked={getAgree.terms && getAgree.privacy && getAgree.marketing} onChange={() => {
-                                if (getAgree.terms && getAgree.privacy && getAgree.marketing) {
-                                    dispatch(formActions.setAgree({
-                                        terms: false,
-                                        privacy: false,
-                                        marketing: false
-                                    }))
-                                } else {
-                                    dispatch(formActions.setAgree({
-                                        terms: true,
-                                        privacy: true,
-                                        marketing: true
-                                    }))
-                                }
-                            }} />
-                            <Terms.View onClick={() => setCollapse(!collapse)}>
-                                {collapse ? <Icon.Up size={15} color={colors.gray33} /> : <Icon.Down size={15} color={colors.gray33} />}
-                            </Terms.View>
-                        </Terms.CheckWrapper>
-                        <Terms.Collapse isShow={collapse}>
-                            <Terms.NewLink>
-                                <Checkbox label="이용약관 및 개인정보처리방침 동의" checked={getAgree.terms} onChange={() => dispatch(formActions.setAgree({
-                                    ...getAgree,
-                                    terms: !getAgree.terms
-                                }))}/>
-                                <a onClick={() => setVisibleTerms(true)}>보기</a>
-                            </Terms.NewLink>
-                            <Checkbox label="견적요청을 위해 이사업체에 개인정보제3자 제공동의" checked={getAgree.privacy} onChange={() => dispatch(formActions.setAgree({
+            <>
+                <Terms.Container selectMoveType={getMoveType !== undefined}>
+                    <Checkbox label="보관이사 필요" checked={getIsMoveStore} onChange={() => dispatch(formActions.setIsMoveStore(!getIsMoveStore))}/>
+                    <Terms.CheckWrapper>
+                        <Checkbox label="전체동의 필요" checked={getAgree.terms && getAgree.privacy && getAgree.marketing} onChange={() => {
+                            if (getAgree.terms && getAgree.privacy && getAgree.marketing) {
+                                dispatch(formActions.setAgree({
+                                    terms: false,
+                                    privacy: false,
+                                    marketing: false
+                                }))
+                            } else {
+                                dispatch(formActions.setAgree({
+                                    terms: true,
+                                    privacy: true,
+                                    marketing: true
+                                }))
+                            }
+                        }} />
+                        <Terms.View onClick={() => setCollapse(!collapse)}>
+                            {collapse ? <Icon.Up size={15} color={colors.gray33} /> : <Icon.Down size={15} color={colors.gray33} />}
+                        </Terms.View>
+                    </Terms.CheckWrapper>
+                    <Terms.Collapse isShow={collapse}>
+                        <Terms.NewLink>
+                            <Checkbox label="이용약관 및 개인정보처리방침 동의" checked={getAgree.terms} onChange={() => dispatch(formActions.setAgree({
                                 ...getAgree,
-                                privacy: !getAgree.privacy
+                                terms: !getAgree.terms
                             }))}/>
-                            <Checkbox label="마케팅 정보수신 동의(선택)" checked={getAgree.marketing} onChange={() => dispatch(formActions.setAgree({
-                                ...getAgree,
-                                marketing: !getAgree.marketing
-                            }))}/>
-                        </Terms.Collapse>
-                    </Terms.Container>
-                    <Terms.SubmitContainer>
-                        <div className="text">
-                            <p>
-                                내 조건에 맞는 업체<strong>(최대 3개)</strong>에 <br className="mobile-enter" />
-                                비용산정을 위한 <strong>무료 방문견적</strong>을 신청합니다
-                            </p>
-                        </div>
-                        <div id="dsl_move_button_requests_1">
-                            <Button theme="primary" bold border onClick={() => {
-                                handleSubmit('curation')
-                                setSubmitType('curation')
-                            }}>견적 신청하기</Button>
-                            {getMoveType !== 'oneroom' && (
-                                <Button theme="default" onClick={() => {
-                                    handleSubmit('select')
-                                    setSubmitType('select')
-                                }}>업체 직접고르기</Button>
-                            )}
-                        </div>
-                    </Terms.SubmitContainer>
-                </>
-            )}
+                            <a onClick={() => setVisibleTerms(true)}>보기</a>
+                        </Terms.NewLink>
+                        <Checkbox label="견적요청을 위해 이사업체에 개인정보제3자 제공동의" checked={getAgree.privacy} onChange={() => dispatch(formActions.setAgree({
+                            ...getAgree,
+                            privacy: !getAgree.privacy
+                        }))}/>
+                        <Checkbox label="마케팅 정보수신 동의(선택)" checked={getAgree.marketing} onChange={() => dispatch(formActions.setAgree({
+                            ...getAgree,
+                            marketing: !getAgree.marketing
+                        }))}/>
+                    </Terms.Collapse>
+                </Terms.Container>
+                <Terms.SubmitContainer selectMoveType={getMoveType !== undefined}>
+                    <div className="text">
+                        <p>
+                            내 조건에 맞는 업체<strong>(최대 3개)</strong>에 <br className="mobile-enter" />
+                            비용산정을 위한 <strong>무료 방문견적</strong>을 신청합니다
+                        </p>
+                    </div>
+                    <div id="dsl_move_button_requests_1">
+                        <Button theme="primary" bold border onClick={() => {
+                            handleSubmit('curation')
+                            setSubmitType('curation')
+                        }}>견적 신청하기</Button>
+                        {getMoveType !== 'oneroom' && (
+                          <Button theme="default" onClick={() => {
+                              handleSubmit('select')
+                              setSubmitType('select')
+                          }}>업체 직접고르기</Button>
+                        )}
+                    </div>
+                </Terms.SubmitContainer>
+            </>
             <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone} onClose={() => setVisibleVerifyPhone(!visibleVerifyPhone)} tags={{
                 authBtn: "dsl_move_button_verify_1",
                 closeBtn: "dsl_move_button_verify_X_1"
