@@ -2,14 +2,18 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 import { ProfileDefault } from 'components/Icon'
 import * as colors from "styles/colors"
-import { API_URL } from 'constants/env'
+
 import DetailPopup from "./DetailPopup";
 import {useMedia} from "react-use-media";
 import { isEmpty } from 'lodash'
+import { dataLayer } from 'lib/dataLayerUtil';
 
 interface Props {
     list: IList;
     onSelect: (list:IList, id:string) => void;
+    index: number;
+    listLength: number;
+    type: "selected" | "recommended"
 }
 
 interface IList {
@@ -137,7 +141,7 @@ const S = {
 
 const Card:React.FC<Props> = (props: Props) => {
     const [partnerDetailVisible, setPartnerDetailVisible] = useState(false)
-    const {list, onSelect} = props;
+    const {list, onSelect, type, index, listLength} = props;
     const { id, adminname, title, keywords=[], description= '', isChecked, adminid, profile_img } = list;
     const isMobile = useMedia({
         maxWidth: 767,
@@ -164,6 +168,10 @@ const Card:React.FC<Props> = (props: Props) => {
             }
         })
     }
+
+    const getDataLayerAction = () => {
+        return type === 'selected' ? `선택_${listLength}_${index+1}` : `추천_${listLength}_${index+1}`
+    }
     return (
         <>
             <S.CardContainer>
@@ -188,7 +196,10 @@ const Card:React.FC<Props> = (props: Props) => {
                     </S.KeywordWrapper>
                 </S.Content>
             </S.CardContainer>
-            <DetailPopup visible={partnerDetailVisible} onClose={() => setPartnerDetailVisible(!partnerDetailVisible)} partnerData={list}/>
+            <DetailPopup visible={partnerDetailVisible} onClose={() => {
+                dataLayer({event: 'partner_preview', category: '부킹_요약팝업', action: getDataLayerAction(), label: type === 'selected' ? '선택업체' : '이런 업체는 어떠세요?'})
+                setPartnerDetailVisible(!partnerDetailVisible)
+            }} partnerData={list}/>
         </>
     )
 };

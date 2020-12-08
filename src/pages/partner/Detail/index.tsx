@@ -171,13 +171,10 @@ const PartnerDetail = () => {
 
     const checkScrollTop = () => {
         if (!showScrollView && window.pageYOffset > 300){
-            console.log('if- 1',window.pageYOffset);
             setShowScrollView(true)
         } else if (showScrollView && window.pageYOffset <= 300){
-            console.log('if- 2',window.pageYOffset);
             setShowScrollView(false)
         } else if (window.pageYOffset === 0) {
-            console.log('if- 3',window.pageYOffset);
             setShowScrollView(false)
         }
     };
