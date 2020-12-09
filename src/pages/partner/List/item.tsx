@@ -207,13 +207,13 @@ const PartnerItem = ({ profile_img, level, title, pick_cnt, feedback_cnt, experi
 					{level === 'NEW' ?
 						<>
 							<span>평가수집중</span>
-							<span>경력 {experience}년</span>
+							<span>경력 {experience || 1}년</span>
 						</>
 						:
 						<>
 							<span>고객선택 {pick_cnt}</span>
 							<span>평가 {feedback_cnt}</span>
-							<span>경력 {experience}년</span>
+							<span>경력 {experience || 1}년</span>
 						</>
 					}
 				</S.PartnerInfo>

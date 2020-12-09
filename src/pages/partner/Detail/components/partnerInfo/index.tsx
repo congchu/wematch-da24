@@ -203,11 +203,11 @@ const Index = ({ title, level, pick_cnt, experience, description='', keywords, a
 							</S.Card>
 							<S.Card>
 								<span>고객선택</span>
-								<em>{pick_cnt | 0} 회</em>
+								<em>{pick_cnt || 0} 회</em>
 							</S.Card>
 							<S.Card>
 								<span>경력년차</span>
-								<em>{experience | 1} 년</em>
+								<em>{experience || 1} 년</em>
 							</S.Card>
 						</S.Info>
 					}

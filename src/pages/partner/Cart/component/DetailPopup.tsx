@@ -168,15 +168,15 @@ const DetailPopup:React.FC<Props> = (props) => {
                     <PartnerInfo>
                         <div className="info">
                             <div>고객선택</div>
-                            <span>{pick_cnt | 0} 회</span>
+                            <span>{pick_cnt || 0} 회</span>
                         </div>
                         <div className="info">
                             <div>평가</div>
-                            <span>{feedback_cnt| 0}회</span>
+                            <span>{feedback_cnt|| 0}회</span>
                         </div>
                         <div className="info">
                             <div>이사경력</div>
-                            <span>{experience | 1} 년</span>
+                            <span>{experience || 1} 년</span>
                         </div>
                     </PartnerInfo>
                 }
