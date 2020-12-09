@@ -301,6 +301,7 @@ const PartnerCart = () => {
         const selectPartners = checkedList.filter((id:string) => {
             let result = 0
             selectList.map((list:any) => {list.adminid === id && result++})
+
             return result
         })
 
@@ -309,7 +310,7 @@ const PartnerCart = () => {
             recommendedList.map((list:any) => {list.adminid === id && result++})
             return result
         })
-        dataLayer({event: 'request_cta', CD9: `선택업체_${selectList.length}-${selectPartners.length},추천업체_${recommendedList.length}-${recommendPartners.length}`})
+        dataLayer({event: 'request_cta',CD10: `선택업체_${selectList.length}-${selectPartners.length},추천업체_${recommendedList.length}-${recommendPartners.length}`})
         setOrderConfirmVisible(true)
     }
 
@@ -351,8 +352,8 @@ const PartnerCart = () => {
                     <>
                         <S.Wrapper marginBottom={isEmpty(recommendedList) ? recommendCart.current?.offsetHeight : null}>
                             <S.CardWrapper>
-                                {selectList.map((list:IList) => {
-                                    return <Card key={list.id} list={list} onSelect={handleCheck}/>
+                                {selectList.map((list:IList, index:number) => {
+                                    return <Card key={list.id} type={"selected"} list={list}  index={index} listLength={selectList.length} onSelect={handleCheck}/>
                                 })}
                                 <S.PartnerMoreBtn onClick={() => router.push('/partner/list')} id="dsl_booking_cart_more">업체 더 고르기</S.PartnerMoreBtn>
                             </S.CardWrapper>
@@ -364,8 +365,8 @@ const PartnerCart = () => {
                                     <S.CardWrapper>
                                         <S.CurationTitle>이런 업체는 어떠세요?</S.CurationTitle>
                                         <S.CurationSubTitle>고객의 가성비, 평가 키워드, 선택률 데이터 기준으로 추천드려요.</S.CurationSubTitle>
-                                        {recommendedList.map((list:IList) => {
-                                            return <Card key={list.id} list={list} onSelect={handleCheck}/>
+                                        {recommendedList.map((list:IList, index:number) => {
+                                            return <Card key={list.id}  type={'recommended'} index={index} listLength={recommendedList.length} list={list} onSelect={handleCheck}/>
                                         })}
                                     </S.CardWrapper>
                                 </S.Wrapper>

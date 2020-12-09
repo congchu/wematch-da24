@@ -490,21 +490,23 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                 closeBtn: "dsl_move_button_verify_X_1"
             }} onDataLayerAuth={() => {
                 return dataLayer({
-                    event: 'request',
+                    event: 'request_popup',
                     category: '다이사_메인_번호인증_1',
                     action: '인증하기',
                     label: '인증팝업',
-                    CD5: getIsMoveStore ? 'Y' : 'N',
-                    CD6: getMoveTypeText()
+                    CD6: getIsMoveStore ? 'Y' : 'N',
+                    CD7: getMoveTypeText(),
+                    CD12: submitType === "curation" ? '바로매칭' : "직접고르기"
                 })
             }} onDataLayerClose={() => {
                 return dataLayer({
-                    event: 'request',
+                    event: 'request_popup',
                     category: '다이사_메인_번호인증_1',
                     action: '닫기',
                     label: '인증팝업',
-                    CD5: getIsMoveStore ? 'Y' : 'N',
-                    CD6: getMoveTypeText()
+                    CD6: getIsMoveStore ? 'Y' : 'N',
+                    CD7: getMoveTypeText(),
+                    CD12: submitType === "curation" ? '바로매칭' : "직접고르기"
                 })
             }} />
             <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
