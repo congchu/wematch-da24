@@ -4,13 +4,15 @@ import styled, { css } from 'styled-components'
 import {some} from "lodash";
 
 import { NextArrow, ProfileDefault } from 'components/Icon'
-import { Level, LevelText } from 'types/partner'
+import {IPartnerList, Level, LevelText} from 'types/partner'
 
 import * as colors from 'styles/colors'
 import * as partnerSelector from "store/partner/selectors";
+import * as values from "constants/values";
+import {Skeleton} from "components/SkeletonEl";
 
 const S = {
-	Box: styled.a<{isSelected: boolean, isFull:boolean}>`
+	Box: styled.a<{isSelected?: boolean, isFull?:boolean}>`
 		display:block;
 		overflow:hidden;
 		padding:24px;
@@ -163,19 +165,27 @@ const S = {
 }
 
 interface Props {
-	profile_img: string;
-	level: Level;
-	title: string;
-	pick_cnt: number;
-	feedback_cnt: number;
-	experience: number;
-	onClick: () => void;
-	adminid: string;
-	status: 'selected' | 'available' | 'unavailable';
+	list?: IPartnerList;
+	onClick?: () => void;
 }
 
-const PartnerItem = ({ profile_img, level, title, pick_cnt, feedback_cnt, experience, onClick, status, adminid }: Props) => {
+const PartnerItem: React.FC<Props> = ({list={}, onClick}) => {
+	const { profile_img, level, title, pick_cnt, feedback_cnt, experience, status, adminid } = list
 	const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
+
+	if (Object.keys(list).length === 0) {
+		return (
+			<S.Box>
+				<S.PartnerImg><Skeleton width={'100%'} isRound={true}/></S.PartnerImg>
+				<S.CompanyInfo>
+					<S.PartnerWord><Skeleton width={"70%"}/></S.PartnerWord>
+					<S.PartnerInfo><Skeleton width={"90%"}/></S.PartnerInfo>
+					<S.PartnerInfo><Skeleton width={"90%"}/></S.PartnerInfo>
+					<S.PartnerInfo><Skeleton width={"30%"}/></S.PartnerInfo>
+				</S.CompanyInfo>
+			</S.Box>
+		)
+	}
 
 	const partnerStatus = () => {
 		const isSelected = some(getPartnerPick.data, {adminid: adminid});
@@ -201,7 +211,7 @@ const PartnerItem = ({ profile_img, level, title, pick_cnt, feedback_cnt, experi
 			)}
 			<S.CompanyInfo>
 				{/*<S.LevelTitle><em>{level}등급</em> {levelDescription}</S.LevelTitle>*/}
-				<S.LevelTitle><em>{`${level}등급 (${LevelText[level]})`}</em></S.LevelTitle>
+				{/*<S.LevelTitle><em>{`${level}등급 (${LevelText[level]})`}</em></S.LevelTitle>*/}
 				<S.PartnerWord>{title}</S.PartnerWord>
 				<S.PartnerInfo>
 					{level === 'NEW' ?

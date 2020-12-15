@@ -2,21 +2,21 @@ export type Level = 'S' | 'A' | 'B' | 'C' | 'NEW';
 export type Grade = 'verygood' | 'good' | 'normal' | 'bad' | 'verybad';
 
 export type IPartnerList = {
-    description: string;
-    experience: number;
-    has_next: boolean;
-    has_previous: boolean;
-    id: number;
-    status: 'selected' | 'available' | 'unavailable';
-    keywords: string[];
-    level: Level;
-    other_img: string;
-    pick_cnt: number;
-    profile_img: string;
-    feedback_cnt: number;
-    title: string;
-    username: string;
-    adminname: string;
+  description: string;
+  experience: number;
+  id: number;
+  status: 'selected' | 'available' | 'unavailable';
+  keywords: string[];
+  level: Level;
+  other_img: string
+  pick_cnt: number
+  profile_img: string;
+  feedback_cnt: number;
+  title: string;
+  username: string;
+  adminname: string;
+  addition?: string;
+  adminid?: string;
 }
 
 export type IPartnerDetail = {
