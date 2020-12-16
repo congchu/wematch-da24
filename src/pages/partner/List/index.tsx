@@ -171,16 +171,6 @@ const PartnerList = () => {
         }
     }, [dispatch])
 
-    useEffect(() => {
-        if (!getPartnerList.loading && getPartnerList.data) {
-            if(isEmpty(getPartnerList.data)) {
-                dataLayer({event: 'partner_inventory', CD5: "noservice_0"})
-            } else {
-                const availableLength = getPartnerList.data.filter(item => item.status !== 'unavailable').length
-                dataLayer({event: 'partner_inventory', CD5: availableLength > 0 ? `showcnt_${availableLength}` : "nopartner_0"})
-            }
-        }
-    }, [getPartnerList.data])
     if (getPartnerList.loading) {
         return <Loading text={'조건에 맞는 업체 찾는 중..'}/>
     }
