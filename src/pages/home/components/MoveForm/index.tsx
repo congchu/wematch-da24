@@ -494,8 +494,8 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     category: '다이사_메인_번호인증_1',
                     action: '인증하기',
                     label: '인증팝업',
-                    CD6: getIsMoveStore ? 'Y' : 'N',
-                    CD7: getMoveTypeText(),
+                    CD10: getIsMoveStore ? 'Y' : 'N',
+                    CD6: getMoveTypeText(),
                     CD12: submitType === "curation" ? '바로매칭' : "직접고르기"
                 })
             }} onDataLayerClose={() => {
@@ -504,8 +504,8 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     category: '다이사_메인_번호인증_1',
                     action: '닫기',
                     label: '인증팝업',
-                    CD6: getIsMoveStore ? 'Y' : 'N',
-                    CD7: getMoveTypeText(),
+                    CD10: getIsMoveStore ? 'Y' : 'N',
+                    CD6: getMoveTypeText(),
                     CD12: submitType === "curation" ? '바로매칭' : "직접고르기"
                 })
             }} />
