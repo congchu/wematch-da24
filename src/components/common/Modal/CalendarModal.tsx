@@ -20,31 +20,32 @@ const S = {
     Container: Styled.div`
         margin-top: 35px;
         padding: 0 24px 6px;
-        
+            
         @media (min-width: 1200px) {
             margin: 5px 0 10px 0;
             padding: 0;
         }
     `,
     Info: Styled.div`
-      margin-top: 30px;
       padding: 16px 16px 14px;
+      margin: 30px 10px 0;
       border: 1px solid #D7DBE2;
       border-radius: 6px;
       color: #333333;
+      
       .infoTitle{
         position: relative;
         padding-left: 13px;
         font-size: 14px;
         line-height: 21px;
-      .dot {
-        position: absolute;
-        top: 5px;
-        left: -1px;
-        width: 8px;
-        height: 8px;
-        border-radius: 4px;
-        background-color: #F79016;
+        .dot {
+          position: absolute;
+          top: 5px;
+          left: -1px;
+          width: 8px;
+          height: 8px;
+          border-radius: 4px;
+          background-color: #F79016;
       }
       em {
         display: inline-block;
@@ -85,7 +86,7 @@ const CalendarModal: React.FC<Props> = (props) => {
     // }
 
     return (
-        <ModalTemplate visible={visible} title={title} warning
+        <ModalTemplate visible={visible} title={title} warning panelHeight={620}
            onClose={onClose} onOverlayClose={onOverlayClose} onConfirm={onConfirm}>
             <S.Container>
                 <DatePicker currentDate={new Date()} rangeStartDate={rangeStartDate} rangeEndDate={rangeEndDate}
