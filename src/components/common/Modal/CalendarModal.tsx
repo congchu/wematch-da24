@@ -33,17 +33,13 @@ const S = {
       border-radius: 6px;
       color: #333333;
       
-      @media screen and (min-width:768px) {
-          .hide {
-            display: none;
-          }
-      }
-      
       .infoTitle{
         position: relative;
         padding-left: 13px;
         font-size: 14px;
         line-height: 21px;
+        word-break: break-word;
+        
         .dot {
           position: absolute;
           top: 5px;
@@ -98,7 +94,7 @@ const CalendarModal: React.FC<Props> = (props) => {
                 <DatePicker currentDate={new Date()} rangeStartDate={rangeStartDate} rangeEndDate={rangeEndDate}
                     onSelect={onSelect} selected={selected} disabledDate={disabledDate} />
                 <S.Info>
-                    <p className="infoTitle"><em>조회가능 날짜</em><br />내일부터 55일 이내 날짜에만 이사업체 <br className="hide" /> 조회가 가능해요!</p>
+                    <p className="infoTitle"><em>조회가능 날짜</em><br />내일부터 55일 이내 날짜에만 이사업체 조회가 가능해요!</p>
                 </S.Info>
             </S.Container>
         </ModalTemplate>
