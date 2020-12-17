@@ -56,6 +56,10 @@ const S = {
             color: ${colors.gray88};
             box-sizing: border-box;
             border: 1px solid ${colors.lineDefault};
+
+            &:focus {
+                border: solid 1px ${colors.pointBlue};
+            }
         `)};
         
         ${(({ theme }) => theme === 'primary' && css`
@@ -69,6 +73,7 @@ const S = {
             }
         `)};
             
+
         &:disabled {
             background-color: ${colors.grayBg};
         }
