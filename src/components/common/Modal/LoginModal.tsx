@@ -11,9 +11,12 @@ import Input from "../Input";
 import Button from '../Button';
 import { useDispatch, useSelector } from 'react-redux';
 import useTimer from 'hooks/useTimer';
+import useHashToggle from 'hooks/useHashToggle';
+import TermsModal from './TermsModal';
 
 interface Props {
     visible: boolean;
+    handleLogin: () => void;
     onClose: () => void;
 }
 
@@ -21,6 +24,7 @@ const LoginModal: React.FC<Props> = (props) => {
     const dispatch = useDispatch();
     const {
         visible = false,
+        handleLogin,
         onClose
     } = props;
     const getPhone = useSelector(formSelector.getPhone)
@@ -29,6 +33,7 @@ const LoginModal: React.FC<Props> = (props) => {
     const { counter, handleCounterStart, handleCounterStop } = useTimer(180);
     const [isFocus, setIsFocus] = useState(false)
     const [code, setCode] = useState<string>('')
+    const [visibleTerms, setVisibleTerms] = useHashToggle('#terms');
 
     const handleSubmit = () => {
         dispatch(commonActions.fetchVerifySendMessageAsync.request({
@@ -121,14 +126,15 @@ const LoginModal: React.FC<Props> = (props) => {
                 </div>
                 <FooterWrappe>
                     <p>
-                        이용약관 및 개인정보처리방침 동의, 견적상담을 위한 개인 정보 제3자 제공 및 마케팅 정보수신 동의 필요
+                        <a onClick={() => setVisibleTerms(true)}>이용약관 및 개인정보처리방침 동의</a>, 견적상담을 위한 개인 정보 제3자 제공 및 마케팅 정보수신 동의 필요
                     </p>
                     <Button theme="primary" disabled={!is_verified} style={{ borderRadius: '8px', fontSize: '18px' }}
-                        bold={true} onClick={onClose}>
+                        bold={true} onClick={handleLogin}>
                         동의하고 진행하기
                     </Button>
                 </FooterWrappe>
             </LoginModalWrapper>
+            <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
         </PopupTemplate>
     ),
         document.body
@@ -189,6 +195,14 @@ const FooterWrappe = styled.div`
     p {
         color: ${colors.gray66};
         padding-bottom: 16px;
+    }
+    
+    a {
+        color: ${colors.gray66};
+        text-decoration: underline;
+        margin-left: 5px;
+        line-height: 24px;
+        margin-bottom: -2px;
     }
 `
 
