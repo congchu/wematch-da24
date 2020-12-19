@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useCookies } from 'react-cookie'
 import { useRouter } from 'hooks/useRouter'
@@ -17,7 +17,7 @@ import OneroomNoticePopup from 'components/common/Popup/OneroomNoticePopup'
 import TermsModal from 'components/common/Modal/TermsModal'
 
 import ButtonGroup from 'components/common/ButtonGroup'
-import MoveInput  from 'pages/home/components/MoveInput'
+import MoveInput from 'pages/home/components/MoveInput'
 
 import * as commonSelector from 'store/common/selectors'
 import * as commonActions from 'store/common/actions'
@@ -32,6 +32,7 @@ import { calcRouteByDirectionService, calcRouteByGeoCoder } from 'lib/distanceUt
 import { dataLayer } from 'lib/dataLayerUtil'
 import { MOVE_URL, ONEROOM_URL } from 'constants/env'
 import useHashToggle from 'hooks/useHashToggle'
+import LoginModal from 'components/common/Modal/LoginModal'
 
 const Visual = {
     Section: styled.section`
@@ -87,8 +88,8 @@ const Description = {
           line-height: 26px;
         }
     `,
-    InfoType: styled.div<{selectMoveType: 'house' | 'oneroom' | 'office' | undefined}>`
-        display: ${props => props.selectMoveType === 'office' ? 'block' : 'none' };
+    InfoType: styled.div<{ selectMoveType: 'house' | 'oneroom' | 'office' | undefined }>`
+        display: ${props => props.selectMoveType === 'office' ? 'block' : 'none'};
         text-align: center;
         margin-bottom: 28px;
         p {
@@ -109,9 +110,9 @@ const Description = {
 }
 
 const Terms = {
-    Container: styled.div<{selectMoveType: boolean}>`
+    Container: styled.div<{ selectMoveType: boolean }>`
         position: relative;
-        display: ${props => props.selectMoveType ? 'flex' : 'none' };
+        display: ${props => props.selectMoveType ? 'flex' : 'none'};
         flex-direction: column;
         margin-bottom: 14px;
         label {
@@ -147,8 +148,8 @@ const Terms = {
             margin-bottom: -2px;
         }
     `,
-    SubmitContainer: styled.div<{selectMoveType: boolean}>`
-        display: ${props => props.selectMoveType ? 'flex' : 'none' };
+    SubmitContainer: styled.div<{ selectMoveType: boolean }>`
+        display: ${props => props.selectMoveType ? 'flex' : 'none'};
         flex-direction: column;
         
         .text {
@@ -182,8 +183,8 @@ const Terms = {
     `
 }
 
-const HouseTitle = styled.div<{selectMoveType: 'house' | 'oneroom' | 'office' | undefined}>`
-  display: ${props => props.selectMoveType === 'house' ? 'block' : 'none' };
+const HouseTitle = styled.div<{ selectMoveType: 'house' | 'oneroom' | 'office' | undefined }>`
+  display: ${props => props.selectMoveType === 'house' ? 'block' : 'none'};
   text-align: center;
   strong {
     font-style: normal;
@@ -217,11 +218,10 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
     const getPhoneVerified = useSelector(commonSelector.getPhoneVerified)
     const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
 
-    const [collapse, setCollapse] = useState<boolean>(false)
-    // const [visibleTerms, setVisibleTerms] = useState<boolean>(false)
     const [visibleTerms, setVisibleTerms] = useHashToggle('#terms')
     const [visibleVerifyPhone, setVisibleVerifyPhone] = useState(false)
     const [visibleOneroom, setVisibleOneroom] = useState(false)
+    const [visibleLogin, setVisibleLogin] = useState(false)
     const [isVerifySuccess, setIsVerifySuccess] = useState(false)
     const [distance, setDistance] = useState<string | null>(null)
     const [submitType, setSubmitType] = useState<'curation' | 'select' | null>(null)
@@ -258,21 +258,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
             alert('도착지 상세주소를 입력해 주세요.')
             return false;
         }
-        if (isEmpty(getName)) {
-            alert('이름을 입력해 주세요.')
-            return false;
-        }
-        const validatePhoneResult = phoneSplit(getPhone)
-        if (isEmpty(getPhone) || !validatePhoneResult.phone1 || !validatePhoneResult.phone2 || !validatePhoneResult.phone3) {
-            alert('휴대폰 번호를 정확히 입력해 주세요.')
-            return false;
-        }
-
-        if (!getAgree.terms || !getAgree.privacy) {
-            alert('이용약관 및 개인정보처리방침에 동의해 주세요.')
-            return false;
-        }
-
         return true
     }
 
@@ -284,12 +269,50 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
         }
     }, [getMoveType])
 
+    const handleLogin = () => {
+        //TODO: 로그인 로직 & 쿠키 추가.
+        if (submitType !== null) {
+            setVisibleLogin(false);
+            dispatch(formActions.setAgree({
+                terms: true,
+                privacy: true,
+                marketing: true
+            }))
+            handleSubmit(submitType);
+        }
+    }
+
+    const handleConsult = (submitType: 'curation' | 'select') => {
+        setSubmitType(submitType)
+        if (isLogin()) {
+            handleSubmit(submitType);
+        }
+    }
+
+    const isLogin = () => {
+
+        if (!validateHouseOrOfficeForm()) {
+            return false;
+        }
+
+        const validatePhoneResult = phoneSplit(getPhone)
+
+        if (isEmpty(getName) || isEmpty(getPhone) || !validatePhoneResult.phone1 ||
+            !validatePhoneResult.phone2 || !validatePhoneResult.phone3) {
+            setVisibleLogin(true)
+            return false;
+        }
+
+        return true;
+    }
+
+    //TODO: 회원가입 로직 변경에 따른 submit 시점 변경
     const handleSubmit = debounce((submitType: 'curation' | 'select') => {
         let result = false
+
         if (getMoveType === 'house' || getMoveType === 'office') {
             result = validateHouseOrOfficeForm()
         }
-
 
         if (result) {
             calcRouteByDirectionService({
@@ -306,7 +329,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     })
                 }
 
-                const formData:commonTypes.RequestUserInfoInsert = {
+                const formData: commonTypes.RequestUserInfoInsert = {
                     moving_type: translateMovingType(getMoveType),
                     moving_date: getMoveDate[0],
                     floor: `${getFloor.start}`,
@@ -319,10 +342,14 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     dong2: addressSplit(getAddress.end).dong,
                     floor2: `${getFloor.end}`,
                     detail_addr2: getAddress.detailEnd,
-                    name: getName,
-                    phone1: phoneSplit(getPhone).phone1,
-                    phone2: phoneSplit(getPhone).phone2,
-                    phone3: phoneSplit(getPhone).phone3,
+                    // name: getName,
+                    // phone1: phoneSplit(getPhone).phone1,
+                    // phone2: phoneSplit(getPhone).phone2,
+                    // phone3: phoneSplit(getPhone).phone3,
+                    name: '',
+                    phone1: '',
+                    phone2: '',
+                    phone3: '',
                     keep_move: getIsMoveStore,
                     mkt_agree: getAgree.marketing,
                     distance: Number(distance) || 1,
@@ -334,7 +361,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                 if (get(cookies, 'form') !== undefined) {
                     removeCookies('formData')
                 }
-                setCookies('formData', {...formData, ...getAgree}, {expires: new Date(dayjs().add(2, 'day').format())})
+                setCookies('formData', { ...formData, ...getAgree }, { expires: new Date(dayjs().add(2, 'day').format()) })
 
                 dataLayer({
                     event: 'request',
@@ -361,30 +388,25 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
 
     }, [])
 
-    useEffect(() => {
-        if (getPhoneVerified.data.is_verified && visibleVerifyPhone) {
-            setVisibleVerifyPhone(false)
-            if (submitType === 'curation') {
-                dispatch(commonActions.fetchMoveIdx.request({...getFormData, legacy: true}))
-            }
-            if (submitType === 'select') {
-                dispatch(commonActions.fetchMoveIdx.request(getFormData))
-            }
-        }
+    //TODO: 폼데이터 디스패치 시점 휴대폰 인증 이후 -> 로그인 이후로 변경 예정 
+    // useEffect(() => {
+    //     if (getPhoneVerified.data.is_verified && visibleVerifyPhone) {
+    //         setVisibleVerifyPhone(false)
+    //         if (submitType === 'curation') {
+    //             dispatch(commonActions.fetchMoveIdx.request({ ...getFormData, legacy: true }))
+    //         }
+    //         if (submitType === 'select') {
+    //             dispatch(commonActions.fetchMoveIdx.request(getFormData))
+    //         }
+    //     }
 
-    }, [getPhoneVerified.data])
-
-    useEffect(() => {
-        if (getFormData && submitType) {
-            setVisibleVerifyPhone(true)
-        }
-    }, [getFormData])
+    // }, [getPhoneVerified.data])
 
     useEffect(() => {
-        if(getMoveIdxData.idx && submitType === 'curation' && !getMoveIdxData.loading) {
+        if (getMoveIdxData.idx && submitType === 'curation' && !getMoveIdxData.loading) {
             document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
         }
-        if(getMoveIdxData.idx && submitType === 'select' && !getMoveIdxData.loading) {
+        if (getMoveIdxData.idx && submitType === 'select' && !getMoveIdxData.loading) {
             router.history.push(`/partner/list`)
         }
     }, [getMoveIdxData])
@@ -401,7 +423,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     return
                 }
                 dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
-            }}/>
+            }} />
             <Visual.ButtonGroupContainer>
                 {getMoveType === undefined && (
                     <Description.Container>
@@ -415,54 +437,17 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                         </Description.Box>
                     </Description.Container>
                 )}
-                    <HouseTitle selectMoveType={getMoveType}>
-                        <strong>거주자 2명이상, 투룸 이상의 짐량</strong>
-                    </HouseTitle>
-                    <Description.InfoType style={{ marginBottom: 0 }} selectMoveType={getMoveType}>
-                        <p>빌딩, 공장, 상가 등 짐량 1톤 트럭 초과</p>
-                    </Description.InfoType>
+                <HouseTitle selectMoveType={getMoveType}>
+                    <strong>거주자 2명이상, 투룸 이상의 짐량</strong>
+                </HouseTitle>
+                <Description.InfoType style={{ marginBottom: 0 }} selectMoveType={getMoveType}>
+                    <p>빌딩, 공장, 상가 등 짐량 1톤 트럭 초과</p>
+                </Description.InfoType>
                 <MoveInput type={getMoveType} style={{ marginTop: 30 }} />
             </Visual.ButtonGroupContainer>
             <>
                 <Terms.Container selectMoveType={getMoveType !== undefined}>
-                    <Checkbox label="보관이사 필요" checked={getIsMoveStore} onChange={() => dispatch(formActions.setIsMoveStore(!getIsMoveStore))}/>
-                    <Terms.CheckWrapper>
-                        <Checkbox label="전체동의 필요" checked={getAgree.terms && getAgree.privacy && getAgree.marketing} onChange={() => {
-                            if (getAgree.terms && getAgree.privacy && getAgree.marketing) {
-                                dispatch(formActions.setAgree({
-                                    terms: false,
-                                    privacy: false,
-                                    marketing: false
-                                }))
-                            } else {
-                                dispatch(formActions.setAgree({
-                                    terms: true,
-                                    privacy: true,
-                                    marketing: true
-                                }))
-                            }
-                        }} />
-                        <Terms.View onClick={() => setCollapse(!collapse)}>
-                            {collapse ? <Icon.Up size={15} color={colors.gray33} /> : <Icon.Down size={15} color={colors.gray33} />}
-                        </Terms.View>
-                    </Terms.CheckWrapper>
-                    <Terms.Collapse isShow={collapse}>
-                        <Terms.NewLink>
-                            <Checkbox label="이용약관 및 개인정보처리방침 동의" checked={getAgree.terms} onChange={() => dispatch(formActions.setAgree({
-                                ...getAgree,
-                                terms: !getAgree.terms
-                            }))}/>
-                            <a onClick={() => setVisibleTerms(true)}>보기</a>
-                        </Terms.NewLink>
-                        <Checkbox label="견적요청을 위해 이사업체에 개인정보제3자 제공동의" checked={getAgree.privacy} onChange={() => dispatch(formActions.setAgree({
-                            ...getAgree,
-                            privacy: !getAgree.privacy
-                        }))}/>
-                        <Checkbox label="마케팅 정보수신 동의(선택)" checked={getAgree.marketing} onChange={() => dispatch(formActions.setAgree({
-                            ...getAgree,
-                            marketing: !getAgree.marketing
-                        }))}/>
-                    </Terms.Collapse>
+                    <Checkbox label="보관이사 필요" checked={getIsMoveStore} onChange={() => dispatch(formActions.setIsMoveStore(!getIsMoveStore))} />
                 </Terms.Container>
                 <Terms.SubmitContainer selectMoveType={getMoveType !== undefined}>
                     <div className="text">
@@ -473,14 +458,12 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     </div>
                     <div id="dsl_move_button_requests_1">
                         <Button theme="primary" bold border onClick={() => {
-                            handleSubmit('curation')
-                            setSubmitType('curation')
+                            handleConsult('curation')
                         }}>견적 신청하기</Button>
                         {getMoveType !== 'oneroom' && (
-                          <Button theme="default" onClick={() => {
-                              handleSubmit('select')
-                              setSubmitType('select')
-                          }}>업체 직접고르기</Button>
+                            <Button theme="default" onClick={() => {
+                                handleConsult('select')
+                            }}>업체 직접고르기</Button>
                         )}
                     </div>
                 </Terms.SubmitContainer>
@@ -512,6 +495,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
             <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
             <OneroomNoticePopup visible={visibleOneroom} footerButton border onClose={() => setVisibleOneroom(!visibleOneroom)} />
+            <LoginModal visible={visibleLogin} onClose={() => setVisibleLogin(!visibleLogin)} handleLogin={handleLogin} />
         </Visual.Section>
     )
 }
