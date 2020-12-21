@@ -6,6 +6,7 @@ import { useMedia } from 'react-use-media'
 import * as colors from 'styles/colors'
 import { useSelector } from 'react-redux'
 import * as formSelector from 'store/form/selectors'
+import { onMessageHandler } from 'lib/MessageUtil'
 
 type StyleProps = Pick<Props, 'direction'>
 
@@ -143,6 +144,10 @@ const ButtonGroup: React.FC<Props> = (props) => {
                         if (onClick) {
                             onClick(group.type)
                         }
+                        // 상단 status 폰트 색상을 강제로 바꾼다. (App에서 버그가 해결되면 삭제해도 된다.)
+                        onMessageHandler({
+                            action: 'setBarStyle'
+                        })
                     }}
                 >
                     {group.value}
