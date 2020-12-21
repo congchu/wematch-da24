@@ -53,19 +53,15 @@ const LoginModal: React.FC<Props> = (props) => {
             phone: getPhone,
             code
         }))
-
-        // if (onDataLayerAuth) {
-        //     onDataLayerAuth()
-        // }
     }
 
     const displayCount = (count: number) => `${Math.floor(count / 60)}:${count % 60 < 10 ? `0${count % 60}` : count % 60}`
 
     useEffect(() => {
-        if (isSendMessage) {
+        if (isSendMessage && !loading) {
             handleCounterStart()
         }
-    }, [isSendMessage, handleCounterStart])
+    }, [isSendMessage, loading, handleCounterStart])
 
     useEffect(() => {
         if (is_verified) {
