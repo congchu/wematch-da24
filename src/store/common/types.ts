@@ -31,6 +31,14 @@ export interface ResponseVerifyCodeProps {
     "is_verified": boolean | undefined;
 }
 
+export interface RequestSignInProps {
+
+}
+
+export interface ResponseSignInProps {
+    
+}
+
 export interface RequestUserInfoInsert {
     moving_type: '가정' | '원룸' | '사무실' | undefined
     moving_date: string;

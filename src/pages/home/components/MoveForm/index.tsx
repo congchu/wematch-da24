@@ -217,6 +217,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
 
     const getPhoneVerified = useSelector(commonSelector.getPhoneVerified)
     const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
+    const getLoginState = useSelector(commonSelector.getLoginState);
 
     const [visibleTerms, setVisibleTerms] = useHashToggle('#terms')
     const [visibleVerifyPhone, setVisibleVerifyPhone] = useState(false)
@@ -297,8 +298,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
 
         const validatePhoneResult = phoneSplit(getPhone)
 
-        if (isEmpty(getName) || isEmpty(getPhone) || !validatePhoneResult.phone1 ||
-            !validatePhoneResult.phone2 || !validatePhoneResult.phone3) {
+        if (!getLoginState.loginState) {
             setVisibleLogin(true)
             return false;
         }

@@ -38,3 +38,9 @@ export const verifyAuthCode = async (phone: string, code: string) => {
 export const getMoveIdx = async (formData: types.RequestUserInfoInsert) => {
     return await axios.post(`${API_MIDDLEWARE_URL}/inquiry`, formData)
 }
+
+
+//TODO: 로그인 api 나올 시 로직추가.
+export const postSignIn = async (formData: types.RequestSignInProps) => {
+    return true
+}

@@ -41,11 +41,21 @@ export function* fetchMoveIdxSaga(action: ActionType<typeof actions.fetchMoveIdx
     }
 }
 
+export function* fetchSignInSaga(action: ActionType<typeof actions.fetchSignInAsync.request>) {
+    try {
+        const data = yield call(requests.postSignIn, action.payload)
+        yield put(actions.fetchSignInAsync.success(data))
+    } catch(e) {
+        yield put(actions.fetchSignInAsync.failure())
+    }
+}
+
 export default function* () {
     yield all([
         takeEvery(actions.fetchAddressListAsync.request, fetchAddressListSaga),
         takeEvery(actions.fetchVerifySendMessageAsync.request, fetchVerifySendMessageSaga),
         takeEvery(actions.fetchVerifyCodeAsync.request, fetchVerifyCodeSaga),
-        takeEvery(actions.fetchMoveIdx.request, fetchMoveIdxSaga)
+        takeEvery(actions.fetchMoveIdx.request, fetchMoveIdxSaga),
+        takeEvery(actions.fetchSignInAsync.request, fetchSignInSaga)
     ])
 }
