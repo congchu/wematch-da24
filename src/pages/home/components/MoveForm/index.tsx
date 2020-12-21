@@ -368,8 +368,8 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     category: '다이사_메인_신청_1',
                     label: '매칭신청',
                     action: submitType === 'curation' ? '업체_바로매칭' : '업체_직접고르기',
-                    CD5: getIsMoveStore ? 'Y' : 'N',
-                    CD6: getMoveTypeText()
+                    CD6: getMoveTypeText(),
+                    CD10: getIsMoveStore ? 'Y' : 'N'
                 })
             })
 
@@ -477,8 +477,8 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     category: '다이사_메인_번호인증_1',
                     action: '인증하기',
                     label: '인증팝업',
-                    CD6: getIsMoveStore ? 'Y' : 'N',
-                    CD7: getMoveTypeText(),
+                    CD6: getMoveTypeText(),
+                    CD10: getIsMoveStore ? 'Y' : 'N',
                     CD12: submitType === "curation" ? '바로매칭' : "직접고르기"
                 })
             }} onDataLayerClose={() => {
@@ -487,8 +487,8 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     category: '다이사_메인_번호인증_1',
                     action: '닫기',
                     label: '인증팝업',
-                    CD6: getIsMoveStore ? 'Y' : 'N',
-                    CD7: getMoveTypeText(),
+                    CD6: getMoveTypeText(),
+                    CD10: getIsMoveStore ? 'Y' : 'N',
                     CD12: submitType === "curation" ? '바로매칭' : "직접고르기"
                 })
             }} />

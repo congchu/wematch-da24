@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import styled, {css} from 'styled-components'
+import styled, { css } from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
-import {isEmpty} from 'lodash'
+import { isEmpty } from 'lodash'
 
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import MainHeader from 'components/MainHeader'
@@ -23,8 +23,8 @@ import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
 import * as formSelector from "store/form/selectors";
 import * as commonSelector from "store/common/selectors";
-import {dataLayer} from "lib/dataLayerUtil";
-import {IPartnerList} from "types/partner";
+import { dataLayer } from "lib/dataLayerUtil";
+import { IPartnerList } from "types/partner";
 const S = {
     Container: styled.div`
         height:100%;
@@ -38,7 +38,7 @@ const S = {
             width:720px;
         }
     `,
-    PartnerItemContainer: styled.div<{hasMore: boolean}>`
+    PartnerItemContainer: styled.div<{ hasMore: boolean }>`
       a {
         ${props => !props.hasMore && css`
            &:nth-last-child(1) {
@@ -48,7 +48,7 @@ const S = {
         @media screen and (min-width:380px) {
         }
 `,
-	BtnKakao: styled.a`
+    BtnKakao: styled.a`
 		display:inline-block;
 		position:fixed;
     bottom:24px;
@@ -107,7 +107,7 @@ const S = {
     `
 }
 
-{/* 임시용 디자인 없음*/}
+{/* 임시용 디자인 없음*/ }
 function MoreLoading() {
     return (
         <S.More>
@@ -154,16 +154,16 @@ const PartnerList = () => {
     }
 
     useEffect(() => {
-        if(getFormData.moving_date.length === 0) {
+        if (getFormData.moving_date.length === 0) {
             setVisible(true)
         }
-        if(!getMoveIdxData.idx) {
+        if (!getMoveIdxData.idx) {
             setVisible(true)
         }
     }, [])
 
     useEffect(() => {
-        if(getMoveIdxData.idx && !getMoveIdxData.loading) {
+        if (getMoveIdxData.idx && !getMoveIdxData.loading) {
             dispatch(partnerActions.fetchPartnerListAsync.request({
                 page: values.DEFAULT_PAGE,
                 size: values.DEFAULT_PARTNER_LIST_SIZE,
@@ -172,61 +172,52 @@ const PartnerList = () => {
         }
     }, [dispatch])
 
-    useEffect(() => {
-        if(isEmpty(getPartnerList.data)) {
-            dataLayer({event: 'partner_inventory', CD5: "noservice_0"})
-        } else {
-            const availableLength = getPartnerList.data.filter(item => item.status !== 'unavailable').length
-            dataLayer({event: 'partner_inventory', CD5: availableLength > 0 ? `showcnt_${availableLength}` : "nopartner_0"})
-        }
-    }, [getPartnerList.loading])
-
     const renderList = () => {
         if (getPartnerList.loading) {
-            let arr = new Array(10).fill(undefined).map((val,idx) => idx);
+            let arr = new Array(10).fill(undefined).map((val, idx) => idx);
             return (
-              <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
-                  {arr.map((index:number) => {
-                      return (
-                        <PartnerItem key={index}/>
-                      )
-                  })}
-              </S.PartnerItemContainer>
+                <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
+                    {arr.map((index: number) => {
+                        return (
+                            <PartnerItem key={index} />
+                        )
+                    })}
+                </S.PartnerItemContainer>
             )
         }
 
         if (isEmpty(getPartnerList.data)) {
-            return <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다."/>
+            return <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다." />
         }
 
         return (
-          <>
-              <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
-                  {getPartnerList.data.map((list:IPartnerList, index: number) => {
-                      return (
-                        <PartnerItem list={list} onClick={() => {
-                            history.push(`/partner/detail/${list.adminid}`)
-                            dataLayer({event: 'partner_select', label: `${getPartnerList.data.length}_${index+1}`, CD7: `${list.level}등급`, CD8: `${list.title}`})
-                        }}
-                        />
-                      )
-                  })}
-              </S.PartnerItemContainer>
-              <S.ChatText onClick={handleLinkKakao} id="dsl_booking_list_katalk2">
-                  {getPartnerList.data[0].status === 'unavailable' ? "가능업체를 찾아드릴까요?":"도움이 필요하세요?"}
-                  <ChatArrow width={20} height={12} />
-              </S.ChatText>
-              <S.BtnKakao onClick={handleLinkKakao} id="dsl_booking_list_katalk">
-                  <KakaoIcon width={35} height={34} />
-              </S.BtnKakao>
-          </>
+            <>
+                <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
+                    {getPartnerList.data.map((list: IPartnerList, index: number) => {
+                        return (
+                            <PartnerItem list={list} onClick={() => {
+                                history.push(`/partner/detail/${list.adminid}`)
+                                dataLayer({ event: 'partner_select', label: `${getPartnerList.data.length}_${index + 1}`, CD7: `${list.level}등급`, CD8: `${list.title}` })
+                            }}
+                            />
+                        )
+                    })}
+                </S.PartnerItemContainer>
+                <S.ChatText onClick={handleLinkKakao} id="dsl_booking_list_katalk2">
+                    {getPartnerList.data[0].status === 'unavailable' ? "가능업체를 찾아드릴까요?" : "도움이 필요하세요?"}
+                    <ChatArrow width={20} height={12} />
+                </S.ChatText>
+                <S.BtnKakao onClick={handleLinkKakao} id="dsl_booking_list_katalk">
+                    <KakaoIcon width={35} height={34} />
+                </S.BtnKakao>
+            </>
         )
     }
 
     return (
         <S.Container>
-            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true}/>}
-            <SetType count={getPartnerPick.data.length} formData={getFormData}/>
+            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true} />}
+            <SetType count={getPartnerPick.data.length} formData={getFormData} />
             <>
                 <S.WrapItem id="dsl_booking_list_partner">
                     {renderList()}

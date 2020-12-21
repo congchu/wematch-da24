@@ -310,7 +310,7 @@ const PartnerCart = () => {
             recommendedList.map((list:any) => {list.adminid === id && result++})
             return result
         })
-        dataLayer({event: 'request_cta',CD10: `선택업체_${selectList.length}-${selectPartners.length},추천업체_${recommendedList.length}-${recommendPartners.length}`})
+        dataLayer({event: 'request_cta',CD9: `선택업체_${selectList.length}-${selectPartners.length},추천업체_${recommendedList.length}-${recommendPartners.length}`})
         setOrderConfirmVisible(true)
     }
 
