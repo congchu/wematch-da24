@@ -24,8 +24,8 @@ interface Props {
   CD20?: string;
 }
 
-export const dataLayer = ({ event, category, action, label, CD5, CD6, CD7, CD8, CD9, CD12}: Props) => {
-  const removeEmpty = omitBy({ event, category, action, label, CD5, CD6, CD7, CD8, CD9, CD12 }, isEmpty)
+export const dataLayer = ({ event, category, action, label, CD5, CD6, CD7, CD8, CD9, CD10, CD12}: Props) => {
+  const removeEmpty = omitBy({ event, category, action, label, CD5, CD6, CD7, CD8, CD9, CD10, CD12 }, isEmpty)
 
   TagManager.dataLayer({
     dataLayer: {

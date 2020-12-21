@@ -197,7 +197,7 @@ const Card:React.FC<Props> = (props: Props) => {
                 </S.Content>
             </S.CardContainer>
             <DetailPopup visible={partnerDetailVisible} onClose={() => {
-                dataLayer({event: 'partner_preview', category: '부킹_요약팝업', action: getDataLayerAction(), label: type === 'selected' ? '선택업체' : '이런 업체는 어떠세요?'})
+                dataLayer({event: 'partner_preview', category: '부킹_요약팝업', action: getDataLayerAction(), label: type === 'selected' ? '선택업체' : '이런_업체는_어떠세요?'})
                 setPartnerDetailVisible(!partnerDetailVisible)
             }} partnerData={list}/>
         </>
