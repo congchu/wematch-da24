@@ -64,7 +64,11 @@ const S = {
         padding: 1rem 0;
         cursor: pointer;
         border-right: 1px solid #1672f7;
-        
+
+        svg {
+          position: absolute;
+        }
+ 
         &:last-child {
             border-right: 0px;
         }
