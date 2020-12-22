@@ -9,7 +9,6 @@ import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import MainHeader from 'components/MainHeader'
 import TopGnb from 'components/TopGnb'
 import EmptyPage from 'components/EmptyPage'
-import Loading from 'components/Loading'
 import { KakaoIcon, ChatArrow } from 'components/Icon'
 import ToastPopup from "components/wematch-ui/ToastPopup";
 
@@ -25,6 +24,7 @@ import * as formSelector from "store/form/selectors";
 import * as commonSelector from "store/common/selectors";
 import { dataLayer } from "lib/dataLayerUtil";
 import { IPartnerList } from "types/partner";
+
 const S = {
     Container: styled.div`
         height:100%;
@@ -154,7 +154,7 @@ const PartnerList = () => {
     }
 
     useEffect(() => {
-        if (getFormData.moving_date.length === 0) {
+        if(getFormData.moving_date.length === 0) {
             setVisible(true)
         }
         if (!getMoveIdxData.idx) {
@@ -163,7 +163,7 @@ const PartnerList = () => {
     }, [])
 
     useEffect(() => {
-        if (getMoveIdxData.idx && !getMoveIdxData.loading) {
+        if(getMoveIdxData.idx && !getMoveIdxData.loading) {
             dispatch(partnerActions.fetchPartnerListAsync.request({
                 page: values.DEFAULT_PAGE,
                 size: values.DEFAULT_PARTNER_LIST_SIZE,
@@ -174,7 +174,7 @@ const PartnerList = () => {
 
     const renderList = () => {
         if (getPartnerList.loading) {
-            let arr = new Array(10).fill(undefined).map((val, idx) => idx);
+            let arr = new Array(10).fill(undefined).map((val,idx) => idx);
             return (
                 <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
                     {arr.map((index: number) => {
@@ -211,6 +211,17 @@ const PartnerList = () => {
                     <KakaoIcon width={35} height={34} />
                 </S.BtnKakao>
             </>
+        )
+
+        let arr = new Array(10).fill(undefined).map((val,idx) => idx);
+        return (
+          <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
+              {arr.map((index:number) => {
+                  return (
+                    <PartnerItem key={index}/>
+                  )
+              })}
+          </S.PartnerItemContainer>
         )
     }
 
