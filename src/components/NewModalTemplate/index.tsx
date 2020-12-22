@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 import * as colors from 'styles/colors'
@@ -10,7 +10,7 @@ const ToastOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: 210;
 `;
 
 const ToastPopupWrapper = styled.div`
@@ -62,7 +62,7 @@ const SubText = styled.p`
   line-height: 24px;
 `;
 
-const Button = styled.button<{buttonType?: 'confirm' | 'cancel'}>`
+const Button = styled.button<{ buttonType?: 'confirm' | 'cancel' }>`
   height: 52px;
   background-color: ${props => props.buttonType === 'confirm' ? colors.pointBlue : colors.white};
   border: 1px solid ${props => props.buttonType === 'confirm' ? colors.pointBlue : colors.lineDefault};
@@ -97,7 +97,7 @@ const CancelButton = styled.button`
   margin-bottom: 6px;
 `;
 
-const Footer = styled.article<{modalType: 'confirm' | 'alert'}>`
+const Footer = styled.article<{ modalType: 'confirm' | 'alert' }>`
   display: flex;
   width: 100%;
   
@@ -114,7 +114,7 @@ interface Props {
   cancelText?: string;
   cancelClick?: () => void;
 }
-const NewModal:React.FC<Props> = (props) => {
+const NewModal: React.FC<Props> = (props) => {
   const { visible, children, title, content, confirmText, cancelText, confirmClick, cancelClick } = props
 
   useEffect(() => {
@@ -137,15 +137,22 @@ const NewModal:React.FC<Props> = (props) => {
             <SubText>{content}</SubText>
             <Footer modalType={'confirm'}>
               {cancelText && (
-                <Button buttonType={"cancel"}>아니오</Button>
+                <Button buttonType={"cancel"}
+                  onClick={() => {
+                    if (cancelClick) {
+                      cancelClick()
+                    }
+                  }}
+                >아니오</Button>
               )}
               {confirmText && (
                 <Button
                   buttonType={'confirm'}
                   onClick={() => {
-                    if(confirmClick) {
+                    if (confirmClick) {
                       confirmClick()
-                    }}
+                    }
+                  }
                   }>
                   {confirmText}</Button>
               )}

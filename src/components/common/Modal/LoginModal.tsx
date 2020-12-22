@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useTimer from 'hooks/useTimer';
 import useHashToggle from 'hooks/useHashToggle';
 import TermsModal from './TermsModal';
+import NewModal from 'components/NewModalTemplate';
 
 interface Props {
     visible: boolean;
@@ -34,8 +35,12 @@ const LoginModal: React.FC<Props> = (props) => {
     const [isFocus, setIsFocus] = useState(false)
     const [code, setCode] = useState<string>('')
     const [visibleTerms, setVisibleTerms] = useHashToggle('#terms');
+    const [visibleTimeout, setVisibleTimeout] = useHashToggle('#timeout');
+    const [visibleCancel, setVisibleCancel] = useHashToggle('#verifyCancel');
+    const [isTimeout, setIsTimeout] = useState(false);
 
     const handleSubmit = () => {
+        setIsTimeout(false);
         dispatch(commonActions.fetchVerifySendMessageAsync.request({
             phone: getPhone
         }))
@@ -57,6 +62,19 @@ const LoginModal: React.FC<Props> = (props) => {
 
     const displayCount = (count: number) => `${Math.floor(count / 60)}:${count % 60 < 10 ? `0${count % 60}` : count % 60}`
 
+    const handleModalClose = () => {
+        if (visibleCancel) {
+            setVisibleCancel(!visibleCancel)
+            onClose()
+        }
+    }
+
+    useEffect(() => {
+        if (counter === 0) {
+            setVisibleTimeout(true)
+        }
+    }, [counter])
+
     useEffect(() => {
         if (isSendMessage && !loading) {
             handleCounterStart()
@@ -71,7 +89,7 @@ const LoginModal: React.FC<Props> = (props) => {
 
 
     return createPortal((
-        <PopupTemplate visible={visible} onClose={onClose} pcHeight={640}>
+        <PopupTemplate visible={visible} onClose={() => setVisibleCancel(true)} pcHeight={640}>
             <LoginModalWrapper isScroll={isFocus}>
                 <div>
                     <TextWrppaer>
@@ -109,7 +127,7 @@ const LoginModal: React.FC<Props> = (props) => {
                                     <span>{isSendMessage && displayCount(counter)}</span>
                                 </CounterWrapper>
                             </div>
-                            <Button theme="primary" disabled={!isSendMessage || is_verified} onClick={handleVerify} bold={true}
+                            <Button theme="primary" disabled={!isSendMessage || is_verified || isTimeout} onClick={handleVerify} bold={true}
                                 style={{ width: "90px", marginLeft: '7px', borderRadius: '4px' }} >
                                 확인
                             </Button>
@@ -130,6 +148,10 @@ const LoginModal: React.FC<Props> = (props) => {
                     </Button>
                 </FooterWrappe>
             </LoginModalWrapper>
+            {/*인증번호 초과 모달*/}
+            <NewModal visible={visibleTimeout} title={"인증번호 입력시간 초과"} content={"인증번호 입력가능시간이 초과 되었습니다. 인증번호를 다시 받아주세요!"} confirmText={"확인"} confirmClick={() => { setVisibleTimeout(!visibleTimeout); setIsTimeout(true) }} />
+            {/*로그인/가입 취소 모달*/}
+            <NewModal visible={visibleCancel} title={"번호인증 취소"} content={"번호인증을 취소하시면 견적상담신청 및 내신청내역을 확인할 수 없습니다. 취소하시겠어요?"} confirmText={"인증 진행하기"} cancelText={"취소"} cancelClick={() => handleModalClose()} confirmClick={() => setVisibleCancel(!visibleCancel)} />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
         </PopupTemplate>
     ),
