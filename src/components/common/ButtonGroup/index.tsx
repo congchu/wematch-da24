@@ -56,19 +56,21 @@ const S = {
     Button: Styled.button<buttonProps>`
         flex: 1;
         height: 100%;
-        font-size: 16px;
-        font-weight: bold;
-        color: ${props => props.active ? colors.white : colors.pointBlue};
-        background-color: ${props => props.active ? colors.pointBlue: 'transparent'};
+        background-color: ${props => props.active ? colors.pointBlue : 'transparent'};
         user-select: none;
         padding: 1rem 0;
         cursor: pointer;
         border-right: 1px solid #1672f7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-        svg {
-          position: absolute;
+        span {
+            font-size: 16px;
+            font-weight: bold;
+            color: ${props => props.active ? colors.white : colors.pointBlue};
         }
- 
+
         &:last-child {
             border-right: 0px;
         }
@@ -154,8 +156,8 @@ const ButtonGroup: React.FC<Props> = (props) => {
                         })
                     }}
                 >
-                    {group.value}
-                    <Next size={16} color={group.type === getMoveType ? colors.white : colors.pointBlue} />
+                    <div style={{ height: '24px', lineHeight: '24px' }}><span>{group.value}</span></div>
+                    <div><Next size={14} color={group.type === getMoveType ? colors.white : colors.pointBlue} /></div>
                 </S.Button>
             )}
         </S.Container>
