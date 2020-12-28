@@ -1,7 +1,7 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react'
-import {useHistory} from 'react-router-dom'
-import {useDispatch, useSelector} from "react-redux";
-import {useMedia} from "react-use-media";
+import React, { useEffect, useLayoutEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import { useMedia } from "react-use-media";
 import styled from 'styled-components'
 import { isEmpty } from 'lodash';
 
@@ -15,8 +15,8 @@ import GuidePopup from "./component/GuidePopup";
 import ToastPopup from "components/wematch-ui/ToastPopup";
 
 
-import {useRouter} from "hooks/useRouter";
-import {dataLayer} from "lib/dataLayerUtil";
+import { useRouter } from "hooks/useRouter";
+import { dataLayer } from "lib/dataLayerUtil";
 
 import * as colors from 'styles/colors'
 import * as partnerSelector from "store/partner/selectors";
@@ -26,21 +26,21 @@ import * as constants from 'constants/env'
 import CheckAlertPopup from "./component/CheckAlertPopup";
 
 interface IList {
-    id: number;
-    title: string;
-    description: string;
-    isChecked?: boolean;
-    adminid: string;
-    adminname: string;
-    keyword?: string[];
-    profile_img: string;
+  id: number;
+  title: string;
+  description: string;
+  isChecked?: boolean;
+  adminid: string;
+  adminname: string;
+  keyword?: string[];
+  profile_img: string;
 }
 
 const S = {
-    CartWrapper: styled.div`
+  CartWrapper: styled.div`
       height: 100%;
     `,
-    CartContainer: styled.div<{isEmpty: boolean}>`
+  CartContainer: styled.div<{ isEmpty: boolean }>`
       display: flex;
       flex-direction: ${props => !props.isEmpty && 'column'};
       background-color: #f7f8fa;
@@ -55,12 +55,12 @@ const S = {
         min-height: calc(100% - 134px);
       }
     `,
-    TitleWrapper: styled.div`
+  TitleWrapper: styled.div`
       background-color: white;
       border-bottom: 1px solid ${colors.lineDefault};
       border-top: 1px solid ${colors.lineDefault};
     `,
-    Title: styled.div`
+  Title: styled.div`
       display: inline-block;
       font-size: 16px;
       letter-spacing: -1px;
@@ -86,7 +86,7 @@ const S = {
         padding-left: 102px;
       };
     `,
-    Wrapper: styled.div<{marginBottom?: number | null}>`
+  Wrapper: styled.div<{ marginBottom?: number | null }>`
       display: inline-block;
       width: 100%;
 
@@ -100,13 +100,13 @@ const S = {
         margin: 0 auto;
       } 
     `,
-    CardWrapper: styled.div`
+  CardWrapper: styled.div`
       display: flex;
       flex-direction: column;
       justify-content: center;
       padding: 24px;
     `,
-    HorizontalLine: styled.div`
+  HorizontalLine: styled.div`
       width: 100%;
       height: 8px;
       background-color: #ebeef2;
@@ -117,7 +117,7 @@ const S = {
         margin: 0 auto;
       };
     `,
-    PartnerMoreBtn: styled.button`
+  PartnerMoreBtn: styled.button`
       text-align: right;
       font-size: 14px;
       color: ${colors.gray66};
@@ -127,12 +127,12 @@ const S = {
       
       cursor: pointer;
     `,
-    CurationTitle: styled.div`
+  CurationTitle: styled.div`
       font-size: 16px;
       letter-spacing: -1px;
       text-align: left;
     `,
-    CurationSubTitle: styled.div`
+  CurationSubTitle: styled.div`
       font-size: 12px;
       color: ${colors.gray88};
       line-height: 1.67;
@@ -140,7 +140,7 @@ const S = {
       margin-bottom: 15px;
       text-align: left;
     `,
-    OrderBtnWrapper: styled.div`
+  OrderBtnWrapper: styled.div`
       width: 100%;
       position: fixed;
       bottom: 0;
@@ -153,13 +153,13 @@ const S = {
         position: relative;
       };
     `,
-    OrderBtn: styled.div<{disabled: boolean}>`
+  OrderBtn: styled.div<{ disabled: boolean }>`
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
       height: 64px;
-      background-color: ${props => props.disabled ? '#D7DBE2': '#1672f7'};
+      background-color: ${props => props.disabled ? '#D7DBE2' : '#1672f7'};
       pointer-events: ${props => props.disabled && 'none'};
       &:hover {
         cursor: pointer;
@@ -187,7 +187,7 @@ const S = {
         margin: 0 auto;
       }
     `,
-    GuideBtn: styled.div`
+  GuideBtn: styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -213,193 +213,198 @@ const S = {
 };
 
 const PartnerCart = () => {
-    const [alertVisible, setAlertVisible] = useState(false)
-    const [guideVisible, setGuideVisible] = useState(false)
-    const [sessionVisible, setSessionVisible] = useState(false)
-    const [orderConfirmVisible, setOrderConfirmVisible] = useState(false)
-    const [checkedList, setCheckedList]:any = useState([])
-    const [selectList, setSelectList]:any = useState([])
-    const [recommendedList, setRecommendedList]:any = useState([])
+  const [alertVisible, setAlertVisible] = useState(false)
+  const [guideVisible, setGuideVisible] = useState(false)
+  const [sessionVisible, setSessionVisible] = useState(false)
+  const [orderConfirmVisible, setOrderConfirmVisible] = useState(false)
+  const [checkedList, setCheckedList]: any = useState([])
+  const [selectList, setSelectList]: any = useState([])
+  const [recommendedList, setRecommendedList]: any = useState([])
 
-    const recommendCart = React.useRef<HTMLDivElement>(null)
+  const recommendCart = React.useRef<HTMLDivElement>(null)
 
-    const router = useRouter()
-    const history = useHistory()
-    const dispatch = useDispatch()
+  const router = useRouter()
+  const history = useHistory()
+  const dispatch = useDispatch()
 
-    const getCartPartnerList = useSelector(partnerSelector.getCartPartnerList)
-    const getPartnerPickList = useSelector(partnerSelector.getPartnerPick)
-    const getMatchingData = useSelector(partnerSelector.getMatchingData)
-    const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
+  const getCartPartnerList = useSelector(partnerSelector.getCartPartnerList)
+  const getPartnerPickList = useSelector(partnerSelector.getPartnerPick)
+  const getMatchingData = useSelector(partnerSelector.getMatchingData)
+  const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
 
-    const isDesktop = useMedia({
-        minWidth: 1200,
+  const isDesktop = useMedia({
+    minWidth: 1200,
+  })
+
+  useEffect(() => {
+    if (!isEmpty(getPartnerPickList) && getMoveIdxData.idx) {
+      const selectedId = getPartnerPickList.data.map(list => list.adminid)
+      if (!isEmpty(selectedId)) {
+        dispatch(partnerActions.fetchCartListAsync.request({ idx: getMoveIdxData.idx, admin_id: selectedId }))
+      }
+    }
+
+    if (!getMoveIdxData.idx) {
+      setSessionVisible(true)
+    }
+
+
+    dataLayer({
+      event: 'pepageview'
     })
 
-    useEffect(() => {
-        if (!isEmpty(getPartnerPickList) && getMoveIdxData.idx) {
-            const selectedId = getPartnerPickList.data.map(list => list.adminid)
-            if(!isEmpty(selectedId)) {
-                dispatch(partnerActions.fetchCartListAsync.request({idx: getMoveIdxData.idx, admin_id: selectedId}))
-            }
-        }
-
-        if (!getMoveIdxData.idx) {
-            setSessionVisible(true)
-        }
-
-    }, [])
+  }, [])
 
 
-    useEffect(() => {
-        if (!getCartPartnerList.loading && !isEmpty(getPartnerPickList)) {
-            initialPartnerList();
-        }
-    }, [getCartPartnerList])
-
-    useEffect(() => {
-        if (getMatchingData.idx.length > 0) {
-            document.location.href = `${constants.MOVE_URL}/move_step_complete.asp?move_idx=${getMatchingData.idx}`
-        }
-    }, [getMatchingData])
-
-    const initialPartnerList = () => {
-        const {selectedList, recommendedList: recommended} = getCartPartnerList
-        const checkedList:any = [];
-            const b = selectedList.map((list:any) => {
-                if(checkedList.length < 3) {
-                    list.isChecked = true;
-                    checkedList.push(list.adminid)
-                } else {
-                    list.isChecked = false;
-                }
-                return list
-            });
-            if (!isEmpty(recommended)) {
-                const c = recommended.map((list:any) => {
-                    if(checkedList.length < 3) {
-                        list.isChecked = true;
-                        checkedList.push(list.adminid)
-                    } else {
-                        list.isChecked = false;
-                    }
-                    return list
-                });
-                setRecommendedList(c)
-            } else {
-                setRecommendedList([])
-            }
-            setSelectList(b)
-            setCheckedList(checkedList)
-    };
-    const handleSubmit = () => {
-        dispatch(partnerActions.fetchMatchingAsync.request({idx:getMoveIdxData.idx, partners:checkedList}))
-        dataLayer({event: 'request_approve'})
+  useEffect(() => {
+    if (!getCartPartnerList.loading && !isEmpty(getPartnerPickList)) {
+      initialPartnerList();
     }
+  }, [getCartPartnerList])
 
-    const handleOrderBtn = () => {
-        const selectPartners = checkedList.filter((id:string) => {
-            let result = 0
-            selectList.map((list:any) => {list.adminid === id && result++})
-
-            return result
-        })
-
-        const recommendPartners = checkedList.filter((id:string) => {
-            let result = 0
-            recommendedList.map((list:any) => {list.adminid === id && result++})
-            return result
-        })
-        dataLayer({event: 'request_cta',CD9: `선택업체_${selectList.length}-${selectPartners.length},추천업체_${recommendedList.length}-${recommendPartners.length}`})
-        setOrderConfirmVisible(true)
+  useEffect(() => {
+    if (getMatchingData.idx.length > 0) {
+      document.location.href = `${constants.MOVE_URL}/move_step_complete.asp?move_idx=${getMatchingData.idx}`
     }
+  }, [getMatchingData])
 
-    const handleCheck = (list:IList, id:string) => {
-        if(list.isChecked) {
-            // 이미 선택이 되어있는 경우 삭제하는 로직
-            list.isChecked = !list.isChecked;
-            setCheckedList(checkedList.filter((partnerId: any) => partnerId !== id));
+  const initialPartnerList = () => {
+    const { selectedList, recommendedList: recommended } = getCartPartnerList
+    const checkedList: any = [];
+    const b = selectedList.map((list: any) => {
+      if (checkedList.length < 3) {
+        list.isChecked = true;
+        checkedList.push(list.adminid)
+      } else {
+        list.isChecked = false;
+      }
+      return list
+    });
+    if (!isEmpty(recommended)) {
+      const c = recommended.map((list: any) => {
+        if (checkedList.length < 3) {
+          list.isChecked = true;
+          checkedList.push(list.adminid)
         } else {
-            if(checkedList.length === 3) {
-                // 이미 선택 되어있는 업체수가 3일 경우 Alert 모달 출력
-                setAlertVisible(true);
-                return
-            }
-
-            // 선택이 되어있지 않으면서 업체수가 3개 미만일 경우 추가하는 로직
-            list.isChecked = !list.isChecked;
-            setCheckedList([...checkedList, id]);
+          list.isChecked = false;
         }
-    };
-
-    if (getCartPartnerList.loading || getMatchingData.loading) {
-        return <Loading text={'견적요청 페이지로 이동 중입니다.'}/>
+        return list
+      });
+      setRecommendedList(c)
+    } else {
+      setRecommendedList([])
     }
+    setSelectList(b)
+    setCheckedList(checkedList)
+  };
+  const handleSubmit = () => {
+    dispatch(partnerActions.fetchMatchingAsync.request({ idx: getMoveIdxData.idx, partners: checkedList }))
+    dataLayer({ event: 'request_approve' })
+  }
 
-    return (
-        <>
-        <S.CartWrapper>
-            {isDesktop ? <MainHeader/> : <TopGnb title="방문견적 요청" count={0} onPrevious={() => history.goBack()} showTruck={false}/>}
-                <S.TitleWrapper>
-                    <S.Title>
-                        <p>내가 선택한 업체</p>
-                    </S.Title>
-                </S.TitleWrapper>
-            <S.CartContainer isEmpty={isEmpty(getCartPartnerList.selectedList)}>
-                {isEmpty(getCartPartnerList.selectedList)
-                    ? <EmptyPage />
-                    :
-                    <>
-                        <S.Wrapper marginBottom={isEmpty(recommendedList) ? recommendCart.current?.offsetHeight : null}>
-                            <S.CardWrapper>
-                                {selectList.map((list:IList, index:number) => {
-                                    return <Card key={list.id} type={"selected"} list={list}  index={index} listLength={selectList.length} onSelect={handleCheck}/>
-                                })}
-                                <S.PartnerMoreBtn onClick={() => router.push('/partner/list')} id="dsl_booking_cart_more">업체 더 고르기</S.PartnerMoreBtn>
-                            </S.CardWrapper>
-                        </S.Wrapper>
-                        {!isEmpty(recommendedList) && <S.HorizontalLine/>}
-                        {
-                            !isEmpty(recommendedList) && (
-                                <S.Wrapper marginBottom={recommendCart.current?.offsetHeight}>
-                                    <S.CardWrapper>
-                                        <S.CurationTitle>이런 업체는 어떠세요?</S.CurationTitle>
-                                        <S.CurationSubTitle>고객의 가성비, 평가 키워드, 선택률 데이터 기준으로 추천드려요.</S.CurationSubTitle>
-                                        {recommendedList.map((list:IList, index:number) => {
-                                            return <Card key={list.id}  type={'recommended'} index={index} listLength={recommendedList.length} list={list} onSelect={handleCheck}/>
-                                        })}
-                                    </S.CardWrapper>
-                                </S.Wrapper>
-                            )
-                        }
-                        <S.OrderBtnWrapper ref={recommendCart} id="dsl_booking_cart_buttons">
-                            <S.GuideBtn onClick={() => setGuideVisible(!guideVisible)} id="dsl_booking_cart_content">
-                                <div>방문없이 가격만 알 순 없나요?</div>
-                                <div>></div>
-                            </S.GuideBtn>
-                            <S.OrderBtn onClick={() => handleOrderBtn()} id="dsl_booking_cart_cta" disabled={checkedList.length === 0}>
-                                {checkedList.length > 0 && (
-                                    <div>{checkedList.length}</div>
-                                )}
-                                <span>{checkedList.length === 0 ? '업체를 선택해주세요' : '방문견적(무료) 요청보내기'}</span>
-                            </S.OrderBtn>
-                        </S.OrderBtnWrapper>
-                    </>
-                }
-            </S.CartContainer>
-        </S.CartWrapper>
-        <GuidePopup visible={guideVisible} onClose={() => setGuideVisible(!guideVisible)}/>
-        <CheckAlertPopup visible={alertVisible} showHeaderCancelButton={true} cancelClick={() => setAlertVisible(!alertVisible)}/>
-        <ConfirmPopup visible={orderConfirmVisible} showHeaderCancelButton={true} cancelClick={() => setOrderConfirmVisible(!orderConfirmVisible)} confirmClick={() => {
-            handleSubmit();
-            setOrderConfirmVisible(false);
-            }} orderCount={checkedList.length}
-        />
-        <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
-            <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
-        </ToastPopup>
-        </>
-    )
+  const handleOrderBtn = () => {
+    const selectPartners = checkedList.filter((id: string) => {
+      let result = 0
+      selectList.map((list: any) => { list.adminid === id && result++ })
+
+      return result
+    })
+
+    const recommendPartners = checkedList.filter((id: string) => {
+      let result = 0
+      recommendedList.map((list: any) => { list.adminid === id && result++ })
+      return result
+    })
+    dataLayer({ event: 'request_cta', CD9: `선택업체_${selectList.length}-${selectPartners.length},추천업체_${recommendedList.length}-${recommendPartners.length}` })
+    setOrderConfirmVisible(true)
+  }
+
+  const handleCheck = (list: IList, id: string) => {
+    if (list.isChecked) {
+      // 이미 선택이 되어있는 경우 삭제하는 로직
+      list.isChecked = !list.isChecked;
+      setCheckedList(checkedList.filter((partnerId: any) => partnerId !== id));
+    } else {
+      if (checkedList.length === 3) {
+        // 이미 선택 되어있는 업체수가 3일 경우 Alert 모달 출력
+        setAlertVisible(true);
+        return
+      }
+
+      // 선택이 되어있지 않으면서 업체수가 3개 미만일 경우 추가하는 로직
+      list.isChecked = !list.isChecked;
+      setCheckedList([...checkedList, id]);
+    }
+  };
+
+  if (getCartPartnerList.loading || getMatchingData.loading) {
+    return <Loading text={'견적요청 페이지로 이동 중입니다.'} />
+  }
+
+  return (
+    <>
+      <S.CartWrapper>
+        {isDesktop ? <MainHeader /> : <TopGnb title="방문견적 요청" count={0} onPrevious={() => history.goBack()} showTruck={false} />}
+        <S.TitleWrapper>
+          <S.Title>
+            <p>내가 선택한 업체</p>
+          </S.Title>
+        </S.TitleWrapper>
+        <S.CartContainer isEmpty={isEmpty(getCartPartnerList.selectedList)}>
+          {isEmpty(getCartPartnerList.selectedList)
+            ? <EmptyPage />
+            :
+            <>
+              <S.Wrapper marginBottom={isEmpty(recommendedList) ? recommendCart.current?.offsetHeight : null}>
+                <S.CardWrapper>
+                  {selectList.map((list: IList, index: number) => {
+                    return <Card key={list.id} type={"selected"} list={list} index={index} listLength={selectList.length} onSelect={handleCheck} />
+                  })}
+                  <S.PartnerMoreBtn onClick={() => router.push('/partner/list')} id="dsl_booking_cart_more">업체 더 고르기</S.PartnerMoreBtn>
+                </S.CardWrapper>
+              </S.Wrapper>
+              {!isEmpty(recommendedList) && <S.HorizontalLine />}
+              {
+                !isEmpty(recommendedList) && (
+                  <S.Wrapper marginBottom={recommendCart.current?.offsetHeight}>
+                    <S.CardWrapper>
+                      <S.CurationTitle>이런 업체는 어떠세요?</S.CurationTitle>
+                      <S.CurationSubTitle>고객의 가성비, 평가 키워드, 선택률 데이터 기준으로 추천드려요.</S.CurationSubTitle>
+                      {recommendedList.map((list: IList, index: number) => {
+                        return <Card key={list.id} type={'recommended'} index={index} listLength={recommendedList.length} list={list} onSelect={handleCheck} />
+                      })}
+                    </S.CardWrapper>
+                  </S.Wrapper>
+                )
+              }
+              <S.OrderBtnWrapper ref={recommendCart} id="dsl_booking_cart_buttons">
+                <S.GuideBtn onClick={() => setGuideVisible(!guideVisible)} id="dsl_booking_cart_content">
+                  <div>방문없이 가격만 알 순 없나요?</div>
+                  <div>&gt;</div>
+                </S.GuideBtn>
+                <S.OrderBtn onClick={() => handleOrderBtn()} id="dsl_booking_cart_cta" disabled={checkedList.length === 0}>
+                  {checkedList.length > 0 && (
+                    <div>{checkedList.length}</div>
+                  )}
+                  <span>{checkedList.length === 0 ? '업체를 선택해주세요' : '방문견적(무료) 요청보내기'}</span>
+                </S.OrderBtn>
+              </S.OrderBtnWrapper>
+            </>
+          }
+        </S.CartContainer>
+      </S.CartWrapper>
+      <GuidePopup visible={guideVisible} onClose={() => setGuideVisible(!guideVisible)} />
+      <CheckAlertPopup visible={alertVisible} showHeaderCancelButton={true} cancelClick={() => setAlertVisible(!alertVisible)} />
+      <ConfirmPopup visible={orderConfirmVisible} showHeaderCancelButton={true} cancelClick={() => setOrderConfirmVisible(!orderConfirmVisible)} confirmClick={() => {
+        handleSubmit();
+        setOrderConfirmVisible(false);
+      }} orderCount={checkedList.length}
+      />
+      <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
+        <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
+      </ToastPopup>
+    </>
+  )
 };
 
 export default PartnerCart

@@ -14,6 +14,7 @@ import MainFooter from 'components/common/MainFooter'
 import BottomNav from 'components/common/BottomNav'
 
 import * as colors from 'styles/colors'
+import { dataLayer } from 'lib/dataLayerUtil'
 
 const S = {
     Container: styled.div``,
@@ -39,7 +40,7 @@ const S = {
     `,
 }
 
-const Home:React.FC<RouteComponentProps> = ({ location}) => {
+const Home: React.FC<RouteComponentProps> = ({ location }) => {
     const [cookies, setCookie] = useCookies(['0dj38gepoekf98234aplyadmin'])
     const HomeRef = useRef<HTMLDivElement>(null)
     const [isFixed, setIsFixed] = useScrollDirection()
@@ -47,6 +48,8 @@ const Home:React.FC<RouteComponentProps> = ({ location}) => {
     useEffect(() => {
         const mda = queryString.parse(location.search).mda || '';
         setCookie('0dj38gepoekf98234aplyadmin', `agentid=${mda}`)
+
+        dataLayer({ event: 'pepageview' })
     }, [])
 
     return (

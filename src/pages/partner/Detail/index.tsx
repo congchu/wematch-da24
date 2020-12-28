@@ -18,10 +18,10 @@ import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
 import * as formSelector from "store/form/selectors";
 import * as commonSelector from 'store/common/selectors'
-import {some} from "lodash";
+import { some } from "lodash";
 import { useRouter } from 'hooks/useRouter'
 import ToastPopup from "components/wematch-ui/ToastPopup";
-import {dataLayer} from "lib/dataLayerUtil";
+import { dataLayer } from "lib/dataLayerUtil";
 import SetType from "components/SetType";
 
 const S = {
@@ -70,7 +70,7 @@ const S = {
 	`,
 
 
-    BtnSelect: styled.button<{status: 'selected' | 'available' | 'unavailable', isSelected: boolean}>`
+    BtnSelect: styled.button<{ status: 'selected' | 'available' | 'unavailable', isSelected: boolean }>`
 		position:fixed;
 		z-index:5;
 		left:0;
@@ -157,7 +157,7 @@ const PartnerDetail = () => {
     })
     const history = useHistory()
     const router = useRouter()
-    const params = useParams<{username: string}>()
+    const params = useParams<{ username: string }>()
     const dispatch = useDispatch()
 
     const getPartnerDetail = useSelector(partnerSelector.getPartnerDetail)
@@ -170,17 +170,17 @@ const PartnerDetail = () => {
     const [unavailableCheck, setUnavailableCheck] = useState(false)
 
     const checkScrollTop = () => {
-        if (!showScrollView && window.pageYOffset > 300){
+        if (!showScrollView && window.pageYOffset > 300) {
             setShowScrollView(true)
-        } else if (showScrollView && window.pageYOffset <= 300){
+        } else if (showScrollView && window.pageYOffset <= 300) {
             setShowScrollView(false)
         } else if (window.pageYOffset === 0) {
             setShowScrollView(false)
         }
     };
 
-    const handleScrollTop = () =>{
-        window.scrollTo({top: 0, behavior: 'smooth'});
+    const handleScrollTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleSelected = () => {
@@ -191,7 +191,7 @@ const PartnerDetail = () => {
         router.push('/partner/cart')
     }
 
-    const  isActive = () => {
+    const isActive = () => {
         return some(getPartnerPick.data, {
             adminid: params.username
         })
@@ -210,13 +210,18 @@ const PartnerDetail = () => {
     }
 
     useEffect(() => {
-        if(!getMoveIdxData.idx) {
+        if (!getMoveIdxData.idx) {
             setSessionVisible(true)
         }
+
+        dataLayer({
+            event: 'pepageview'
+        })
+
     }, [])
 
     useEffect(() => {
-        if(getMoveIdxData.idx) {
+        if (getMoveIdxData.idx) {
             dispatch(partnerActions.fetchPartnerDetailAsync.request({
                 username: params.username,
                 idx: getMoveIdxData.idx
@@ -231,8 +236,8 @@ const PartnerDetail = () => {
     }, [dispatch, params.username])
 
     useEffect(() => {
-        if(getMoveIdxData.idx && getPartnerDetail?.data?.status === 'unavailable' && !getPartnerDetail.loading && getPartnerDetail?.data?.adminid === params.username) {
-           setUnavailableCheck(true)
+        if (getMoveIdxData.idx && getPartnerDetail?.data?.status === 'unavailable' && !getPartnerDetail.loading && getPartnerDetail?.data?.adminid === params.username) {
+            setUnavailableCheck(true)
         }
     }, [getPartnerDetail.loading])
 
@@ -260,18 +265,18 @@ const PartnerDetail = () => {
         <S.Container>
             {getPartnerDetail.data && (
                 <>
-                    {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true}/>}
-                    <SetType count={getPartnerPick.data.length} formData={getFormData}/>
-                    <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetail.data.profile_img } status={getPartnerDetail.data.status}
-                           level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
-                           description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname} addition={getPartnerDetail.data.addition}/>
+                    {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true} />}
+                    <SetType count={getPartnerPick.data.length} formData={getFormData} />
+                    <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetail.data.profile_img} status={getPartnerDetail.data.status}
+                        level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
+                        description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname} addition={getPartnerDetail.data.addition} />
                     {/*Review Container*/}
                     <ReviewContainer />
                     <S.BottomContainer>
                         {getReviewList.moreLoading && (
-                          <S.ReviewMoreLoading>
-                              로딩중..
-                          </S.ReviewMoreLoading>
+                            <S.ReviewMoreLoading>
+                                로딩중..
+                            </S.ReviewMoreLoading>
                         )}
                         {getReviewList.hasMore && (
                             <S.MoreList onClick={handleMoreReview}>후기 더보기 <DownArrow width={16} height={16} /></S.MoreList>
@@ -285,7 +290,7 @@ const PartnerDetail = () => {
                             </S.ScrollView>
                         )}
                     </S.BottomContainer>
-              </>
+                </>
             )}
             <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
                 <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
