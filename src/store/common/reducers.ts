@@ -1,3 +1,4 @@
+import { IUser } from 'types/auth';
 import { createReducer, ActionType } from 'typesafe-actions'
 import * as actions from './actions'
 import * as types from './types';
@@ -20,6 +21,7 @@ export interface CommonState {
     }
     auth: {
         loginState: boolean;
+        user: IUser | null;
         loading: boolean;
     }
 }
@@ -42,6 +44,7 @@ const initialState: CommonState = {
     },
     auth: {
         loginState: false,
+        user: null,
         loading: false,
     }
 }
@@ -56,5 +59,6 @@ export default createReducer<CommonState, Actions>(initialState)
     .handleAction(actions.fetchMoveIdx.request, (state) => ({ ...state, moveIdxData: { ...state.moveIdxData, loading: true }}))
     .handleAction(actions.fetchMoveIdx.success, ((state, action) => ({ ...state, moveIdxData: {idx: action.payload.idx, loading: false}})))
     .handleAction(actions.resetAll, (state) => ({ ...state, ...initialState }))
-    .handleAction(actions.fetchSignInAsync.request, (state) => ({...state, auth: {...state.auth, loading: true}}))
-    .handleAction(actions.fetchSignInAsync.success, (state, action) => ({...state, auth: { loginState: true, loading: false}}))
+    .handleAction(actions.fetchSignUpAsync.request, (state) => ({...state, auth: {...state.auth, loading: true}}))
+    .handleAction(actions.fetchSignUpAsync.success, (state, action) => ({...state, auth: { ...state.auth, loginState: true, loading: false}}))
+    .handleAction(actions.fetchSignInAsync.success, (state, action) =>({...state, auth: {...state.auth, user: action.payload}}))

@@ -1,9 +1,9 @@
-import { call, put, all, takeEvery } from 'redux-saga/effects'
+import { call, put, all, takeEvery, select } from 'redux-saga/effects'
 import { ActionType } from 'typesafe-actions'
-
 import * as actions from './actions'
 import * as requests from './requests'
 import * as constants from '../../constants/env'
+
 
 export function* fetchAddressListSaga(action: ActionType<typeof actions.fetchAddressListAsync.request>) {
     try {
@@ -41,10 +41,21 @@ export function* fetchMoveIdxSaga(action: ActionType<typeof actions.fetchMoveIdx
     }
 }
 
+export function* fetchSignUpSaga(action: ActionType<typeof actions.fetchSignUpAsync.request>) {
+    try {
+        const data = yield call(requests.postSignUp, action.payload)
+        document.cookie=`X-Wematch-Token=${data}; max-age=${60*60*24*60}`
+        yield put(actions.fetchSignUpAsync.success(data))
+    } catch(e) {
+        yield put(actions.fetchSignUpAsync.failure())
+    }
+}
+
 export function* fetchSignInSaga(action: ActionType<typeof actions.fetchSignInAsync.request>) {
     try {
-        const data = yield call(requests.postSignIn, action.payload)
-        yield put(actions.fetchSignInAsync.success(data))
+        const data = yield call(requests.getUser, action.payload.token)
+        console.log(data);
+        // yield put(actions.fetchSignInAsync.success(data))
     } catch(e) {
         yield put(actions.fetchSignInAsync.failure())
     }
@@ -56,6 +67,6 @@ export default function* () {
         takeEvery(actions.fetchVerifySendMessageAsync.request, fetchVerifySendMessageSaga),
         takeEvery(actions.fetchVerifyCodeAsync.request, fetchVerifyCodeSaga),
         takeEvery(actions.fetchMoveIdx.request, fetchMoveIdxSaga),
-        takeEvery(actions.fetchSignInAsync.request, fetchSignInSaga)
+        takeEvery(actions.fetchSignUpAsync.request, fetchSignUpSaga)
     ])
 }
