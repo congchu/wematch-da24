@@ -15,9 +15,9 @@ import useHashToggle from 'hooks/useHashToggle';
 import TermsModal from './TermsModal';
 import NewModal from 'components/NewModalTemplate';
 
+
 interface Props {
     visible: boolean;
-    handleLogin: () => void;
     onClose: () => void;
 }
 
@@ -25,11 +25,12 @@ const LoginModal: React.FC<Props> = (props) => {
     const dispatch = useDispatch();
     const {
         visible = false,
-        handleLogin,
         onClose
     } = props;
+    const getMoveType = useSelector(formSelector.getType)
     const getPhone = useSelector(formSelector.getPhone)
     const getName = useSelector(formSelector.getName)
+    const { loginState } = useSelector(commonSelector.getLoginState);
     const { data: { is_verified }, isSendMessage, loading } = useSelector(commonSelector.getPhoneVerified)
     const { counter, handleCounterStart, handleCounterStop } = useTimer(180);
     const [isFocus, setIsFocus] = useState(false)
@@ -69,6 +70,15 @@ const LoginModal: React.FC<Props> = (props) => {
         }
     }
 
+    const handleSignUp = () => {
+        dispatch(commonActions.fetchSignUpAsync.request({
+            tel: getPhone,
+            name: getName,
+            init_service: getMoveType === 'house' ? '가정이사' : '사무실'
+        }))
+    }
+
+
     useEffect(() => {
         if (counter === 0) {
             setVisibleTimeout(true)
@@ -86,6 +96,12 @@ const LoginModal: React.FC<Props> = (props) => {
             handleCounterStop()
         }
     }, [is_verified, handleCounterStop])
+
+    useEffect(() => {
+        if (loginState) {
+            onClose();
+        }
+    }, [loginState])
 
 
     return createPortal((
@@ -143,7 +159,7 @@ const LoginModal: React.FC<Props> = (props) => {
                         <a onClick={() => setVisibleTerms(true)}>이용약관 및 개인정보처리방침 동의</a>, 견적상담을 위한 개인 정보 제3자 제공 및 마케팅 정보수신 동의 필요
                     </p>
                     <Button theme="primary" disabled={!is_verified} style={{ borderRadius: '8px', fontSize: '18px' }}
-                        bold={true} onClick={handleLogin}>
+                        bold={true} onClick={handleSignUp}>
                         동의하고 진행하기
                     </Button>
                 </FooterWrappe>

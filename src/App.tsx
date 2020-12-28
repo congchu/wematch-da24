@@ -1,16 +1,18 @@
-import React, {useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Switch,
     Route,
     Redirect,
     useLocation
 } from 'react-router-dom'
-import {Provider} from 'react-redux'
+import { Provider, useDispatch } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 
 import store from 'store/index'
 import browserHistory from 'lib/history'
 import GlobalStyled from 'styles/global'
+import * as commonSelector from 'store/common/selectors'
+import * as commonActions from 'store/common/actions'
 
 import Home from 'pages/home'
 import PartnerList from 'pages/partner/List/index'
@@ -24,6 +26,7 @@ import Terms from 'pages/terms'
 
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
+import { useCookies } from 'react-cookie'
 
 //swiper lib
 import SwiperCore, { Pagination, Autoplay } from 'swiper'
@@ -39,10 +42,12 @@ declare global {
 }
 
 function AppRoute() {
+    const dispatch = useDispatch();
     const [script, setScript] = useState('');
     const location = useLocation()
     const customScript = useScript(script)
     const { isIE } = useUserAgent()
+    const [cookie] = useCookies(['X-Wematch-Token'])
 
     const getPathname = () => {
         let pathname = 5
@@ -56,6 +61,13 @@ function AppRoute() {
         }
         return pathname
     }
+
+    useEffect(() => {
+        if (cookie['X-Wematch-Token']) {
+            dispatch(commonActions.fetchSignInAsync.request(cookie['X-Wematch-Token']))
+        }
+    }, [cookie, dispatch])
+
 
     useEffect(() => {
         if (location.pathname !== '/') {
@@ -90,7 +102,7 @@ function AppRoute() {
                 <Route exact path="/" component={Home} />
                 <Route exact path="/partner/list" component={PartnerList} />
                 <Route exact path="/partner/detail/:username" component={PartnerDetail} />
-                <Route exact path="/partner/cart" component={PartnerCart}/>
+                <Route exact path="/partner/cart" component={PartnerCart} />
                 <Route exact path="/banner/intro" component={Intro} />
                 <Route exact path="/banner/customer" component={Customer} />
                 <Route exact path="/banner/grade" component={Grade} />
@@ -102,16 +114,16 @@ function AppRoute() {
 }
 
 function App() {
-  return (
-      <>
-          <GlobalStyled />
-          <Provider store={store}>
-              <ConnectedRouter history={browserHistory}>
-                  <AppRoute />
-              </ConnectedRouter>
-          </Provider>
-      </>
-  );
+    return (
+        <>
+            <GlobalStyled />
+            <Provider store={store}>
+                <ConnectedRouter history={browserHistory}>
+                    <AppRoute />
+                </ConnectedRouter>
+            </Provider>
+        </>
+    );
 }
 
 export default App;

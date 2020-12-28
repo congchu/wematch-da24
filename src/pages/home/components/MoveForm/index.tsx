@@ -272,6 +272,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
 
     const handleLogin = () => {
         //TODO: 로그인 로직 & 쿠키 추가.
+
         if (submitType !== null) {
             setVisibleLogin(false);
             dispatch(formActions.setAgree({
@@ -281,29 +282,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
             }))
             handleSubmit(submitType);
         }
-    }
-
-    const handleConsult = (submitType: 'curation' | 'select') => {
-        setSubmitType(submitType)
-        if (isLogin()) {
-            handleSubmit(submitType);
-        }
-    }
-
-    const isLogin = () => {
-
-        if (!validateHouseOrOfficeForm()) {
-            return false;
-        }
-
-        const validatePhoneResult = phoneSplit(getPhone)
-
-        if (!getLoginState.loginState) {
-            setVisibleLogin(true)
-            return false;
-        }
-
-        return true;
     }
 
     //TODO: 회원가입 로직 변경에 따른 submit 시점 변경
@@ -458,11 +436,11 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     </div>
                     <div id="dsl_move_button_requests_1">
                         <Button theme="primary" bold border onClick={() => {
-                            handleConsult('curation')
+                            getLoginState.loginState ? handleSubmit('curation') : setVisibleLogin(true);
                         }}>견적 신청하기</Button>
                         {getMoveType !== 'oneroom' && (
                             <Button theme="default" onClick={() => {
-                                handleConsult('select')
+                                getLoginState.loginState ? handleSubmit('select') : setVisibleLogin(true);
                             }}>업체 직접고르기</Button>
                         )}
                     </div>
@@ -495,7 +473,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
             <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
             <OneroomNoticePopup visible={visibleOneroom} footerButton border onClose={() => setVisibleOneroom(!visibleOneroom)} />
-            <LoginModal visible={visibleLogin} onClose={() => setVisibleLogin(!visibleLogin)} handleLogin={handleLogin} />
+            <LoginModal visible={visibleLogin} onClose={() => setVisibleLogin(!visibleLogin)} />
         </Visual.Section>
     )
 }
