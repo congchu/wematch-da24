@@ -55,11 +55,12 @@ const Text = styled.div`
 const SubText = styled.p`
   width: 100%;
   font-size: 16px;
-  color: ${colors.gray33};
+  color: ${colors.gray66};
   letter-spacing: -0.03px;
   text-align: left;
   margin-bottom: 22px;
   line-height: 24px;
+  white-space: pre-wrap;
 `;
 
 const Button = styled.button<{ buttonType?: 'confirm' | 'cancel' }>`
@@ -143,7 +144,7 @@ const NewModal: React.FC<Props> = (props) => {
                       cancelClick()
                     }
                   }}
-                >아니오</Button>
+                >{cancelText}</Button>
               )}
               {confirmText && (
                 <Button

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import ScrollLock, { TouchScrollable } from 'react-scrolllock';
 import styled from 'styled-components'
 import * as colors from "../../../styles/colors";
 import { Icon } from "../index";
@@ -11,12 +12,21 @@ interface Props {
 
 const PopupTemplate: React.FC<Props> = (props) => {
   const { visible, children, onClose, pcHeight } = props;
+  const scrollPosition = window.pageYOffset;
+
   useEffect(() => {
     if (visible) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollPosition}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
     }
 
-    return () => document.body.removeAttribute('style')
+    return () => {
+      document.body.removeAttribute('style');
+      window.scrollTo(0, scrollPosition);
+    }
   }, [visible])
 
   if (!visible) return null
@@ -41,6 +51,8 @@ const PopupOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+  bottom: 0;
+  right: 0;
   width: 100%;
   height: 100vh;
   z-index: 200;
@@ -53,7 +65,8 @@ const PopupOverlay = styled.div`
 
 const PopupWrapper = styled.div<{ pcHeight?: number }>`
   position: relative;
-  height: inherit;
+  height: 100vh;
+  min-height: 640px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;

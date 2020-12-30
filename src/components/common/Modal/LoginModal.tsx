@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import PopupTemplate from 'components/wematch-ui/PopupTemplate'
 import { createPortal } from "react-dom";
@@ -39,6 +39,7 @@ const LoginModal: React.FC<Props> = (props) => {
     const [visibleTimeout, setVisibleTimeout] = useHashToggle('#timeout');
     const [visibleCancel, setVisibleCancel] = useHashToggle('#verifyCancel');
     const [isTimeout, setIsTimeout] = useState(false);
+    const verifyRef = useRef<HTMLInputElement | null>(null);
 
     const handleSubmit = () => {
         setIsTimeout(false);
@@ -78,7 +79,6 @@ const LoginModal: React.FC<Props> = (props) => {
         }))
     }
 
-
     useEffect(() => {
         if (counter === 0) {
             setVisibleTimeout(true)
@@ -87,6 +87,7 @@ const LoginModal: React.FC<Props> = (props) => {
 
     useEffect(() => {
         if (isSendMessage && !loading) {
+            verifyRef?.current?.focus();
             handleCounterStart()
         }
     }, [isSendMessage, loading, handleCounterStart])
@@ -106,8 +107,8 @@ const LoginModal: React.FC<Props> = (props) => {
 
     return createPortal((
         <PopupTemplate visible={visible} onClose={() => setVisibleCancel(true)} pcHeight={640}>
-            <LoginModalWrapper isScroll={isFocus}>
-                <div>
+            <LoginModalWrapper isScroll={true}>
+                <div style={{ width: '100%' }}>
                     <TextWrppaer>
                         <strong>앗! 위매치 처음 이용하시나요?</strong>
                         <p>
@@ -119,11 +120,10 @@ const LoginModal: React.FC<Props> = (props) => {
                         <Input theme="default" border placeholder="이름" maxLength={20}
                             onChange={(e) => dispatch(formActions.setName(e.target.value))} value={getName}
                             style={{ backgroundColor: is_verified ? '' : "transparent" }}
-                            onFocus={() => { setIsFocus(true) }}
                         />
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Input theme="default" border placeholder="휴대폰 번호(-없이)" pattern="[0-9]*" inputMode="numeric"
-                                value={getPhone} onChange={handlePhone} style={{ backgroundColor: is_verified ? '' : "transparent" }} rootStyle={{ flex: 1 }} onFocus={() => { setIsFocus(true) }}
+                                value={getPhone} onChange={handlePhone} style={{ backgroundColor: is_verified ? '' : "transparent" }} rootStyle={{ flex: 1 }}
                                 disabled={is_verified}
                             />
                             <Button theme="primary" disabled={isAuth} style={{ width: "90px", marginLeft: '7px', borderRadius: '4px' }}
@@ -136,7 +136,7 @@ const LoginModal: React.FC<Props> = (props) => {
                                 <Input theme="default" border placeholder="인증번호" maxLength={4}
                                     value={code} pattern="[0-9]*" inputMode="numeric"
                                     onChange={(e) => { setCode(e.target.value) }}
-                                    style={{ backgroundColor: !isSendMessage || is_verified ? '' : "transparent", borderColor: is_verified === false ? '#EC485C' : '' }}
+                                    style={{ backgroundColor: !isSendMessage || is_verified ? '' : "transparent", borderColor: is_verified === false ? '#EC485C' : '' }} inputRef={verifyRef}
                                     disabled={!isSendMessage || is_verified}
                                 />
                                 <CounterWrapper>
@@ -156,9 +156,9 @@ const LoginModal: React.FC<Props> = (props) => {
                 </div>
                 <FooterWrappe>
                     <p>
-                        <a onClick={() => setVisibleTerms(true)}>이용약관 및 개인정보처리방침 동의</a>, 견적상담을 위한 개인 정보 제3자 제공 및 마케팅 정보수신 동의 필요
+                        <span onClick={() => setVisibleTerms(true)}>이용약관 및 개인정보처리방침 동의</span>, 견적상담을 위한 개인 정보 제3자 제공 및 마케팅 정보수신 동의 필요
                     </p>
-                    <Button theme="primary" disabled={!is_verified} style={{ borderRadius: '8px', fontSize: '18px' }}
+                    <Button theme="primary" disabled={!is_verified} style={{ fontSize: '18px' }}
                         bold={true} onClick={handleSignUp}>
                         동의하고 진행하기
                     </Button>
@@ -167,7 +167,7 @@ const LoginModal: React.FC<Props> = (props) => {
             {/*인증번호 초과 모달*/}
             <NewModal visible={visibleTimeout} title={"인증번호 입력시간 초과"} content={"인증번호 입력가능시간이 초과 되었습니다. 인증번호를 다시 받아주세요!"} confirmText={"확인"} confirmClick={() => { setVisibleTimeout(!visibleTimeout); setIsTimeout(true) }} />
             {/*로그인/가입 취소 모달*/}
-            <NewModal visible={visibleCancel} title={"번호인증 취소"} content={"번호인증을 취소하시면 견적상담신청 및 내신청내역을 확인할 수 없습니다. 취소하시겠어요?"} confirmText={"인증 진행하기"} cancelText={"취소"} cancelClick={() => handleModalClose()} confirmClick={() => setVisibleCancel(!visibleCancel)} />
+            <NewModal visible={visibleCancel} title={"번호인증 취소"} content={`번호인증을 취소하시면 견적상담신청 및 내신청내역을 확인할 수 없습니다.\n취소하시겠어요?`} confirmText={"인증 진행하기"} cancelText={"취소"} cancelClick={() => handleModalClose()} confirmClick={() => setVisibleCancel(!visibleCancel)} />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
         </PopupTemplate>
     ),
@@ -180,16 +180,15 @@ export default LoginModal
 const LoginModalWrapper = styled.div<{ isScroll: boolean }>`
     position: absolute;
     width: 100%;
-    height: ${({ isScroll }) => isScroll ? `100vh` : 'calc(100vh - 56px)'};
     box-sizing: border-box;
     backgrorund-color: white;
-    padding: 24px 24px;
+    padding: 24px 24px 0 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     @media screen and (min-width: 768px) {
-        height: 584px;
+        height: 100vh;
         justify-content: space-between;
         align-items: center;
         padding-top: 16px;
@@ -211,6 +210,7 @@ const TextWrppaer = styled.div`
       line-height: 30px;
       letter-spacing: -0.03em;
       margin-bottom: 8px;
+      color: ${colors.gray33};
     }
     
     p {
@@ -223,12 +223,22 @@ const TextWrppaer = styled.div`
 `;
 
 const FormWrapper = styled.div`
+    input {
+        color: ${colors.gray33};
+    }
 `
 
 const FooterWrappe = styled.div`
+    position: fixed;
+    bottom: 0;
+    
     p {
         color: ${colors.gray66};
         padding-bottom: 16px;
+        padding: 0 24px 16px 24px;
+        span {
+            text-decoration: underline;
+        }
     }
     
     a {

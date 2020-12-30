@@ -4,7 +4,7 @@ import { Icon } from 'components/wematch-ui'
 
 import * as colors from 'styles/colors'
 
-interface StyleProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface StyleProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     /** 테마 설정 */
@@ -17,7 +17,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     disabled?: boolean;
     /** 최상단 스타일 custom */
     rootStyle?: React.CSSProperties;
-    ref?: React.RefObject<HTMLInputElement>
+    inputRef?: React.RefObject<HTMLInputElement>
 }
 
 type ThemeProps = 'default' | 'primary';
@@ -35,7 +35,7 @@ const S = {
           bottom: 28px;
         }
     `,
-    StyledInput: Styled.input<{theme: ThemeProps, border: BorderProp}>`
+    StyledInput: Styled.input<{ theme: ThemeProps, border: BorderProp }>`
         width: 100%;
         height: 56px;
         margin-bottom: 8px;
@@ -87,14 +87,15 @@ const Input: React.FC<InputProps> = (props) => {
         icon,
         disabled,
         rootStyle,
+        inputRef,
         ...restProps
     } = props
 
     return (
         <S.Container style={rootStyle}>
-            <S.StyledInput theme={theme} border={border} disabled={disabled} {...restProps} />
-            {icon === 'search' && (<Icon.Search size={15}/>)}
-            {icon === 'down' && (<Icon.Down size={15}/>)}
+            <S.StyledInput theme={theme} border={border} disabled={disabled} {...restProps} ref={inputRef} />
+            {icon === 'search' && (<Icon.Search size={15} />)}
+            {icon === 'down' && (<Icon.Down size={15} />)}
         </S.Container>
     )
 }
