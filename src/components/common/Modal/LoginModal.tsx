@@ -188,7 +188,6 @@ const LoginModalWrapper = styled.div<{ isScroll: boolean }>`
     justify-content: space-between;
     align-items: center;
     @media screen and (min-width: 768px) {
-        height: 100vh;
         justify-content: space-between;
         align-items: center;
         padding-top: 16px;
@@ -247,6 +246,17 @@ const FooterWrappe = styled.div`
         margin-left: 5px;
         line-height: 24px;
         margin-bottom: -2px;
+    }
+
+    @media screen and (min-width: 768px) {
+        padding: 24px;
+        p {
+            padding: 0;
+            padding-bottom: 24px;
+        }
+        button {
+            border-radius: 4px;
+        }
     }
 `
 
