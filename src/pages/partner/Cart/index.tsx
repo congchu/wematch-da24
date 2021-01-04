@@ -249,9 +249,7 @@ const PartnerCart = () => {
     }
 
 
-    dataLayer({
-      event: 'pepageview'
-    })
+    dataLayer({ event: 'pepageview' })
 
   }, [])
 

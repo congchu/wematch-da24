@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useMedia } from 'react-use-media'
 import styled from 'styled-components/macro'
@@ -6,6 +6,7 @@ import styled from 'styled-components/macro'
 import BannerLayout from './layout/BannerLayout'
 
 import * as colors from 'styles/colors'
+import { dataLayer } from 'lib/dataLayerUtil'
 
 const S = {
   Container: styled.div`

@@ -1,11 +1,11 @@
-import React, {useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Switch,
     Route,
     Redirect,
     useLocation
 } from 'react-router-dom'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 
 import store from 'store/index'
@@ -90,7 +90,7 @@ function AppRoute() {
                 <Route exact path="/" component={Home} />
                 <Route exact path="/partner/list" component={PartnerList} />
                 <Route exact path="/partner/detail/:username" component={PartnerDetail} />
-                <Route exact path="/partner/cart" component={PartnerCart}/>
+                <Route exact path="/partner/cart" component={PartnerCart} />
                 <Route exact path="/banner/intro" component={Intro} />
                 <Route exact path="/banner/customer" component={Customer} />
                 <Route exact path="/banner/grade" component={Grade} />
@@ -102,16 +102,16 @@ function AppRoute() {
 }
 
 function App() {
-  return (
-      <>
-          <GlobalStyled />
-          <Provider store={store}>
-              <ConnectedRouter history={browserHistory}>
-                  <AppRoute />
-              </ConnectedRouter>
-          </Provider>
-      </>
-  );
+    return (
+        <>
+            <GlobalStyled />
+            <Provider store={store}>
+                <ConnectedRouter history={browserHistory}>
+                    <AppRoute />
+                </ConnectedRouter>
+            </Provider>
+        </>
+    );
 }
 
 export default App;
