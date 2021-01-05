@@ -66,7 +66,6 @@ const PopupOverlay = styled.div`
 const PopupWrapper = styled.div<{ pcHeight?: number }>`
   position: relative;
   height: 100vh;
-  min-height: 640px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;

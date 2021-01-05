@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PopupTemplate from 'components/wematch-ui/PopupTemplate'
 import { createPortal } from "react-dom";
 import * as colors from 'styles/colors';
@@ -14,6 +14,7 @@ import useTimer from 'hooks/useTimer';
 import useHashToggle from 'hooks/useHashToggle';
 import TermsModal from './TermsModal';
 import NewModal from 'components/NewModalTemplate';
+import getMobileOS from 'lib/getMobileOS';
 
 
 interface Props {
@@ -22,6 +23,8 @@ interface Props {
 }
 
 const LoginModal: React.FC<Props> = (props) => {
+    const mobileOS = getMobileOS();
+
     const dispatch = useDispatch();
     const {
         visible = false,
@@ -33,13 +36,13 @@ const LoginModal: React.FC<Props> = (props) => {
     const { loginState } = useSelector(commonSelector.getLoginState);
     const { data: { is_verified }, isSendMessage, loading } = useSelector(commonSelector.getPhoneVerified)
     const { counter, handleCounterStart, handleCounterStop } = useTimer(180);
-    const [isFocus, setIsFocus] = useState(false)
     const [code, setCode] = useState<string>('')
     const [visibleTerms, setVisibleTerms] = useHashToggle('#terms');
     const [visibleTimeout, setVisibleTimeout] = useHashToggle('#timeout');
     const [visibleCancel, setVisibleCancel] = useHashToggle('#verifyCancel');
     const [isTimeout, setIsTimeout] = useState(false);
     const verifyRef = useRef<HTMLInputElement | null>(null);
+    const [isMobileKeyboard, setIsMobileKeyboard] = useState(false);
 
     const handleSubmit = () => {
         setIsTimeout(false);
@@ -78,6 +81,22 @@ const LoginModal: React.FC<Props> = (props) => {
             init_service: getMoveType === 'house' ? '가정이사' : '사무실'
         }))
     }
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (mobileOS === 'Android') {
+                if (window.innerHeight < 400) {
+                    setIsMobileKeyboard(true);
+                } else {
+                    setIsMobileKeyboard(false);
+                }
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [mobileOS])
 
     useEffect(() => {
         if (counter === 0) {
@@ -123,7 +142,7 @@ const LoginModal: React.FC<Props> = (props) => {
                         />
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Input theme="default" border placeholder="휴대폰 번호(-없이)" pattern="[0-9]*" inputMode="numeric"
-                                value={getPhone} onChange={handlePhone} style={{ backgroundColor: is_verified ? '' : "transparent" }} rootStyle={{ flex: 1 }}
+                                value={getPhone} onChange={handlePhone} style={{ backgroundColor: is_verified ? '' : "transparent" }} rootStyle={{ flex: 1 }} maxLength={11}
                                 disabled={is_verified}
                             />
                             <Button theme="primary" disabled={isAuth} style={{ width: "90px", marginLeft: '7px', borderRadius: '4px' }}
@@ -154,7 +173,8 @@ const LoginModal: React.FC<Props> = (props) => {
                         </div>
                     </FormWrapper>
                 </div>
-                <FooterWrappe>
+                {mobileOS === 'Android' && <MobileKeyboardSection isMobileKeyboard={isMobileKeyboard} />}
+                <FooterWrappe isIOS={mobileOS === 'iOS'}>
                     <p>
                         <span onClick={() => setVisibleTerms(true)}>이용약관 및 개인정보처리방침 동의</span>, 견적상담을 위한 개인 정보 제3자 제공 및 마케팅 정보수신 동의 필요
                     </p>
@@ -178,11 +198,10 @@ const LoginModal: React.FC<Props> = (props) => {
 export default LoginModal
 
 const LoginModalWrapper = styled.div<{ isScroll: boolean }>`
-    position: absolute;
     width: 100%;
+    flex: 1;
     box-sizing: border-box;
     backgrorund-color: white;
-    padding: 24px 24px 0 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -194,6 +213,11 @@ const LoginModalWrapper = styled.div<{ isScroll: boolean }>`
     }
 `;
 
+const MobileKeyboardSection = styled.div<{ isMobileKeyboard: boolean }>`
+    height: ${({ isMobileKeyboard }) => isMobileKeyboard ? `${window.innerHeight}px` : '0'};
+`
+
+
 const TextWrppaer = styled.div`
     font-size: 16px;
     letter-spacing: -0.01em;
@@ -202,6 +226,7 @@ const TextWrppaer = styled.div`
     font-weight: normal;
     color: ${colors.gray66};
   
+    padding: 0 24px;
     strong {
       display: block;
       font-weight: 700;
@@ -222,23 +247,31 @@ const TextWrppaer = styled.div`
 `;
 
 const FormWrapper = styled.div`
+    padding: 0 24px;
     input {
         color: ${colors.gray33};
     }
 `
 
-const FooterWrappe = styled.div`
-    position: fixed;
-    bottom: 0;
-    
+const FooterWrappe = styled.div<{ isIOS: boolean }>`
+
     p {
         color: ${colors.gray66};
         padding-bottom: 16px;
-        padding: 0 24px 16px 24px;
+        padding: 0 16px 16px 16px;
         span {
             text-decoration: underline;
         }
     }
+
+    ${({ isIOS }) => isIOS && css`
+        position: fixed;
+        bottom: 0;
+
+        p {
+            padding: 16px;
+        }
+    `}
     
     a {
         color: ${colors.gray66};
@@ -249,10 +282,8 @@ const FooterWrappe = styled.div`
     }
 
     @media screen and (min-width: 768px) {
-        padding: 24px;
         p {
-            padding: 0;
-            padding-bottom: 24px;
+            padding: 0 16px 16px 16px;
         }
         button {
             border-radius: 4px;
