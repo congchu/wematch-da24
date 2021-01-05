@@ -129,12 +129,6 @@ export default function Customer() {
     }
   ]
 
-  useEffect(() => {
-    dataLayer({
-      event: 'pepageview'
-    })
-  }, [])
-
 
   return (
     <BannerLayout title="위매치 고객의 소리" onBack={() => history.goBack()} tags={{

@@ -247,10 +247,6 @@ const PartnerCart = () => {
     if (!getMoveIdxData.idx) {
       setSessionVisible(true)
     }
-
-
-    dataLayer({ event: 'pepageview' })
-
   }, [])
 
 

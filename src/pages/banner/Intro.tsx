@@ -137,12 +137,6 @@ export default function Intro() {
     minWidth: 768,
   })
 
-  useEffect(() => {
-    dataLayer({
-      event: 'pepageview'
-    })
-  }, [])
-
   function welcome() {
     return isTablet ? (
       <Welcome>

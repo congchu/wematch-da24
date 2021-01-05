@@ -214,10 +214,6 @@ const PartnerDetail = () => {
             setSessionVisible(true)
         }
 
-        dataLayer({
-            event: 'pepageview'
-        })
-
     }, [])
 
     useEffect(() => {

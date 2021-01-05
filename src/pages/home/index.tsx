@@ -48,8 +48,6 @@ const Home: React.FC<RouteComponentProps> = ({ location }) => {
     useEffect(() => {
         const mda = queryString.parse(location.search).mda || '';
         setCookie('0dj38gepoekf98234aplyadmin', `agentid=${mda}`)
-
-        dataLayer({ event: 'pepageview' })
     }, [])
 
     return (

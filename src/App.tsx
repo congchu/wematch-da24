@@ -29,6 +29,7 @@ import useUserAgent from 'hooks/useUserAgent'
 import SwiperCore, { Pagination, Autoplay } from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
+import { dataLayer } from 'lib/dataLayerUtil'
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -68,6 +69,8 @@ function AppRoute() {
             `;
             setScript(script)
         }
+
+        dataLayer({ event: 'pageview' })
     }, [location.pathname])
 
     useEffect(() => {

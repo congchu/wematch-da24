@@ -159,11 +159,6 @@ const PartnerList = () => {
         if (!getMoveIdxData.idx) {
             setVisible(true)
         }
-
-        dataLayer({
-            event: 'pepageview'
-        })
-
     }, [])
 
 

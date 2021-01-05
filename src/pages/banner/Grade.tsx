@@ -284,13 +284,6 @@ export default function Grade() {
     { id: 6, level: 'NEW', title: 'N등급 (등급산정중)', text: '좋은 등급을 획득하기\n 위한 의욕적인 서비스\n를 기대할 수 있음' },
   ]
 
-  useEffect(() => {
-    dataLayer({
-      event: 'pepageview'
-    })
-  }, [])
-
-
   return (
     <BannerLayout title="소비자평가등급이란" onBack={() => history.goBack()} tags={{
       back: 'dsl_movesub_grade_back_1',
