@@ -55,8 +55,8 @@ const LoginModal: React.FC<Props> = (props) => {
         const originPhoneValue = event.target.value.replace(/-/gi, '')
         dispatch(formActions.setPhone(originPhoneValue))
     }
-
-    const isAuth = useMemo(() => !(!!getName && getPhone.length >= 11) || is_verified, [getName, getPhone, is_verified]);
+    const isNumRegex = /^[0-9]+$/g;
+    const isAuth = useMemo(() => !(!!getName && getPhone.length >= 11 && isNumRegex.test(getPhone)) || is_verified, [getName, getPhone, is_verified, isNumRegex]);
 
     const handleVerify = () => {
         dispatch(commonActions.fetchVerifyCodeAsync.request({

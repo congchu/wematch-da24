@@ -284,6 +284,12 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
         }
     }
 
+    const handleRequestClick = (submitType: 'curation' | 'select') => {
+        if (!validateHouseOrOfficeForm()) return;
+
+        getLoginState.loginState ? handleSubmit(submitType) : setVisibleLogin(true);
+    }
+
     //TODO: 회원가입 로직 변경에 따른 submit 시점 변경
     const handleSubmit = debounce((submitType: 'curation' | 'select') => {
         let result = false
@@ -435,13 +441,9 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                         </p>
                     </div>
                     <div id="dsl_move_button_requests_1">
-                        <Button theme="primary" bold border onClick={() => {
-                            getLoginState.loginState ? handleSubmit('curation') : setVisibleLogin(true);
-                        }}>견적 신청하기</Button>
+                        <Button theme="primary" bold border onClick={() => handleRequestClick('curation')}>견적 신청하기</Button>
                         {getMoveType !== 'oneroom' && (
-                            <Button theme="default" onClick={() => {
-                                getLoginState.loginState ? handleSubmit('select') : setVisibleLogin(true);
-                            }}>업체 직접고르기</Button>
+                            <Button theme="default" onClick={() => handleRequestClick('select')}>업체 직접고르기</Button>
                         )}
                     </div>
                 </Terms.SubmitContainer>

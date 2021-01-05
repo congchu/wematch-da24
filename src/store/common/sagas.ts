@@ -3,6 +3,7 @@ import { ActionType } from 'typesafe-actions'
 import * as actions from './actions'
 import * as requests from './requests'
 import * as constants from '../../constants/env'
+import { setAgree } from 'store/form/actions'
 
 
 export function* fetchAddressListSaga(action: ActionType<typeof actions.fetchAddressListAsync.request>) {
@@ -43,6 +44,11 @@ export function* fetchMoveIdxSaga(action: ActionType<typeof actions.fetchMoveIdx
 
 export function* fetchSignUpSaga(action: ActionType<typeof actions.fetchSignUpAsync.request>) {
     try {
+        yield put(setAgree({
+            terms: true,
+            privacy: true,
+            marketing: true
+        }))
         const data = yield call(requests.postSignUp, action.payload)
         document.cookie=`X-Wematch-Token=${data}; max-age=${60*60*24*60}`
         yield put(actions.fetchSignUpAsync.success(data))
