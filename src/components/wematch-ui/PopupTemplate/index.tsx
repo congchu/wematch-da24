@@ -54,7 +54,6 @@ const PopupOverlay = styled.div`
   bottom: 0;
   right: 0;
   width: 100%;
-  height: 100vh;
   z-index: 200;
   background-color: white;
   @media screen and (min-width: 768px) {
@@ -65,6 +64,7 @@ const PopupOverlay = styled.div`
 const PopupWrapper = styled.div<{ pcHeight?: number }>`
   position: relative;
   height: 100vh;
+  min-height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
