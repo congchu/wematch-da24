@@ -199,7 +199,7 @@ export default LoginModal
 
 const LoginModalWrapper = styled.div<{ isScroll: boolean }>`
     width: 100%;
-    height: auto;
+    height: ${`${window.innerHeight}px`};
     flex: 1;
     box-sizing: border-box;
     backgrorund-color: white;

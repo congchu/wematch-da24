@@ -83,7 +83,7 @@ const PopupWrapper = styled.div<{ pcHeight?: number }>`
 
 const PopupHeader = styled.div`
   width:100%;
-  height: 56px;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
