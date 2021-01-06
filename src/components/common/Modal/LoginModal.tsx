@@ -16,7 +16,6 @@ import TermsModal from './TermsModal';
 import NewModal from 'components/NewModalTemplate';
 import getMobileOS from 'lib/getMobileOS';
 
-
 interface Props {
     visible: boolean;
     onClose: () => void;
@@ -126,7 +125,7 @@ const LoginModal: React.FC<Props> = (props) => {
 
     return createPortal((
         <PopupTemplate visible={visible} onClose={() => setVisibleCancel(true)} pcHeight={640}>
-            <LoginModalWrapper isScroll={true}>
+            <LoginModalWrapper isScroll={true} mobileOS={mobileOS}>
                 <div style={{ width: '100%' }}>
                     <TextWrppaer>
                         <strong>앗! 위매치 처음 이용하시나요?</strong>
@@ -197,9 +196,11 @@ const LoginModal: React.FC<Props> = (props) => {
 
 export default LoginModal
 
-const LoginModalWrapper = styled.div<{ isScroll: boolean }>`
+const LoginModalWrapper = styled.div<{ isScroll: boolean, mobileOS: string }>`
     width: 100%;
-    flex: 1;
+     ${({ mobileOS }) => mobileOS === 'Android' && css`
+      height: calc(100% - 56px);
+    `};
     box-sizing: border-box;
     backgrorund-color: white;
     display: flex;
@@ -258,7 +259,7 @@ const FooterWrappe = styled.div<{ isIOS: boolean }>`
     p {
         color: ${colors.gray66};
         padding-bottom: 16px;
-        padding: 0 16px 16px 16px;
+        padding: 0 16px 16px 16px;;
         span {
             text-decoration: underline;
         }
