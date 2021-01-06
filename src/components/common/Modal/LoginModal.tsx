@@ -85,7 +85,7 @@ const LoginModal: React.FC<Props> = (props) => {
     useEffect(() => {
         const handleResize = () => {
             if (mobileOS === 'Android') {
-                if (window.innerHeight < 400) {
+                if (window.innerHeight < 500) {
                     setIsMobileKeyboard(true);
                 } else {
                     setIsMobileKeyboard(false);
@@ -199,6 +199,7 @@ export default LoginModal
 
 const LoginModalWrapper = styled.div<{ isScroll: boolean }>`
     width: 100%;
+    height: auto;
     flex: 1;
     box-sizing: border-box;
     backgrorund-color: white;
@@ -210,7 +211,6 @@ const LoginModalWrapper = styled.div<{ isScroll: boolean }>`
         justify-content: space-between;
         align-items: center;
         padding-top: 16px;
-    }
 `;
 
 const MobileKeyboardSection = styled.div<{ isMobileKeyboard: boolean }>`
@@ -254,7 +254,6 @@ const FormWrapper = styled.div`
 `
 
 const FooterWrappe = styled.div<{ isIOS: boolean }>`
-
     p {
         color: ${colors.gray66};
         padding-bottom: 16px;

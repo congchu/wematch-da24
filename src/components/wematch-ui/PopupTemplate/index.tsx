@@ -57,7 +57,6 @@ const PopupOverlay = styled.div`
   height: 100vh;
   z-index: 200;
   background-color: white;
-  
   @media screen and (min-width: 768px) {
     background-color: rgba(18, 18, 18, 0.6);;
   }
@@ -70,7 +69,6 @@ const PopupWrapper = styled.div<{ pcHeight?: number }>`
   flex-direction: column;
   overflow-y: auto;
   background-color: white;
-  padding-top: 56px;
   box-sizing: border-box;
 
   @media screen and (min-width: 768px) {
@@ -84,15 +82,12 @@ const PopupWrapper = styled.div<{ pcHeight?: number }>`
 `;
 
 const PopupHeader = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  width:100%;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   background-color: white;
-  height: 56px;
   z-index: 210;
   svg {
     margin-right: 20px;
