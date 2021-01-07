@@ -125,7 +125,7 @@ const LoginModal: React.FC<Props> = (props) => {
 
     return createPortal((
         <PopupTemplate visible={visible} onClose={() => setVisibleCancel(true)} pcHeight={640}>
-            <LoginModalWrapper isScroll={true} mobileOS={mobileOS}>
+            <LoginModalWrapper>
                 <div style={{ width: '100%' }}>
                     <TextWrppaer>
                         <strong>앗! 위매치 처음 이용하시나요?</strong>
@@ -196,11 +196,9 @@ const LoginModal: React.FC<Props> = (props) => {
 
 export default LoginModal
 
-const LoginModalWrapper = styled.div<{ isScroll: boolean, mobileOS: string }>`
+const LoginModalWrapper = styled.div`
     width: 100%;
-     ${({ mobileOS }) => mobileOS === 'Android' && css`
-      height: calc(100% - 56px);
-    `};
+    flex: 1;
     box-sizing: border-box;
     backgrorund-color: white;
     display: flex;
@@ -257,7 +255,7 @@ const FooterWrappe = styled.div<{ isIOS: boolean }>`
     p {
         color: ${colors.gray66};
         padding-bottom: 16px;
-        padding: 0 16px 16px 16px;;
+        padding: 0 16px 16px 16px;
         span {
             text-decoration: underline;
         }
