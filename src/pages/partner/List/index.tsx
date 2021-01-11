@@ -163,7 +163,7 @@ const PartnerList = () => {
 
 
     useEffect(() => {
-        if (getMoveIdxData.idx && !getMoveIdxData.loading) {
+        if (getMoveIdxData.idx && getPartnerList.data.length === 0 && !getMoveIdxData.loading) {
             dispatch(partnerActions.fetchPartnerListAsync.request({
                 page: values.DEFAULT_PAGE,
                 size: values.DEFAULT_PARTNER_LIST_SIZE,
