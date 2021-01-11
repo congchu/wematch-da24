@@ -45,8 +45,8 @@ const Visual = {
           display: block;
           font-style: normal;
           font-weight: bold;
-          font-size: 20px;
-          line-height: 29px;
+          font-size: 22px;
+          line-height: 32px;
           letter-spacing: -0.03em;
           color: ${colors.gray33};
           margin-bottom: 8px;
@@ -169,6 +169,10 @@ const Terms = {
                 
           strong {
             font-weight: bold;
+    
+            &:last-child {
+                color: ${colors.pointBlue};
+            }
           }
         }
         
@@ -392,7 +396,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
     return (
         <Visual.Section>
             <Visual.Container>
-                <strong>무료 견적상담 신청하기</strong>
+                <strong>어떤 이사업체를 찾으세요?</strong>
                 <p>이사 종류를 선택해주세요.</p>
             </Visual.Container>
             <ButtonGroup headerRef={headerRef} isFixed={isFixed} setIsFixed={setIsFixed} onClick={(type: 'house' | 'oneroom' | 'office' | undefined) => {
@@ -468,14 +472,14 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     <div className="text">
                         <p>
                             내 조건에 맞는 업체<strong>(최대 3개)</strong>에 <br className="mobile-enter" />
-                            비용산정을 위한 <strong>무료 방문견적</strong>을 신청합니다
+                            비용산정을 위한 <strong>무료 견적상담</strong>을 신청합니다
                         </p>
                     </div>
                     <div id="dsl_move_button_requests_1">
                         <Button theme="primary" bold border onClick={() => {
                             handleSubmit('curation')
                             setSubmitType('curation')
-                        }}>견적 신청하기</Button>
+                        }}>추천업체 바로 신청하기</Button>
                         {getMoveType !== 'oneroom' && (
                           <Button theme="default" onClick={() => {
                               handleSubmit('select')

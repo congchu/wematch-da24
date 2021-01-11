@@ -12,7 +12,7 @@ type StyleProps = Pick<Props, 'direction'>
 
 interface GroupProp {
     type: 'house' | 'oneroom' | 'office' | undefined
-    value: '가정' | '원룸' | '사무실' | undefined
+    value: '가정이사' | '원룸이사' | '사무실이사' | undefined
 }
 
 interface Props {
@@ -93,9 +93,9 @@ const ButtonGroup: React.FC<Props> = (props) => {
     const getMoveType = useSelector(formSelector.getType)
 
     const groups: GroupProp[] = [
-        { type: 'house', value: '가정' },
-        { type: 'oneroom', value: '원룸' },
-        { type: 'office', value: '사무실' },
+        { type: 'house', value: '가정이사' },
+        { type: 'oneroom', value: '원룸이사' },
+        { type: 'office', value: '사무실이사' },
     ];
 
     const isDesktop = useMedia({

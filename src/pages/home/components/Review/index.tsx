@@ -19,8 +19,8 @@ const S = {
   `,
   Title: styled.h3`
     font-weight: bold;
-    font-size: 20px;
-    line-height: 29px; 
+    font-size: 22px;
+    line-height: 32px; 
     color: ${gray33};
     margin-bottom: 8px;
     padding: 0 24px;
