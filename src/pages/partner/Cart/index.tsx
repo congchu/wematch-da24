@@ -352,7 +352,7 @@ const PartnerCart = () => {
               <S.Wrapper marginBottom={isEmpty(recommendedList) ? recommendCart.current?.offsetHeight : null}>
                 <S.CardWrapper>
                   {selectList.map((list: IList, index: number) => {
-                    return <Card key={list.id} type={"selected"} list={list} index={index} listLength={selectList.length} onSelect={handleCheck} />
+                    return <Card key={list.adminid} type={"selected"} list={list} index={index} listLength={selectList.length} onSelect={handleCheck} />
                   })}
                   <S.PartnerMoreBtn onClick={() => router.push('/partner/list')} id="dsl_booking_cart_more">업체 더 고르기</S.PartnerMoreBtn>
                 </S.CardWrapper>
@@ -365,7 +365,7 @@ const PartnerCart = () => {
                       <S.CurationTitle>이런 업체는 어떠세요?</S.CurationTitle>
                       <S.CurationSubTitle>고객의 가성비, 평가 키워드, 선택률 데이터 기준으로 추천드려요.</S.CurationSubTitle>
                       {recommendedList.map((list: IList, index: number) => {
-                        return <Card key={list.id} type={'recommended'} index={index} listLength={recommendedList.length} list={list} onSelect={handleCheck} />
+                        return <Card key={list.adminid} type={'recommended'} index={index} listLength={recommendedList.length} list={list} onSelect={handleCheck} />
                       })}
                     </S.CardWrapper>
                   </S.Wrapper>

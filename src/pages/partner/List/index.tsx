@@ -152,12 +152,21 @@ const PartnerList = () => {
         window.open('https://api.happytalk.io/api/kakao/chat_open?yid=%40%EC%9C%84%EB%A7%A4%EC%B9%98&site_id=4000001315&category_id=111561&division_id=111564', '_blank')
     }
 
+    const handlePrevious = () => {
+        dispatch(partnerActions.partnerListReset())
+        history.goBack();
+    }
+
     useEffect(() => {
         if (getFormData.moving_date.length === 0) {
             setVisible(true)
         }
         if (!getMoveIdxData.idx) {
             setVisible(true)
+        }
+
+        return () => {
+
         }
     }, [])
 
@@ -178,7 +187,7 @@ const PartnerList = () => {
 
     return (
         <S.Container>
-            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true} />}
+            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={handlePrevious} showTruck={true} />}
             <SetType count={getPartnerPick.data.length} formData={getFormData} />
             {isEmpty(getPartnerList.data)
                 ? <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다." />
@@ -188,7 +197,7 @@ const PartnerList = () => {
                         <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
                             {getPartnerList.data.map((list: any, index: number) => {
                                 return (
-                                    <PartnerItem key={list.id} profile_img={list.profile_img}
+                                    <PartnerItem key={list.adminid} profile_img={list.profile_img}
                                         level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
                                         pick_cnt={list.pick_cnt} feedback_cnt={list.feedback_cnt} experience={list.experience} status={list.status}
                                         adminid={list.adminid}
