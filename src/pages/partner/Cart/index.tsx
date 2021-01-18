@@ -403,10 +403,9 @@ const PartnerCart = () => {
                   <div>방문없이 가격만 알 순 없나요?</div>
                   <div>&gt;</div>
                   <div className="chat-bubble">
-                                <div className="chat-bubble-arrow"></div>
-                                <div className="chat-bubble-arrow-border"></div>
-                            </div>
-                  
+                    <div className="chat-bubble-arrow"></div>
+                    <div className="chat-bubble-arrow-border"></div>
+                  </div>
                 </S.GuideBtn>
                 <S.OrderBtn onClick={() => handleOrderBtn()} id="dsl_booking_cart_cta" disabled={checkedList.length === 0}>
                   {checkedList.length > 0 && (

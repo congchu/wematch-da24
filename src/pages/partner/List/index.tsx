@@ -187,7 +187,7 @@ const PartnerList = () => {
 
     return (
         <S.Container>
-            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={handlePrevious} showTruck={true} />}
+            {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 목록" count={getPartnerPick.data.length} onPrevious={handlePrevious} showTruck={true} />}
             <SetType count={getPartnerPick.data.length} formData={getFormData} />
             {isEmpty(getPartnerList.data)
                 ? <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다." />
