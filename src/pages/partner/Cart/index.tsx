@@ -24,6 +24,7 @@ import * as partnerActions from "store/partner/actions";
 import * as commonSelector from "store/common/selectors";
 import * as constants from 'constants/env'
 import CheckAlertPopup from "./component/CheckAlertPopup";
+import { ChatArrow } from 'components/Icon';
 
 interface IList {
   id: number;
@@ -188,6 +189,7 @@ const S = {
       }
     `,
   GuideBtn: styled.div`
+      position: relative;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -203,6 +205,31 @@ const S = {
       font-size: 14px;
       line-height: 21px;
       letter-spacing: -1px;
+
+      .chat-bubble {
+            position: absolute;
+            width: 0;
+            height: 0;
+            bottom: -1px;
+            left: 45px;
+            .chat-bubble-arrow {
+                position: absolute;
+                z-index: 10;
+                bottom: -7px;
+                border-top: 9px solid #ffffff;
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-bottom: 0 solid transparent;
+            }
+
+            .chat-bubble-arrow-border {
+                position: absolute;
+                border-top: 9px solid #1672F7;
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-bottom: 0 solid transparent;
+            }
+        }
     
       @media screen and (min-width: 768px) {
         width: 312px;
@@ -375,6 +402,11 @@ const PartnerCart = () => {
                 <S.GuideBtn onClick={() => setGuideVisible(!guideVisible)} id="dsl_booking_cart_content">
                   <div>방문없이 가격만 알 순 없나요?</div>
                   <div>&gt;</div>
+                  <div className="chat-bubble">
+                                <div className="chat-bubble-arrow"></div>
+                                <div className="chat-bubble-arrow-border"></div>
+                            </div>
+                  
                 </S.GuideBtn>
                 <S.OrderBtn onClick={() => handleOrderBtn()} id="dsl_booking_cart_cta" disabled={checkedList.length === 0}>
                   {checkedList.length > 0 && (
