@@ -93,6 +93,7 @@ const SetType:React.FC<Props> = ({count, formData}) => {
 				<span className="type">{dong}</span>
 				<S.ReSelect onClick={() => {
 					dispatch(partnerActions.cartReset())
+					dispatch(partnerActions.partnerListReset())
 					router.history.push('/')}
 				} id="dsl_booking_list_date">
 					날짜변경
