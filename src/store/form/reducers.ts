@@ -117,7 +117,6 @@ export default createReducer<FormState, Actions>(initialState)
             agree: {terms, privacy, marketing}
         }
     })
-    //추가
     .handleAction(actions.submitFormAsync.request, (state) => ({ ...state, submittedForm: { data: undefined, loading: true, report: true } }))
     .handleAction(actions.submitFormAsync.success, (state, action) => ({ ...state, submittedForm: { data: action.payload, loading: false, report: true } }))
     .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state,  submittedForm: { ...state.submittedForm, loading: false, report: false } }))

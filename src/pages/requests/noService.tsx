@@ -87,12 +87,11 @@ export default function NoService() {
     })
   }, [])
 
-  /***리다이렉트방지****/
-  // useEffect(() => {
-  //   if (!getSubmittedForm.data && !getSubmittedForm?.report) {
-  //     window.location.href = `${MOVE_URL}/myconsult.asp`
-  //   }
-  // }, [getSubmittedForm])
+  useEffect(() => {
+    if (!getSubmittedForm.data && !getSubmittedForm?.report) {
+      window.location.href = `${MOVE_URL}/myconsult.asp`
+    }
+  }, [getSubmittedForm])
 
 
   return (

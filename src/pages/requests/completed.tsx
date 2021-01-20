@@ -35,7 +35,6 @@ import {MOVE_URL, MAIN_URL, INTERIOR_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
 import NoService from "./noService";
 
-//?리액트 네이티브? => 일단 건들지 말
 import {events} from 'lib/appsflyer'
 import * as formSelector from "../../store/form/selectors";
 import {createSelector} from "reselect";
@@ -318,7 +317,6 @@ export default function CompletedPage() {
     })
 
 
-    /* FORM */
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
 
     const [infoVisible, setInfoVisible] = useState(false)
@@ -328,7 +326,6 @@ export default function CompletedPage() {
         setInfoVisible(!infoVisible)
     }
 
-    // 쿠키 정보가 있으면 다시 디스패치 / 없으면 내 신청내역 확인으로 이동
     useEffect(() => {
         if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
             dispatch(formActions.submitFormAsync.success(cookies.report))
@@ -340,7 +337,6 @@ export default function CompletedPage() {
         }
     }, [])
 
-    // 성공일 경우에만 호출 => for datalayer & events [DONE]
     useEffect(() => {
         if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'success') {
             dataLayer({
@@ -354,25 +350,21 @@ export default function CompletedPage() {
     }, [getSubmittedForm])
 
 
-    //쿠키 생성하기
     useEffect(() => {
         if (getSubmittedForm.data?.result === 'success' && !getSubmittedForm.loading) {
 
             const now = new Date()
             const time = now.getTime() + (3600 * 1000)
             now.setTime(time)
-            // 쿠키 생성
             setCookie('report', getSubmittedForm?.data, {
                 path: '/',
                 expires: now
             })
-
-            /*** 쿠키로 처리하기 ?***/
-
         }
     }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
 
-    /* skeleton */
+
+    /* SKELETON */
     // if (getSubmittedForm.loading) {
     //   if (cookies.report && getSubmittedForm.report) {
     //     removeCookie('report')
@@ -383,7 +375,7 @@ export default function CompletedPage() {
     //   )
     // }
 
-    // 업체 마감
+
     if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'no partner') {
         history.push('/requests/nopartner')
         // return (
@@ -391,7 +383,7 @@ export default function CompletedPage() {
         // )
     }
 
-    // 지역 업체 없음
+
     if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'no service') {
         history.push('/requests/noservice')
         // return (
@@ -400,7 +392,6 @@ export default function CompletedPage() {
     }
 
 
-    /* 주소 구조 분해 */
     const {
         start,
         end,
@@ -413,7 +404,7 @@ export default function CompletedPage() {
     }
     const {start: startFloor, end: endFloor} = getFloor
 
-    // 날짜형식변환 YYYY-MM-DD -> YYYY.MM.DD DAY
+
     function formatDate(moveDate: string): string {
         if (!moveDate) {
             return moveDate
@@ -427,7 +418,7 @@ export default function CompletedPage() {
         return formattedDate
     }
 
-    //나중에 쿠키 넘겨주기(?)
+
     const userRequestInfo: {
         contact: string;
         movingDate: string;

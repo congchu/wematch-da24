@@ -104,9 +104,6 @@ function AppRoute() {
                 <Route exact path="/banner/grade" component={Grade} />
                 <Route exact path="/unsupported" component={UnSupported} />
                 <Route exact path="/terms" component={Terms} />
-
-                {/*AUTO MATCH - requests 이름 애매 (?)*/}
-                {/*curation 이라고 원래 추천서비스 이름이 있음? */}
                 <Route exact path="/requests/completed" component={CompletedPage} />
                 <Route exact path="/requests/nopartner" component={NoPartnerPage} />
                 <Route exact path="/requests/noservice" component={NoServicePage} />

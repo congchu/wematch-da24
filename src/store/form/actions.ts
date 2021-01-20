@@ -26,15 +26,10 @@ export const setAgree = createAction('SET_TERMS_AGREE')<{
     marketing: boolean;
 }>();
 
-/* 기존 친구들 */
-// export const setFormData = createAction('SET_FORM_DATA')<types.RequestUserInfoInsert>()
 export const setInitialFormData = createAction('SET_INITIAL_FORM_DATA')<any>()
-
-/* 새로 가져온 친구들 */
 export const setFormData = createAction('SET_FORM_DATA')<types.RequestUserInfoInsert>()
 export const submitFormAsync = createAsyncAction(
     'FETCH_SUBMIT_FORM_REQUEST',
     'FETCH_SUBMIT_FORM_SUCCESS',
     'FETCH_SUBMIT_FORM_FAILURE'
 )<{formData: types.RequestUserInfoInsert}, SubmittedForm, undefined>()
-//arg1 form:타입 => 나중에아닐수도있으니 재확인 필요 / 당장은 정상작동 (@2020-01-18)

@@ -12,8 +12,5 @@ export const getPhone = createSelector(getFormState, state => state.phone)
 export const getIsMoveStore = createSelector(getFormState, state => state.isMoveStore)
 export const getAgree = createSelector(getFormState, state => state.agree)
 export const getContents = createSelector(getFormState, state => state.contents)
-
 export const getFormData = createSelector(getFormState, state => state.formData)
-
-/* ADDED FOR AUTO-MATCH RELATED */
 export const getSubmittedForm = createSelector(getFormState, state => state.submittedForm)

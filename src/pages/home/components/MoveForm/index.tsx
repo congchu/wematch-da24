@@ -200,10 +200,6 @@ const HouseTitle = styled.div<{selectMoveType: 'house' | 'oneroom' | 'office' | 
   }  
 `
 
-// 요기까지 UI
-
-
-/* CHECK FROM HERE */
 
 interface Props {
     headerRef?: React.RefObject<HTMLDivElement>;
@@ -294,7 +290,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
         }
     }, [getMoveType])
 
-    //출발지 도착지 거리계산 후 제출할 최종 formData set
     const handleSubmit = debounce((submitType: 'curation' | 'select') => {
 
         let result = false
@@ -304,17 +299,14 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
 
 
         if (result) {
-            // 거리 계산 (?)
             calcRouteByDirectionService({
                 start: getAddress.start,
                 end: getAddress.end
             }, (distance) => {
-                //거리계산 콜백
 
-                // 1. 거리설정는애
-                if (distance) { //거리가 있으면 거리 설정하기
+                if (distance) {
                     setDistance(distance)
-                } else { // 거리없으면 어찌저찌 다른 함수 불러서 거리 설정하기
+                } else {
                     calcRouteByGeoCoder([getAddress.start, getAddress.end], (coords) => {
                         if (coords) {
                             setDistance(String(google.maps.geometry.spherical.computeDistanceBetween(coords[0], coords[1]) / 1000))
@@ -322,7 +314,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     })
                 }
 
-                // 2. formData에 1에서 구한 distance를 넣
                 const formData: commonTypes.RequestUserInfoInsert = {
                     moving_type: translateMovingType(getMoveType),
                     moving_date: getMoveDate[0],
@@ -346,7 +337,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     agent_id: queryString.parse(get(cookies, '0dj38gepoekf98234aplyadmin')).agentid,
                 }
 
-                //3. 2에서 새로 만든 formData객체를 dispatch해서 formData상태 업데이트
                 dispatch(formActions.setFormData(formData))
 
                 if (get(cookies, 'form') !== undefined) {
@@ -363,12 +353,11 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     CD10: getIsMoveStore ? 'Y' : 'N'
                 })
 
-            }) // END OF calcRouteByDirectionService
+            })
 
         }
-    }, 500) //END OF HANDLE SUBMIT
+    }, 500)
 
-    //이사타입 설정
     useEffect(() => {
         const { type } = router.query
         if (cookies.formData) {
@@ -381,7 +370,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
 
     }, [])
 
-    //핸드폰 인증
     useEffect(() => {
         if (getPhoneVerified.data.is_verified && visibleVerifyPhone) {
             setVisibleVerifyPhone(false)
@@ -395,7 +383,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
 
     }, [getPhoneVerified.data])
 
-    //폼데이터와 submit타입이 휴대폰인증 보이기 true -> 제출 가능한 상태인지 확
     useEffect(() => {
         if (getFormData && submitType) {
             setVisibleVerifyPhone(true)
@@ -403,16 +390,12 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
     }, [getFormData])
 
 
-    /**** 중요한 부분 ****/
-    // getMoveIdxData stands ?????WHAT
+
 
     useEffect(() => {
         if(getMoveIdxData.idx && submitType === 'curation' && !getMoveIdxData.loading) {
-            /* dispatch */
-            // 기존코드  : document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
-            // alert('디스페치 바꾸기');
-
-            // seeResults();
+            /* to asp*/
+            // document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
 
             dataLayer({
                 event: 'step_4',
@@ -425,11 +408,9 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                 action: 'app_move_oneroom_order_04'
             })
 
-
             /**** getting results! ***/
             dispatch(formActions.submitFormAsync.request({formData: getFormData}));
 
-            // 원래주석 : 필요하면 나중에 넣기
             // history.push('/requests/completed')
 
         }
@@ -439,36 +420,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
         }
 
     }, [getMoveIdxData])
-
-
-    // //함수 하나 따로 만들어서 처리함
-    // const seeResults = () => {
-    //     /**** 여기도 액션, 이벤트 타입 바꿔야함 ****/
-    //     dataLayer({
-    //         event: 'step_4',
-    //         category: '다이사_원룸_신청',
-    //         action: '견적정보',
-    //         label: 'step_4'
-    //     })
-    //
-    //     events({
-    //         action: 'app_move_oneroom_order_04'
-    //     })
-    //
-    //
-    //     /**** getting results! ***/
-    //     dispatch(formActions.submitFormAsync.request(getFormData));
-    //
-    //
-    //     // 원래주석 : 필요하면 나중에 넣기
-    //     // history.push('/requests/completed')
-    // }
-
-    /*** 중요한 부분 ***/
-
-
-
-
 
 
     return (

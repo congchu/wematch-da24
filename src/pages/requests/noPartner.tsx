@@ -150,7 +150,6 @@ export default function NoPartner() {
         history.push('/requests/completed')
     }
 
-    /* CALENDAR */
     const toggleCalendarCancel = () => {
         dispatch(formActions.setMoveDate([]))
         setVisibleCalendarModal(!visibleCalendarModal)
@@ -186,13 +185,11 @@ export default function NoPartner() {
         })
     }, [])
 
-    //리다이렉트 방지
-    // useEffect(() => {
-    //     if (!getSubmittedForm.data && !getSubmittedForm?.report) {
-    //         window.location.href = `${MOVE_URL}/myconsult.asp`
-    //     }
-    // }, [getSubmittedForm])
-
+    useEffect(() => {
+        if (!getSubmittedForm.data && !getSubmittedForm?.report) {
+            window.location.href = `${MOVE_URL}/myconsult.asp`
+        }
+    }, [getSubmittedForm])
 
 
     return (
