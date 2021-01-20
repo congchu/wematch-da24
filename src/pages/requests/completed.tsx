@@ -1,0 +1,532 @@
+import React, {useEffect, useState} from 'react'
+import styled from 'styled-components'
+import {useMedia} from 'react-use-media'
+import {useDispatch, useSelector} from 'react-redux'
+import {useCookies} from 'react-cookie'
+import {useHistory} from 'react-router-dom'
+
+import MainHeader from 'components/common/MainHeader/index'
+import Collapse from 'components/base/BaseFromOneroom/collapse'
+// import CompletedSkeleton from 'components/common/complatedSkeleton'
+
+
+/* ICON */
+import SvgDown from 'components/wematch-ui/Icon/generated/Down'
+import SvgUp from 'components/wematch-ui/Icon/generated/Up'
+import SvgInfo from 'components/wematch-ui/Icon/generated/Info'
+import Triangle from 'components/Icon/generated/Triangle'
+import SvgCheckCircleOn from "components/wematch-ui/Icon/generated/CheckCircleOn"
+import Check from 'components/Icon/generated/Check'
+
+// import LevelIcon from "../../components/LevelIcon"
+import LevelN from 'components/Icon/generated/LevelN'
+import LevelS from 'components/Icon/generated/LevelS'
+import LevelA from 'components/Icon/generated/LevelA'
+import LevelB from 'components/Icon/generated/LevelB'
+import LevelC from 'components/Icon/generated/LevelC'
+
+
+/* FORM */
+import * as formActions from 'store/form/actions'
+import * as formSelectors from 'store/form/selectors'
+
+import * as colors from 'styles/colors'
+import {MOVE_URL, MAIN_URL, INTERIOR_URL} from 'constants/env'
+import {dataLayer} from 'lib/dataLayerUtil'
+import NoService from "./noService";
+
+//?리액트 네이티브? => 일단 건들지 말
+import {events} from 'lib/appsflyer'
+import * as formSelector from "../../store/form/selectors";
+import {createSelector} from "reselect";
+
+
+/* SKELETON */
+// import CompletedSkeleton from 'components/common/AutoMatchSkeleton/complatedSkeleton'
+
+
+const S = {
+    Container: styled.div``,
+    TopContents: styled.div`
+      padding: 50px 0 8px;
+      @media screen and (max-width: 320px) {
+        padding: 40px 0 0;
+      }
+    `,
+    ContentsWrap: styled.div`
+      position: relative;
+      padding: 0 24px 42px;
+      @media screen and (min-width: 768px) {
+        width: 720px;
+        margin: 0 auto;
+        padding: 0 0 42px;
+      }
+
+      .toggle {
+        cursor: pointer;
+      }
+    `,
+    Icon: styled.div`
+      position: relative;
+      width: 56px;
+      height: 56px;
+      margin: 0 auto;
+      border-radius: 50%;
+      background-color: #1672F7;
+
+      svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -9px;
+        margin-left: -13px;
+      }
+    `,
+    TopTitle: styled.p`
+      margin-top: 15px;
+      font-size: 18px;
+      text-align: center;
+
+      em {
+        font-weight: 700;
+      }
+
+      span {
+        display: inline-block;
+        margin-top: 14px;
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+      @media screen and (min-width: 1200px) {
+        font-size: 24px;
+      }
+    `,
+    TitleWrap: styled.div`
+      overflow: hidden;
+      padding-top: 32px;
+      border-bottom: 1px solid #EBEEF2;
+
+      svg {
+        float: right;
+      }
+
+      @media screen and (min-width: 768px) {
+        padding-top: 52px;
+      }
+    `,
+    BoxTitle: styled.strong`
+      display: block;
+      float: left;
+      padding-bottom: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 24px;
+
+      em {
+        color: #1672F7;
+      }
+    `,
+    LevelInfo: styled.p`
+      float: right;
+      padding-top: 4px;
+      font-size: 14px;
+      cursor: pointer;
+
+      svg {
+        margin-left: 8px;
+      }
+    `,
+    LevelInfoBox: styled.div<{ visible: boolean }>`
+      display: ${props => (props.visible ? 'block' : 'none')};
+      position: absolute;
+      top: 64px;
+      right: 24px;
+      width: 193px;
+      height: 56px;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      background: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      box-sizing: border-box;
+      line-height: 18px;
+
+      svg {
+        position: absolute;
+        top: -8px;
+        right: 20px;
+      }
+
+      @media screen and (min-width: 768px) {
+        top: 84px;
+        right: 0;
+      }
+    `,
+    CompanyList: styled.ul`
+      li {
+        overflow: hidden;
+        padding: 20px 0 9px;
+      }
+    `,
+    ListBox: styled.div`
+      overflow: hidden;
+
+      svg {
+        float: left;
+        @media screen and (max-width: 320px) {
+          width: 48px;
+          height: 48px;
+        }
+      }
+    `,
+    CompanyTitle: styled.p`
+      overflow: hidden;
+      float: left;
+      width: 76%;
+      margin: 7px 0 0 10px;
+      font-size: 16px;
+      font-weight: 700;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      span {
+        display: inline-block;
+        margin-top: 12px;
+        font-size: 14px;
+        font-weight: 400;
+        @media screen and (max-width: 320px) {
+          margin-top: 6px;
+          font-size: 12px;
+        }
+      }
+
+      @media screen and (max-width: 320px) {
+        margin: 5px 0 0 10px;
+        font-size: 15px;
+      }
+    `,
+    LinkCompany: styled.a`
+      display: block;
+      margin-top: 20px;
+      padding: 12px 0;
+      border: 1px solid #D7DBE2;
+      border-radius: 6px;
+      font-size: 14px;
+      text-align: center;
+      @media screen and (max-width: 320px) {
+        margin-top: 12px;
+        font-size: 13px;
+      }
+
+      em {
+        font-weight: 700;
+        color: #1672F7;
+      }
+    `,
+    MoveInfo: styled.ul`
+      padding: 21px 0 6px;
+      border-bottom: 1px solid #EBEEF2;
+
+      li {
+        overflow: hidden;
+        margin-bottom: 15px;
+      }
+    `,
+    MoveText: styled.p`
+      float: left;
+      width: 27%;
+      padding-top: 3px;
+      font-size: 15px;
+      color: ${colors.gray88};
+    `,
+    MoveSubtext: styled.p`
+      float: left;
+      width: 73%;
+      font-size: 15px;
+      color: #333;
+      line-height: 22px;
+    `,
+    MoveOption: styled.ul`
+      padding-top: 24px;
+
+      li {
+        overflow: hidden;
+        margin-bottom: 20px;
+      }
+
+      li:first-child {
+        padding-bottom: 16px;
+        border-bottom: 1px solid #EBEEF2;
+      }
+    `,
+    ServiceList: styled.div`
+      overflow: hidden;
+      clear: both;
+    `,
+    ServiceLink: styled.a`
+      float: left;
+      width: 25%;
+
+      svg {
+        display: block;
+        margin: 17px auto 0;
+      }
+    `,
+    ServiceText: styled.p`
+      margin-top: 20px;
+      font-size: 15px;
+      text-align: center;
+    `,
+    Button: styled.button`
+      display: block;
+      width: 100%;
+      height: 56px;
+      font-size: 18px;
+      background: #1672F7;
+      color: #fff;
+      @media screen and (min-width: 1200px) {
+        width: 720px;
+        margin: 0 auto 106px;
+      }
+    `
+}
+
+export default function CompletedPage() {
+
+
+    const getMoveType = useSelector(formSelector.getType)
+    const getMoveDate = useSelector(formSelector.getDate)
+    const getAddress = useSelector(formSelector.getAddress)
+    const getFloor = useSelector(formSelector.getFloor)
+    const getName = useSelector(formSelector.getName)
+    const getPhone = useSelector(formSelector.getPhone)
+    const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
+    const getContents = useSelector(formSelector.getContents)
+
+
+    const dispatch = useDispatch()
+    const history = useHistory()
+
+    const [dong, setDong] = useState('')
+    const [cookies, setCookie] = useCookies(['report'])
+    const isDesktop = useMedia({
+        minWidth: 1200,
+    })
+    const isTablet = useMedia({
+        minWidth: 760,
+    })
+
+
+    /* FORM */
+    const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
+
+    const [infoVisible, setInfoVisible] = useState(false)
+    const [expand, setExpand] = useState(true)
+
+    const toggleInfoBox = () => {
+        setInfoVisible(!infoVisible)
+    }
+
+    // 쿠키 정보가 있으면 다시 디스패치 / 없으면 내 신청내역 확인으로 이동
+    useEffect(() => {
+        if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+            dispatch(formActions.submitFormAsync.success(cookies.report))
+
+
+        }
+        if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
+            window.location.href = `${MOVE_URL}/myconsult.asp`
+        }
+    }, [])
+
+    // 성공일 경우에만 호출 => for datalayer & events [DONE]
+    useEffect(() => {
+        if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'success') {
+            dataLayer({
+                event: 'pageview',
+            })
+
+            events({
+                action: 'app_move_done'
+            })
+        }
+    }, [getSubmittedForm])
+
+
+    //쿠키 생성하기
+    useEffect(() => {
+        if (getSubmittedForm.data?.result === 'success' && !getSubmittedForm.loading) {
+
+            const now = new Date()
+            const time = now.getTime() + (3600 * 1000)
+            now.setTime(time)
+            // 쿠키 생성
+            setCookie('report', getSubmittedForm?.data, {
+                path: '/',
+                expires: now
+            })
+
+            /*** 쿠키로 처리하기 ?***/
+
+        }
+    }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
+
+    /* skeleton */
+    // if (getSubmittedForm.loading) {
+    //   if (cookies.report && getSubmittedForm.report) {
+    //     removeCookie('report')
+    //   }
+    //
+    //   return (
+    //     <CompletedSkeleton />
+    //   )
+    // }
+
+    // 업체 마감
+    if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'no partner') {
+        history.push('/requests/nopartner')
+        // return (
+        //   <NoPartner />
+        // )
+    }
+
+    // 지역 업체 없음
+    if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'no service') {
+        history.push('/requests/noservice')
+        // return (
+        //   <NoService />
+        // )
+    }
+
+
+    /* 주소 구조 분해 */
+    const {
+        start,
+        end,
+        detailStart,
+        detailEnd
+    }: { start: string, end: string, detailStart: string, detailEnd: string } = getAddress;
+    const floor = {
+        start: 'string',
+        end: 'string'
+    }
+    const {start: startFloor, end: endFloor} = getFloor
+
+    // 날짜형식변환 YYYY-MM-DD -> YYYY.MM.DD DAY
+    function formatDate(moveDate: string): string {
+        if (!moveDate) {
+            return moveDate
+        }
+
+        const week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일')
+        const movingOutDay = new Date(moveDate).getDay()
+        const dayLabel = week[movingOutDay]
+        const formattedMoveDate = moveDate.replace(/-/g, ',')
+        const formattedDate = formattedMoveDate + ' ' + dayLabel
+        return formattedDate
+    }
+
+    //나중에 쿠키 넘겨주기(?)
+    const userRequestInfo: {
+        contact: string;
+        movingDate: string;
+        movingType: string;
+        startAddr: string;
+        endAddr: string;
+        memo: string;
+    } = {
+        contact: '(' + getName + ')' + getPhone,
+        movingDate: formatDate(getMoveDate[0]),
+        movingType: (getMoveType === 'house' ? '가정이사' : '') + '(' + (getIsMoveStore ? '보관이사 해당 있음' : '보관이사 해당 없음') + ')',
+        startAddr: start + ' ' + detailStart + ' ' + startFloor + '층',
+        endAddr: end + ' ' + detailEnd + ' ' + endFloor + '층',
+        memo: (getContents ? getContents : '')
+    };
+
+
+    return (
+        <>
+            {/* 스켈레톤 나중에 여기에 넣기 */}
+            <S.Container>
+                {isDesktop && <MainHeader/>}
+                <S.TopContents>
+                    <S.Icon><Check fill={'#fff'}/></S.Icon>
+                    <S.TopTitle><em>이사업체
+                        매칭</em> 완료 <br/><span>2일 내 연락이 없다면<br/> 고객센터(1522-2483)로 문의해주세요.</span></S.TopTitle>
+                </S.TopContents>
+                <S.ContentsWrap>
+                    <S.TitleWrap>
+                        <S.BoxTitle>업체 정보</S.BoxTitle>
+                        <S.LevelInfo onClick={toggleInfoBox}>소비자평가등급 <SvgInfo/></S.LevelInfo>
+                    </S.TitleWrap>
+                    <S.LevelInfoBox visible={infoVisible}>
+                        <Triangle/>
+                        이용 고객이 평가한 내용으로 산출한 빅 데이터 등급입니다.
+                    </S.LevelInfoBox>
+                    <S.CompanyList>
+                        {getSubmittedForm?.data?.["match_list"]?.map((list, index) => (
+                            <li key={index}>
+                                <S.ListBox>
+                                    {list.level === 'NEW' && <LevelN/>}
+                                    {list.level === 'S' && <LevelS/>}
+                                    {list.level === 'A' && <LevelA/>}
+                                    {list.level === 'B' && <LevelB/>}
+                                    {list.level === 'C' && <LevelC/>}
+                                    <S.CompanyTitle>
+                                        {list.adminname} <br/>
+                                        <span>{list.level_text}</span>
+                                    </S.CompanyTitle>
+                                </S.ListBox>
+                                <S.LinkCompany onClick={() => {
+                                    dataLayer({
+                                        event: 'admin_idx',
+                                        category: '다이사_신청완료',
+                                        action: '고객평가_확인',
+                                        label: `${getSubmittedForm?.data?.["match_list"].length}_${index + 1}`
+                                    })
+                                    window.location.href = `${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`
+                                }}>
+                                    <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
+                                </S.LinkCompany>
+                            </li>
+                        ))}
+                    </S.CompanyList>
+                    <S.TitleWrap onClick={() => setExpand(!expand)} className="toggle">
+                        <S.BoxTitle>내 신청 정보</S.BoxTitle>
+                        {expand ? <SvgUp style={{marginTop: 6}}/> : <SvgDown style={{marginTop: 6}}/>}
+                    </S.TitleWrap>
+                    <Collapse expand={expand}>
+                        <S.MoveInfo>
+                            <li>
+                                <S.MoveText>연락처</S.MoveText>
+                                <S.MoveSubtext>{userRequestInfo.contact}</S.MoveSubtext>
+                            </li>
+                            <li>
+                                <S.MoveText>이사날짜</S.MoveText>
+                                <S.MoveSubtext>{userRequestInfo.movingDate}</S.MoveSubtext>
+                            </li>
+                            <li>
+                                <S.MoveText>이사 종류</S.MoveText>
+                                <S.MoveSubtext>{userRequestInfo.movingType}</S.MoveSubtext>
+                            </li>
+                            <li>
+                                <S.MoveText>출발지</S.MoveText>
+                                <S.MoveSubtext>{userRequestInfo.startAddr}</S.MoveSubtext>
+                            </li>
+                            <li>
+                                <S.MoveText>도착지</S.MoveText>
+                                <S.MoveSubtext>{userRequestInfo.endAddr}</S.MoveSubtext>
+                            </li>
+                            <li>
+                                <S.MoveText>전달메모</S.MoveText>
+                                <S.MoveSubtext>{userRequestInfo.memo}</S.MoveSubtext>
+                            </li>
+                        </S.MoveInfo>
+                    </Collapse>
+                </S.ContentsWrap>
+                <S.Button onClick={() => window.location.href = `${MOVE_URL}`}>신청 정보 확인완료</S.Button>
+            </S.Container>
+        </>
+    )
+}

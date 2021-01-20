@@ -30,6 +30,11 @@ import SwiperCore, { Pagination, Autoplay } from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
 import { dataLayer } from 'lib/dataLayerUtil'
+import CompletedPage from 'pages/requests/completed';
+import NoServicePage from 'pages/requests/noService';
+import NoPartnerPage from 'pages/requests/noPartner';
+import NotFound from "./pages/notFound";
+import ErrorService from "./pages/errorService";
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -99,6 +104,15 @@ function AppRoute() {
                 <Route exact path="/banner/grade" component={Grade} />
                 <Route exact path="/unsupported" component={UnSupported} />
                 <Route exact path="/terms" component={Terms} />
+
+                {/*AUTO MATCH - requests 이름 애매 (?)*/}
+                {/*curation 이라고 원래 추천서비스 이름이 있음? */}
+                <Route exact path="/requests/completed" component={CompletedPage} />
+                <Route exact path="/requests/nopartner" component={NoPartnerPage} />
+                <Route exact path="/requests/noservice" component={NoServicePage} />
+                <Route exact path="/error" component={ErrorService}/>
+                <Route component={NotFound} />
+
             </Switch>
         )
     }

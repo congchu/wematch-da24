@@ -9,6 +9,7 @@ import CommonService, { CommonState } from './common/reducers'
 import FormService, { FormState } from './form/reducers'
 import PartnerSaga from './partner/sagas'
 import CommonSaga from './common/sagas'
+import FormSaga from './form/sagas'
 
 export interface RootState {
     router: RouterState;
@@ -49,5 +50,6 @@ function* rootSaga() {
     ])
 }
 sagaMiddleware.run(rootSaga)
+sagaMiddleware.run(FormSaga)
 
 export default index

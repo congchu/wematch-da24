@@ -13,7 +13,7 @@ const generatedForExportIconCode = files
     })
     .join('\n')
 
-fs.writeFile(path.join(__dirname, 'index.ts'), [generatedForExportIconCode + '\n'], err => {
+fs.writeFile(path.join(__dirname, 'index.tsx'), [generatedForExportIconCode + '\n'], err => {
     if (err) throw err
     console.log('The index file has been saved!')
 })

@@ -1,14 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useCookies } from 'react-cookie'
-import { useRouter } from 'hooks/useRouter'
+import {useDispatch, useSelector} from 'react-redux'
+import {useCookies} from 'react-cookie'
+import {useRouter} from 'hooks/useRouter'
 import queryString from 'query-string'
-import styled, { css } from 'styled-components'
-import { get, isEmpty, debounce } from 'lodash'
+import styled, {css} from 'styled-components'
+import {debounce, get, isEmpty} from 'lodash'
 import dayjs from 'dayjs'
 
-import { Icon } from 'components/wematch-ui'
-import { Checkbox } from 'components/wematch-ui/Checkbox'
+import {Icon} from 'components/wematch-ui'
+import {Checkbox} from 'components/wematch-ui/Checkbox'
 
 import Button from 'components/common/Button'
 import PhoneVerifyPopup from 'components/common/Popup/PhoneVerifyPopup'
@@ -17,7 +17,7 @@ import OneroomNoticePopup from 'components/common/Popup/OneroomNoticePopup'
 import TermsModal from 'components/common/Modal/TermsModal'
 
 import ButtonGroup from 'components/common/ButtonGroup'
-import MoveInput  from 'pages/home/components/MoveInput'
+import MoveInput from 'pages/home/components/MoveInput'
 
 import * as commonSelector from 'store/common/selectors'
 import * as commonActions from 'store/common/actions'
@@ -26,12 +26,13 @@ import * as formSelector from 'store/form/selectors'
 import * as formActions from 'store/form/actions'
 
 import * as colors from 'styles/colors'
-import { addressSplit, phoneSplit, translateMovingType } from 'components/wematch-ui/utils/form'
+import {addressSplit, phoneSplit, translateMovingType} from 'components/wematch-ui/utils/form'
 
-import { calcRouteByDirectionService, calcRouteByGeoCoder } from 'lib/distanceUtil'
-import { dataLayer } from 'lib/dataLayerUtil'
-import { MOVE_URL, ONEROOM_URL } from 'constants/env'
+import {calcRouteByDirectionService, calcRouteByGeoCoder} from 'lib/distanceUtil'
+import {dataLayer} from 'lib/dataLayerUtil'
+import {ONEROOM_URL} from 'constants/env'
 import useHashToggle from 'hooks/useHashToggle'
+import {events} from "../../../../lib/appsflyer";
 
 const Visual = {
     Section: styled.section`
@@ -199,6 +200,11 @@ const HouseTitle = styled.div<{selectMoveType: 'house' | 'oneroom' | 'office' | 
   }  
 `
 
+// 요기까지 UI
+
+
+/* CHECK FROM HERE */
+
 interface Props {
     headerRef?: React.RefObject<HTMLDivElement>;
     isFixed?: boolean;
@@ -288,7 +294,9 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
         }
     }, [getMoveType])
 
+    //출발지 도착지 거리계산 후 제출할 최종 formData set
     const handleSubmit = debounce((submitType: 'curation' | 'select') => {
+
         let result = false
         if (getMoveType === 'house' || getMoveType === 'office') {
             result = validateHouseOrOfficeForm()
@@ -296,13 +304,17 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
 
 
         if (result) {
+            // 거리 계산 (?)
             calcRouteByDirectionService({
                 start: getAddress.start,
                 end: getAddress.end
             }, (distance) => {
-                if (distance) {
+                //거리계산 콜백
+
+                // 1. 거리설정는애
+                if (distance) { //거리가 있으면 거리 설정하기
                     setDistance(distance)
-                } else {
+                } else { // 거리없으면 어찌저찌 다른 함수 불러서 거리 설정하기
                     calcRouteByGeoCoder([getAddress.start, getAddress.end], (coords) => {
                         if (coords) {
                             setDistance(String(google.maps.geometry.spherical.computeDistanceBetween(coords[0], coords[1]) / 1000))
@@ -310,7 +322,8 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     })
                 }
 
-                const formData:commonTypes.RequestUserInfoInsert = {
+                // 2. formData에 1에서 구한 distance를 넣
+                const formData: commonTypes.RequestUserInfoInsert = {
                     moving_type: translateMovingType(getMoveType),
                     moving_date: getMoveDate[0],
                     floor: `${getFloor.start}`,
@@ -333,6 +346,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     agent_id: queryString.parse(get(cookies, '0dj38gepoekf98234aplyadmin')).agentid,
                 }
 
+                //3. 2에서 새로 만든 formData객체를 dispatch해서 formData상태 업데이트
                 dispatch(formActions.setFormData(formData))
 
                 if (get(cookies, 'form') !== undefined) {
@@ -348,11 +362,13 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     CD6: getMoveTypeText(),
                     CD10: getIsMoveStore ? 'Y' : 'N'
                 })
-            })
+
+            }) // END OF calcRouteByDirectionService
 
         }
-    }, 500)
+    }, 500) //END OF HANDLE SUBMIT
 
+    //이사타입 설정
     useEffect(() => {
         const { type } = router.query
         if (cookies.formData) {
@@ -365,6 +381,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
 
     }, [])
 
+    //핸드폰 인증
     useEffect(() => {
         if (getPhoneVerified.data.is_verified && visibleVerifyPhone) {
             setVisibleVerifyPhone(false)
@@ -378,25 +395,86 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
 
     }, [getPhoneVerified.data])
 
+    //폼데이터와 submit타입이 휴대폰인증 보이기 true -> 제출 가능한 상태인지 확
     useEffect(() => {
         if (getFormData && submitType) {
             setVisibleVerifyPhone(true)
         }
     }, [getFormData])
 
+
+    /**** 중요한 부분 ****/
+    // getMoveIdxData stands ?????WHAT
+
     useEffect(() => {
         if(getMoveIdxData.idx && submitType === 'curation' && !getMoveIdxData.loading) {
-            document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
+            /* dispatch */
+            // 기존코드  : document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
+            // alert('디스페치 바꾸기');
+
+            // seeResults();
+
+            dataLayer({
+                event: 'step_4',
+                category: '다이사_원룸_신청',
+                action: '견적정보',
+                label: 'step_4'
+            })
+
+            events({
+                action: 'app_move_oneroom_order_04'
+            })
+
+
+            /**** getting results! ***/
+            dispatch(formActions.submitFormAsync.request({formData: getFormData}));
+
+            // 원래주석 : 필요하면 나중에 넣기
+            // history.push('/requests/completed')
+
         }
+
         if(getMoveIdxData.idx && submitType === 'select' && !getMoveIdxData.loading) {
             router.history.push(`/partner/list`)
         }
+
     }, [getMoveIdxData])
+
+
+    // //함수 하나 따로 만들어서 처리함
+    // const seeResults = () => {
+    //     /**** 여기도 액션, 이벤트 타입 바꿔야함 ****/
+    //     dataLayer({
+    //         event: 'step_4',
+    //         category: '다이사_원룸_신청',
+    //         action: '견적정보',
+    //         label: 'step_4'
+    //     })
+    //
+    //     events({
+    //         action: 'app_move_oneroom_order_04'
+    //     })
+    //
+    //
+    //     /**** getting results! ***/
+    //     dispatch(formActions.submitFormAsync.request(getFormData));
+    //
+    //
+    //     // 원래주석 : 필요하면 나중에 넣기
+    //     // history.push('/requests/completed')
+    // }
+
+    /*** 중요한 부분 ***/
+
+
+
+
+
 
     return (
         <Visual.Section>
             <Visual.Container>
-                <strong>어떤 이사업체를 찾으세요?</strong>
+                <strong>어떤 이사업체를 찾으세요? [테스트]</strong>
                 <p>이사 종류를 선택해주세요.</p>
             </Visual.Container>
             <ButtonGroup headerRef={headerRef} isFixed={isFixed} setIsFixed={setIsFixed} onClick={(type: 'house' | 'oneroom' | 'office' | undefined) => {
@@ -404,6 +482,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     document.location.href = `${ONEROOM_URL}`
                     return
                 }
+                //원룸아닌것들 타입세팅하기
                 dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
             }}/>
             <Visual.ButtonGroupContainer>
@@ -425,8 +504,13 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     <Description.InfoType style={{ marginBottom: 0 }} selectMoveType={getMoveType}>
                         <p>빌딩, 공장, 상가 등 짐량 1톤 트럭 초과</p>
                     </Description.InfoType>
+
+                {/*MOVE INPUT*/}
                 <MoveInput type={getMoveType} style={{ marginTop: 30 }} />
+
             </Visual.ButtonGroupContainer>
+
+            {/*보관이사/전체동의*/}
             <>
                 <Terms.Container selectMoveType={getMoveType !== undefined}>
                     <Checkbox label="보관이사 필요" checked={getIsMoveStore} onChange={() => dispatch(formActions.setIsMoveStore(!getIsMoveStore))}/>
@@ -476,10 +560,13 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                         </p>
                     </div>
                     <div id="dsl_move_button_requests_1">
+
+                        {/******* AUTO MATCH *******/}
                         <Button theme="primary" bold border onClick={() => {
                             handleSubmit('curation')
                             setSubmitType('curation')
                         }}>추천업체 바로 신청하기</Button>
+
                         {getMoveType !== 'oneroom' && (
                           <Button theme="default" onClick={() => {
                               handleSubmit('select')
@@ -489,6 +576,8 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     </div>
                 </Terms.SubmitContainer>
             </>
+
+            {/*본인인증*/}
             <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone} onClose={() => setVisibleVerifyPhone(!visibleVerifyPhone)} tags={{
                 authBtn: "dsl_move_button_verify_1",
                 closeBtn: "dsl_move_button_verify_X_1"
