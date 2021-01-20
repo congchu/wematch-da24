@@ -38,6 +38,9 @@ import NoService from "./noService";
 import {events} from 'lib/appsflyer'
 import * as formSelector from "../../store/form/selectors";
 import {createSelector} from "reselect";
+import {FormState} from "../../store/form/reducers";
+import {select} from "redux-saga/effects";
+import {getAgree, getFormData} from "store/form/selectors";
 
 
 /* SKELETON */
@@ -302,6 +305,8 @@ export default function CompletedPage() {
     const getPhone = useSelector(formSelector.getPhone)
     const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
     const getContents = useSelector(formSelector.getContents)
+    const getFormData = useSelector(formSelector.getFormData)
+    const getAgree = useSelector(formSelector.getAgree)
 
 
     const dispatch = useDispatch()
@@ -326,11 +331,24 @@ export default function CompletedPage() {
         setInfoVisible(!infoVisible)
     }
 
+
+    const formState: FormState = {
+        type: getMoveType,
+        date: getMoveDate,
+        address: getAddress ,
+        agree: getAgree,
+        floor: getFloor,
+        formData: getFormData ,
+        isMoveStore: getIsMoveStore,
+        name: getName ,
+        phone: getPhone,
+        submittedForm:getSubmittedForm,
+        contents: getContents
+    }
+
     useEffect(() => {
         if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
             dispatch(formActions.submitFormAsync.success(cookies.report))
-
-
         }
         if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
             window.location.href = `${MOVE_URL}/myconsult.asp`
@@ -356,12 +374,19 @@ export default function CompletedPage() {
             const now = new Date()
             const time = now.getTime() + (3600 * 1000)
             now.setTime(time)
-            setCookie('report', getSubmittedForm?.data, {
+            // setCookie('report', getSubmittedForm?.data, {
+            //     path: '/',
+            //     expires: now
+            // })
+            setCookie('report', formState, {
                 path: '/',
                 expires: now
             })
         }
     }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
+
+
+
 
 
     /* SKELETON */
@@ -413,7 +438,7 @@ export default function CompletedPage() {
         const week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일')
         const movingOutDay = new Date(moveDate).getDay()
         const dayLabel = week[movingOutDay]
-        const formattedMoveDate = moveDate.replace(/-/g, ',')
+        const formattedMoveDate = moveDate.replace(/-/g, '.')
         const formattedDate = formattedMoveDate + ' ' + dayLabel
         return formattedDate
     }
@@ -427,9 +452,9 @@ export default function CompletedPage() {
         endAddr: string;
         memo: string;
     } = {
-        contact: '(' + getName + ')' + getPhone,
+        contact: '(' + getName + ') ' + getPhone,
         movingDate: formatDate(getMoveDate[0]),
-        movingType: (getMoveType === 'house' ? '가정이사' : '') + '(' + (getIsMoveStore ? '보관이사 해당 있음' : '보관이사 해당 없음') + ')',
+        movingType: (getMoveType === 'house' ? '가정이사' : '') + ' (' + (getIsMoveStore ? '보관이사 해당 있음' : '보관이사 해당 없음') + ')',
         startAddr: start + ' ' + detailStart + ' ' + startFloor + '층',
         endAddr: end + ' ' + detailEnd + ' ' + endFloor + '층',
         memo: (getContents ? getContents : '')

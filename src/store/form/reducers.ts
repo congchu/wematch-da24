@@ -117,6 +117,21 @@ export default createReducer<FormState, Actions>(initialState)
             agree: {terms, privacy, marketing}
         }
     })
+    // .handleAction(actions.submitFormAsync.request, (state) => ({ ...state, submittedForm: { data: undefined, loading: true, report: true } }))
+    // .handleAction(actions.submitFormAsync.success, (state, action) => ({ ...state, submittedForm: { data: action.payload, loading: false, report: true } }))
+    // .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state,  submittedForm: { ...state.submittedForm, loading: false, report: false } }))
+
     .handleAction(actions.submitFormAsync.request, (state) => ({ ...state, submittedForm: { data: undefined, loading: true, report: true } }))
-    .handleAction(actions.submitFormAsync.success, (state, action) => ({ ...state, submittedForm: { data: action.payload, loading: false, report: true } }))
+    .handleAction(actions.submitFormAsync.success, (state, action) => ({ ...state,
+        type: action.payload.type,
+        date: action.payload.date,
+        address: action.payload.address ,
+        agree: action.payload.agree,
+        floor: action.payload.floor,
+        formData: action.payload.formData,
+        isMoveStore: action.payload.isMoveStore,
+        name: action.payload.name ,
+        phone: action.payload.phone,
+        contents: action.payload.contents,
+        submittedForm: { data: action.payload.submittedForm.data, loading: false, report: true } }))
     .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state,  submittedForm: { ...state.submittedForm, loading: false, report: false } }))

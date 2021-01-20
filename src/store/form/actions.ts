@@ -1,6 +1,7 @@
 import {createAction, createAsyncAction} from 'typesafe-actions'
 import * as types from 'store/common/types'
 import {SubmittedForm} from 'store/form/form'
+import {FormState} from "./reducers";
 
 export type MoveTypeProp = 'house' | 'oneroom' | 'office' | undefined
 
@@ -32,4 +33,4 @@ export const submitFormAsync = createAsyncAction(
     'FETCH_SUBMIT_FORM_REQUEST',
     'FETCH_SUBMIT_FORM_SUCCESS',
     'FETCH_SUBMIT_FORM_FAILURE'
-)<{formData: types.RequestUserInfoInsert}, SubmittedForm, undefined>()
+)<{formData: types.RequestUserInfoInsert}, FormState, undefined>()
