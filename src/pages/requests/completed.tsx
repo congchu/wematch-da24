@@ -7,6 +7,8 @@ import {useHistory} from 'react-router-dom'
 
 import MainHeader from 'components/common/MainHeader/index'
 import Collapse from 'components/base/BaseFromOneroom/collapse'
+import CompletedSkeletonPC from 'components/common/Skeleton/completedSkeletonPC'
+import CompletedSkeletonTablet from 'components/common/Skeleton/completedSkeletonTablet'
 import CompletedSkeleton from 'components/common/Skeleton/completedSkeleton'
 import SvgDown from 'components/wematch-ui/Icon/generated/Down'
 import SvgUp from 'components/wematch-ui/Icon/generated/Up'
@@ -430,7 +432,10 @@ export default function CompletedPage() {
 
     return (
         <>
-            {getSubmittedForm.loading ? <CompletedSkeleton/> : (
+            {getSubmittedForm.loading ?
+                isDesktop? <CompletedSkeletonPC/> :
+                    isTablet ? <CompletedSkeletonTablet/>:
+                        <CompletedSkeleton/> : (
                 <S.Container>
                     {isDesktop && <MainHeader/>}
                     <S.TopContents>

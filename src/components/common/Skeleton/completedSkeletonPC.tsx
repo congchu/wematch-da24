@@ -42,8 +42,8 @@ function SkeletonType2() {
 
 export default function CompletedSkeletonPC() {
   return (
-      <>
-      <MainHeader/>
+    <>
+    <MainHeader/>
     <S.Container>
       <Skeleton style={{ width: 56, height: 56, borderRadius: '50%' }} animated />
       <Skeleton style={{ width: 140, height: 24, marginTop: 10 }} animated />
@@ -99,6 +99,6 @@ export default function CompletedSkeletonPC() {
         </div>
       </div>
     </S.Container>
-      </>
+    </>
   )
 }
