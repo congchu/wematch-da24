@@ -47,10 +47,10 @@ console.log(index.getState())
 function* rootSaga() {
     yield all([
         PartnerSaga(),
-        CommonSaga()
+        CommonSaga(),
+        FormSaga()
     ])
 }
 sagaMiddleware.run(rootSaga)
-sagaMiddleware.run(FormSaga)
 
 export default index
