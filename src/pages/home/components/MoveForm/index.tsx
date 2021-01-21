@@ -425,7 +425,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
     return (
         <Visual.Section>
             <Visual.Container>
-                <strong>어떤 이사업체를 찾으세요? [테스트]</strong>
+                <strong>어떤 이사업체를 찾으세요?</strong>
                 <p>이사 종류를 선택해주세요.</p>
             </Visual.Container>
             <ButtonGroup headerRef={headerRef} isFixed={isFixed} setIsFixed={setIsFixed} onClick={(type: 'house' | 'oneroom' | 'office' | undefined) => {
@@ -433,7 +433,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     document.location.href = `${ONEROOM_URL}`
                     return
                 }
-                //원룸아닌것들 타입세팅하기
                 dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
             }}/>
             <Visual.ButtonGroupContainer>
@@ -455,13 +454,8 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
                     <Description.InfoType style={{ marginBottom: 0 }} selectMoveType={getMoveType}>
                         <p>빌딩, 공장, 상가 등 짐량 1톤 트럭 초과</p>
                     </Description.InfoType>
-
-                {/*MOVE INPUT*/}
                 <MoveInput type={getMoveType} style={{ marginTop: 30 }} />
-
             </Visual.ButtonGroupContainer>
-
-            {/*보관이사/전체동의*/}
             <>
                 <Terms.Container selectMoveType={getMoveType !== undefined}>
                     <Checkbox label="보관이사 필요" checked={getIsMoveStore} onChange={() => dispatch(formActions.setIsMoveStore(!getIsMoveStore))}/>

@@ -27,7 +27,6 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
             },
             contents: yield select(formSelector.getContents)
         }
-
         yield put(actions.submitFormAsync.success(formState))
         yield put(push('/requests/completed'))
 
