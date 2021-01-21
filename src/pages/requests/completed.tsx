@@ -7,17 +7,12 @@ import {useHistory} from 'react-router-dom'
 
 import MainHeader from 'components/common/MainHeader/index'
 import Collapse from 'components/base/BaseFromOneroom/collapse'
-
-
-/* ICON */
+import CompletedSkeleton from 'components/common/Skeleton/complatedSkeleton'
 import SvgDown from 'components/wematch-ui/Icon/generated/Down'
 import SvgUp from 'components/wematch-ui/Icon/generated/Up'
 import SvgInfo from 'components/wematch-ui/Icon/generated/Info'
 import Triangle from 'components/Icon/generated/Triangle'
-import SvgCheckCircleOn from "components/wematch-ui/Icon/generated/CheckCircleOn"
 import Check from 'components/Icon/generated/Check'
-
-// import LevelIcon from "../../components/LevelIcon"
 import LevelN from 'components/Icon/generated/LevelN'
 import LevelS from 'components/Icon/generated/LevelS'
 import LevelA from 'components/Icon/generated/LevelA'
@@ -25,22 +20,16 @@ import LevelB from 'components/Icon/generated/LevelB'
 import LevelC from 'components/Icon/generated/LevelC'
 
 
-/* FORM */
+
 import * as formActions from 'store/form/actions'
 import * as formSelectors from 'store/form/selectors'
+import * as formSelector from 'store/form/selectors';
+import {FormState} from 'store/form/reducers';
 
 import * as colors from 'styles/colors'
-import {MOVE_URL, MAIN_URL, INTERIOR_URL} from 'constants/env'
+import {MOVE_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
-import NoService from "./noService";
-
 import {events} from 'lib/appsflyer'
-import * as formSelector from "../../store/form/selectors";
-import {FormState} from "../../store/form/reducers";
-
-
-/* SKELETON */
-import CompletedSkeleton from 'components/common/AutoMatchSkeleton/complatedSkeleton'
 
 
 const S = {
@@ -292,7 +281,6 @@ const S = {
 
 export default function CompletedPage() {
 
-
     const getMoveType = useSelector(formSelector.getType)
     const getMoveDate = useSelector(formSelector.getDate)
     const getAddress = useSelector(formSelector.getAddress)
@@ -304,19 +292,16 @@ export default function CompletedPage() {
     const getFormData = useSelector(formSelector.getFormData)
     const getAgree = useSelector(formSelector.getAgree)
 
-
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const [dong, setDong] = useState('')
-    const [cookies, setCookie, removeCookie] = useCookies(['report'])
+    const [cookies, setCookie] = useCookies(['report'])
     const isDesktop = useMedia({
         minWidth: 1200,
     })
     const isTablet = useMedia({
         minWidth: 760,
     })
-
 
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
 
@@ -326,7 +311,6 @@ export default function CompletedPage() {
     const toggleInfoBox = () => {
         setInfoVisible(!infoVisible)
     }
-
 
     const formState: FormState = {
         type: getMoveType,
@@ -366,14 +350,9 @@ export default function CompletedPage() {
 
     useEffect(() => {
         if (getSubmittedForm.data?.result === 'success' && !getSubmittedForm.loading) {
-
             const now = new Date()
             const time = now.getTime() + (3600 * 1000)
             now.setTime(time)
-            // setCookie('report', getSubmittedForm?.data, {
-            //     path: '/',
-            //     expires: now
-            // })
             setCookie('report', formState, {
                 path: '/',
                 expires: now
@@ -381,8 +360,7 @@ export default function CompletedPage() {
         }
     }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
 
-
-    /* SKELETON */
+    /* SKELETON - FROM oneroom */
     // if (getSubmittedForm.loading) {
     //   if (cookies.report && getSubmittedForm.report) {
     //     removeCookie('report')
@@ -393,7 +371,6 @@ export default function CompletedPage() {
     //   )
     // }
 
-
     if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'no partner') {
         history.push('/requests/nopartner')
         // return (
@@ -401,14 +378,12 @@ export default function CompletedPage() {
         // )
     }
 
-
     if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'no service') {
         history.push('/requests/noservice')
         // return (
         //   <NoService />
         // )
     }
-
 
     const {
         start,
@@ -454,95 +429,89 @@ export default function CompletedPage() {
     };
 
 
-
-
-
-
     return (
         <>
-            {/* 스켈레톤 나중에 여기에 넣기 */}
-            {getSubmittedForm.loading ? <CompletedSkeleton /> : (
-            <S.Container>
-                {isDesktop && <MainHeader/>}
-                <S.TopContents>
-                    <S.Icon><Check fill={'#fff'}/></S.Icon>
-                    <S.TopTitle><em>이사업체
-                        매칭</em> 완료 <br/><span>2일 내 연락이 없다면<br/> 고객센터(1522-2483)로 문의해주세요.</span></S.TopTitle>
-                </S.TopContents>
-                <S.ContentsWrap>
-                    <S.TitleWrap>
-                        <S.BoxTitle>업체 정보</S.BoxTitle>
-                        <S.LevelInfo onClick={toggleInfoBox}>소비자평가등급 <SvgInfo/></S.LevelInfo>
-                    </S.TitleWrap>
-                    <S.LevelInfoBox visible={infoVisible}>
-                        <Triangle/>
-                        이용 고객이 평가한 내용으로 산출한 빅 데이터 등급입니다.
-                    </S.LevelInfoBox>
-                    <S.CompanyList>
-                        {getSubmittedForm?.data?.["match_list"]?.map((list, index) => (
-                            <li key={index}>
-                                <S.ListBox>
-                                    {list.level === 'NEW' && <LevelN/>}
-                                    {list.level === 'S' && <LevelS/>}
-                                    {list.level === 'A' && <LevelA/>}
-                                    {list.level === 'B' && <LevelB/>}
-                                    {list.level === 'C' && <LevelC/>}
-                                    <S.CompanyTitle>
-                                        {list.adminname} <br/>
-                                        <span>{list.level_text}</span>
-                                    </S.CompanyTitle>
-                                </S.ListBox>
-                                <S.LinkCompany onClick={() => {
-                                    dataLayer({
-                                        event: 'admin_idx',
-                                        category: '다이사_신청완료',
-                                        action: '고객평가_확인',
-                                        label: `${getSubmittedForm?.data?.["match_list"].length}_${index + 1}`
-                                    })
-                                    window.location.href = `${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`
-                                }}>
-                                    <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
-                                </S.LinkCompany>
-                            </li>
-                        ))}
-                    </S.CompanyList>
-                    <S.TitleWrap onClick={() => setExpand(!expand)} className="toggle">
-                        <S.BoxTitle>내 신청 정보</S.BoxTitle>
-                        {expand ? <SvgUp style={{marginTop: 6}}/> : <SvgDown style={{marginTop: 6}}/>}
-                    </S.TitleWrap>
-                    <Collapse expand={expand}>
-                        <S.MoveInfo>
-                            <li>
-                                <S.MoveText>연락처</S.MoveText>
-                                <S.MoveSubtext>{userRequestInfo.contact}</S.MoveSubtext>
-                            </li>
-                            <li>
-                                <S.MoveText>이사날짜</S.MoveText>
-                                <S.MoveSubtext>{userRequestInfo.movingDate}</S.MoveSubtext>
-                            </li>
-                            <li>
-                                <S.MoveText>이사 종류</S.MoveText>
-                                <S.MoveSubtext>{userRequestInfo.movingType}</S.MoveSubtext>
-                            </li>
-                            <li>
-                                <S.MoveText>출발지</S.MoveText>
-                                <S.MoveSubtext>{userRequestInfo.startAddr}</S.MoveSubtext>
-                            </li>
-                            <li>
-                                <S.MoveText>도착지</S.MoveText>
-                                <S.MoveSubtext>{userRequestInfo.endAddr}</S.MoveSubtext>
-                            </li>
-                            <li>
-                                <S.MoveText>전달메모</S.MoveText>
-                                <S.MoveSubtext>{userRequestInfo.memo}</S.MoveSubtext>
-                            </li>
-                        </S.MoveInfo>
-                    </Collapse>
-                </S.ContentsWrap>
-                <S.Button onClick={() => window.location.href = `${MOVE_URL}`}>신청 정보 확인완료</S.Button>
-            </S.Container>
-                //end of skeleton )}
-                )}
+            {getSubmittedForm.loading ? <CompletedSkeleton/> : (
+                <S.Container>
+                    {isDesktop && <MainHeader/>}
+                    <S.TopContents>
+                        <S.Icon><Check fill={'#fff'}/></S.Icon>
+                        <S.TopTitle><em>이사업체
+                            매칭</em> 완료 <br/><span>2일 내 연락이 없다면<br/> 고객센터(1522-2483)로 문의해주세요.</span></S.TopTitle>
+                    </S.TopContents>
+                    <S.ContentsWrap>
+                        <S.TitleWrap>
+                            <S.BoxTitle>업체 정보</S.BoxTitle>
+                            <S.LevelInfo onClick={toggleInfoBox}>소비자평가등급 <SvgInfo/></S.LevelInfo>
+                        </S.TitleWrap>
+                        <S.LevelInfoBox visible={infoVisible}>
+                            <Triangle/>
+                            이용 고객이 평가한 내용으로 산출한 빅 데이터 등급입니다.
+                        </S.LevelInfoBox>
+                        <S.CompanyList>
+                            {getSubmittedForm?.data?.["match_list"]?.map((list, index) => (
+                                <li key={index}>
+                                    <S.ListBox>
+                                        {list.level === 'NEW' && <LevelN/>}
+                                        {list.level === 'S' && <LevelS/>}
+                                        {list.level === 'A' && <LevelA/>}
+                                        {list.level === 'B' && <LevelB/>}
+                                        {list.level === 'C' && <LevelC/>}
+                                        <S.CompanyTitle>
+                                            {list.adminname} <br/>
+                                            <span>{list.level_text}</span>
+                                        </S.CompanyTitle>
+                                    </S.ListBox>
+                                    <S.LinkCompany onClick={() => {
+                                        dataLayer({
+                                            event: 'admin_idx',
+                                            category: '다이사_신청완료',
+                                            action: '고객평가_확인',
+                                            label: `${getSubmittedForm?.data?.["match_list"].length}_${index + 1}`
+                                        })
+                                        window.location.href = `${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`
+                                    }}>
+                                        <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
+                                    </S.LinkCompany>
+                                </li>
+                            ))}
+                        </S.CompanyList>
+                        <S.TitleWrap onClick={() => setExpand(!expand)} className="toggle">
+                            <S.BoxTitle>내 신청 정보</S.BoxTitle>
+                            {expand ? <SvgUp style={{marginTop: 6}}/> : <SvgDown style={{marginTop: 6}}/>}
+                        </S.TitleWrap>
+                        <Collapse expand={expand}>
+                            <S.MoveInfo>
+                                <li>
+                                    <S.MoveText>연락처</S.MoveText>
+                                    <S.MoveSubtext>{userRequestInfo.contact}</S.MoveSubtext>
+                                </li>
+                                <li>
+                                    <S.MoveText>이사날짜</S.MoveText>
+                                    <S.MoveSubtext>{userRequestInfo.movingDate}</S.MoveSubtext>
+                                </li>
+                                <li>
+                                    <S.MoveText>이사 종류</S.MoveText>
+                                    <S.MoveSubtext>{userRequestInfo.movingType}</S.MoveSubtext>
+                                </li>
+                                <li>
+                                    <S.MoveText>출발지</S.MoveText>
+                                    <S.MoveSubtext>{userRequestInfo.startAddr}</S.MoveSubtext>
+                                </li>
+                                <li>
+                                    <S.MoveText>도착지</S.MoveText>
+                                    <S.MoveSubtext>{userRequestInfo.endAddr}</S.MoveSubtext>
+                                </li>
+                                <li>
+                                    <S.MoveText>전달메모</S.MoveText>
+                                    <S.MoveSubtext>{userRequestInfo.memo}</S.MoveSubtext>
+                                </li>
+                            </S.MoveInfo>
+                        </Collapse>
+                    </S.ContentsWrap>
+                    <S.Button onClick={() => window.location.href = `${MOVE_URL}`}>신청 정보 확인완료</S.Button>
+                </S.Container>
+            )}
         </>
     )
 }

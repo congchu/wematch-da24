@@ -2,26 +2,26 @@ import React, {useCallback, useEffect, useState} from 'react'
 import styled from 'styled-components'
 import {useDispatch, useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
+import {useMedia} from 'react-use-media';
+import useHashToggle from 'hooks/useHashToggle'
 
+import MainHeader from 'components/common/MainHeader';
+import NavHeader from 'components/common/NavHeader';
 import Input from 'components/common/Input'
 import Soldout from 'components/Icon/generated/Soldout'
-
+import CalendarModal from 'components/common/Modal/CalendarModal'
+import {CalendarDate} from 'components/wematch-ui/utils/date'
 
 import * as formActions from 'store/form/actions'
 import * as formSelectors from 'store/form/selectors'
+import * as formSelector from 'store/form/selectors'
 
+import {CALENDAR_MAX_DAYS} from 'constants/values';
 import {MOVE_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
-import CalendarModal from "../../components/common/Modal/CalendarModal";
-import useHashToggle from "../../hooks/useHashToggle";
-import * as formSelector from "../../store/form/selectors";
-import {CalendarDate} from "../../components/wematch-ui/utils/date";
-import {isExceedDiffDay} from "../../lib/dateUtil";
-import {CALENDAR_MAX_DAYS} from "../../constants/values";
-import MainHeader from "../../components/common/MainHeader";
-import NavHeader from "../../components/common/NavHeader";
-import {useMedia} from "react-use-media";
+import {isExceedDiffDay} from 'lib/dateUtil'
+
 
 const S = {
     Container: styled.div``,
@@ -119,7 +119,6 @@ const S = {
 }
 
 
-
 export default function NoPartner() {
 
     const isDesktop = useMedia({
@@ -165,14 +164,13 @@ export default function NoPartner() {
         setVisibleCalendarModal(!visibleCalendarModal)
     }
     const onSelectDate = (date: CalendarDate) => {
-        if(isExceedDiffDay(date, CALENDAR_MAX_DAYS)) {
+        if (isExceedDiffDay(date, CALENDAR_MAX_DAYS)) {
             alert(`이사업체조회는 내일부터 최장${CALENDAR_MAX_DAYS}일까지만 비교가 가능합니다.`);
             return;
         }
         dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
     }
     /* CALENDAR */
-
 
 
     useEffect(() => {
@@ -194,7 +192,7 @@ export default function NoPartner() {
 
     return (
         <S.Container>
-            {isDesktop ? <MainHeader /> : <NavHeader title="" /> }
+            {isDesktop ? <MainHeader/> : <NavHeader title=""/>}
             <S.Contents>
                 <Soldout/>
                 <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>

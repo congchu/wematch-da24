@@ -1,23 +1,23 @@
-import React, { useEffect, useRef } from 'react'
+import React, {useEffect, useRef} from 'react'
 import styled from 'styled-components'
-import { useCookies } from 'react-cookie'
+import {useCookies} from 'react-cookie'
 import queryString from 'query-string'
-import { RouteComponentProps } from 'react-router'
+import {RouteComponentProps} from 'react-router'
+import {useSelector} from 'react-redux';
 import useScrollDirection from 'hooks/useScrollDirection'
 
 import MainHeader from 'components/common/MainHeader'
 import MoveForm from 'pages/home/components/MoveForm'
+import MainFooter from 'components/common/MainFooter'
+import BottomNav from 'components/common/BottomNav'
+import CompletedSkeleton from 'components/common/Skeleton/complatedSkeleton'
 import MainVisual from 'pages/home/components/MainVisual'
 import Review from 'pages/home/components/Review'
 import PartnerBanner from 'pages/home/components/PartnerBanner'
-import MainFooter from 'components/common/MainFooter'
-import BottomNav from 'components/common/BottomNav'
 
 import * as colors from 'styles/colors'
-import { dataLayer } from 'lib/dataLayerUtil'
-import CompletedSkeleton from "../../components/common/AutoMatchSkeleton/complatedSkeleton";
-import {useSelector} from "react-redux";
-import * as formSelectors from "../../store/form/selectors";
+import {dataLayer} from 'lib/dataLayerUtil'
+import * as formSelectors from 'store/form/selectors';
 
 const S = {
     Container: styled.div``,
@@ -31,19 +31,19 @@ const S = {
       border-top-right-radius: 32px;
       background: ${colors.white};
       //box-shadow: 0px -4px 30px rgba(0, 0, 0, 0.2);
-      
+
       @media (min-width: 1200px) {
         max-width: 768px;
         left: 50%;
         transform: translate(-50%, 0);
         margin-top: -36px;
-        
+
         box-shadow: none;
       }
     `,
 }
 
-const Home: React.FC<RouteComponentProps> = ({ location }) => {
+const Home: React.FC<RouteComponentProps> = ({location}) => {
     const [cookies, setCookie, removeCookie] = useCookies(['0dj38gepoekf98234aplyadmin'])
     const HomeRef = useRef<HTMLDivElement>(null)
     const [isFixed, setIsFixed] = useScrollDirection()
@@ -66,20 +66,20 @@ const Home: React.FC<RouteComponentProps> = ({ location }) => {
 
     return (
         <>
-        {getSubmittedForm.loading ? <CompletedSkeleton /> : (
-        <S.Container ref={HomeRef}>
-            <S.Group ref={HomeRef}>
-                <MainHeader isFixed={isFixed} />
-                <MainVisual />
-            </S.Group>
-            <S.Wrapper>
-                <MoveForm headerRef={HomeRef} isFixed={isFixed} setIsFixed={setIsFixed} />
-                <Review />
-                <PartnerBanner />
-            </S.Wrapper>
-            <MainFooter />
-            <BottomNav />
-        </S.Container>
+            {getSubmittedForm.loading ? <CompletedSkeleton/> : (
+                <S.Container ref={HomeRef}>
+                    <S.Group ref={HomeRef}>
+                        <MainHeader isFixed={isFixed}/>
+                        <MainVisual/>
+                    </S.Group>
+                    <S.Wrapper>
+                        <MoveForm headerRef={HomeRef} isFixed={isFixed} setIsFixed={setIsFixed}/>
+                        <Review/>
+                        <PartnerBanner/>
+                    </S.Wrapper>
+                    <MainFooter/>
+                    <BottomNav/>
+                </S.Container>
             )}
         </>
     )
