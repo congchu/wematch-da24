@@ -34,7 +34,7 @@ function SkeletonType2() {
           <Skeleton style={{ width: 654, height: 14, marginTop: 10 }} animated />
         </div>
       </div>
-      <Skeleton style={{ width: 721, height: 40, borderRadius: 6, marginTop: 26 }} animated />
+      <Skeleton style={{ width: 721, height: 40, borderRadius: 6, marginTop: 20 }} animated />
     </>
   )
 }
