@@ -7,7 +7,6 @@ import {useHistory} from 'react-router-dom'
 
 import MainHeader from 'components/common/MainHeader/index'
 import Collapse from 'components/base/BaseFromOneroom/collapse'
-// import CompletedSkeleton from 'components/common/complatedSkeleton'
 
 
 /* ICON */
@@ -37,14 +36,11 @@ import NoService from "./noService";
 
 import {events} from 'lib/appsflyer'
 import * as formSelector from "../../store/form/selectors";
-import {createSelector} from "reselect";
 import {FormState} from "../../store/form/reducers";
-import {select} from "redux-saga/effects";
-import {getAgree, getFormData} from "store/form/selectors";
 
 
 /* SKELETON */
-// import CompletedSkeleton from 'components/common/AutoMatchSkeleton/complatedSkeleton'
+import CompletedSkeleton from 'components/common/AutoMatchSkeleton/complatedSkeleton'
 
 
 const S = {
@@ -313,7 +309,7 @@ export default function CompletedPage() {
     const history = useHistory()
 
     const [dong, setDong] = useState('')
-    const [cookies, setCookie] = useCookies(['report'])
+    const [cookies, setCookie, removeCookie] = useCookies(['report'])
     const isDesktop = useMedia({
         minWidth: 1200,
     })
@@ -335,14 +331,14 @@ export default function CompletedPage() {
     const formState: FormState = {
         type: getMoveType,
         date: getMoveDate,
-        address: getAddress ,
+        address: getAddress,
         agree: getAgree,
         floor: getFloor,
-        formData: getFormData ,
+        formData: getFormData,
         isMoveStore: getIsMoveStore,
-        name: getName ,
+        name: getName,
         phone: getPhone,
-        submittedForm:getSubmittedForm,
+        submittedForm: getSubmittedForm,
         contents: getContents
     }
 
@@ -384,9 +380,6 @@ export default function CompletedPage() {
             })
         }
     }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
-
-
-
 
 
     /* SKELETON */
@@ -461,9 +454,14 @@ export default function CompletedPage() {
     };
 
 
+
+
+
+
     return (
         <>
             {/* 스켈레톤 나중에 여기에 넣기 */}
+            {getSubmittedForm.loading ? <CompletedSkeleton /> : (
             <S.Container>
                 {isDesktop && <MainHeader/>}
                 <S.TopContents>
@@ -543,6 +541,8 @@ export default function CompletedPage() {
                 </S.ContentsWrap>
                 <S.Button onClick={() => window.location.href = `${MOVE_URL}`}>신청 정보 확인완료</S.Button>
             </S.Container>
+                //end of skeleton )}
+                )}
         </>
     )
 }

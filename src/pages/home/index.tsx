@@ -15,6 +15,9 @@ import BottomNav from 'components/common/BottomNav'
 
 import * as colors from 'styles/colors'
 import { dataLayer } from 'lib/dataLayerUtil'
+import CompletedSkeleton from "../../components/common/AutoMatchSkeleton/complatedSkeleton";
+import {useSelector} from "react-redux";
+import * as formSelectors from "../../store/form/selectors";
 
 const S = {
     Container: styled.div``,
@@ -41,16 +44,29 @@ const S = {
 }
 
 const Home: React.FC<RouteComponentProps> = ({ location }) => {
-    const [cookies, setCookie] = useCookies(['0dj38gepoekf98234aplyadmin'])
+    const [cookies, setCookie, removeCookie] = useCookies(['0dj38gepoekf98234aplyadmin'])
     const HomeRef = useRef<HTMLDivElement>(null)
     const [isFixed, setIsFixed] = useScrollDirection()
+
+
+    const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
 
     useEffect(() => {
         const mda = queryString.parse(location.search).mda || '';
         setCookie('0dj38gepoekf98234aplyadmin', `agentid=${mda}`)
     }, [])
 
+
+    useEffect(() => {
+        if (cookies.report && getSubmittedForm.report) {
+            removeCookie('report')
+        }
+    }, [getSubmittedForm.loading])
+
+
     return (
+        <>
+        {getSubmittedForm.loading ? <CompletedSkeleton /> : (
         <S.Container ref={HomeRef}>
             <S.Group ref={HomeRef}>
                 <MainHeader isFixed={isFixed} />
@@ -64,6 +80,8 @@ const Home: React.FC<RouteComponentProps> = ({ location }) => {
             <MainFooter />
             <BottomNav />
         </S.Container>
+            )}
+        </>
     )
 }
 

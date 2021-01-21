@@ -421,7 +421,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
 
     }, [getMoveIdxData])
 
-
     return (
         <Visual.Section>
             <Visual.Container>
