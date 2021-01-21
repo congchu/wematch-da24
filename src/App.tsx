@@ -30,6 +30,7 @@ import SwiperCore, { Pagination, Autoplay } from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
 import { dataLayer } from 'lib/dataLayerUtil'
+import MyConsult from 'pages/myconsult'
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -99,6 +100,7 @@ function AppRoute() {
                 <Route exact path="/banner/grade" component={Grade} />
                 <Route exact path="/unsupported" component={UnSupported} />
                 <Route exact path="/terms" component={Terms} />
+                <Route exact path="/myconsult" component={MyConsult} />
             </Switch>
         )
     }
