@@ -7,7 +7,7 @@ import {useHistory} from 'react-router-dom'
 
 import MainHeader from 'components/common/MainHeader/index'
 import Collapse from 'components/base/BaseFromOneroom/collapse'
-import CompletedSkeleton from 'components/common/Skeleton/complatedSkeleton'
+import CompletedSkeleton from 'components/common/Skeleton/completedSkeleton'
 import SvgDown from 'components/wematch-ui/Icon/generated/Down'
 import SvgUp from 'components/wematch-ui/Icon/generated/Up'
 import SvgInfo from 'components/wematch-ui/Icon/generated/Info'
@@ -213,7 +213,6 @@ const S = {
     `,
     MoveInfo: styled.ul`
       padding: 21px 0 6px;
-      border-bottom: 1px solid #EBEEF2;
 
       li {
         overflow: hidden;
