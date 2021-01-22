@@ -28,8 +28,7 @@ export const verifySendMessage = async (phone: string) => {
 export const verifyAuthCode = async (phone: string, code: string) => {
     const { data } = await api.request<types.RequestVerifyAuthCodeProps>({
         method: 'get',
-        // url: `/msg/auth?dest_phone=${phone}&code=${code}`
-        url: `/msg/auth?dest_phone=${phone}&code=${code}`
+        url: process.env.NODE_ENV === 'development' ? `/msg-dev/test/auth?dest_phone=${phone}&code=${code}` : `/msg/auth?dest_phone=${phone}&code=${code}`
     })
 
     return data
