@@ -99,10 +99,6 @@ function AppRoute() {
                 <Route exact path="/partner/list" component={PartnerList}/>
                 <Route exact path="/partner/detail/:username" component={PartnerDetail}/>
                 <Route exact path="/partner/cart" component={PartnerCart}/>
-                <Route exact path="/banner/intro" component={Intro}/>
-                <Route exact path="/banner/customer" component={Customer}/>
-                <Route exact path="/banner/grade" component={Grade}/>
-                <Route exact path="/unsupported" component={UnSupported}/>
                 <Route exact path="/terms" component={Terms}/>
                 <Route exact path="/requests/completed" component={CompletedPage}/>
                 <Route exact path="/requests/nopartner" component={NoPartnerPage}/>

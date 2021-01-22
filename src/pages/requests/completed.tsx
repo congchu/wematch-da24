@@ -2,26 +2,16 @@ import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import {useMedia} from 'react-use-media'
 import {useDispatch, useSelector} from 'react-redux'
-import {useCookies} from 'react-cookie'
 import {useHistory} from 'react-router-dom'
 
 import MainHeader from 'components/common/MainHeader/index'
-import Collapse from 'components/base/BaseFromOneroom/collapse'
+import Collapse from 'components/base/Collapse'
 import CompletedSkeletonPC from 'components/common/Skeleton/completedSkeletonPC'
 import CompletedSkeletonTablet from 'components/common/Skeleton/completedSkeletonTablet'
 import CompletedSkeleton from 'components/common/Skeleton/completedSkeleton'
-import SvgDown from 'components/wematch-ui/Icon/generated/Down'
-import SvgUp from 'components/wematch-ui/Icon/generated/Up'
-import SvgInfo from 'components/wematch-ui/Icon/generated/Info'
-import Triangle from 'components/Icon/generated/Triangle'
-import Check from 'components/Icon/generated/Check'
-import LevelN from 'components/Icon/generated/LevelN'
-import LevelS from 'components/Icon/generated/LevelS'
-import LevelA from 'components/Icon/generated/LevelA'
-import LevelB from 'components/Icon/generated/LevelB'
-import LevelC from 'components/Icon/generated/LevelC'
 
-
+import {Down, Up, Info} from 'components/wematch-ui/Icon'
+import {Triangle, Check, LevelA, LevelB, LevelC, LevelN, LevelS} from 'components/Icon'
 
 import * as formActions from 'store/form/actions'
 import * as formSelectors from 'store/form/selectors'
@@ -32,6 +22,7 @@ import * as colors from 'styles/colors'
 import {MOVE_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
+import {formatDateDash2Dot, whatDay} from 'lib/dateUtil'
 
 
 const S = {
@@ -296,7 +287,6 @@ export default function CompletedPage() {
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const [cookies, setCookie] = useCookies(['report'])
     const isDesktop = useMedia({
         minWidth: 1200,
     })
@@ -328,13 +318,13 @@ export default function CompletedPage() {
     }
 
     useEffect(() => {
-        if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
-            dispatch(formActions.submitFormAsync.success(cookies.report))
+        if (!getSubmittedForm?.data && !getSubmittedForm?.loading) {
+            dispatch(formActions.submitFormAsync.success(formState))
         }
-        if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
+        if (!getSubmittedForm.data ) {
             window.location.href = `${MOVE_URL}/myconsult.asp`
         }
-    }, [])
+    }, [getSubmittedForm])
 
     useEffect(() => {
         if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'success') {
@@ -348,18 +338,6 @@ export default function CompletedPage() {
         }
     }, [getSubmittedForm])
 
-
-    useEffect(() => {
-        if (getSubmittedForm.data?.result === 'success' && !getSubmittedForm.loading) {
-            const now = new Date()
-            const time = now.getTime() + (3600 * 1000)
-            now.setTime(time)
-            setCookie('report', formState, {
-                path: '/',
-                expires: now
-            })
-        }
-    }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
 
     /* SKELETON - FROM oneroom */
     // if (getSubmittedForm.loading) {
@@ -398,21 +376,6 @@ export default function CompletedPage() {
     }
     const {start: startFloor, end: endFloor} = getFloor
 
-
-    function formatDate(moveDate: string): string {
-        if (!moveDate) {
-            return moveDate
-        }
-
-        const week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일')
-        const movingOutDay = new Date(moveDate).getDay()
-        const dayLabel = week[movingOutDay]
-        const formattedMoveDate = moveDate.replace(/-/g, '.')
-        const formattedDate = formattedMoveDate + ' ' + dayLabel
-        return formattedDate
-    }
-
-
     const userRequestInfo: {
         contact: string;
         movingDate: string;
@@ -422,11 +385,11 @@ export default function CompletedPage() {
         memo: string;
     } = {
         contact: '(' + getName + ') ' + getPhone,
-        movingDate: formatDate(getMoveDate[0]),
+        movingDate: formatDateDash2Dot(getMoveDate[0]) + ' ' + whatDay(getMoveDate[0]),
         movingType: (getMoveType === 'house' ? '가정이사' : '') + ' (' + (getIsMoveStore ? '보관이사 해당 있음' : '보관이사 해당 없음') + ')',
         startAddr: start + ' ' + detailStart + ' ' + startFloor + '층',
         endAddr: end + ' ' + detailEnd + ' ' + endFloor + '층',
-        memo: (getContents ? getContents : '')
+        memo: getContents|| ''
     };
 
 
@@ -446,7 +409,7 @@ export default function CompletedPage() {
                     <S.ContentsWrap>
                         <S.TitleWrap>
                             <S.BoxTitle>업체 정보</S.BoxTitle>
-                            <S.LevelInfo onClick={toggleInfoBox}>소비자평가등급 <SvgInfo/></S.LevelInfo>
+                            <S.LevelInfo onClick={toggleInfoBox}>소비자평가등급 <Info/></S.LevelInfo>
                         </S.TitleWrap>
                         <S.LevelInfoBox visible={infoVisible}>
                             <Triangle/>
@@ -482,7 +445,7 @@ export default function CompletedPage() {
                         </S.CompanyList>
                         <S.TitleWrap onClick={() => setExpand(!expand)} className="toggle">
                             <S.BoxTitle>내 신청 정보</S.BoxTitle>
-                            {expand ? <SvgUp style={{marginTop: 6}}/> : <SvgDown style={{marginTop: 6}}/>}
+                            {expand ? <Up style={{marginTop: 6}}/> : <Down style={{marginTop: 6}}/>}
                         </S.TitleWrap>
                         <Collapse expand={expand}>
                             <S.MoveInfo>

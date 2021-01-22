@@ -89,7 +89,7 @@ export default function NoService() {
     }, [])
 
     useEffect(() => {
-        if (!getSubmittedForm.data && !getSubmittedForm?.report) {
+        if (!getSubmittedForm.data) {
             window.location.href = `${MOVE_URL}/myconsult.asp`
         }
     }, [getSubmittedForm])

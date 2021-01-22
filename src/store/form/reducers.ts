@@ -1,7 +1,7 @@
 import { createReducer, ActionType } from 'typesafe-actions'
 import * as actions from './actions'
 import * as types from 'store/common/types'
-import {SubmittedForm} from "./form";
+import {SubmittedForm} from "./types";
 export type Actions = ActionType<typeof actions>
 
 export interface FormState {
@@ -33,7 +33,6 @@ export interface FormState {
     submittedForm: {
         data: SubmittedForm | undefined;
         loading: boolean;
-        report: boolean;
     };
 
 }
@@ -87,7 +86,6 @@ const initialState: FormState = {
     submittedForm: {
         data: undefined,
         loading: false,
-        report: false
     }
 }
 
@@ -120,7 +118,7 @@ export default createReducer<FormState, Actions>(initialState)
     // .handleAction(actions.submitFormAsync.request, (state) => ({ ...state, submittedForm: { data: undefined, loading: true, report: true } }))
     // .handleAction(actions.submitFormAsync.success, (state, action) => ({ ...state, submittedForm: { data: action.payload, loading: false, report: true } }))
     // .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state,  submittedForm: { ...state.submittedForm, loading: false, report: false } }))
-    .handleAction(actions.submitFormAsync.request, (state) => ({ ...state, submittedForm: { data: undefined, loading: true, report: true } }))
+    .handleAction(actions.submitFormAsync.request, (state) => ({ ...state, submittedForm: { data: undefined, loading: true } }))
     .handleAction(actions.submitFormAsync.success, (state, action) => ({ ...state,
         type: action.payload.type,
         date: action.payload.date,
@@ -132,5 +130,5 @@ export default createReducer<FormState, Actions>(initialState)
         name: action.payload.name ,
         phone: action.payload.phone,
         contents: action.payload.contents,
-        submittedForm: { data: action.payload.submittedForm.data, loading: false, report: true } }))
-    .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state,  submittedForm: { ...state.submittedForm, loading: false, report: false } }))
+        submittedForm: { data: action.payload.submittedForm.data, loading: false} }))
+    .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state,  submittedForm: { ...state.submittedForm, loading: false} }))

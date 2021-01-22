@@ -42,7 +42,6 @@ const index = createStore(
     rootReducer,
     composeEnhancer(applyMiddleware(sagaMiddleware, routerMiddleware(browserHistory))),
 );
-console.log(index.getState())
 
 function* rootSaga() {
     yield all([

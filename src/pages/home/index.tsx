@@ -47,7 +47,7 @@ const S = {
 }
 
 const Home: React.FC<RouteComponentProps> = ({location}) => {
-    const [cookies, setCookie, removeCookie] = useCookies(['0dj38gepoekf98234aplyadmin'])
+    const [cookies, setCookie] = useCookies(['0dj38gepoekf98234aplyadmin'])
     const HomeRef = useRef<HTMLDivElement>(null)
     const [isFixed, setIsFixed] = useScrollDirection()
     const isDesktop = useMedia({
@@ -66,11 +66,6 @@ const Home: React.FC<RouteComponentProps> = ({location}) => {
     }, [])
 
 
-    useEffect(() => {
-        if (cookies.report && getSubmittedForm.report) {
-            removeCookie('report')
-        }
-    }, [getSubmittedForm.loading])
 
 
     return (

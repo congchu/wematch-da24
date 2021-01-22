@@ -8,7 +8,7 @@ import useHashToggle from 'hooks/useHashToggle'
 import MainHeader from 'components/common/MainHeader';
 import NavHeader from 'components/common/NavHeader';
 import Input from 'components/common/Input'
-import Soldout from 'components/Icon/generated/Soldout'
+import {SoldOut} from 'components/Icon'
 import CalendarModal from 'components/common/Modal/CalendarModal'
 import {CalendarDate} from 'components/wematch-ui/utils/date'
 
@@ -145,7 +145,7 @@ export default function NoPartner() {
 
 
     const handleSubmit = () => {
-        dispatch(formActions.submitFormAsync.request({formData: formData}))
+        dispatch(formActions.submitFormAsync.request({formData}))
         history.push('/requests/completed')
     }
 
@@ -184,7 +184,7 @@ export default function NoPartner() {
     }, [])
 
     useEffect(() => {
-        if (!getSubmittedForm.data && !getSubmittedForm?.report) {
+        if (!getSubmittedForm.data ) {
             window.location.href = `${MOVE_URL}/myconsult.asp`
         }
     }, [getSubmittedForm])
@@ -194,7 +194,7 @@ export default function NoPartner() {
         <S.Container>
             {isDesktop ? <MainHeader/> : <NavHeader title=""/>}
             <S.Contents>
-                <Soldout/>
+                <SoldOut/>
                 <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>
                 <S.Subtext>다른날짜로 선택해서<br/>비교견적 받아보세요.</S.Subtext>
             </S.Contents>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useMedia } from 'react-use-media'
 import styled from 'styled-components'
 
-import ErrorIcon from 'components/Icon/generated/Error';
+import {ErrorIcon} from 'components/Icon'
 
 import * as colors from 'styles/colors'
 import { MAIN_URL } from 'constants/env'
