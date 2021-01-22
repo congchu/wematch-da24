@@ -184,7 +184,7 @@ export default function NoPartner() {
     }, [])
 
     useEffect(() => {
-        if (!getSubmittedForm.data ) {
+        if (!getSubmittedForm.data && !getSubmittedForm?.report) {
             window.location.href = `${MOVE_URL}/myconsult.asp`
         }
     }, [getSubmittedForm])
@@ -200,7 +200,6 @@ export default function NoPartner() {
             </S.Contents>
             <S.ChangeDate>
                 <S.DateTitle>날짜 변경</S.DateTitle>
-                {/* calendar - booking.st*/}
                 <Input theme="default" border readOnly placeholder="이사예정일"
                        onClick={() => setVisibleCalendarModal(true)} value={getMoveDate}
                        style={{backgroundColor: "transparent"}}/>

@@ -23,6 +23,7 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
             submittedForm:{
                 data: data,
                 loading: false,
+                report: true
             },
             contents: yield select(formSelector.getContents)
         }

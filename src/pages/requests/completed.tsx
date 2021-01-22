@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {useMedia} from 'react-use-media'
 import {useDispatch, useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
+import {useCookies} from 'react-cookie'
 
 import MainHeader from 'components/common/MainHeader/index'
 import Collapse from 'components/base/Collapse'
@@ -284,6 +285,7 @@ export default function CompletedPage() {
 
     const dispatch = useDispatch()
     const history = useHistory()
+    const [cookies, setCookie] = useCookies(['report'])
 
     const isDesktop = useMedia({
         minWidth: 1200,
@@ -315,11 +317,15 @@ export default function CompletedPage() {
         contents: getContents
     }
 
+
     useEffect(() => {
-        if (!getSubmittedForm.data ) {
+        if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+            dispatch(formActions.submitFormAsync.success(cookies.report))
+        }
+        if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
             window.location.href = `${MOVE_URL}/myconsult.asp`
         }
-    }, [getSubmittedForm])
+    }, [])
 
     useEffect(() => {
         if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'success') {
@@ -332,6 +338,18 @@ export default function CompletedPage() {
             })
         }
     }, [getSubmittedForm])
+
+    useEffect(() => {
+        if (getSubmittedForm.data?.result === 'success' && !getSubmittedForm.loading) {
+            const now = new Date()
+            const time = now.getTime() + (3600 * 1000)
+            now.setTime(time)
+            setCookie('report', formState, {
+                path: '/',
+                expires: now
+            })
+        }
+    }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
 
 
     /* SKELETON - FROM oneroom */
