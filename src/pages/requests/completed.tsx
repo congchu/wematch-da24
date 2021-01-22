@@ -6,9 +6,7 @@ import {useHistory} from 'react-router-dom'
 
 import MainHeader from 'components/common/MainHeader/index'
 import Collapse from 'components/base/Collapse'
-import CompletedSkeletonPC from 'components/common/Skeleton/completedSkeletonPC'
-import CompletedSkeletonTablet from 'components/common/Skeleton/completedSkeletonTablet'
-import CompletedSkeleton from 'components/common/Skeleton/completedSkeleton'
+import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton'
 
 import {Down, Up, Info} from 'components/wematch-ui/Icon'
 import {Triangle, Check, LevelA, LevelB, LevelC, LevelN, LevelS} from 'components/Icon'
@@ -318,9 +316,6 @@ export default function CompletedPage() {
     }
 
     useEffect(() => {
-        if (!getSubmittedForm?.data && !getSubmittedForm?.loading) {
-            dispatch(formActions.submitFormAsync.success(formState))
-        }
         if (!getSubmittedForm.data ) {
             window.location.href = `${MOVE_URL}/myconsult.asp`
         }
@@ -385,7 +380,7 @@ export default function CompletedPage() {
         memo: string;
     } = {
         contact: '(' + getName + ') ' + getPhone,
-        movingDate: formatDateDash2Dot(getMoveDate[0]) + ' ' + whatDay(getMoveDate[0]),
+        movingDate: !getMoveDate[0]? getMoveDate[0]:formatDateDash2Dot(getMoveDate[0]) + ' ' + whatDay(getMoveDate[0]),
         movingType: (getMoveType === 'house' ? '가정이사' : '') + ' (' + (getIsMoveStore ? '보관이사 해당 있음' : '보관이사 해당 없음') + ')',
         startAddr: start + ' ' + detailStart + ' ' + startFloor + '층',
         endAddr: end + ' ' + detailEnd + ' ' + endFloor + '층',
@@ -395,10 +390,7 @@ export default function CompletedPage() {
 
     return (
         <>
-            {getSubmittedForm.loading ?
-                isDesktop? <CompletedSkeletonPC/> :
-                    isTablet ? <CompletedSkeletonTablet/>:
-                        <CompletedSkeleton/> : (
+            {getSubmittedForm.loading ? <ResponsiveSkeleton/> : (
                 <S.Container>
                     {isDesktop && <MainHeader/>}
                     <S.TopContents>

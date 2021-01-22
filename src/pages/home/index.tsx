@@ -10,9 +10,7 @@ import MainHeader from 'components/common/MainHeader'
 import MoveForm from 'pages/home/components/MoveForm'
 import MainFooter from 'components/common/MainFooter'
 import BottomNav from 'components/common/BottomNav'
-import CompletedSkeletonPC from 'components/common/Skeleton/completedSkeletonPC'
-import CompletedSkeletonTablet from 'components/common/Skeleton/completedSkeletonTablet'
-import CompletedSkeleton from 'components/common/Skeleton/completedSkeleton'
+import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton'
 import MainVisual from 'pages/home/components/MainVisual'
 import Review from 'pages/home/components/Review'
 import PartnerBanner from 'pages/home/components/PartnerBanner'
@@ -70,10 +68,7 @@ const Home: React.FC<RouteComponentProps> = ({location}) => {
 
     return (
         <>
-            {getSubmittedForm.loading ?
-                isDesktop? <CompletedSkeletonPC/> :
-                    isTablet ? <CompletedSkeletonTablet/>:
-                        <CompletedSkeleton/> : (
+            {getSubmittedForm.loading ? <ResponsiveSkeleton/> : (
                 <S.Container ref={HomeRef}>
                     <S.Group ref={HomeRef}>
                         <MainHeader isFixed={isFixed}/>
