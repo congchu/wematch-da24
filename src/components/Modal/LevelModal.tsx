@@ -75,7 +75,6 @@ const LevelModal:React.FC<Props> = (props) => {
         <ModalTemplate visible={visible} title="평가등급이란" onClose={onClose} onOverlayClose={onOverlayClose}>
             <S.Container>
                 <S.Text>
-                    업체 평가의 기준을 정했습니다. <br />
                     <em>최근 1년간 해당 업체를 이용한<br />고객의 평가(전문성, 친절도, 가성비)</em>를<br />
                     빅데이터로 분석해 산출하는 서비스 등급 입니다.
                 </S.Text>
