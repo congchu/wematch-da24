@@ -17,14 +17,10 @@ export default function ResponsiveSkeleton() {
         minWidth: 760,
     })
 
-    //skeleton 실행되면 스크롤 상단으로 올리기
     useEffect(() => {
-        window.scroll({
-            top: 0,
-            left: 0,
-            behavior: 'smooth'
-        })
-    }, [])
+        window.scrollTo(0, 0)
+    }, [window])
+
 
     if (isDesktop) {
         return  <CompletedSkeletonPC />

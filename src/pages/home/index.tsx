@@ -16,9 +16,7 @@ import Review from 'pages/home/components/Review'
 import PartnerBanner from 'pages/home/components/PartnerBanner'
 
 import * as colors from 'styles/colors'
-import {dataLayer} from 'lib/dataLayerUtil'
 import * as formSelectors from 'store/form/selectors';
-import {useMedia} from "react-use-media";
 
 const S = {
     Container: styled.div``,
@@ -52,6 +50,7 @@ const Home: React.FC<RouteComponentProps> = ({location}) => {
 
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
 
+
     useEffect(() => {
         const mda = queryString.parse(location.search).mda || '';
         setCookie('0dj38gepoekf98234aplyadmin', `agentid=${mda}`)
@@ -65,23 +64,26 @@ const Home: React.FC<RouteComponentProps> = ({location}) => {
     }, [getSubmittedForm.loading])
 
 
+    if (getSubmittedForm.loading) {
+        return <ResponsiveSkeleton />
+    }
+
+
     return (
         <>
-            {getSubmittedForm.loading ? <ResponsiveSkeleton/> : (
-                <S.Container ref={HomeRef}>
-                    <S.Group ref={HomeRef}>
-                        <MainHeader isFixed={isFixed}/>
-                        <MainVisual/>
-                    </S.Group>
-                    <S.Wrapper>
-                        <MoveForm headerRef={HomeRef} isFixed={isFixed} setIsFixed={setIsFixed}/>
-                        <Review/>
-                        <PartnerBanner/>
-                    </S.Wrapper>
-                    <MainFooter/>
-                    <BottomNav/>
-                </S.Container>
-            )}
+            <S.Container ref={HomeRef}>
+                <S.Group ref={HomeRef}>
+                    <MainHeader isFixed={isFixed}/>
+                    <MainVisual/>
+                </S.Group>
+                <S.Wrapper>
+                    <MoveForm headerRef={HomeRef} isFixed={isFixed} setIsFixed={setIsFixed}/>
+                    <Review/>
+                    <PartnerBanner/>
+                </S.Wrapper>
+                <MainFooter/>
+                <BottomNav/>
+            </S.Container>
         </>
     )
 }

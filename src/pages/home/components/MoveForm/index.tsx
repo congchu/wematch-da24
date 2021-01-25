@@ -402,16 +402,15 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
 
             dataLayer({
                 event: 'step_4',
-                category: '다이사_원룸_신청',
-                action: '견적정보',
-                label: 'step_4'
+                category: '다이사_신청',
+                // action: '견적정보',
+                // label: 'step_4'
             })
 
             events({
-                action: 'app_move_oneroom_order_04'
+                action: 'completed'
             })
 
-            /**** getting results! ***/
             dispatch(formActions.submitFormAsync.request({formData: getFormData}));
 
             // history.push('/requests/completed')
