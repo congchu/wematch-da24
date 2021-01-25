@@ -191,26 +191,33 @@ export default function NoPartner() {
 
 
     return (
-        <S.Container>
-            {isDesktop ? <MainHeader/> : <NavHeader title=""/>}
-            <S.Contents>
-                <SoldOut/>
-                <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>
-                <S.Subtext>다른날짜로 선택해서<br/>비교견적 받아보세요.</S.Subtext>
-            </S.Contents>
-            <S.ChangeDate>
-                <S.DateTitle>날짜 변경</S.DateTitle>
-                <Input theme="default" border readOnly placeholder="이사예정일"
-                       onClick={() => setVisibleCalendarModal(true)} value={getMoveDate}
-                       style={{backgroundColor: "transparent"}}/>
-                <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?" onClose={toggleCalendarCancel}
-                               onConfirm={toggleCalendarConfirm} onSelect={onSelectDate} selected={getMoveDate}/>
+        <>
+            { !getSubmittedForm.report ? <></> :
+                <S.Container>
+                    {isDesktop ? <MainHeader/> : <NavHeader title=""/>}
+                    <S.Contents>
+                        <SoldOut/>
+                        <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>
+                        <S.Subtext>다른날짜로 선택해서<br/>비교견적 받아보세요.</S.Subtext>
+                    </S.Contents>
+                    <S.ChangeDate>
+                        <S.DateTitle>날짜 변경</S.DateTitle>
+                        <Input theme="default" border readOnly placeholder="이사예정일"
+                               onClick={() => setVisibleCalendarModal(true)} value={getMoveDate}
+                               style={{backgroundColor: "transparent"}}/>
+                        <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?"
+                                       onClose={toggleCalendarCancel}
+                                       onConfirm={toggleCalendarConfirm} onSelect={onSelectDate}
+                                       selected={getMoveDate}/>
 
-                <S.DateSelect id='dsl_button_retry' onClick={handleSubmit}>다른 날짜로 견적 재요청</S.DateSelect>
-                <S.LinkAlarm id='dsl_a_alarm_noPartner' href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">가능업체
-                    발생 시 알림신청</S.LinkAlarm>
-            </S.ChangeDate>
-        </S.Container>
+                        <S.DateSelect id='dsl_button_retry' onClick={handleSubmit}>다른 날짜로 견적 재요청</S.DateSelect>
+                        <S.LinkAlarm id='dsl_a_alarm_noPartner' href="https://pf.kakao.com/_Ppsxexd/chat"
+                                     target="_blank">가능업체
+                            발생 시 알림신청</S.LinkAlarm>
+                    </S.ChangeDate>
+                </S.Container>
+            }
+        </>
     )
 }
 

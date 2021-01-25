@@ -96,16 +96,20 @@ export default function NoService() {
 
 
     return (
-        <S.Container>
-            {isDesktop ? <MainHeader/> : <NavHeader title=""/>}
-            <S.Contents>
-                <AreaIcon/>
-                <S.Title>해당 지역은 서비스 준비 중입니다.</S.Title>
-                <S.Subtext>빠른 시일 내 이용 가능하도록<br/>최선을 다하겠습니다.</S.Subtext>
-            </S.Contents>
-            <S.LinkAlarm id='dsl_a_alarm_noService' href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">
-                <Kakao/>가능업체 알림 신청
-            </S.LinkAlarm>
-        </S.Container>
+        <>
+            { !getSubmittedForm.report ? <></> :
+                <S.Container>
+                    {isDesktop ? <MainHeader/> : <NavHeader title=""/>}
+                    <S.Contents>
+                        <AreaIcon/>
+                        <S.Title>해당 지역은 서비스 준비 중입니다.</S.Title>
+                        <S.Subtext>빠른 시일 내 이용 가능하도록<br/>최선을 다하겠습니다.</S.Subtext>
+                    </S.Contents>
+                    <S.LinkAlarm id='dsl_a_alarm_noService' href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">
+                        <Kakao/>가능업체 알림 신청
+                    </S.LinkAlarm>
+                </S.Container>
+            }
+        </>
     )
 }
