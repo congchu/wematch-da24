@@ -9,6 +9,7 @@ import CommonService, { CommonState } from './common/reducers'
 import FormService, { FormState } from './form/reducers'
 import PartnerSaga from './partner/sagas'
 import CommonSaga from './common/sagas'
+import FormSaga from './form/sagas'
 
 export interface RootState {
     router: RouterState;
@@ -40,12 +41,13 @@ const composeEnhancer =
 const index = createStore(
     rootReducer,
     composeEnhancer(applyMiddleware(sagaMiddleware, routerMiddleware(browserHistory))),
-)
+);
 
 function* rootSaga() {
     yield all([
         PartnerSaga(),
-        CommonSaga()
+        CommonSaga(),
+        FormSaga()
     ])
 }
 sagaMiddleware.run(rootSaga)
