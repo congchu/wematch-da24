@@ -13,9 +13,9 @@ const FindCard: React.FC<IFindCardProps> = ({
     link
 }) => (
     <FindCardContainer href={link}>
-        <IconWrapper>
+        <PlusIconWrapper>
             <img src={require('assets/images/plus.svg')} alt="icon" />
-        </IconWrapper>
+        </PlusIconWrapper>
         <TextWrapper>
             <p><span>{title}</span> 업체 찾기</p>
             무료 견적 알아보기
@@ -24,6 +24,7 @@ const FindCard: React.FC<IFindCardProps> = ({
 )
 
 interface IConsultCard {
+    category: 'move' | 'clean';
     categoryTitle: string;
     dateOfReceipt: string;
     dateOfService: string;
@@ -31,15 +32,36 @@ interface IConsultCard {
 }
 
 const ConsultCard: React.FC<IConsultCard> = ({
+    category,
     categoryTitle,
     dateOfReceipt,
     dateOfService,
     link
 }) => {
-    return <ConsultCardContainer to={link}>hihi</ConsultCardContainer>
+    return (
+    <ConsultCardContainer to={link}>
+        <IconWrapper>
+            {
+                category === 'clean' ? 
+                <img src={require('assets/images/clean_house.svg')} alt="icon" /> :
+                <img src={require('assets/images/express_truck.svg')} alt="icon" />
+            }
+        </IconWrapper>
+        <TextWrapper style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', flex: 1}}>
+            <div>
+                <p style={{color: colors.gray33}}><span>{categoryTitle}</span> 신청내역</p>
+                접수일 {dateOfReceipt}<br/>
+                서비스일 {dateOfService}
+            </div>
+            <IconWrapper>
+                <img src={require('assets/images/right_arrow.svg')} alt="icon" />
+            </IconWrapper>
+        </TextWrapper>
+    </ConsultCardContainer>
+    )
 }
 
-export { FindCard, ConsultCard}
+export { FindCard, ConsultCard }
 
 const FindCardContainer = styled.a`
     display: flex;
@@ -54,9 +76,7 @@ const FindCardContainer = styled.a`
     padding-left: 25px;
 `
 
-const ConsultCardContainer = styled(Link)``;
-
-const IconWrapper = styled.div`
+const PlusIconWrapper = styled.div`
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -85,3 +105,18 @@ const TextWrapper = styled.div`
         }
     }
 `
+
+const ConsultCardContainer = styled(Link)`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 104px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    border: 0.5px solid #D7DBE2;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    padding-left: 24px;
+    padding-right: 16px;
+`;
+
+const IconWrapper = styled.div``;

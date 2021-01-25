@@ -1,17 +1,36 @@
 import BottomNav from 'components/common/BottomNav';
+import MainHeader from 'components/common/MainHeader';
+import useScrollDirection from 'hooks/useScrollDirection';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { useMedia } from 'react-use-media';
 import styled from 'styled-components';
 import * as colors from 'styles/colors'
-import { FindCard } from './components/MyConsultCard';
+import { ConsultCard, FindCard } from './components/MyConsultCard';
+
 
 
 const MyConsult = () => {
+    const history = useHistory();
+
+    const isDesktop = useMedia({
+        minWidth: 1200,
+      })
+
+      const handleLogout = () => {
+          //TODO: add logout logic
+
+        history.replace('/');
+      }
 
     return (
         <Container>
+            {isDesktop && <MainHeader />}
             <Header>
-                <span className="title">송인걸</span>
-                <span className="phone">010-****-9609</span>
+                <div>
+                    <span className="title">송인걸</span>
+                    <span className="phone">010-****-9609</span>
+                </div>
             </Header>
             <Content>
                 <Wrapper>
@@ -24,6 +43,7 @@ const MyConsult = () => {
                         </ContentSubTitle>
                         <ContentList>
                             <FindCard title="입주/이사청소" link="https://wematch.com/clean_step_01.asp" />
+                            <ConsultCard category={'clean'} link={'/'} categoryTitle={'원룸이사'} dateOfReceipt={'2020.02.04'} dateOfService={'2020.03.02'} />
                         </ContentList>
                     </ContentSection>
                     <ContentSection>
@@ -36,6 +56,20 @@ const MyConsult = () => {
                         </ContentList>
                     </ContentSection>
                 </Wrapper>
+                <Wrapper>
+                    <ContentTitle>지난 신청내역</ContentTitle>
+                    <Separator />
+                    {/* <ContentList>
+                        
+                    </ContentList> */}
+                    <NoContent>
+                        지난 신청내역이 없습니다.
+                    </NoContent>
+                    <Separator />
+                    <LogoutWrapper>
+                        <button onClick={handleLogout}>로그아웃</button>
+                    </LogoutWrapper>
+                </Wrapper>
             </Content>
             <BottomNav />
         </Container>
@@ -44,16 +78,34 @@ const MyConsult = () => {
 
 export default MyConsult;
 
-const Container = styled.main``;
+const Container = styled.div`
+`;
 
 const Header = styled.div`
-    display: flex;
-    flex-direction: column;
+    position: relative;
     width: 100%;
     height: 152px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 64px 0 24px 24px;
-    box-sizing: border-box;
+    
+    div {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 64px 0 24px 24px;
+        box-sizing: border-box;
+    }
+
+    @media (min-width: 1200px) {
+        div {
+            max-width: 768px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            padding: 0;
+            height: 100%;
+            justify-content: flex-end;
+            padding-bottom: 24px;
+        }
+    }
 
     .title {
         font-weight: 500;
@@ -71,7 +123,16 @@ const Header = styled.div`
 `
 
 const Content = styled.div`
+    position: relative;
     padding: 0px 24px;
+
+    @media (min-width: 1200px) {
+        max-width: 768px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        padding: 0;
+        box-shadow: none;
+      }
 `
 
 const Wrapper = styled.div`
@@ -110,4 +171,38 @@ const ContentSubTitle = styled.div`
 const ContentSection = styled.div`
 `
 
-const ContentList = styled.div``;
+const ContentList = styled.div`
+    a {
+        margin-bottom: 8px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+`;
+
+const NoContent = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 184px;
+    font-size: 16px;
+    line-height: 24px;
+    color: ${colors.gray99};
+`;
+
+const LogoutWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 104px;
+
+    button {
+        text-decoration: underline;
+        font-size: 16px;
+        color: ${colors.gray33};
+        line-height: 24px;
+    }
+`;
