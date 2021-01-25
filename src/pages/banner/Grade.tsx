@@ -278,7 +278,7 @@ export default function Grade() {
   const levels = [
     { id: 1, level: 'S', title: 'S등급 (최고)', text: '감동적인 서비스를\n 기대할 수 있음' },
     { id: 2, level: 'A', title: 'A등급 (매우좋음)', text: '기분 좋은 서비스를\n 기대할 수 있음' },
-    { id: 3, level: 'B', title: 'B등급 (양호)', text: '감동적인 서비\n스를 기대할 수 있음' },
+    { id: 3, level: 'B', title: 'B등급 (양호)', text: '일반적인 서비스를\n 기대할 수 있음' },
     { id: 4, level: 'C', title: 'C등급 (미흡)', text: '부정평가 일부 있으며\n 좋은 서비스 기대하기\n 어려움' },
     { id: 5, level: 'D', title: 'D등급 (평판나쁨)', text: '부정평가 다수이며\n 이용시 불만족이 우려\n 됨' },
     { id: 6, level: 'NEW', title: 'N등급 (등급산정중)', text: '좋은 등급을 획득하기\n 위한 의욕적인 서비스\n를 기대할 수 있음' },

@@ -1,5 +1,7 @@
-import { createAction } from 'typesafe-actions'
+import {createAction, createAsyncAction} from 'typesafe-actions'
 import * as types from 'store/common/types'
+import {SubmittedForm} from 'store/form/types'
+import {FormState} from "./reducers";
 
 export type MoveTypeProp = 'house' | 'oneroom' | 'office' | undefined
 
@@ -25,6 +27,10 @@ export const setAgree = createAction('SET_TERMS_AGREE')<{
     marketing: boolean;
 }>();
 
-export const setFormData = createAction('SET_FORM_DATA')<types.RequestUserInfoInsert>()
-
 export const setInitialFormData = createAction('SET_INITIAL_FORM_DATA')<any>()
+export const setFormData = createAction('SET_FORM_DATA')<types.RequestUserInfoInsert>()
+export const submitFormAsync = createAsyncAction(
+    'FETCH_SUBMIT_FORM_REQUEST',
+    'FETCH_SUBMIT_FORM_SUCCESS',
+    'FETCH_SUBMIT_FORM_FAILURE'
+)<{formData: types.RequestUserInfoInsert}, FormState, undefined>()
