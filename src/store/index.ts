@@ -9,7 +9,7 @@ import CommonService, { CommonState } from './common/reducers'
 import FormService, { FormState } from './form/reducers'
 import PartnerSaga from './partner/sagas'
 import CommonSaga from './common/sagas'
-
+import UserSaga from './user/sagas'
 export interface RootState {
     router: RouterState;
     partnerState: PartnerState;
@@ -44,8 +44,9 @@ const index = createStore(
 
 function* rootSaga() {
     yield all([
+        UserSaga(),
         PartnerSaga(),
-        CommonSaga()
+        CommonSaga(),
     ])
 }
 sagaMiddleware.run(rootSaga)

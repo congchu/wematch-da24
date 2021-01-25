@@ -1,17 +1,20 @@
 import BottomNav from 'components/common/BottomNav';
 import MainHeader from 'components/common/MainHeader';
 import useScrollDirection from 'hooks/useScrollDirection';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMedia } from 'react-use-media';
 import styled from 'styled-components';
 import * as colors from 'styles/colors'
 import { ConsultCard, FindCard } from './components/MyConsultCard';
-
+import * as userActions  from 'store/user/actions';
+import { useDispatch } from 'react-redux';
 
 
 const MyConsult = () => {
     const history = useHistory();
+
+    const dispatch = useDispatch();
 
     const isDesktop = useMedia({
         minWidth: 1200,
@@ -22,6 +25,11 @@ const MyConsult = () => {
 
         history.replace('/');
       }
+
+    useEffect(() => {
+        dispatch(userActions.fetchUserConsultAsync.request({name: '강혜림', phone: '01026663903'}))
+    }, [])
+
 
     return (
         <Container>
