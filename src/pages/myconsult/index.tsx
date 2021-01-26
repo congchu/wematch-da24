@@ -1,15 +1,15 @@
+import React, { useEffect } from 'react';
 import BottomNav from 'components/common/BottomNav';
 import MainHeader from 'components/common/MainHeader';
-import useScrollDirection from 'hooks/useScrollDirection';
-import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMedia } from 'react-use-media';
 import styled from 'styled-components';
 import * as colors from 'styles/colors'
 import { ConsultCard, FindCard } from './components/MyConsultCard';
-import * as userActions  from 'store/user/actions';
-import { useDispatch } from 'react-redux';
-
+import * as userActions from 'store/user/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import * as userSelector from 'store/user/selectors';
+import dayjs from 'dayjs';
 
 const MyConsult = () => {
     const history = useHistory();
@@ -18,16 +18,19 @@ const MyConsult = () => {
 
     const isDesktop = useMedia({
         minWidth: 1200,
-      })
+    })
 
-      const handleLogout = () => {
-          //TODO: add logout logic
+    const handleLogout = () => {
+        //TODO: add logout logic
 
         history.replace('/');
-      }
+    }
+
+    const { data: { name, phone, clean_orders, move_orders, past_orders }, loading } = useSelector(userSelector.getConsult);
+
 
     useEffect(() => {
-        dispatch(userActions.fetchUserConsultAsync.request({name: '강혜림', phone: '01026663903'}))
+        dispatch(userActions.fetchUserConsultAsync.request({ name: '이장희', phone: '01053063796' }))
     }, [])
 
 
@@ -36,22 +39,24 @@ const MyConsult = () => {
             {isDesktop && <MainHeader />}
             <Header>
                 <div>
-                    <span className="title">송인걸</span>
-                    <span className="phone">010-****-9609</span>
+                    <span className="title">{name}</span>
+                    <span className="phone">{`${phone.slice(0, 3)}-****-${phone.slice(7)}`}</span>
                 </div>
             </Header>
             <Content>
                 <Wrapper>
                     <ContentTitle>내 신청내역</ContentTitle>
                     <Separator />
-                    <ContentSection style={{marginBottom: '16px'}}>
+                    <ContentSection style={{ marginBottom: '16px' }}>
                         <ContentSubTitle>
                             <span className="bold">STEP &nbsp; 1</span>
                             <span>&nbsp; &#124; &nbsp;입주/이사청소</span>
                         </ContentSubTitle>
                         <ContentList>
-                            <FindCard title="입주/이사청소" link="https://wematch.com/clean_step_01.asp" />
-                            <ConsultCard category={'clean'} link={'/'} categoryTitle={'원룸이사'} dateOfReceipt={'2020.02.04'} dateOfService={'2020.03.02'} />
+                            {
+                                clean_orders.length === 0 ? <FindCard title="입주/이사청소" link="https://wematch.com/clean_step_01.asp" /> :
+                                    clean_orders.map((order) => <ConsultCard key={order.idx} category={'clean'} link={'/'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
+                            }
                         </ContentList>
                     </ContentSection>
                     <ContentSection>
@@ -60,19 +65,30 @@ const MyConsult = () => {
                             <span>&nbsp; &#124; &nbsp;이사</span>
                         </ContentSubTitle>
                         <ContentList>
-                            <FindCard title="이사" link="/" />
+                            {
+                                move_orders.length === 0 ? <FindCard title="이사" link="https://wematch.com/clean_step_01.asp" /> :
+                                    move_orders.map((order) => <ConsultCard key={order.idx} category={'move'} link={'/'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
+                            }
                         </ContentList>
                     </ContentSection>
                 </Wrapper>
                 <Wrapper>
                     <ContentTitle>지난 신청내역</ContentTitle>
                     <Separator />
-                    {/* <ContentList>
-                        
-                    </ContentList> */}
-                    <NoContent>
-                        지난 신청내역이 없습니다.
-                    </NoContent>
+                    {
+                        past_orders.length === 0 ? (
+                            <NoContent>
+                                지난 신청내역이 없습니다.
+                            </NoContent>
+                        ) : (
+                                <ContentList style={{ paddingTop: 24, paddingBottom: 40 }}>
+                                    {
+                                        past_orders.map(order => <ConsultCard key={order.idx} category={order.type.includes('이사') ? 'clean' : 'move'} link={'/'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
+                                    }
+                                </ContentList>
+                            )
+                    }
+
                     <Separator />
                     <LogoutWrapper>
                         <button onClick={handleLogout}>로그아웃</button>

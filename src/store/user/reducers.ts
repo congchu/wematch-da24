@@ -15,14 +15,16 @@ const initialState: UserState = {
         data: {
             name: '',
             phone: '',
-            orders: []
+            clean_orders: [],
+            move_orders: [],
+            past_orders: [],
         },
         loading: false
     }
 }
 
 
-interface UserState {
+export interface UserState {
     auth: {
         token: string | null;
         loading: boolean; 
@@ -31,7 +33,9 @@ interface UserState {
         data: {
             name: string;
             phone: string;
-            orders: IOrder[];
+            clean_orders: IOrder[];
+            move_orders: IOrder[];
+            past_orders: IOrder[];
         }
         loading: boolean;
     }

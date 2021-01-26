@@ -14,6 +14,6 @@ export const fetchUserConsultAsync = createAsyncAction(
     "FETCH_USER_CONSULT_REQUEST",
     "FETCH_USER_CONSULT_SUCCESS",
     "FETCH_USER_CONSULT_FAILURE",
-)<{name: string, phone: string}, {name: string, phone: string, orders: IOrder[]}, undefined>()
+)<{name: string, phone: string}, {name: string; phone: string; clean_orders: IOrder[]; move_orders: IOrder[]; past_orders: IOrder[];}, undefined>()
 
 export const signOut = createAction("SIGN_OUT")();

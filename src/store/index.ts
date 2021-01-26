@@ -7,6 +7,7 @@ import browserHistory from 'lib/history'
 import PartnerService, { PartnerState } from './partner/reducers'
 import CommonService, { CommonState } from './common/reducers'
 import FormService, { FormState } from './form/reducers'
+import UserService, { UserState } from './user/reducers'
 import PartnerSaga from './partner/sagas'
 import CommonSaga from './common/sagas'
 import UserSaga from './user/sagas'
@@ -16,6 +17,7 @@ export interface RootState {
     partnerState: PartnerState;
     commonState: CommonState;
     formState: FormState;
+    userState: UserState;
 }
 
 const rootReducer = combineReducers({
@@ -23,6 +25,7 @@ const rootReducer = combineReducers({
     partnerState: PartnerService,
     commonState: CommonService,
     formState: FormService,
+    userState: UserService,
 })
 
 const sagaMiddleware = createSagaMiddleware()
