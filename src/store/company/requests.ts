@@ -1,19 +1,19 @@
-import {ApiResponse, middlewareApi} from '../../lib/api'
+import {ApiResponse, bookingApi} from 'lib/api'
 import {ICompanyDetail, ICompanyReview} from './type'
 
-export const getCompanyDetail = async (idx: string) => {
-    const { data } = await middlewareApi.request<ApiResponse<ICompanyDetail>>({
+export const getCompanyDetail = async (username: string) => {
+    const { data } = await bookingApi.request<ApiResponse<ICompanyDetail>>({
         method: 'get',
-        url: `/partners/${idx}`
+        url: `/partners/${username}`
     })
 
     return data.data
 }
 
-export const getCompReviewList = async (idx:string, page: number, size: number) => {
-    const { data } = await middlewareApi.request<ApiResponse<ICompanyReview[]>>({
+export const getCompReviewList = async (username:string, page: number, size: number) => {
+    const { data } = await bookingApi.request<ApiResponse<ICompanyReview[]>>({
         method: 'get',
-        url: `/reviews/${idx}?page=${page}&size=${size}`
+        url: `/reviews/${username}?page=${page}&size=${size}`
     })
 
     return data.data

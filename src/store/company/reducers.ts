@@ -34,7 +34,6 @@ const initialState: CompanyState = {
 }
 
 
-
 export default createReducer<CompanyState, Actions>(initialState)
     .handleAction(actions.fetchCompanyDetailAsync.request, (state) => ({ ...state, detail: { ...state.detail, loading: true }, review: {data: [], loading: false, moreLoading: false, hasMore: false}}))
     .handleAction(actions.fetchCompanyDetailAsync.success, (state, action) => ({ ...state, detail: { data: action.payload, loading: false }}))
@@ -42,4 +41,3 @@ export default createReducer<CompanyState, Actions>(initialState)
     .handleAction(actions.fetchCompReviewListAsync.success, (state, action) => ({ ...state, review: { data: action.payload.data, loading: false, hasMore: action.payload.has_more }}))
     .handleAction(actions.fetchCompReviewMoreListAsync.request, (state) => ({ ...state, review: { ...state.review, loading: false, moreLoading: true }}))
     .handleAction(actions.fetchCompReviewMoreListAsync.success, (state, action) => ({ ...state, review: { data: [...state.review.data, ...action.payload.data], loading: false, moreLoading: false, hasMore: action.payload.has_more}}))
-

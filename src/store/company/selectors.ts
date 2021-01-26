@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
 import { RootState } from '../index'
 
-const getPartnerState = (state: RootState) => state.partnerState
+const getCompanyState = (state: RootState) => state.companyState
 
-export const getCompanyDetail = createSelector(getPartnerState, state => state.detail)
-export const getCompanyReviewList = createSelector(getPartnerState, state => state.review)
+export const getCompanyDetail = createSelector(getCompanyState, state => state.detail)
+export const getCompanyReviewList = createSelector(getCompanyState, state => state.review)
