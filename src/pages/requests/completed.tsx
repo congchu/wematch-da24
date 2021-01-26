@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 import {useCookies} from 'react-cookie'
 import last from 'lodash/last'
+import ReactPixel from 'react-facebook-pixel'
 
 import MainHeader from 'components/common/MainHeader/index'
 import Collapse from 'components/base/Collapse'
@@ -376,8 +377,9 @@ export default function CompletedPage() {
     }, [])
 
     useEffect(() => {
-        console.log(getSubmittedForm.data)
         if (getSubmittedForm.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'success') {
+            ReactPixel.track('Purchase');
+
             dataLayer({
                 event: 'complete',
                 category: '매칭완료',

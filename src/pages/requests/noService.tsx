@@ -2,7 +2,8 @@ import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {useMedia} from 'react-use-media'
 import styled from 'styled-components'
-import last from "lodash/last";
+import last from 'lodash/last'
+import ReactPixel from 'react-facebook-pixel'
 
 import MainHeader from 'components/common/MainHeader/index'
 import NavHeader from 'components/common/NavHeader/index'
@@ -10,10 +11,10 @@ import AreaIcon from 'components/Icon/generated/AreaIcon'
 import Kakao from 'components/Icon/generated/Kakao_fit'
 
 import * as formSelectors from 'store/form/selectors'
-import * as formActions from 'store/form/actions';
-import * as formSelector from 'store/form/selectors';
-import {FormState} from 'store/form/reducers';
-import {useCookies} from "react-cookie";
+import * as formActions from 'store/form/actions'
+import * as formSelector from 'store/form/selectors'
+import {FormState} from 'store/form/reducers'
+import {useCookies} from "react-cookie"
 
 import {MOVE_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
@@ -118,6 +119,8 @@ export default function NoService() {
 
     useEffect(() => {
         if (getSubmittedForm.data) {
+            ReactPixel.track('Purchase');
+
             dataLayer({
                 event: 'complete',
                 category: '업체없음',

@@ -1,8 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import styled from 'styled-components'
-import last from "lodash/last"
+import last from 'lodash/last'
+import ReactPixel from 'react-facebook-pixel'
 import {useDispatch, useSelector} from 'react-redux'
-import {useHistory, useLocation} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import {useMedia} from 'react-use-media';
 import useHashToggle from 'hooks/useHashToggle'
 
@@ -213,6 +214,8 @@ export default function NoPartner() {
 
     useEffect(() => {
         if (getSubmittedForm.data) {
+            ReactPixel.track('Purchase');
+
             dataLayer({
                 event: 'complete',
                 category: '업체마감',
