@@ -376,9 +376,11 @@ export default function CompletedPage() {
     }, [])
 
     useEffect(() => {
-        if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'success') {
+        console.log(getSubmittedForm.data)
+        if (getSubmittedForm.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'success') {
             dataLayer({
-                event: '매칭완료',
+                event: 'complete',
+                category: '매칭완료',
                 action: `매칭완료_${getSubmittedForm.data?.match_list?.length}`,
                 label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
                 CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,

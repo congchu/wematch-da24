@@ -212,14 +212,16 @@ export default function NoPartner() {
 
 
     useEffect(() => {
-        dataLayer({
-            event: 'complete',
-            category: '업체마감',
-            action: '업체마감',
-            label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
-            CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
-            CD12: '바로매칭',
-        })
+        if (getSubmittedForm.data) {
+            dataLayer({
+                event: 'complete',
+                category: '업체마감',
+                action: '업체마감',
+                label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
+                CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+                CD12: '바로매칭',
+            })
+        }
 
         events({
             action: 'app_move_nopartner'

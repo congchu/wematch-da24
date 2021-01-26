@@ -117,14 +117,16 @@ export default function NoService() {
     }
 
     useEffect(() => {
-        dataLayer({
-            event: 'complete',
-            category: '업체없음',
-            action: '업체없음',
-            label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
-            CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
-            CD12: '바로매칭',
-        })
+        if (getSubmittedForm.data) {
+            dataLayer({
+                event: 'complete',
+                category: '업체없음',
+                action: '업체없음',
+                label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
+                CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+                CD12: '바로매칭',
+            })
+        }
 
         events({
             action: 'app_move_noservice'
