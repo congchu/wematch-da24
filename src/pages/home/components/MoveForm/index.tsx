@@ -401,14 +401,12 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
             // document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
 
             dataLayer({
-                event: 'step_4',
+                event: 'requests_auto_match',
                 category: '다이사_신청',
-                // action: '견적정보',
-                // label: 'step_4'
             })
 
             events({
-                action: 'Completed'
+                action: 'completed'
             })
 
             dispatch(formActions.submitFormAsync.request({formData: getFormData}));

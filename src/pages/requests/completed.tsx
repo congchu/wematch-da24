@@ -11,6 +11,7 @@ import Collapse from 'components/base/Collapse'
 
 import {Down, Up, Info} from 'components/wematch-ui/Icon'
 import {Triangle, Check, LevelA, LevelB, LevelC, LevelN, LevelS} from 'components/Icon'
+import ToastPopup from 'components/wematch-ui/ToastPopup'
 
 import * as formActions from 'store/form/actions'
 import * as formSelectors from 'store/form/selectors'
@@ -22,8 +23,7 @@ import {MOVE_URL,CLEAN_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
 import {formatDateDash2Dot, whatDay} from 'lib/dateUtil'
-import ToastPopup from "../../components/wematch-ui/ToastPopup";
-
+import validatePhone from 'lib/validatePhone'
 
 const S = {
     Container: styled.div``,
@@ -316,7 +316,6 @@ export default function CompletedPage() {
     const getFloor = useSelector(formSelector.getFloor)
     const getName = useSelector(formSelector.getName)
     const getPhone = useSelector(formSelector.getPhone)
-    const getPhoneHyphen = useSelector(formSelector.getPhoneHyphen)
     const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
     const getContents = useSelector(formSelector.getContents)
     const getFormData = useSelector(formSelector.getFormData)
@@ -354,7 +353,6 @@ export default function CompletedPage() {
         isMoveStore: getIsMoveStore,
         name: getName,
         phone: getPhone,
-        phoneHyphen: getPhone,
         submittedForm: getSubmittedForm,
         contents: getContents
     }
@@ -435,14 +433,14 @@ export default function CompletedPage() {
         endAddr: string;
         memo: string;
     } = {
-        contact: '(' + getName + ') ' + getPhoneHyphen,
+
+        contact: '(' + getName + ') ' + validatePhone(getPhone, true),
         movingDate: !getMoveDate[0]? getMoveDate[0]:formatDateDash2Dot(getMoveDate[0]) + ' ' + whatDay(getMoveDate[0]),
         movingType: (getMoveType === 'house' ? '가정이사' : '') + ' (' + (getIsMoveStore ? '보관이사 해당 있음' : '보관이사 해당 없음') + ')',
         startAddr: start + ' ' + detailStart + ' ' + startFloor + '층',
         endAddr: end + ' ' + detailEnd + ' ' + endFloor + '층',
         memo: getContents|| ''
     };
-
 
     return (
         <>

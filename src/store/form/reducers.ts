@@ -19,7 +19,6 @@ export interface FormState {
     }
     name: string;
     phone: string;
-    phoneHyphen?: string;
     contents?: string;
     isMoveStore: boolean;
     agree: {
@@ -54,7 +53,6 @@ const initialState: FormState = {
     },
     name: '',
     phone: '',
-    phoneHyphen: '',
     contents: '',
     isMoveStore: false,
     agree: {
@@ -117,7 +115,6 @@ export default createReducer<FormState, Actions>(initialState)
             address: {start: `${sido} ${gugun} ${dong}`, end: `${sido2} ${gugun2} ${dong2}`,detailStart: detail_addr, detailEnd: detail_addr2},
             name: name,
             phone: `${phone1}${phone2}${phone3}`,
-            phoneHyphen: `${phone1}-${phone2}-${phone3}`,
             agree: {terms, privacy, marketing}
         }
     })
