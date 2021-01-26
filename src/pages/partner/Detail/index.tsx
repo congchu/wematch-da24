@@ -223,7 +223,6 @@ const PartnerDetail = () => {
                 idx: getMoveIdxData.idx
             }))
         }
-
         dispatch(partnerActions.fetchReviewListAsync.request({
             username: params.username,
             page: 1,

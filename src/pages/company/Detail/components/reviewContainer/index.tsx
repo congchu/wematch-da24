@@ -7,8 +7,8 @@ import {useMedia} from "react-use-media";
 import Review from './review';
 import TermsModal from "components/Modal/TermsModal";
 
-import * as partnerSelector from "store/partner/selectors";
-import * as partnerActions from "store/partner/actions";
+import * as companySelector from "store/company/selectors";
+import * as companyActions from "store/company/actions";
 import * as values from "constants/values";
 import * as colors from "styles/colors";
 
@@ -72,19 +72,24 @@ const S = {
     `,
 }
 
+interface Props {
+  adminId: string;
+}
+
 const ReviewContainer = () => {
+
   const dispatch = useDispatch()
 
   const [visibleTermsModal, setVisibleTermsModal] = useState(false)
   const params = useParams<{username: string}>()
-  const getReviewList = useSelector(partnerSelector.getReviewList)
+  const getCompanyReviewList = useSelector(companySelector.getCompanyReviewList)
 
   const isMobile = useMedia({
     maxWidth: 767,
   })
 
   useEffect(() => {
-    dispatch(partnerActions.fetchReviewListAsync.request({
+    dispatch(companyActions.fetchCompReviewListAsync.request({
       username: params.username,
       page: 1,
       size: values.DEFAULT_REVIEW_LIST_SIZE
@@ -94,7 +99,7 @@ const ReviewContainer = () => {
   const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
 
   const review = () => {
-    if (getReviewList.data.length < 5) {
+    if (getCompanyReviewList.data.length < 5) {
       return (
         <S.ReviewPreview>
           <img src={require(`assets/images/review_${isMobile ? 'm' : 'pc'}.png`)} alt='review_img'/>
@@ -104,10 +109,17 @@ const ReviewContainer = () => {
 
     return (
       <div>
-        {getReviewList.data.map((review, index) => {
+        {getCompanyReviewList.data.map((review, index) => {
           return (
-            <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional}
-                    kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>
+            <Review key={index}
+                    id={review.id}
+                    created_at={review.created_at}
+                    professional={review.professional}
+                    kind={review.kind}
+                    price={review.price}
+                    memo={review.memo}
+                    reply={review.reply}
+                    star={review.star}/>
           )
         })}
       </div>

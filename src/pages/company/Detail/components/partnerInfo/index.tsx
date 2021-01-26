@@ -172,10 +172,9 @@ interface Props {
 	adminname: string;
 	addition?: string;
 	profile_img: string;
-	status: 'selected' | 'available' | 'unavailable';
 }
 
-const Index = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition='', status, profile_img }: Props) => {
+const Index = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition='', profile_img }: Props) => {
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 	const isMobile = useMedia({
 		maxWidth: 767,
@@ -186,7 +185,7 @@ const Index = ({ title, level, pick_cnt, experience, description='', keywords, a
 
 	return (
 		<>
-			<UserImage profile_img={profile_img} status={status} />
+			<UserImage profile_img={profile_img} />
 			<S.Container>
 				<S.Wrap>
 					<S.LevelDescription>{LevelText[level]}</S.LevelDescription>

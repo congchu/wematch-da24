@@ -103,10 +103,9 @@ const S = {
 
 interface Props {
 	profile_img: string;
-	status: 'selected' | 'available' | 'unavailable';
 }
 
-const UserImage = ({ profile_img, status }: Props) => {
+const UserImage = ({ profile_img}: Props) => {
 	return (
 		<S.WrapImg>
 			<S.Title>
@@ -120,9 +119,10 @@ const UserImage = ({ profile_img, status }: Props) => {
 				</>
 			) : (
 				<S.DefaultProfileImg>
-					{status === "unavailable" && (<S.Opacity />)}
-					<ProfileDefault width={60} height={60} color={colors.white} />
-					{status === "unavailable" && (<span>오늘 마감</span>)}
+					{/*나중에 확인 다시하기*/}
+					{/*{status === "unavailable" && (<S.Opacity />)}*/}
+					{/*<ProfileDefault width={60} height={60} color={colors.white} />*/}
+					{/*{status === "unavailable" && (<span>오늘 마감</span>)}*/}
 				</S.DefaultProfileImg>
 			)}
 		</S.WrapImg>
