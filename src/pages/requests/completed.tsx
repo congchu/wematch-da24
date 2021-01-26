@@ -406,7 +406,7 @@ export default function CompletedPage() {
                     <S.TopContents>
                         <S.Icon><Check fill={'#fff'}/></S.Icon>
                         <S.TopTitle><em>이사업체
-                            매칭</em> 완료 <br/><span>2일 내 연락이 없다면<br/> 고객센터(1522-2483)로 문의해주세요.</span></S.TopTitle>
+                            매칭</em> 완료 <br/><span>업체에서 연락이 없다면 먼저 전화해보세요!<br/>전화번호를 알림톡으로 보내드립니다.</span></S.TopTitle>
                     </S.TopContents>
                     <S.ContentsWrap>
                         <S.TitleWrap>
