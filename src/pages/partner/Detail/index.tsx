@@ -6,7 +6,7 @@ import { useMedia } from 'react-use-media'
 
 import { DownArrow, UpArrow } from 'components/Icon'
 import Loading from 'components/Loading'
-import MainHeader from 'components/MainHeader'
+import MainHeader from 'components/common/MainHeader'
 import TopGnb from 'components/TopGnb'
 import PartnerInfo from './components/partnerInfo/index'
 import ReviewContainer from "./components/reviewContainer/index";
@@ -21,7 +21,6 @@ import * as commonSelector from 'store/common/selectors'
 import { some } from "lodash";
 import { useRouter } from 'hooks/useRouter'
 import ToastPopup from "components/wematch-ui/ToastPopup";
-import { dataLayer } from "lib/dataLayerUtil";
 import SetType from "components/SetType";
 
 const S = {

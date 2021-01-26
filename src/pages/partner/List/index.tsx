@@ -6,7 +6,7 @@ import { useMedia } from 'react-use-media'
 import { isEmpty } from 'lodash'
 
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
-import MainHeader from 'components/MainHeader'
+import MainHeader from 'components/common/MainHeader'
 import TopGnb from 'components/TopGnb'
 import EmptyPage from 'components/EmptyPage'
 import Loading from 'components/Loading'

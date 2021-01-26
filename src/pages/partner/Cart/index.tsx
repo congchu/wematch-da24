@@ -5,7 +5,7 @@ import { useMedia } from "react-use-media";
 import styled from 'styled-components'
 import { isEmpty } from 'lodash';
 
-import MainHeader from "components/MainHeader";
+import MainHeader from "components/common/MainHeader";
 import TopGnb from "components/TopGnb";
 import Loading from "components/Loading";
 import ConfirmPopup from "./component/ConfirmPopup";
@@ -24,7 +24,6 @@ import * as partnerActions from "store/partner/actions";
 import * as commonSelector from "store/common/selectors";
 import * as constants from 'constants/env'
 import CheckAlertPopup from "./component/CheckAlertPopup";
-import { ChatArrow } from 'components/Icon';
 
 interface IList {
   id: number;
