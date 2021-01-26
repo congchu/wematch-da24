@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import styled from 'styled-components'
+import last from "lodash/last"
 import {useDispatch, useSelector} from 'react-redux'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import {useMedia} from 'react-use-media';
 import useHashToggle from 'hooks/useHashToggle'
 
@@ -11,10 +12,13 @@ import Input from 'components/common/Input'
 import {SoldOut} from 'components/Icon'
 import CalendarModal from 'components/common/Modal/CalendarModal'
 import {CalendarDate} from 'components/wematch-ui/utils/date'
+import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton';
 
 import * as formActions from 'store/form/actions'
 import * as formSelectors from 'store/form/selectors'
 import * as formSelector from 'store/form/selectors'
+import {FormState} from 'store/form/reducers'
+import {useCookies} from "react-cookie";
 
 import {CALENDAR_MAX_DAYS} from 'constants/values';
 import {MOVE_URL} from 'constants/env'
@@ -119,6 +123,10 @@ const S = {
 }
 
 
+interface ReceivedFormState {
+    formState: FormState;
+}
+
 export default function NoPartner() {
 
     const isDesktop = useMedia({
@@ -128,12 +136,20 @@ export default function NoPartner() {
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const formData = useSelector(formSelectors.getFormData)
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
     const getMoveType = useSelector(formSelector.getType)
     const getMoveDate = useSelector(formSelector.getDate)
+    const getAddress = useSelector(formSelector.getAddress)
+    const getFloor = useSelector(formSelector.getFloor)
+    const getName = useSelector(formSelector.getName)
+    const getPhone = useSelector(formSelector.getPhone)
+    const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
+    const getContents = useSelector(formSelector.getContents)
+    const getFormData = useSelector(formSelector.getFormData)
+    const getAgree = useSelector(formSelector.getAgree)
 
     const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar');
+    const [cookies, setCookie] = useCookies(['report'])
 
     const getMoveTypeText = useCallback(() => {
         if (getMoveType === 'house') {
@@ -145,8 +161,8 @@ export default function NoPartner() {
 
 
     const handleSubmit = () => {
-        dispatch(formActions.submitFormAsync.request({formData}))
-        history.push('/requests/completed')
+        dispatch(formActions.submitFormAsync.request({formData: getFormData}))
+        // history.push('/requests/completed')
     }
 
     const toggleCalendarCancel = () => {
@@ -169,14 +185,43 @@ export default function NoPartner() {
             return;
         }
         dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
+        dispatch(formActions.setFormData({
+            ...getFormData,
+            'moving_date': date.date.format('YYYY-MM-DD')
+        }))
     }
-    /* CALENDAR */
+
+    const goHome = () => {
+        window.location.href = `${MOVE_URL}`
+    }
+
+
+    const formState: FormState = {
+        type: getMoveType,
+        date: getMoveDate,
+        address: getAddress,
+        agree: getAgree,
+        floor: getFloor,
+        formData: getFormData,
+        isMoveStore: getIsMoveStore,
+        name: getName,
+        phone: getPhone,
+        submittedForm: getSubmittedForm,
+        contents: getContents
+    }
 
 
     useEffect(() => {
-        dataLayer({
-            event: 'pageview',
-        })
+        if (getSubmittedForm.data) {
+            dataLayer({
+                event: 'complete',
+                category: '업체마감',
+                action: '업체마감',
+                label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
+                CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+                CD12: '바로매칭',
+            })
+        }
 
         events({
             action: 'app_move_nopartner'
@@ -184,17 +229,38 @@ export default function NoPartner() {
     }, [])
 
     useEffect(() => {
-        if (!getSubmittedForm.data && !getSubmittedForm?.report) {
+        if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+            dispatch(formActions.submitFormAsync.success(cookies.report))
+        }
+        if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
             window.location.href = `${MOVE_URL}/myconsult.asp`
         }
+
     }, [getSubmittedForm])
+
+    useEffect(() => {
+        if (getSubmittedForm.data?.result === 'no partner' && !getSubmittedForm.loading) {
+            const now = new Date()
+            const time = now.getTime() + (3600 * 1000)
+            now.setTime(time)
+            setCookie('report', formState, {
+                path: '/',
+                expires: now
+            })
+        }
+    }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
+
+
+    if (getSubmittedForm.loading) {
+        return <ResponsiveSkeleton />
+    }
 
 
     return (
         <>
             { !getSubmittedForm.report ? <></> :
                 <S.Container>
-                    {isDesktop ? <MainHeader/> : <NavHeader title=""/>}
+                    {isDesktop ? <MainHeader/> : <NavHeader title="" onPreviousButtonClick={goHome} />}
                     <S.Contents>
                         <SoldOut/>
                         <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>

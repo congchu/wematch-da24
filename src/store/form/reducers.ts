@@ -108,7 +108,8 @@ export default createReducer<FormState, Actions>(initialState)
             floor, floor2, gugun, gugun2, keepMove, terms, privacy, marketing,
             name, phone1, phone2, phone3, sido, sido2
         } = action.payload;
-        return {...state,
+        return {
+            ...state,
             date: [moving_date],
             floor: {start: floor, end: floor2},
             address: {start: `${sido} ${gugun} ${dong}`, end: `${sido2} ${gugun2} ${dong2}`,detailStart: detail_addr, detailEnd: detail_addr2},
