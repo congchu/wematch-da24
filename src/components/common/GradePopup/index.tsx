@@ -58,7 +58,7 @@ interface Props {
 const GradeToastPopup:React.FC<Props> = (props) => {
     const { visible, onClose } = props;
     return (
-        <ToastPopup visible={visible} showHeaderCancelButton={true} cancelClick={() => onClose()}>
+        <ToastPopup visible={visible} showHeaderCancelButton={true} closeClick={() => onClose()}>
             <GradeToastPopupTitle>소비자평가등급이란?</GradeToastPopupTitle>
             <GradeToastPopupSubTitle>
                 <span>최근 1년간 해당 업체를 이용한 고객의 평가(전문성,친절도,가성비)</span>를 빅데이터로 분석해 산출하는 서비스 등급입니다.

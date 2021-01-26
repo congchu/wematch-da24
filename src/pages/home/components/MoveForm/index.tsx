@@ -401,10 +401,8 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
             // document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
 
             dataLayer({
-                event: 'step_4',
+                event: 'requests_auto_match',
                 category: '다이사_신청',
-                // action: '견적정보',
-                // label: 'step_4'
             })
 
             events({
@@ -413,7 +411,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
 
             dispatch(formActions.submitFormAsync.request({formData: getFormData}));
 
-            // history.push('/requests/completed')
+            // history.push('/requests/Completed')
 
         }
 
