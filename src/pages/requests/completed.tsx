@@ -305,6 +305,14 @@ const S = {
       .desc {
         color: ${colors.gray33};
       }
+      @media screen and (min-width: 768px) {
+        width: 720px;
+        margin: 0 auto 30px;
+      }
+      @media screen and (min-width: 1200px) {
+        width: 720px;
+        margin: 0 auto 30px;
+      }
     `,
 }
 
