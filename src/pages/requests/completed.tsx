@@ -22,6 +22,7 @@ import {MOVE_URL,CLEAN_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
 import {formatDateDash2Dot, whatDay} from 'lib/dateUtil'
+import ToastPopup from "../../components/wematch-ui/ToastPopup";
 
 
 const S = {
@@ -333,9 +334,14 @@ export default function CompletedPage() {
 
     const [infoVisible, setInfoVisible] = useState(false)
     const [expand, setExpand] = useState(true)
+    const [showPopup, setShowPopup] = useState(false)
 
     const toggleInfoBox = () => {
         setInfoVisible(!infoVisible)
+    }
+
+    const togglePopup = () => {
+        setShowPopup(!showPopup)
     }
 
     const formState: FormState = {
@@ -527,7 +533,19 @@ export default function CompletedPage() {
                         </div>
                         <img className='right' src={require('assets/images/components/Completed/right.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사"/>
                     </S.Box>
-                    <S.Button onClick={() => window.location.href = `${MOVE_URL}`}>신청 정보 확인완료</S.Button>
+                    <S.Button onClick={togglePopup}>신청 정보 확인완료</S.Button>
+                    {showPopup &&
+                        <ToastPopup
+                            visible={showPopup}
+                            showHeaderCancelButton={true}
+                            closeClick={togglePopup}
+                            confirmText="네, 찾아주세요"
+                            confirmClick={() => window.location.href = `${CLEAN_URL}`}
+                            cancelText="다음에할게요"
+                            cancelClick={() => window.location.href = `${MOVE_URL}`}
+                        >
+                            입주청소도 필요하세요?
+                        </ToastPopup>}
                 </S.Container>
             }
         </>
