@@ -4,6 +4,7 @@ import {useMedia} from 'react-use-media'
 import {useDispatch, useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 import {useCookies} from 'react-cookie'
+import last from 'lodash/last'
 
 import MainHeader from 'components/common/MainHeader/index'
 import Collapse from 'components/base/Collapse'
@@ -17,7 +18,7 @@ import * as formSelector from 'store/form/selectors';
 import {FormState} from 'store/form/reducers';
 
 import * as colors from 'styles/colors'
-import {MOVE_URL} from 'constants/env'
+import {MOVE_URL,CLEAN_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
 import {formatDateDash2Dot, whatDay} from 'lib/dateUtil'
@@ -266,7 +267,44 @@ const S = {
         width: 720px;
         margin: 0 auto 106px;
       }
-    `
+    `,
+    Box: styled.a`
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 104px;
+      border: 1px solid ${colors.lineDefault};
+      box-sizing: border-box;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      font-size: 16px;
+      line-height: 23px;
+      letter-spacing: -1px;
+      margin: 0 24px 30px;
+      padding: 36px 24px;
+      overflow: hidden;
+      
+      .left {
+        float: left;
+        margin-right: 24px;
+      }
+      
+      .right {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      
+      .title {
+        font-weight: bold;
+        color: ${colors.pointBlue};
+      }
+      
+      .desc {
+        color: ${colors.gray33};
+      }
+    `,
 }
 
 export default function CompletedPage() {
@@ -277,6 +315,7 @@ export default function CompletedPage() {
     const getFloor = useSelector(formSelector.getFloor)
     const getName = useSelector(formSelector.getName)
     const getPhone = useSelector(formSelector.getPhone)
+    const getPhoneHyphen = useSelector(formSelector.getPhoneHyphen)
     const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
     const getContents = useSelector(formSelector.getContents)
     const getFormData = useSelector(formSelector.getFormData)
@@ -309,6 +348,7 @@ export default function CompletedPage() {
         isMoveStore: getIsMoveStore,
         name: getName,
         phone: getPhone,
+        phoneHyphen: getPhone,
         submittedForm: getSubmittedForm,
         contents: getContents
     }
@@ -389,7 +429,7 @@ export default function CompletedPage() {
         endAddr: string;
         memo: string;
     } = {
-        contact: '(' + getName + ') ' + getPhone,
+        contact: '(' + getName + ') ' + getPhoneHyphen,
         movingDate: !getMoveDate[0]? getMoveDate[0]:formatDateDash2Dot(getMoveDate[0]) + ' ' + whatDay(getMoveDate[0]),
         movingType: (getMoveType === 'house' ? '가정이사' : '') + ' (' + (getIsMoveStore ? '보관이사 해당 있음' : '보관이사 해당 없음') + ')',
         startAddr: start + ' ' + detailStart + ' ' + startFloor + '층',
@@ -405,8 +445,10 @@ export default function CompletedPage() {
                     {isDesktop && <MainHeader/>}
                     <S.TopContents>
                         <S.Icon><Check fill={'#fff'}/></S.Icon>
-                        <S.TopTitle><em>이사업체
-                            매칭</em> 완료 <br/><span>2일 내 연락이 없다면<br/> 고객센터(1522-2483)로 문의해주세요.</span></S.TopTitle>
+                        <S.TopTitle>
+                            <em>이사업체 매칭</em> 완료 <br/>
+                            <span>업체에서 연락이 없다면 먼저 전화해주세요!<br/> 전화번호를 알림톡으로 보내드립니다.</span>
+                        </S.TopTitle>
                     </S.TopContents>
                     <S.ContentsWrap>
                         <S.TitleWrap>
@@ -431,14 +473,13 @@ export default function CompletedPage() {
                                             <span>{list.level_text}</span>
                                         </S.CompanyTitle>
                                     </S.ListBox>
-                                    <S.LinkCompany onClick={() => {
+                                    <S.LinkCompany href={`${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`} onClick={() => {
                                         dataLayer({
                                             event: 'admin_idx',
                                             category: '다이사_신청완료',
                                             action: '고객평가_확인',
                                             label: `${getSubmittedForm?.data?.["match_list"].length}_${index + 1}`
                                         })
-                                        window.location.href = `${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`
                                     }}>
                                         <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
                                     </S.LinkCompany>
@@ -478,6 +519,14 @@ export default function CompletedPage() {
                             </S.MoveInfo>
                         </Collapse>
                     </S.ContentsWrap>
+                    <S.Box href={CLEAN_URL}>
+                        <img className='left' src={require('assets/images/components/Completed/home.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사"/>
+                        <div>
+                            <h3 className='title'>{last(getAddress.end.split(' '))}</h3>
+                            <p className='desc'>잘하는 입주청소 업체 찾기</p>
+                        </div>
+                        <img className='right' src={require('assets/images/components/Completed/right.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사"/>
+                    </S.Box>
                     <S.Button onClick={() => window.location.href = `${MOVE_URL}`}>신청 정보 확인완료</S.Button>
                 </S.Container>
             }

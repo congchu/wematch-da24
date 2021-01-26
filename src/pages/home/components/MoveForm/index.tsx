@@ -408,12 +408,12 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
             })
 
             events({
-                action: 'completed'
+                action: 'Completed'
             })
 
             dispatch(formActions.submitFormAsync.request({formData: getFormData}));
 
-            // history.push('/requests/completed')
+            // history.push('/requests/Completed')
 
         }
 
