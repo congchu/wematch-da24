@@ -378,7 +378,11 @@ export default function CompletedPage() {
     useEffect(() => {
         if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'success') {
             dataLayer({
-                event: 'pageview',
+                event: '매칭완료',
+                action: `매칭완료_${getSubmittedForm.data?.match_list?.length}`,
+                label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
+                CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+                CD12: '바로매칭',
             })
 
             events({
@@ -400,29 +404,12 @@ export default function CompletedPage() {
     }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
 
 
-    /* SKELETON - FROM oneroom */
-    // if (getSubmittedForm.loading) {
-    //   if (cookies.report && getSubmittedForm.report) {
-    //     removeCookie('report')
-    //   }
-    //
-    //   return (
-    //     <CompletedSkeleton />
-    //   )
-    // }
-
     if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'no partner') {
         history.push('/requests/nopartner')
-        // return (
-        //   <NoPartner />
-        // )
     }
 
     if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'no service') {
         history.push('/requests/noservice')
-        // return (
-        //   <NoService />
-        // )
     }
 
     const {

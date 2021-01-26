@@ -23,6 +23,7 @@ import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
 import {isExceedDiffDay} from 'lib/dateUtil'
 import ResponsiveSkeleton from "../../components/common/Skeleton/responsiveSkeleton";
+import last from "lodash/last";
 
 
 const S = {
@@ -203,11 +204,14 @@ export default function NoPartner() {
         contents: getContents
     }
 
-
-
     useEffect(() => {
         dataLayer({
-            event: 'pageview',
+            event: 'complete',
+            category: '업체마감',
+            action: '업체마감',
+            label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
+            CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+            CD12: '바로매칭',
         })
 
         events({

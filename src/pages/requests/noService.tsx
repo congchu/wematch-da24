@@ -16,6 +16,7 @@ import {events} from 'lib/appsflyer'
 import * as formActions from "../../store/form/actions";
 import * as formSelector from "../../store/form/selectors";
 import {FormState} from "../../store/form/reducers";
+import last from "lodash/last";
 
 const S = {
     Container: styled.div``,
@@ -110,8 +111,14 @@ export default function NoService() {
 
     useEffect(() => {
         dataLayer({
-            event: 'pageview',
+            event: 'complete',
+            category: '업체없음',
+            action: '업체없음',
+            label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
+            CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+            CD12: '바로매칭',
         })
+
         events({
             action: 'app_move_noservice'
         })

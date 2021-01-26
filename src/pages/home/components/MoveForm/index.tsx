@@ -397,22 +397,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
 
     useEffect(() => {
         if (getMoveIdxData.idx && submitType === 'curation' && !getMoveIdxData.loading) {
-            /* to asp*/
-            // document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
-
-            dataLayer({
-                event: 'requests_auto_match',
-                category: '다이사_신청',
-            })
-
-            events({
-                action: 'completed'
-            })
-
             dispatch(formActions.submitFormAsync.request({formData: getFormData}));
-
-            // history.push('/requests/Completed')
-
         }
 
         if (getMoveIdxData.idx && submitType === 'select' && !getMoveIdxData.loading) {
