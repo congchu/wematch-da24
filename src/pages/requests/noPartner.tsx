@@ -11,18 +11,19 @@ import Input from 'components/common/Input'
 import {SoldOut} from 'components/Icon'
 import CalendarModal from 'components/common/Modal/CalendarModal'
 import {CalendarDate} from 'components/wematch-ui/utils/date'
+import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton';
 
 import * as formActions from 'store/form/actions'
 import * as formSelectors from 'store/form/selectors'
 import * as formSelector from 'store/form/selectors'
 import {FormState} from 'store/form/reducers'
+import {useCookies} from "react-cookie";
 
 import {CALENDAR_MAX_DAYS} from 'constants/values';
 import {MOVE_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
 import {isExceedDiffDay} from 'lib/dateUtil'
-import ResponsiveSkeleton from "../../components/common/Skeleton/responsiveSkeleton";
 
 
 const S = {
@@ -147,6 +148,7 @@ export default function NoPartner() {
     const getAgree = useSelector(formSelector.getAgree)
 
     const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar');
+    const [cookies, setCookie] = useCookies(['report'])
 
     const getMoveTypeText = useCallback(() => {
         if (getMoveType === 'house') {
@@ -188,6 +190,10 @@ export default function NoPartner() {
         }))
     }
 
+    const goHome = () => {
+        window.location.href = `${MOVE_URL}`
+    }
+
 
     const formState: FormState = {
         type: getMoveType,
@@ -204,7 +210,6 @@ export default function NoPartner() {
     }
 
 
-
     useEffect(() => {
         dataLayer({
             event: 'pageview',
@@ -216,16 +221,27 @@ export default function NoPartner() {
     }, [])
 
     useEffect(() => {
-
-        if (!getSubmittedForm.data && !getSubmittedForm?.report) {
-            // window.location.href = `${MOVE_URL}/myconsult.asp`
-            dispatch(formActions.submitFormAsync.success(formState))
+        if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+            dispatch(formActions.submitFormAsync.success(cookies.report))
         }
+        if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
+            window.location.href = `${MOVE_URL}/myconsult.asp`
+        }
+
     }, [getSubmittedForm])
 
-    const goHome = () => {
-        window.location.href = `${MOVE_URL}`
-    }
+    useEffect(() => {
+        if (getSubmittedForm.data?.result === 'no partner' && !getSubmittedForm.loading) {
+            const now = new Date()
+            const time = now.getTime() + (3600 * 1000)
+            now.setTime(time)
+            setCookie('report', formState, {
+                path: '/',
+                expires: now
+            })
+        }
+    }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
+
 
     if (getSubmittedForm.loading) {
         return <ResponsiveSkeleton />

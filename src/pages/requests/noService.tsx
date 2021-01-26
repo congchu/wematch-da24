@@ -9,13 +9,15 @@ import AreaIcon from 'components/Icon/generated/AreaIcon'
 import Kakao from 'components/Icon/generated/Kakao_fit'
 
 import * as formSelectors from 'store/form/selectors'
+import * as formActions from 'store/form/actions';
+import * as formSelector from 'store/form/selectors';
+import {FormState} from 'store/form/reducers';
+import {useCookies} from "react-cookie";
 
 import {MOVE_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
-import * as formActions from "../../store/form/actions";
-import * as formSelector from "../../store/form/selectors";
-import {FormState} from "../../store/form/reducers";
+
 
 const S = {
     Container: styled.div``,
@@ -81,6 +83,8 @@ export default function NoService() {
 
 
     const dispatch = useDispatch()
+    const [cookies, setCookie] = useCookies(['report'])
+
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
     const getMoveType = useSelector(formSelector.getType)
     const getMoveDate = useSelector(formSelector.getDate)
@@ -108,6 +112,10 @@ export default function NoService() {
         contents: getContents
     }
 
+    const goHome = () => {
+        window.location.href = `${MOVE_URL}`
+    }
+
     useEffect(() => {
         dataLayer({
             event: 'pageview',
@@ -117,16 +125,30 @@ export default function NoService() {
         })
     }, [])
 
+
     useEffect(() => {
-        if (!getSubmittedForm.data && !getSubmittedForm?.report) {
-            // window.location.href = `${MOVE_URL}/myconsult.asp`
-            dispatch(formActions.submitFormAsync.success(formState))
+        if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+            dispatch(formActions.submitFormAsync.success(cookies.report))
         }
+        if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
+            window.location.href = `${MOVE_URL}/myconsult.asp`
+        }
+
     }, [getSubmittedForm])
 
-    const goHome = () => {
-        window.location.href = `${MOVE_URL}`
-    }
+    useEffect(() => {
+        if (getSubmittedForm.data?.result === 'no service' && !getSubmittedForm.loading) {
+            const now = new Date()
+            const time = now.getTime() + (3600 * 1000)
+            now.setTime(time)
+            setCookie('report', formState, {
+                path: '/',
+                expires: now
+            })
+        }
+    }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
+
+
 
 
     return (
