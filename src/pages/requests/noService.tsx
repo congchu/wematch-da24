@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {useMedia} from 'react-use-media'
 import styled from 'styled-components'
 
@@ -13,6 +13,9 @@ import * as formSelectors from 'store/form/selectors'
 import {MOVE_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
+import * as formActions from "../../store/form/actions";
+import * as formSelector from "../../store/form/selectors";
+import {FormState} from "../../store/form/reducers";
 
 const S = {
     Container: styled.div``,
@@ -77,7 +80,33 @@ export default function NoService() {
     })
 
 
+    const dispatch = useDispatch()
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
+    const getMoveType = useSelector(formSelector.getType)
+    const getMoveDate = useSelector(formSelector.getDate)
+    const getAddress = useSelector(formSelector.getAddress)
+    const getFloor = useSelector(formSelector.getFloor)
+    const getName = useSelector(formSelector.getName)
+    const getPhone = useSelector(formSelector.getPhone)
+    const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
+    const getContents = useSelector(formSelector.getContents)
+    const getFormData = useSelector(formSelector.getFormData)
+    const getAgree = useSelector(formSelector.getAgree)
+
+
+    const formState: FormState = {
+        type: getMoveType,
+        date: getMoveDate,
+        address: getAddress,
+        agree: getAgree,
+        floor: getFloor,
+        formData: getFormData,
+        isMoveStore: getIsMoveStore,
+        name: getName,
+        phone: getPhone,
+        submittedForm: getSubmittedForm,
+        contents: getContents
+    }
 
     useEffect(() => {
         dataLayer({
@@ -90,7 +119,8 @@ export default function NoService() {
 
     useEffect(() => {
         if (!getSubmittedForm.data && !getSubmittedForm?.report) {
-            window.location.href = `${MOVE_URL}/myconsult.asp`
+            // window.location.href = `${MOVE_URL}/myconsult.asp`
+            dispatch(formActions.submitFormAsync.success(formState))
         }
     }, [getSubmittedForm])
 

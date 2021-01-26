@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import styled from 'styled-components'
 import {useDispatch, useSelector} from 'react-redux'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import {useMedia} from 'react-use-media';
 import useHashToggle from 'hooks/useHashToggle'
 
@@ -15,13 +15,14 @@ import {CalendarDate} from 'components/wematch-ui/utils/date'
 import * as formActions from 'store/form/actions'
 import * as formSelectors from 'store/form/selectors'
 import * as formSelector from 'store/form/selectors'
+import {FormState} from 'store/form/reducers'
 
 import {CALENDAR_MAX_DAYS} from 'constants/values';
 import {MOVE_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
 import {isExceedDiffDay} from 'lib/dateUtil'
-import * as constants from "../../constants/env";
+import ResponsiveSkeleton from "../../components/common/Skeleton/responsiveSkeleton";
 
 
 const S = {
@@ -120,6 +121,10 @@ const S = {
 }
 
 
+interface ReceivedFormState {
+    formState: FormState;
+}
+
 export default function NoPartner() {
 
     const isDesktop = useMedia({
@@ -129,10 +134,17 @@ export default function NoPartner() {
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const formData = useSelector(formSelectors.getFormData)
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
     const getMoveType = useSelector(formSelector.getType)
     const getMoveDate = useSelector(formSelector.getDate)
+    const getAddress = useSelector(formSelector.getAddress)
+    const getFloor = useSelector(formSelector.getFloor)
+    const getName = useSelector(formSelector.getName)
+    const getPhone = useSelector(formSelector.getPhone)
+    const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
+    const getContents = useSelector(formSelector.getContents)
+    const getFormData = useSelector(formSelector.getFormData)
+    const getAgree = useSelector(formSelector.getAgree)
 
     const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar');
 
@@ -146,7 +158,7 @@ export default function NoPartner() {
 
 
     const handleSubmit = () => {
-        dispatch(formActions.submitFormAsync.request({formData}))
+        dispatch(formActions.submitFormAsync.request({formData: getFormData}))
         // history.push('/requests/completed')
     }
 
@@ -170,8 +182,27 @@ export default function NoPartner() {
             return;
         }
         dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
+        dispatch(formActions.setFormData({
+            ...getFormData,
+            'moving_date': date.date.format('YYYY-MM-DD')
+        }))
     }
-    /* CALENDAR */
+
+
+    const formState: FormState = {
+        type: getMoveType,
+        date: getMoveDate,
+        address: getAddress,
+        agree: getAgree,
+        floor: getFloor,
+        formData: getFormData,
+        isMoveStore: getIsMoveStore,
+        name: getName,
+        phone: getPhone,
+        submittedForm: getSubmittedForm,
+        contents: getContents
+    }
+
 
 
     useEffect(() => {
@@ -185,13 +216,19 @@ export default function NoPartner() {
     }, [])
 
     useEffect(() => {
+
         if (!getSubmittedForm.data && !getSubmittedForm?.report) {
-            window.location.href = `${MOVE_URL}/myconsult.asp`
+            // window.location.href = `${MOVE_URL}/myconsult.asp`
+            dispatch(formActions.submitFormAsync.success(formState))
         }
     }, [getSubmittedForm])
 
     const goHome = () => {
         window.location.href = `${MOVE_URL}`
+    }
+
+    if (getSubmittedForm.loading) {
+        return <ResponsiveSkeleton />
     }
 
 
