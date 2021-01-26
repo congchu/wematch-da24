@@ -94,12 +94,16 @@ export default function NoService() {
         }
     }, [getSubmittedForm])
 
+    const goHome = () => {
+        window.location.href = `${MOVE_URL}`
+    }
+
 
     return (
         <>
             { !getSubmittedForm.report ? <></> :
                 <S.Container>
-                    {isDesktop ? <MainHeader/> : <NavHeader title=""/>}
+                    {isDesktop ? <MainHeader/> : <NavHeader title="" onPreviousButtonClick={goHome}/>}
                     <S.Contents>
                         <AreaIcon/>
                         <S.Title>해당 지역은 서비스 준비 중입니다.</S.Title>

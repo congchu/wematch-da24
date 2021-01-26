@@ -21,6 +21,7 @@ import {MOVE_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
 import {isExceedDiffDay} from 'lib/dateUtil'
+import * as constants from "../../constants/env";
 
 
 const S = {
@@ -146,7 +147,7 @@ export default function NoPartner() {
 
     const handleSubmit = () => {
         dispatch(formActions.submitFormAsync.request({formData}))
-        history.push('/requests/completed')
+        // history.push('/requests/completed')
     }
 
     const toggleCalendarCancel = () => {
@@ -189,12 +190,16 @@ export default function NoPartner() {
         }
     }, [getSubmittedForm])
 
+    const goHome = () => {
+        window.location.href = `${MOVE_URL}`
+    }
+
 
     return (
         <>
             { !getSubmittedForm.report ? <></> :
                 <S.Container>
-                    {isDesktop ? <MainHeader/> : <NavHeader title=""/>}
+                    {isDesktop ? <MainHeader/> : <NavHeader title="" onPreviousButtonClick={goHome} />}
                     <S.Contents>
                         <SoldOut/>
                         <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>
