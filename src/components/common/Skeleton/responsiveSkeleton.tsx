@@ -128,7 +128,7 @@ export default function ResponsiveSkeleton() {
 
     useEffect(() => {
         window.scrollTo(0, 0)
-    }, [window])
+    }, [])
 
     /* DESKTOP */
     if (isDesktop) {

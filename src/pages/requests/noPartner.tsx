@@ -151,6 +151,7 @@ export default function NoPartner() {
 
     const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar');
     const [cookies, setCookie] = useCookies(['report'])
+    const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
 
     const getMoveTypeText = useCallback(() => {
         if (getMoveType === 'house') {
@@ -163,7 +164,6 @@ export default function NoPartner() {
 
     const handleSubmit = () => {
         dispatch(formActions.submitFormAsync.request({formData: getFormData}))
-        // history.push('/requests/completed')
     }
 
     const toggleCalendarCancel = () => {
@@ -213,7 +213,7 @@ export default function NoPartner() {
 
 
     useEffect(() => {
-        if (getSubmittedForm.data && !getSubmittedForm.loading && !getSubmittedForm?.isCookie) {
+        if (getSubmittedForm.data && !getSubmittedForm.loading && !getSubmittedForm?.report) {
             dataLayer({
                 event: 'complete',
                 category: '업체마감',
@@ -222,7 +222,7 @@ export default function NoPartner() {
                 CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
                 CD12: '바로매칭',
             })
-            ReactPixel.track('Purchase', '')
+            ReactPixel.fbq('track', 'Purchase')
         }
 
         events({

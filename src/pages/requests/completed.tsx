@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
+import ReactPixel from 'react-facebook-pixel'
+import last from 'lodash/last'
 import {useMedia} from 'react-use-media'
 import {useDispatch, useSelector} from 'react-redux'
-import {useHistory} from 'react-router-dom'
 import {useCookies} from 'react-cookie'
-import last from 'lodash/last'
-import ReactPixel from 'react-facebook-pixel'
 
 import MainHeader from 'components/common/MainHeader/index'
 import Collapse from 'components/base/Collapse'
@@ -331,7 +330,6 @@ export default function CompletedPage() {
     const getAgree = useSelector(formSelector.getAgree)
 
     const dispatch = useDispatch()
-    const history = useHistory()
     const [cookies, setCookie] = useCookies(['report'])
 
     const isDesktop = useMedia({
@@ -343,6 +341,7 @@ export default function CompletedPage() {
     const [infoVisible, setInfoVisible] = useState(false)
     const [expand, setExpand] = useState(true)
     const [showPopup, setShowPopup] = useState(false)
+    const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
 
     const toggleInfoBox = () => {
         setInfoVisible(!infoVisible)
@@ -366,9 +365,9 @@ export default function CompletedPage() {
         contents: getContents
     }
 
-
     useEffect(() => {
         if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+            setIsCookie(true)
             dispatch(formActions.submitFormAsync.success(cookies.report))
         }
         if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
@@ -377,7 +376,7 @@ export default function CompletedPage() {
     }, [])
 
     useEffect(() => {
-        if (getSubmittedForm.data && !getSubmittedForm.loading && !getSubmittedForm?.isCookie) {
+        if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
             dataLayer({
                 event: 'complete',
                 category: '매칭완료',
@@ -390,7 +389,7 @@ export default function CompletedPage() {
             events({
                 action: 'app_move_done'
             })
-            ReactPixel.track('Purchase', '')
+            ReactPixel.fbq('track', 'Purchase')
         }
     }, [getSubmittedForm])
 
@@ -399,6 +398,7 @@ export default function CompletedPage() {
             const now = new Date()
             const time = now.getTime() + (3600 * 1000)
             now.setTime(time)
+
             setCookie('report', formState, {
                 path: '/',
                 expires: now

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {useMedia} from 'react-use-media'
 import styled from 'styled-components'
@@ -85,6 +85,7 @@ export default function NoService() {
 
     const dispatch = useDispatch()
     const [cookies, setCookie] = useCookies(['report'])
+    const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
 
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
     const getMoveType = useSelector(formSelector.getType)
@@ -118,7 +119,7 @@ export default function NoService() {
     }
 
     useEffect(() => {
-        if (getSubmittedForm.data && !getSubmittedForm.loading && !getSubmittedForm?.isCookie) {
+        if (getSubmittedForm.data && !getSubmittedForm.loading && !getSubmittedForm?.report) {
             dataLayer({
                 event: 'complete',
                 category: '업체없음',
@@ -128,7 +129,7 @@ export default function NoService() {
                 CD12: '바로매칭',
             })
 
-            ReactPixel.track('Purchase', '')
+            ReactPixel.track('track', 'Purchase')
         }
 
         events({
@@ -158,9 +159,6 @@ export default function NoService() {
             })
         }
     }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
-
-
-
 
     return (
         <>

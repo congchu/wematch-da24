@@ -34,7 +34,6 @@ export interface FormState {
         data: SubmittedForm | undefined;
         loading: boolean;
         report: boolean;
-        isCookie?: boolean;
     }
 }
 
@@ -88,7 +87,6 @@ const initialState: FormState = {
         data: undefined,
         loading: false,
         report: false,
-        isCookie: false // cookie인 경우에는 페이스북 픽셀, 데이터레이어 등을 남기지 않기 위해서 사용
     }
 }
 
@@ -122,8 +120,9 @@ export default createReducer<FormState, Actions>(initialState)
     // .handleAction(actions.submitFormAsync.request, (state) => ({ ...state, submittedForm: { data: undefined, loading: true, report: true } }))
     // .handleAction(actions.submitFormAsync.success, (state, action) => ({ ...state, submittedForm: { data: action.payload, loading: false, report: true } }))
     // .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state,  submittedForm: { ...state.submittedForm, loading: false, report: false } }))
-    .handleAction(actions.submitFormAsync.request, (state) => ({ ...state, submittedForm: { data: undefined, loading: true, report: true, isCookie: false } }))
-    .handleAction(actions.submitFormAsync.success, (state, action) => ({ ...state,
+    .handleAction(actions.submitFormAsync.request, (state) => ({ ...state, submittedForm: { data: undefined, loading: true, report: true } }))
+    .handleAction(actions.submitFormAsync.success, (state, action) => ({
+        ...state,
         type: action.payload.type,
         date: action.payload.date,
         address: action.payload.address ,
@@ -134,6 +133,6 @@ export default createReducer<FormState, Actions>(initialState)
         name: action.payload.name ,
         phone: action.payload.phone,
         contents: action.payload.contents,
-        submittedForm: { data: action.payload.submittedForm.data, loading: false, report: true, isCookie: true }
+        submittedForm: { data: action.payload.submittedForm.data, loading: false, report: true }
     }))
-    .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state,  submittedForm: { ...state.submittedForm, loading: false, report: false} }))
+    .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state,  submittedForm: { ...state.submittedForm, loading: false, report: false } }))
