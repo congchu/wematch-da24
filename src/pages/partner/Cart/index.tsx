@@ -37,8 +37,8 @@ interface IList {
 }
 
 const S = {
-  CartWrapper: styled.div`
-      height: 100%;
+  CartWrapper: styled.div<{padding: string}>`
+      padding-top: ${props => props.padding && props.padding};
     `,
   CartContainer: styled.div<{ isEmpty: boolean }>`
       display: flex;
@@ -262,9 +262,13 @@ const PartnerCart = () => {
     minWidth: 1200,
   })
 
+  const isMobile = useMedia({
+    maxWidth: 767,
+  })
+
   useEffect(() => {
-    if (!isEmpty(getPartnerPickList) && getMoveIdxData.idx) {
       const selectedId = getPartnerPickList.data.map(list => list.adminid)
+    if (!isEmpty(getPartnerPickList) && getMoveIdxData.idx) {
       if (!isEmpty(selectedId)) {
         dispatch(partnerActions.fetchCartListAsync.request({ idx: getMoveIdxData.idx, admin_id: selectedId }))
       }
@@ -363,8 +367,8 @@ const PartnerCart = () => {
 
   return (
     <>
-      <S.CartWrapper>
-        {isDesktop ? <MainHeader /> : <TopGnb title="방문견적 요청" count={0} onPrevious={() => history.goBack()} showTruck={false} />}
+      <S.CartWrapper padding={isMobile ? '48px' : '72px'}>
+        {isDesktop ? <MainHeader isFixed={true}/> : <TopGnb title="방문견적 요청" count={0} onPrevious={() => history.goBack()} showTruck={false} />}
         <S.TitleWrapper>
           <S.Title>
             <p>내가 선택한 업체</p>
