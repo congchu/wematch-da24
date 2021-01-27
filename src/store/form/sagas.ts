@@ -20,7 +20,7 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
             isMoveStore: yield select(formSelector.getIsMoveStore),
             name: yield select(formSelector.getName),
             phone: yield select(formSelector.getPhone),
-            submittedForm:{
+            submittedForm: {
                 data: data,
                 loading: false,
                 report: true
@@ -28,8 +28,14 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
             contents: yield select(formSelector.getContents)
         }
         yield put(actions.submitFormAsync.success(formState))
-        yield put(push('/requests/completed'))
 
+        if (formState.submittedForm.data?.result === 'success') {
+            yield put(push('/requests/completed'))
+        } else if (formState.submittedForm.data?.result === 'no partner') {
+            yield put(push('/requests/nopartner'))
+        } else if (formState.submittedForm.data?.result === 'no service') {
+            yield put(push('/requests/noservice'))
+        }
     } catch (e) {
         yield put(actions.submitFormAsync.failure())
         alert('에러가 발생했습니다.')

@@ -1,7 +1,9 @@
-import React, {useEffect} from 'react'
-import {useSelector} from 'react-redux'
+import React, {useEffect, useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import {useMedia} from 'react-use-media'
 import styled from 'styled-components'
+import last from 'lodash/last'
+import ReactPixel from 'react-facebook-pixel'
 
 import MainHeader from 'components/common/MainHeader/index'
 import NavHeader from 'components/common/NavHeader/index'
@@ -9,6 +11,10 @@ import AreaIcon from 'components/Icon/generated/AreaIcon'
 import Kakao from 'components/Icon/generated/Kakao_fit'
 
 import * as formSelectors from 'store/form/selectors'
+import * as formActions from 'store/form/actions'
+import * as formSelector from 'store/form/selectors'
+import {FormState} from 'store/form/reducers'
+import {useCookies} from "react-cookie"
 
 import {MOVE_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
@@ -77,29 +83,89 @@ export default function NoService() {
     })
 
 
+    const dispatch = useDispatch()
+    const [cookies, setCookie] = useCookies(['report'])
+    const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
+
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
+    const getMoveType = useSelector(formSelector.getType)
+    const getMoveDate = useSelector(formSelector.getDate)
+    const getAddress = useSelector(formSelector.getAddress)
+    const getFloor = useSelector(formSelector.getFloor)
+    const getName = useSelector(formSelector.getName)
+    const getPhone = useSelector(formSelector.getPhone)
+    const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
+    const getContents = useSelector(formSelector.getContents)
+    const getFormData = useSelector(formSelector.getFormData)
+    const getAgree = useSelector(formSelector.getAgree)
+
+
+    const formState: FormState = {
+        type: getMoveType,
+        date: getMoveDate,
+        address: getAddress,
+        agree: getAgree,
+        floor: getFloor,
+        formData: getFormData,
+        isMoveStore: getIsMoveStore,
+        name: getName,
+        phone: getPhone,
+        submittedForm: getSubmittedForm,
+        contents: getContents
+    }
+
+    const goHome = () => {
+        window.location.href = `${MOVE_URL}`
+    }
 
     useEffect(() => {
-        dataLayer({
-            event: 'pageview',
-        })
+        if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
+            dataLayer({
+                event: 'complete',
+                category: '업체없음',
+                action: '업체없음',
+                label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
+                CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+                CD12: '바로매칭',
+            })
+
+            ReactPixel.fbq('track', 'Purchase')
+        }
+
         events({
             action: 'app_move_noservice'
         })
     }, [])
 
+
     useEffect(() => {
-        if (!getSubmittedForm.data && !getSubmittedForm?.report) {
+        if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+            setIsCookie(true)
+            dispatch(formActions.submitFormAsync.success(cookies.report))
+        }
+        if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
             window.location.href = `${MOVE_URL}/myconsult.asp`
         }
+
     }, [getSubmittedForm])
 
+    useEffect(() => {
+        if (getSubmittedForm.data?.result === 'no service' && !getSubmittedForm.loading) {
+            const now = new Date()
+            const time = now.getTime() + (3600 * 1000)
+            now.setTime(time)
+            setCookie('report', formState, {
+                path: '/',
+                expires: now
+            })
+        }
+    }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
 
     return (
         <>
             { !getSubmittedForm.report ? <></> :
                 <S.Container>
-                    {isDesktop ? <MainHeader/> : <NavHeader title=""/>}
+                    {isDesktop ? <MainHeader/> : <NavHeader title="" onPreviousButtonClick={goHome}/>}
                     <S.Contents>
                         <AreaIcon/>
                         <S.Title>해당 지역은 서비스 준비 중입니다.</S.Title>

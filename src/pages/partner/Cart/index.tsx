@@ -5,7 +5,7 @@ import { useMedia } from "react-use-media";
 import styled from 'styled-components'
 import { isEmpty } from 'lodash';
 
-import MainHeader from "components/MainHeader";
+import MainHeader from "components/common/MainHeader";
 import TopGnb from "components/TopGnb";
 import Loading from "components/Loading";
 import ConfirmPopup from "./component/ConfirmPopup";
@@ -24,7 +24,6 @@ import * as partnerActions from "store/partner/actions";
 import * as commonSelector from "store/common/selectors";
 import * as constants from 'constants/env'
 import CheckAlertPopup from "./component/CheckAlertPopup";
-import { ChatArrow } from 'components/Icon';
 
 interface IList {
   id: number;
@@ -38,8 +37,8 @@ interface IList {
 }
 
 const S = {
-  CartWrapper: styled.div`
-      height: 100%;
+  CartWrapper: styled.div<{padding: string}>`
+      padding-top: ${props => props.padding && props.padding};
     `,
   CartContainer: styled.div<{ isEmpty: boolean }>`
       display: flex;
@@ -263,9 +262,13 @@ const PartnerCart = () => {
     minWidth: 1200,
   })
 
+  const isMobile = useMedia({
+    maxWidth: 767,
+  })
+
   useEffect(() => {
-    if (!isEmpty(getPartnerPickList) && getMoveIdxData.idx) {
       const selectedId = getPartnerPickList.data.map(list => list.adminid)
+    if (!isEmpty(getPartnerPickList) && getMoveIdxData.idx) {
       if (!isEmpty(selectedId)) {
         dispatch(partnerActions.fetchCartListAsync.request({ idx: getMoveIdxData.idx, admin_id: selectedId }))
       }
@@ -364,8 +367,8 @@ const PartnerCart = () => {
 
   return (
     <>
-      <S.CartWrapper>
-        {isDesktop ? <MainHeader /> : <TopGnb title="방문견적 요청" count={0} onPrevious={() => history.goBack()} showTruck={false} />}
+      <S.CartWrapper padding={isMobile ? '48px' : '72px'}>
+        {isDesktop ? <MainHeader isFixed={true}/> : <TopGnb title="방문견적 요청" count={0} onPrevious={() => history.goBack()} showTruck={false} />}
         <S.TitleWrapper>
           <S.Title>
             <p>내가 선택한 업체</p>

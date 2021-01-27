@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import * as colors from 'styles/colors'
 
@@ -10,7 +10,7 @@ const ToastOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: 101;
 `;
 
 const ToastPopupWrapper = styled.div`
@@ -35,9 +35,9 @@ const ToastContent = styled.div`
   
 `;
 
-const Header = styled.div`
+const Header = styled.div<{ showHeaderCancelButton: boolean }>`
   height: 48px;
-  background-color: ${colors.grayBg};
+  background-color: ${(props) => props.showHeaderCancelButton ? colors.grayBg : colors.white};
   display: flex;
   justify-content: flex-end;
   border-top-right-radius: 15px;
@@ -152,10 +152,11 @@ interface Props {
     confirmClick?: () => void;
     cancelText?: string;
     cancelClick?: () => void;
+    closeClick?: () => void;
     showHeaderCancelButton: boolean
 }
 const ToastPopup:React.FC<Props> = (props) => {
-    const { visible, children, subContent, confirmText, cancelText, confirmClick, showHeaderCancelButton, cancelClick } = props
+    const { visible, children, subContent, confirmText, cancelText, confirmClick, showHeaderCancelButton, cancelClick, closeClick } = props
 
     useEffect(() => {
         if (visible) {
@@ -172,9 +173,9 @@ const ToastPopup:React.FC<Props> = (props) => {
         <ToastOverlay>
             <ToastPopupWrapper>
                 <ToastContent>
-                    <Header>
+                    <Header showHeaderCancelButton={showHeaderCancelButton}>
                         {showHeaderCancelButton &&
-                            <button onClick={cancelClick}>닫기</button>
+                            <button onClick={closeClick}>닫기</button>
                         }
                     </Header>
                     <Content>
@@ -189,10 +190,17 @@ const ToastPopup:React.FC<Props> = (props) => {
                                         confirmClick()
                                     }}
                                 }>
-                                {confirmText}</ConfirmButton>
+                                {confirmText}
+                            </ConfirmButton>
                         )}
                         {cancelText && (
-                            <CancelButton>아니오</CancelButton>
+                            <CancelButton onClick={() => {
+                                if(cancelClick) {
+                                    cancelClick()
+                                }}
+                            }>
+                                {cancelText}
+                            </CancelButton>
                         )}
                     </Content>
                 </ToastContent>

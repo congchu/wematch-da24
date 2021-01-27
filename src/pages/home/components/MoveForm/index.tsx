@@ -397,24 +397,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
 
     useEffect(() => {
         if (getMoveIdxData.idx && submitType === 'curation' && !getMoveIdxData.loading) {
-            /* to asp*/
-            // document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
-
-            dataLayer({
-                event: 'step_4',
-                category: '다이사_신청',
-                // action: '견적정보',
-                // label: 'step_4'
-            })
-
-            events({
-                action: 'completed'
-            })
-
             dispatch(formActions.submitFormAsync.request({formData: getFormData}));
-
-            // history.push('/requests/completed')
-
         }
 
         if (getMoveIdxData.idx && submitType === 'select' && !getMoveIdxData.loading) {
@@ -519,12 +502,12 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
                             handleSubmit('curation')
                             setSubmitType('curation')
                         }}>추천업체 바로 신청하기</Button>
-                        {/*{getMoveType !== 'oneroom' && (*/}
-                        {/*  <Button theme="default" onClick={() => {*/}
-                        {/*      handleSubmit('select')*/}
-                        {/*      setSubmitType('select')*/}
-                        {/*  }}>업체 직접고르기</Button>*/}
-                        {/*)}*/}
+                        {getMoveType !== 'oneroom' && (
+                          <Button theme="default" onClick={() => {
+                              handleSubmit('select')
+                              setSubmitType('select')
+                          }}>업체 직접고르기</Button>
+                        )}
                     </div>
                 </Terms.SubmitContainer>
             </>

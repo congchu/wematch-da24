@@ -6,7 +6,7 @@ import { useMedia } from 'react-use-media'
 
 import { DownArrow, UpArrow } from 'components/Icon'
 import Loading from 'components/Loading'
-import MainHeader from 'components/MainHeader'
+import MainHeader from 'components/common/MainHeader'
 import TopGnb from 'components/TopGnb'
 import PartnerInfo from './components/partnerInfo/index'
 import ReviewContainer from "./components/reviewContainer/index";
@@ -21,7 +21,6 @@ import * as commonSelector from 'store/common/selectors'
 import { some } from "lodash";
 import { useRouter } from 'hooks/useRouter'
 import ToastPopup from "components/wematch-ui/ToastPopup";
-import { dataLayer } from "lib/dataLayerUtil";
 import SetType from "components/SetType";
 
 const S = {
@@ -260,7 +259,7 @@ const PartnerDetail = () => {
         <S.Container>
             {getPartnerDetail.data && (
                 <>
-                    {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true} />}
+                    {isDesktop ? <MainHeader isFixed={true}/> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true} />}
                     <SetType count={getPartnerPick.data.length} formData={getFormData} />
                     <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetail.data.profile_img} status={getPartnerDetail.data.status}
                         level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}

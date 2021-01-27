@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom'
 import {Provider} from 'react-redux'
 import {ConnectedRouter} from 'connected-react-router'
+import ReactPixel from 'react-facebook-pixel'
 
 import store from 'store/index'
 import browserHistory from 'lib/history'
@@ -77,6 +78,7 @@ function AppRoute() {
         }
 
         dataLayer({event: 'pageview'})
+        ReactPixel.pageView()
     }, [location.pathname])
 
     useEffect(() => {

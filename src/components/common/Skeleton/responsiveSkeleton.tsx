@@ -71,7 +71,7 @@ const Mob = {
     `
 }
 
-function SkeletonType2_Desktop() {
+function SkeletonType2Desktop() {
     return (
         <>
             <div style={{ display: 'flex', marginTop: 20 }}>
@@ -86,7 +86,7 @@ function SkeletonType2_Desktop() {
     )
 }
 
-function SkeletonType2_Tab() {
+function SkeletonType2Tab() {
     return (
         <>
             <div style={{ display: 'flex', marginTop: 30 }}>
@@ -101,7 +101,7 @@ function SkeletonType2_Tab() {
     )
 }
 
-function SkeletonType2_Mob() {
+function SkeletonType2Mob() {
     return (
         <>
             <div style={{display: 'flex', marginTop: 30}}>
@@ -128,8 +128,7 @@ export default function ResponsiveSkeleton() {
 
     useEffect(() => {
         window.scrollTo(0, 0)
-    }, [window])
-
+    }, [])
 
     /* DESKTOP */
     if (isDesktop) {
@@ -145,9 +144,9 @@ export default function ResponsiveSkeleton() {
                         <Skeleton style={{ width: 120, height: 14 }} animated />
                     </Desk.Group>
                     <Desk.Line style={{ marginTop: 17 }} />
-                    <SkeletonType2_Desktop />
-                    <SkeletonType2_Desktop />
-                    <SkeletonType2_Desktop />
+                    <SkeletonType2Desktop />
+                    <SkeletonType2Desktop />
+                    <SkeletonType2Desktop />
                     <Skeleton style={{ width: 160, height: 20, marginTop: 60, alignSelf: 'flex-start' }} animated />
                     <Desk.Line style={{ marginTop: 18 }} />
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -207,9 +206,9 @@ export default function ResponsiveSkeleton() {
                     <Skeleton style={{ width: 120, height: 14 }} animated />
                 </Tab.Group>
                 <Tab.Line style={{ marginTop: 17 }} />
-                <SkeletonType2_Tab />
-                <SkeletonType2_Tab />
-                <SkeletonType2_Tab />
+                <SkeletonType2Tab />
+                <SkeletonType2Tab />
+                <SkeletonType2Tab />
                 <Skeleton style={{ width: 160, height: 20, marginTop: 60, alignSelf: 'flex-start' }} animated />
                 <Tab.Line style={{ marginTop: 18 }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -258,9 +257,9 @@ export default function ResponsiveSkeleton() {
                 <Skeleton style={{width: 120, height: 14}} animated/>
             </Mob.Group>
             <Mob.Line style={{marginTop: 17}}/>
-            <SkeletonType2_Mob/>
-            <SkeletonType2_Mob/>
-            <SkeletonType2_Mob/>
+            <SkeletonType2Mob/>
+            <SkeletonType2Mob/>
+            <SkeletonType2Mob/>
             <Skeleton style={{width: 80, height: 20, marginTop: 49, alignSelf: 'flex-start'}} animated/>
             <Mob.Line style={{marginTop: 18}}/>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
