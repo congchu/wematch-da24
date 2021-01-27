@@ -11,7 +11,7 @@ import CompanyService, { CompanyState } from './company/reducers'
 import PartnerSaga from './partner/sagas'
 import CommonSaga from './common/sagas'
 import FormSaga from './form/sagas'
-import ComapnySaga from './company/sagas'
+import CompanySaga from './company/sagas'
 
 export interface RootState {
     router: RouterState;
@@ -53,7 +53,7 @@ function* rootSaga() {
         PartnerSaga(),
         CommonSaga(),
         FormSaga(),
-        ComapnySaga()
+        CompanySaga()
     ])
 }
 sagaMiddleware.run(rootSaga)
