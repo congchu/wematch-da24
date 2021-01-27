@@ -1,19 +1,18 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-
-import {useMedia} from "react-use-media";
+import {useMedia} from 'react-use-media'
 import { isEmpty } from 'lodash'
-
-import * as colors from 'styles/colors'
-import * as values from 'constants/values'
-import {commaInNumbers} from 'lib/numberUtil'
-import { Level, LevelText } from 'types/partner'
 
 import LevelModal from 'components/Modal/LevelModal'
 import LevelIcon from 'components/LevelIcon'
 import NewPartner from 'components/common/NewPartner'
 import { Question } from 'components/Icon'
-import UserImage from "./userImage";
+import UserImage from './userImage'
+
+import * as colors from 'styles/colors'
+import * as values from 'constants/values'
+import {commaInNumbers} from 'lib/numberUtil'
+import { Level, LevelText } from 'types/partner'
 
 const S = {
 	Container: styled.div`

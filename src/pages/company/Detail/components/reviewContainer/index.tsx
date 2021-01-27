@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import {useDispatch, useSelector} from "react-redux";
-import {useParams} from "react-router-dom";
-import {useMedia} from "react-use-media";
+import {useDispatch, useSelector} from 'react-redux'
+import {useParams} from 'react-router-dom'
+import {useMedia} from 'react-use-media'
 
 import Review from './review';
-import TermsModal from "components/Modal/TermsModal";
+import TermsModal from 'components/Modal/TermsModal'
 
-import * as companySelector from "store/company/selectors";
-import * as companyActions from "store/company/actions";
-import * as values from "constants/values";
-import * as colors from "styles/colors";
+import * as companySelector from 'store/company/selectors'
+import * as companyActions from 'store/company/actions'
+
+import * as values from 'constants/values'
+import * as colors from 'styles/colors'
 
 const S = {
   TitleContainer: styled.div`
@@ -70,10 +71,6 @@ const S = {
             margin: 0 auto;
         }
     `,
-}
-
-interface Props {
-  adminId: string;
 }
 
 const ReviewContainer = () => {

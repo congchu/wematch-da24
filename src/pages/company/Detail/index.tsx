@@ -3,21 +3,20 @@ import styled, { css } from 'styled-components'
 import { useParams, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
-import {RouteComponentProps} from "react-router";
+import {RouteComponentProps} from 'react-router'
 import { useRouter } from 'hooks/useRouter'
 
 import { DownArrow, UpArrow } from 'components/Icon'
 import Loading from 'components/Loading'
 import MainHeaderForDetail from 'components/MainHeaderForDetail'
-import NavHeader from 'components/common/NavHeader';
+import NavHeader from 'components/common/NavHeader'
 import PartnerInfo from './components/partnerInfo/index'
-import ReviewContainer from "./components/reviewContainer/index";
-import SetType from "components/SetType";
-
+import ReviewContainer from './components/reviewContainer/index'
+import SetType from 'components/SetType'
 
 import * as companyActions from 'store/company/actions'
 import * as companySelector from 'store/company/selectors'
-import * as formSelector from "store/form/selectors";
+import * as formSelector from 'store/form/selectors'
 import * as commonSelector from 'store/common/selectors'
 
 import * as colors from 'styles/colors'
