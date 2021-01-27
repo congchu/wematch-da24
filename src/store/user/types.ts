@@ -11,6 +11,7 @@ export interface IOrder {
     phone_number: string; 
     start_address: string;
     end_address: string;
+    stuff: string;
     memo: string;
     partners: IPartnerDetail[];
 }

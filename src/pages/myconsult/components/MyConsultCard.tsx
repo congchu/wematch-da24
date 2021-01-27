@@ -29,6 +29,7 @@ interface IConsultCard {
     dateOfReceipt: string;
     dateOfService: string;
     link: string;
+    handleSelectConsult: () => void;
 }
 
 const ConsultCard: React.FC<IConsultCard> = ({
@@ -36,10 +37,11 @@ const ConsultCard: React.FC<IConsultCard> = ({
     categoryTitle,
     dateOfReceipt,
     dateOfService,
+    handleSelectConsult,
     link
 }) => {
     return (
-    <ConsultCardContainer to={link}>
+    <ConsultCardContainer to={link} onClick={handleSelectConsult}>
         <IconWrapper>
             {
                 category === 'clean' ? 

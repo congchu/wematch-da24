@@ -10,6 +10,7 @@ import * as userActions from 'store/user/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import * as userSelector from 'store/user/selectors';
 import dayjs from 'dayjs';
+import { IOrder } from 'store/user/types';
 
 const MyConsult = () => {
     const history = useHistory();
@@ -31,12 +32,22 @@ const MyConsult = () => {
 
     useEffect(() => {
         dispatch(userActions.fetchUserConsultAsync.request({ name: '이장희', phone: '01053063796' }))
-    }, [])
+    }, [dispatch])
 
+
+    const handleSelectConsult = (order: IOrder) => {
+        dispatch(userActions.selectOrder({order}));
+    }
+
+
+    // TODO: 로딩 디자인 필요
+    if(loading) {
+      return <Container>로딩중입니다...</Container>
+    }
 
     return (
         <Container>
-            {isDesktop && <MainHeader />}
+            {isDesktop && <MainHeader isFixed={true} />}
             <Header>
                 <div>
                     <span className="title">{name}</span>
@@ -55,7 +66,7 @@ const MyConsult = () => {
                         <ContentList>
                             {
                                 clean_orders.length === 0 ? <FindCard title="입주/이사청소" link="https://wematch.com/clean_step_01.asp" /> :
-                                    clean_orders.map((order) => <ConsultCard key={order.idx} category={'clean'} link={'/'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
+                                    clean_orders.map((order) => <ConsultCard handleSelectConsult={() => handleSelectConsult(order)} key={order.idx} category={'clean'} link={'/myconsult/detail'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
                             }
                         </ContentList>
                     </ContentSection>
@@ -67,7 +78,7 @@ const MyConsult = () => {
                         <ContentList>
                             {
                                 move_orders.length === 0 ? <FindCard title="이사" link="https://wematch.com/clean_step_01.asp" /> :
-                                    move_orders.map((order) => <ConsultCard key={order.idx} category={'move'} link={'/'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
+                                    move_orders.map((order) => <ConsultCard handleSelectConsult={() => handleSelectConsult(order)} key={order.idx} category={'move'} link={'/myconsult/detail'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
                             }
                         </ContentList>
                     </ContentSection>
@@ -83,7 +94,7 @@ const MyConsult = () => {
                         ) : (
                                 <ContentList style={{ paddingTop: 24, paddingBottom: 40 }}>
                                     {
-                                        past_orders.map(order => <ConsultCard key={order.idx} category={order.type.includes('이사') ? 'clean' : 'move'} link={'/'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
+                                        past_orders.map(order => <ConsultCard key={order.idx} link={'/myconsult/detail'} category={order.type.includes('이사') ? 'clean' : 'move'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} handleSelectConsult={() => handleSelectConsult(order)} />)
                                     }
                                 </ContentList>
                             )
@@ -103,6 +114,11 @@ const MyConsult = () => {
 export default MyConsult;
 
 const Container = styled.div`
+    padding-top: 0;
+      
+      @media screen and (min-width: 768px) {
+        padding-top: 56px;
+      }
 `;
 
 const Header = styled.div`

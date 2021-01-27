@@ -19,6 +19,7 @@ const initialState: UserState = {
             move_orders: [],
             past_orders: [],
         },
+        selected: null,
         loading: false
     }
 }
@@ -36,11 +37,14 @@ export interface UserState {
             clean_orders: IOrder[];
             move_orders: IOrder[];
             past_orders: IOrder[];
-        }
+        },
+        selected: IOrder | null;
         loading: boolean;
     }
 }
 
 export default createReducer<UserState, Actions>(initialState)
     .handleAction(actions.fetchUserConsultAsync.request, (state) => ({...state, consult: {...state.consult, loading: true}}))
-    .handleAction(actions.fetchUserConsultAsync.success, (state, action) => ({...state, consult: { data: {...action.payload}, loading: false}}))
+    .handleAction(actions.fetchUserConsultAsync.success, (state, action) => ({...state, consult: { data: {...action.payload}, loading: false, selected: null}}))
+    .handleAction(actions.selectOrder, (state, action) => ({...state, consult: {...state.consult, selected: {...action.payload.order}}}))
+    .handleAction(actions.resetOrder, (state) => ({...state, consult: {...state.consult, selected: null}}))
