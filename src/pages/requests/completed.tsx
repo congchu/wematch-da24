@@ -468,7 +468,7 @@ export default function CompletedPage() {
                                             <span>{list.level_text}</span>
                                         </S.CompanyTitle>
                                     </S.ListBox>
-                                    <S.LinkCompany href={`/company/detail/${list.adminid}`} onClick={() => {
+                                    <S.LinkCompany onClick={() => {
                                         dataLayer({
                                             event: 'admin_idx',
                                             category: '다이사_신청완료',
