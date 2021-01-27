@@ -6,6 +6,7 @@ import { isEmpty } from 'lodash'
 
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
+import {commaInNumbers} from 'lib/numberUtil'
 
 import LevelModal from 'components/Modal/LevelModal'
 import LevelIcon from 'components/LevelIcon'
@@ -110,6 +111,13 @@ const S = {
 			color:${colors.black};
 			font-size:24px;
 			font-weight:700;
+			p{
+				display: inline;
+				color:${colors.gray66};
+				font-weight: 400;
+				font-size: 13px;
+				line-height: 19px;
+			}
 		}
 		@media screen and (min-width:1200px) {
 			width:32.5%;
@@ -202,11 +210,11 @@ const Index = ({ title, level, pick_cnt, experience, description='', keywords, a
 							</S.Card>
 							<S.Card>
 								<span>고객선택</span>
-								<em>{pick_cnt || 0} 회</em>
+								<em>{pick_cnt ? commaInNumbers(pick_cnt): 0} <p>회</p></em>
 							</S.Card>
 							<S.Card>
 								<span>경력년차</span>
-								<em>{experience || 1} 년</em>
+								<em>{experience || 1} <p>년</p></em>
 							</S.Card>
 						</S.Info>
 					}

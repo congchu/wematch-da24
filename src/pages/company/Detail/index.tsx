@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components'
 import { useParams, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
+import {RouteComponentProps} from "react-router";
+import { useRouter } from 'hooks/useRouter'
 
 import { DownArrow, UpArrow } from 'components/Icon'
 import Loading from 'components/Loading'
@@ -11,20 +13,21 @@ import NavHeader from 'components/common/NavHeader';
 import TopGnb from 'components/TopGnb'
 import PartnerInfo from './components/partnerInfo/index'
 import ReviewContainer from "./components/reviewContainer/index";
+import ToastPopup from "components/wematch-ui/ToastPopup";
+import SetType from "components/SetType";
 
-import * as colors from 'styles/colors'
-import * as values from 'constants/values'
 
 import * as companyActions from 'store/company/actions'
 import * as companySelector from 'store/company/selectors'
 import * as formSelector from "store/form/selectors";
 import * as commonSelector from 'store/common/selectors'
+
+import * as colors from 'styles/colors'
+import * as values from 'constants/values'
+
 import { some } from "lodash";
-import { useRouter } from 'hooks/useRouter'
-import ToastPopup from "components/wematch-ui/ToastPopup";
 import { dataLayer } from "lib/dataLayerUtil";
-import SetType from "components/SetType";
-import {RouteComponentProps} from "react-router";
+
 
 const S = {
     Container: styled.div``,
