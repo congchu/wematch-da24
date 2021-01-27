@@ -10,12 +10,21 @@ import * as commonTypes from "store/common/types"
 import {useDispatch, useSelector} from "react-redux";
 import * as commonSelector from "store/common/selectors";
 import * as partnerActions from "store/partner/actions";
+import {useMedia} from "react-use-media";
 
 
 const S = {
 		TypeSet: Styled.div`
+			position: fixed;
+			width: 100%;
 			background:${colors.grayBg};
 			border-bottom:1px solid ${colors.lineDefault};
+			top: 48px;
+			z-index: 100;
+			
+			@media screen and (min-width:768px) {
+            	top: 72px;
+        	}	
 		`,
 		BoxSet: Styled.div`
 			padding:19px 24px;
