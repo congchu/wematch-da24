@@ -87,7 +87,7 @@ const S = {
 		height:100%;
 		margin-right:2%;
 		border-radius:8px;
-  	box-shadow:0 3px 20px 0 rgba(220, 220, 220, 0.7);
+  		box-shadow:0 3px 20px 0 rgba(220, 220, 220, 0.7);
  	 	background-color:${colors.white};
 		text-align:center;
 		span{

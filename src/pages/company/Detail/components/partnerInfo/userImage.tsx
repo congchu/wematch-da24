@@ -48,7 +48,7 @@ const S = {
 			}
 		}
 		@media screen and (min-width:1200px) {
-			margin-top:70px;
+			margin-top:40px;
 		}
 	`,
 	DefaultProfileImg: Styled.div`

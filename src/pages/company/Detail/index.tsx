@@ -6,7 +6,8 @@ import { useMedia } from 'react-use-media'
 
 import { DownArrow, UpArrow } from 'components/Icon'
 import Loading from 'components/Loading'
-import MainHeader from 'components/MainHeader'
+import MainHeaderForDetail from 'components/MainHeaderForDetail'
+import NavHeader from 'components/common/NavHeader';
 import TopGnb from 'components/TopGnb'
 import PartnerInfo from './components/partnerInfo/index'
 import ReviewContainer from "./components/reviewContainer/index";
@@ -24,7 +25,6 @@ import ToastPopup from "components/wematch-ui/ToastPopup";
 import { dataLayer } from "lib/dataLayerUtil";
 import SetType from "components/SetType";
 import {RouteComponentProps} from "react-router";
-import NavHeader from "../../../components/common/NavHeader";
 
 const S = {
     Container: styled.div``,
@@ -201,7 +201,7 @@ const CompanyDetail = () => {
         <S.Container>
             {getCompanyDetail.data && (
                 <>
-                    {isDesktop ? <MainHeader/> : <NavHeader title="이사업체 상제 정보"/>}
+                    {isDesktop ? <MainHeaderForDetail/> : <NavHeader title="이사업체 상제 정보"/>}
                     {/*<SetType count={getPartnerPick.data.length} formData={getFormData} />*/}
                     <PartnerInfo title={getCompanyDetail.data.title ? getCompanyDetail.data.title : values.DEFAULT_TEXT} profile_img={getCompanyDetail.data.profile_img}
                                  level={getCompanyDetail.data.level} pick_cnt={getCompanyDetail.data.pick_cnt} experience={getCompanyDetail.data.experience}
