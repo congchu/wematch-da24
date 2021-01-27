@@ -119,7 +119,7 @@ export default function NoService() {
     }
 
     useEffect(() => {
-        if (getSubmittedForm.data && !getSubmittedForm.loading && !getSubmittedForm?.report) {
+        if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
             dataLayer({
                 event: 'complete',
                 category: '업체없음',
@@ -129,7 +129,7 @@ export default function NoService() {
                 CD12: '바로매칭',
             })
 
-            ReactPixel.track('track', 'Purchase')
+            ReactPixel.fbq('track', 'Purchase')
         }
 
         events({
@@ -140,6 +140,7 @@ export default function NoService() {
 
     useEffect(() => {
         if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+            setIsCookie(true)
             dispatch(formActions.submitFormAsync.success(cookies.report))
         }
         if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {

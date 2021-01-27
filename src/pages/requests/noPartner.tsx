@@ -213,7 +213,7 @@ export default function NoPartner() {
 
 
     useEffect(() => {
-        if (getSubmittedForm.data && !getSubmittedForm.loading && !getSubmittedForm?.report) {
+        if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
             dataLayer({
                 event: 'complete',
                 category: '업체마감',
@@ -232,6 +232,7 @@ export default function NoPartner() {
 
     useEffect(() => {
         if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+            setIsCookie(true)
             dispatch(formActions.submitFormAsync.success(cookies.report))
         }
         if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
