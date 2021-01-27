@@ -10,7 +10,7 @@ const S = {
 			position:relative;
 			width:720px;
 			margin:0 auto;
-			padding-left:272px;
+			padding-left:0px;
 		}
 	`,
 	Title: Styled.div`
@@ -35,13 +35,13 @@ const S = {
 		span{
 			display:inline-block;
 			width:100%;
-			height:228px;
+			height:284px;
 			background-image:url(${props => props.profile_img});
 			background-size:cover;
 			background-position:50% 50%;
 			background-repeat:no-repeat;
 			@media screen and (min-width:768px) {
-				height:486px;
+				height:558px;
 			}
 			@media screen and (min-width:1200px) {
 				height:474px;
@@ -55,7 +55,7 @@ const S = {
 		position:relative;
 	  	background-color:${colors.lineDefault};
 	  	width:100%;
-	  	height:228px;
+	  	height:284px;
 	  	display: flex;
 	  	justify-content: center;
 	  	align-items: center;
@@ -75,13 +75,13 @@ const S = {
 	  	}
 	  	
 		@media screen and (min-width:768px) {
-			height:486px;
+			height:558px;
 		}
 		@media screen and (min-width:1200px) {
 			height:474px;
 		}
 		@media screen and (min-width:1200px) {
-			margin-top:70px;
+			margin-top:40px;
 		}
 	`,
 	Opacity: Styled.div`
@@ -108,9 +108,9 @@ interface Props {
 const UserImage = ({ profile_img}: Props) => {
 	return (
 		<S.WrapImg>
-			<S.Title>
-				<h3>업체<br />직접선택</h3>
-			</S.Title>
+			{/*<S.Title>*/}
+			{/*	<h3>업체<br />직접선택</h3>*/}
+			{/*</S.Title>*/}
 			{profile_img ? (
 				<>
 				<S.ProfileImg profile_img={profile_img}>
@@ -121,7 +121,7 @@ const UserImage = ({ profile_img}: Props) => {
 				<S.DefaultProfileImg>
 					{/*나중에 확인 다시하기*/}
 					{/*{status === "unavailable" && (<S.Opacity />)}*/}
-					{/*<ProfileDefault width={60} height={60} color={colors.white} />*/}
+					<ProfileDefault width={60} height={60} color={colors.white} />
 					{/*{status === "unavailable" && (<span>오늘 마감</span>)}*/}
 				</S.DefaultProfileImg>
 			)}

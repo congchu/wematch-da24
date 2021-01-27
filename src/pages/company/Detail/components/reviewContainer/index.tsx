@@ -17,7 +17,7 @@ const S = {
 		@media screen and (min-width:1200px) {
 			width:720px;
 			margin:0 auto;
-			padding-left:272px;
+			padding-left:0px;
 		}
 	`,
   Wrap: styled.div`
@@ -62,7 +62,7 @@ const S = {
         @media screen and (min-width: 1200px) {
             width: 656px;
             margin: 0 auto;
-            padding-left: 272px;
+            padding-left: 0px;
         }       
         img {
             width: inherit;

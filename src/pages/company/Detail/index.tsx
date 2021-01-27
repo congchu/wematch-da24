@@ -37,7 +37,7 @@ const S = {
 			top:-10px;
 			width:100%;
 			height:8px;
-			margin-bottom:64px;
+			margin-bottom:0px;
 			background-color:${colors.lineDeco};
 			border:1px solid ${colors.lineDefault};
 			box-sizing:border-box;
@@ -49,14 +49,14 @@ const S = {
 		@media screen and (min-width:1200px) {
 			width:720px;
 			margin:0 auto;
-			padding-bottom:80px;
-			padding-left:272px;
+			padding-bottom:0px;
+			padding-left:0px;
 		}
 	`,
     MoreList: styled.button`
 		width:100%;
 		height:52px;
-		margin-bottom:64px;
+		margin-bottom:0px;
 		font-size:15px;
 		font-weight:500;
 		background-color:${colors.white};
@@ -68,32 +68,6 @@ const S = {
 		}
 		@media screen and (min-width:1200px) {
 			margin-bottom:0;
-		}
-	`,
-
-
-    BtnSelect: styled.button<{ status: 'selected' | 'available' | 'unavailable', isSelected: boolean }>`
-		position:fixed;
-		z-index:5;
-		left:0;
-		right:0;
-		bottom:0;
-		width:100%;
-		height:64px;
-		font-size:18px;
-		font-weight:700;
-		background-color: ${props => props.isSelected ? colors.lineDefault : colors.pointBlue};
-		color:${colors.white};
-		cursor:pointer;
-		${props => props.status === 'unavailable' && css`
-			background-color:${colors.lineDefault};
-			pointer-events: none;
-		`};
-		@media screen and (min-width:1200px) {
-			//position:relative;
-			width: 720px;
-			margin: 0 auto;
-			left: 272px;
 		}
 	`,
     TopBtn: styled.span`
@@ -139,7 +113,7 @@ const S = {
         @media screen and (min-width: 1200px) {
             width: 656px;
             margin: 0 auto;
-            padding-left: 272px;
+            padding-left: 0px;
         }
         img {
             width: inherit;
