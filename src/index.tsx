@@ -18,7 +18,6 @@ TagManager.initialize({
 
 // Facebook init
 ReactPixel.init('1412857602168220')
-ReactPixel.pageView()
 
 ReactDOM.render(
   <React.StrictMode>

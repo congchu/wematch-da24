@@ -119,8 +119,6 @@ export default function NoService() {
 
     useEffect(() => {
         if (getSubmittedForm.data) {
-            ReactPixel.track('Purchase');
-
             dataLayer({
                 event: 'complete',
                 category: '업체없음',
@@ -129,6 +127,9 @@ export default function NoService() {
                 CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
                 CD12: '바로매칭',
             })
+
+            ReactPixel.pageView()
+            ReactPixel.track('Purchase')
         }
 
         events({

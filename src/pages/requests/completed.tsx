@@ -378,8 +378,6 @@ export default function CompletedPage() {
 
     useEffect(() => {
         if (getSubmittedForm.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'success') {
-            ReactPixel.track('Purchase');
-
             dataLayer({
                 event: 'complete',
                 category: '매칭완료',
@@ -392,6 +390,8 @@ export default function CompletedPage() {
             events({
                 action: 'app_move_done'
             })
+            ReactPixel.pageView()
+            ReactPixel.track('Purchase')
         }
     }, [getSubmittedForm])
 
