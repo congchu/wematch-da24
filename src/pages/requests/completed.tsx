@@ -377,7 +377,7 @@ export default function CompletedPage() {
     }, [])
 
     useEffect(() => {
-        if (getSubmittedForm.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'success') {
+        if (getSubmittedForm.data && !getSubmittedForm.loading && !getSubmittedForm?.isCookie) {
             dataLayer({
                 event: 'complete',
                 category: '매칭완료',
@@ -390,8 +390,7 @@ export default function CompletedPage() {
             events({
                 action: 'app_move_done'
             })
-            ReactPixel.pageView()
-            ReactPixel.track('Purchase')
+            ReactPixel.track('Purchase', '')
         }
     }, [getSubmittedForm])
 
@@ -406,15 +405,6 @@ export default function CompletedPage() {
             })
         }
     }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
-
-
-    if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'no partner') {
-        history.push('/requests/nopartner')
-    }
-
-    if (getSubmittedForm?.data && !getSubmittedForm.loading && getSubmittedForm?.data.result === 'no service') {
-        history.push('/requests/noservice')
-    }
 
     const {
         start,

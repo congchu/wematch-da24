@@ -213,7 +213,7 @@ export default function NoPartner() {
 
 
     useEffect(() => {
-        if (getSubmittedForm.data) {
+        if (getSubmittedForm.data && !getSubmittedForm.loading && !getSubmittedForm?.isCookie) {
             dataLayer({
                 event: 'complete',
                 category: '업체마감',
@@ -222,8 +222,7 @@ export default function NoPartner() {
                 CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
                 CD12: '바로매칭',
             })
-            ReactPixel.pageView()
-            ReactPixel.track('Purchase')
+            ReactPixel.track('Purchase', '')
         }
 
         events({
