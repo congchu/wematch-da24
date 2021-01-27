@@ -28,13 +28,16 @@ const S = {
     Container: styled.div`
         height:100%;
     `,
-    WrapItem: styled.div`
+    WrapItem: styled.div<{margin: string}>`
+        margin-top: ${props => props.margin && props.margin};
         @media screen and (min-width:768px) {
             width:608px;
             margin:0 auto;
+            margin-top: ${props => props.margin && props.margin};
         }
         @media screen and (min-width:1200px) {
             width:720px;
+            margin-top: ${props => props.margin && props.margin};
         }
     `,
     PartnerItemContainer: styled.div<{ hasMore: boolean }>`
@@ -119,6 +122,9 @@ const PartnerList = () => {
     const isDesktop = useMedia({
         minWidth: 1200,
     })
+    const isMobile = useMedia({
+        maxWidth: 767,
+    })
 
     const history = useHistory()
     const dispatch = useDispatch()
@@ -187,13 +193,13 @@ const PartnerList = () => {
 
     return (
         <S.Container>
-            {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 목록" count={getPartnerPick.data.length} onPrevious={handlePrevious} showTruck={true} />}
+            {isDesktop ? <MainHeader isFixed={true} /> : <TopGnb title="이사업체 목록" count={getPartnerPick.data.length} onPrevious={handlePrevious} showTruck={true} />}
             <SetType count={getPartnerPick.data.length} formData={getFormData} />
             {isEmpty(getPartnerList.data)
                 ? <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다." />
                 :
                 <>
-                    <S.WrapItem id="dsl_booking_list_partner">
+                    <S.WrapItem id="dsl_booking_list_partner" margin={isMobile ? '48px' : '72px'}>
                         <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
                             {getPartnerList.data.map((list: any, index: number) => {
                                 return (
