@@ -24,6 +24,7 @@ import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
 import {formatDateDash2Dot, whatDay} from 'lib/dateUtil'
 import validatePhone from 'lib/validatePhone'
+import {useHistory} from "react-router-dom";
 
 const S = {
     Container: styled.div``,
@@ -331,6 +332,7 @@ export default function CompletedPage() {
 
     const dispatch = useDispatch()
     const [cookies, setCookie] = useCookies(['report'])
+    const history = useHistory()
 
     const isDesktop = useMedia({
         minWidth: 1200,
@@ -466,7 +468,7 @@ export default function CompletedPage() {
                                             <span>{list.level_text}</span>
                                         </S.CompanyTitle>
                                     </S.ListBox>
-                                    <S.LinkCompany href={`${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`} onClick={() => {
+                                    <S.LinkCompany href={`/company/detail/${list.adminid}`} onClick={() => {
                                         dataLayer({
                                             event: 'admin_idx',
                                             category: '다이사_신청완료',
