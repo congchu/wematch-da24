@@ -3,21 +3,20 @@ import Styled from 'styled-components'
 
 import { ProfileDefault } from 'components/Icon'
 import * as colors from 'styles/colors'
-import {useMedia} from "react-use-media";
 
 const S = {
-	WrapImg: Styled.div<{margin: number}>`
-		margin-top: ${props => props.margin && props.margin}px;
+	WrapImg: Styled.div`
+		margin-top: 48px;
 		
 		@media screen and (min-width: 768px) {
-			margin-top: ${props => props.margin && props.margin}px;
+			margin-top: 72px;
 		}
 		@media screen and (min-width:1200px) {
 			position:relative;
 			width:720px;
 			margin:0 auto;
 			padding-left:272px;
-			margin-top: ${props => props.margin && props.margin + 45}px;
+			margin-top: 110px;
 		}
 	`,
 	Title: Styled.div`
@@ -114,12 +113,9 @@ interface Props {
 }
 
 const UserImage = ({ profile_img, status }: Props) => {
-	const isMobile = useMedia({
-		maxWidth: 767,
-	})
 
 	return (
-		<S.WrapImg margin={isMobile ? 48 : 72}>
+		<S.WrapImg>
 			<S.Title>
 				<h3>업체<br />직접선택</h3>
 			</S.Title>
