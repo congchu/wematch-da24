@@ -7,12 +7,12 @@ import { isEmpty } from 'lodash'
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
 import {commaInNumbers} from 'lib/numberUtil'
+import { Level, LevelText } from 'types/partner'
 
 import LevelModal from 'components/Modal/LevelModal'
 import LevelIcon from 'components/LevelIcon'
 import NewPartner from 'components/common/NewPartner'
 import { Question } from 'components/Icon'
-import { Level, LevelText } from 'types/partner'
 import UserImage from "./userImage";
 
 const S = {
@@ -25,7 +25,7 @@ const S = {
 		border-bottom:8px solid ${colors.lineDeco};
 		@media screen and (min-width:1200px) {
 			width:720px;
-			margin:0 auto;
+			margin:-16px auto 0 auto;
 			padding-left:0px;
 			border-bottom:0;
 		}

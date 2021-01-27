@@ -10,10 +10,8 @@ import { DownArrow, UpArrow } from 'components/Icon'
 import Loading from 'components/Loading'
 import MainHeaderForDetail from 'components/MainHeaderForDetail'
 import NavHeader from 'components/common/NavHeader';
-import TopGnb from 'components/TopGnb'
 import PartnerInfo from './components/partnerInfo/index'
 import ReviewContainer from "./components/reviewContainer/index";
-import ToastPopup from "components/wematch-ui/ToastPopup";
 import SetType from "components/SetType";
 
 
@@ -143,9 +141,6 @@ const CompanyDetail = () => {
     const getReviewList = useSelector(companySelector.getCompanyReviewList)
     const getFormData = useSelector(formSelector.getFormData)
 
-    const [sessionVisible, setSessionVisible] = useState(false)
-    const [unavailableCheck, setUnavailableCheck] = useState(false)
-
     const checkScrollTop = () => {
         if (!showScrollView && window.pageYOffset > 300) {
             setShowScrollView(true)
@@ -161,22 +156,16 @@ const CompanyDetail = () => {
     };
 
 
-
-
     useEffect(() => {
-        // 일단 킵 => 파트너 디테일 불러옴 (?)
         dispatch(companyActions.fetchCompanyDetailAsync.request({
             username: params.username
         }))
-
         dispatch(companyActions.fetchCompReviewListAsync.request({
             username: params.username,
             page: 1,
             size: values.DEFAULT_REVIEW_LIST_SIZE
         }))
     }, [dispatch, params.username])
-
-
 
 
     useEffect(() => {
@@ -205,11 +194,9 @@ const CompanyDetail = () => {
             {getCompanyDetail.data && (
                 <>
                     {isDesktop ? <MainHeaderForDetail/> : <NavHeader title="이사업체 상제 정보"/>}
-                    {/*<SetType count={getPartnerPick.data.length} formData={getFormData} />*/}
                     <PartnerInfo title={getCompanyDetail.data.title ? getCompanyDetail.data.title : values.DEFAULT_TEXT} profile_img={getCompanyDetail.data.profile_img}
                                  level={getCompanyDetail.data.level} pick_cnt={getCompanyDetail.data.pick_cnt} experience={getCompanyDetail.data.experience}
                                  description={getCompanyDetail.data.description} keywords={getCompanyDetail.data.keywords} adminname={getCompanyDetail.data.adminname} addition={getCompanyDetail.data.addition} />
-                    {/*Review Container*/}
                     <ReviewContainer/>
                     <S.BottomContainer>
                         {getReviewList.moreLoading && (
@@ -230,13 +217,6 @@ const CompanyDetail = () => {
                     </S.BottomContainer>
                 </>
             )}
-            <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
-                <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
-            </ToastPopup>
-            {/*<ToastPopup visible={unavailableCheck} showHeaderCancelButton={false} confirmClick={() => setUnavailableCheck(!unavailableCheck)} confirmText={"확인"}>*/}
-            {/*    <p>오늘 마감된 업체</p>*/}
-            {/*    <span>해당 업체는 오늘 예약 및 상담 접수가 마감됐어요. 내일 오전에 다시 조회해보세요!</span>*/}
-            {/*</ToastPopup>*/}
         </S.Container>
     )
 }

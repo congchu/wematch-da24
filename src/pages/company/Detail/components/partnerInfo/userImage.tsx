@@ -108,9 +108,6 @@ interface Props {
 const UserImage = ({ profile_img}: Props) => {
 	return (
 		<S.WrapImg>
-			{/*<S.Title>*/}
-			{/*	<h3>업체<br />직접선택</h3>*/}
-			{/*</S.Title>*/}
 			{profile_img ? (
 				<>
 				<S.ProfileImg profile_img={profile_img}>
@@ -119,10 +116,7 @@ const UserImage = ({ profile_img}: Props) => {
 				</>
 			) : (
 				<S.DefaultProfileImg>
-					{/*나중에 확인 다시하기*/}
-					{/*{status === "unavailable" && (<S.Opacity />)}*/}
 					<ProfileDefault width={60} height={60} color={colors.white} />
-					{/*{status === "unavailable" && (<span>오늘 마감</span>)}*/}
 				</S.DefaultProfileImg>
 			)}
 		</S.WrapImg>

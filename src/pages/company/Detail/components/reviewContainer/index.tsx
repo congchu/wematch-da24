@@ -99,6 +99,7 @@ const ReviewContainer = () => {
   const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
 
   const review = () => {
+    /* 리뷰 없을때 */
     if (getCompanyReviewList.data.length < 5) {
       return (
         <S.ReviewPreview>
@@ -111,15 +112,8 @@ const ReviewContainer = () => {
       <div>
         {getCompanyReviewList.data.map((review, index) => {
           return (
-            <Review key={index}
-                    id={review.id}
-                    created_at={review.created_at}
-                    professional={review.professional}
-                    kind={review.kind}
-                    price={review.price}
-                    memo={review.memo}
-                    reply={review.reply}
-                    star={review.star}/>
+            <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional}
+                    kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>
           )
         })}
       </div>
