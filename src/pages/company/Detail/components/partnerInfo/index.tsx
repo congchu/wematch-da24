@@ -209,11 +209,11 @@ const Index = ({ title, level, pick_cnt, experience, description='', keywords, a
 							</S.Card>
 							<S.Card>
 								<span>고객선택</span>
-								<em>{pick_cnt ? commaInNumbers(pick_cnt): 0} <p>회</p></em>
+								<em>{pick_cnt ? commaInNumbers(pick_cnt): 0}<p> 회</p></em>
 							</S.Card>
 							<S.Card>
 								<span>경력년차</span>
-								<em>{experience || 1} <p>년</p></em>
+								<em>{experience || 1}<p> 년</p></em>
 							</S.Card>
 						</S.Info>
 					}
