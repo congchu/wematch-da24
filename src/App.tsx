@@ -100,7 +100,7 @@ function AppRoute() {
             <Switch>
                 <Route exact path="/" component={Home}/>
                 <Route exact path="/partner/list" component={PartnerList}/>
-                <Route exact path="/partner/detail/:username" component={PartnerDetail}/>
+                <Route exact path="/partner/detail/:adminId" component={PartnerDetail}/>
                 <Route exact path="/partner/cart" component={PartnerCart}/>
                 <Route exact path="/banner/intro" component={Intro}/>
                 <Route exact path="/banner/customer" component={Customer}/>
@@ -109,7 +109,7 @@ function AppRoute() {
                 <Route exact path="/requests/completed" component={CompletedPage}/>
                 <Route exact path="/requests/nopartner" component={NoPartnerPage}/>
                 <Route exact path="/requests/noservice" component={NoServicePage}/>
-                <Route exact path="/company/detail/:username" component={CompanyDetail}/>
+                <Route exact path="/requests/completed/:adminId" component={CompanyDetail}/>
                 <Route exact path="/error" component={ErrorService}/>
                 <Route component={NotFound}/>
 
