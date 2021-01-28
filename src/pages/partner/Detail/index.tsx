@@ -8,8 +8,8 @@ import { DownArrow, UpArrow } from 'components/Icon'
 import Loading from 'components/Loading'
 import MainHeader from 'components/common/MainHeader'
 import TopGnb from 'components/TopGnb'
-import PartnerInfo from './components/partnerInfo/index'
-import ReviewContainer from "./components/reviewContainer/index";
+import PartnerInfo from 'components/da24/detail/PartnerInfo/index'
+import ReviewContainer from "components/da24/detail/ReviewContainer/index"
 
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
@@ -132,7 +132,7 @@ const S = {
             width: 608px;
             margin: 0 auto;
         }
-        
+
         @media screen and (min-width: 1200px) {
             width: 656px;
             margin: 0 auto;
