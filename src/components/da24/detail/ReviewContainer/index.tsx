@@ -19,6 +19,13 @@ const S = {
 			margin:0 auto;
 			padding-left:272px;
 		}
+  `,
+  CenterTitleContainer: styled.div`
+		@media screen and (min-width:1200px) {
+			width:720px;
+			margin:0 auto;
+			padding-left:0px;
+		}
 	`,
   Wrap: styled.div`
 		padding:24px;
