@@ -22,6 +22,12 @@ import Customer from 'pages/banner/Customer'
 import Grade from 'pages/banner/Grade'
 import UnSupported from 'pages/unsupported'
 import Terms from 'pages/terms'
+import CompletedPage from 'pages/requests/completed'
+import NoServicePage from 'pages/requests/noService'
+import NoPartnerPage from 'pages/requests/noPartner'
+import CompanyDetail from 'pages/company/Detail/index'
+import NotFound from 'pages/notFound'
+import ErrorService from 'pages/errorService'
 
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
@@ -30,11 +36,6 @@ import useUserAgent from 'hooks/useUserAgent'
 import SwiperCore, {Pagination, Autoplay} from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
-import CompletedPage from 'pages/requests/completed'
-import NoServicePage from 'pages/requests/noService'
-import NoPartnerPage from 'pages/requests/noPartner'
-import NotFound from 'pages/notFound'
-import ErrorService from 'pages/errorService'
 import {dataLayer} from 'lib/dataLayerUtil'
 
 SwiperCore.use([Pagination, Autoplay])
@@ -99,7 +100,7 @@ function AppRoute() {
             <Switch>
                 <Route exact path="/" component={Home}/>
                 <Route exact path="/partner/list" component={PartnerList}/>
-                <Route exact path="/partner/detail/:username" component={PartnerDetail}/>
+                <Route exact path="/partner/detail/:adminId" component={PartnerDetail}/>
                 <Route exact path="/partner/cart" component={PartnerCart}/>
                 <Route exact path="/banner/intro" component={Intro}/>
                 <Route exact path="/banner/customer" component={Customer}/>
@@ -108,6 +109,7 @@ function AppRoute() {
                 <Route exact path="/requests/completed" component={CompletedPage}/>
                 <Route exact path="/requests/nopartner" component={NoPartnerPage}/>
                 <Route exact path="/requests/noservice" component={NoServicePage}/>
+                <Route exact path="/requests/completed/:adminId" component={CompanyDetail}/>
                 <Route exact path="/error" component={ErrorService}/>
                 <Route component={NotFound}/>
 

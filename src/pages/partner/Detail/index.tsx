@@ -156,7 +156,7 @@ const PartnerDetail = () => {
     })
     const history = useHistory()
     const router = useRouter()
-    const params = useParams<{ username: string }>()
+    const params = useParams<{ adminId: string }>()
     const dispatch = useDispatch()
 
     const getPartnerDetail = useSelector(partnerSelector.getPartnerDetail)
@@ -192,7 +192,7 @@ const PartnerDetail = () => {
 
     const isActive = () => {
         return some(getPartnerPick.data, {
-            adminid: params.username
+            adminid: params.adminId
         })
     }
 
@@ -218,20 +218,19 @@ const PartnerDetail = () => {
     useEffect(() => {
         if (getMoveIdxData.idx) {
             dispatch(partnerActions.fetchPartnerDetailAsync.request({
-                username: params.username,
+                username: params.adminId,
                 idx: getMoveIdxData.idx
             }))
         }
-
         dispatch(partnerActions.fetchReviewListAsync.request({
-            username: params.username,
+            username: params.adminId,
             page: 1,
             size: values.DEFAULT_REVIEW_LIST_SIZE
         }))
-    }, [dispatch, params.username])
+    }, [dispatch, params.adminId])
 
     useEffect(() => {
-        if (getMoveIdxData.idx && getPartnerDetail?.data?.status === 'unavailable' && !getPartnerDetail.loading && getPartnerDetail?.data?.adminid === params.username) {
+        if (getMoveIdxData.idx && getPartnerDetail?.data?.status === 'unavailable' && !getPartnerDetail.loading && getPartnerDetail?.data?.adminid === params.adminId) {
             setUnavailableCheck(true)
         }
     }, [getPartnerDetail.loading])
@@ -250,7 +249,7 @@ const PartnerDetail = () => {
     const handleMoreReview = () => {
         nextPage.current += 1;
         dispatch(partnerActions.fetchReviewMoreListAsync.request({
-            username: params.username,
+            username: params.adminId,
             page: nextPage.current,
             size: values.DEFAULT_REVIEW_LIST_SIZE
         }))
