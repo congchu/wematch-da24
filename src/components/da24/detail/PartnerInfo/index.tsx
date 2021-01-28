@@ -12,7 +12,8 @@ import LevelIcon from 'components/LevelIcon'
 import NewPartner from 'components/common/NewPartner'
 import { Question } from 'components/Icon'
 import { Level, LevelText } from 'types/partner'
-import UserImage from "./userImage";
+import UserImage from './userImage'
+import {commaInNumbers} from "../../../../lib/numberUtil";
 
 const S = {
 	Container: styled.div`
@@ -26,6 +27,20 @@ const S = {
 			width:720px;
 			margin:0 auto;
 			padding-left:272px;
+			border-bottom:0;
+		}
+	`,
+	CenterContainer: styled.div`
+		position:relative;
+		margin-top:-16px;
+		border-top-left-radius:10px;
+		border-top-right-radius:10px;
+		background:${colors.white};
+		border-bottom:8px solid ${colors.lineDeco};
+		@media screen and (min-width:1200px) {
+			width:720px;
+			margin:-16px auto 0 auto;
+			padding-left:0px;
 			border-bottom:0;
 		}
 	`,
@@ -87,7 +102,7 @@ const S = {
 		height:100%;
 		margin-right:2%;
 		border-radius:8px;
-  	box-shadow:0 3px 20px 0 rgba(220, 220, 220, 0.7);
+  		box-shadow:0 3px 20px 0 rgba(220, 220, 220, 0.7);
  	 	background-color:${colors.white};
 		text-align:center;
 		span{
@@ -110,6 +125,13 @@ const S = {
 			color:${colors.black};
 			font-size:24px;
 			font-weight:700;
+			p{
+				display: inline;
+				color:${colors.gray66};
+				font-weight: 400;
+				font-size: 13px;
+				line-height: 19px;
+			}
 		}
 		@media screen and (min-width:1200px) {
 			width:32.5%;
@@ -172,10 +194,11 @@ interface Props {
 	adminname: string;
 	addition?: string;
 	profile_img: string;
-	status?: 'selected' | 'available' | 'unavailable';
+	status: 'selected' | 'available' | 'unavailable' | 'automatch';
 }
 
-const Index = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition='', status, profile_img }: Props) => {
+
+const Index = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition='', status='automatch', profile_img }: Props) => {
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 	const isMobile = useMedia({
 		maxWidth: 767,
@@ -187,56 +210,110 @@ const Index = ({ title, level, pick_cnt, experience, description='', keywords, a
 	return (
 		<>
 			<UserImage profile_img={profile_img} status={status} />
-			<S.Container>
-				<S.Wrap>
-					<S.LevelDescription>{LevelText[level]}</S.LevelDescription>
-					<S.Level>{level === 'NEW' ? '등급산정중' : `고객평가 ${level}등급`}</S.Level>
-					<S.PartnerWord>{title}</S.PartnerWord>
-					{level === 'NEW'
-						? <NewPartner showQuestionIcon={true}/>
-						: <S.Info>
-							<S.Card onClick={toggleVisibleLevel} id="dsl_booking_detail_info">
+			{ status === 'automatch' ? (
+				// automatch :  가운데정렬
+				<S.CenterContainer>
+					<S.Wrap>
+						<S.LevelDescription>{LevelText[level]}</S.LevelDescription>
+						<S.Level>{level === 'NEW' ? '등급산정중' : `고객평가 ${level}등급`}</S.Level>
+						<S.PartnerWord>{title}</S.PartnerWord>
+						{level === 'NEW'
+							? <NewPartner showQuestionIcon={true}/>
+							: <S.Info>
+								<S.Card onClick={toggleVisibleLevel} id="dsl_booking_detail_info">
 						<span>평가등급
 							<Question width={16} height={16} />
 						</span>
-								<LevelIcon level={level}/>
-							</S.Card>
-							<S.Card>
-								<span>고객선택</span>
-								<em>{pick_cnt || 0} 회</em>
-							</S.Card>
-							<S.Card>
-								<span>경력년차</span>
-								<em>{experience || 1} 년</em>
-							</S.Card>
-						</S.Info>
-					}
-					<S.Description>
-						<S.Option>
-							<strong>사장님 한마디({adminname})</strong>
-							<p>{description.length !== 0 ? description : values.DEFAULT_TEXT}</p>
-						</S.Option>
-						{!isEmpty(keywords) &&
-						<S.Option>
-							<strong>고객이 많이 언급한 키워드</strong>
-							<ul>
-								{keywords.map((list, index) => (
-									<li key={index}>{list}</li>
-								))}
-							</ul>
-						</S.Option>
+									<LevelIcon level={level}/>
+								</S.Card>
+								<S.Card>
+									<span>고객선택</span>
+									<em>{pick_cnt ? commaInNumbers(pick_cnt): 0}<p> 회</p></em>
+								</S.Card>
+								<S.Card>
+									<span>경력년차</span>
+									<em>{experience || 1}<p> 년</p></em>
+								</S.Card>
+							</S.Info>
 						}
-						{addition.length > 0 && (
+						<S.Description>
 							<S.Option>
-								<strong>추가 가능 옵션</strong>
-								<p>{addition}</p>
+								<strong>사장님 한마디({adminname})</strong>
+								<p>{description.length !== 0 ? description : values.DEFAULT_TEXT}</p>
 							</S.Option>
-						)}
-					</S.Description>
-				</S.Wrap>
-				<S.Border />
-				<LevelModal visible={visibleLevelModal} onClose={toggleVisibleLevel} />
-			</S.Container>
+							{!isEmpty(keywords) &&
+							<S.Option>
+								<strong>고객이 많이 언급한 키워드</strong>
+								<ul>
+									{keywords.map((list, index) => (
+										<li key={index}>{list}</li>
+									))}
+								</ul>
+							</S.Option>
+							}
+							{addition.length > 0 && (
+								<S.Option>
+									<strong>추가 가능 옵션</strong>
+									<p>{addition}</p>
+								</S.Option>
+							)}
+						</S.Description>
+					</S.Wrap>
+					<S.Border />
+					<LevelModal visible={visibleLevelModal} onClose={toggleVisibleLevel} />
+				</S.CenterContainer>
+			):(
+				<S.Container>
+					<S.Wrap>
+						<S.LevelDescription>{LevelText[level]}</S.LevelDescription>
+						<S.Level>{level === 'NEW' ? '등급산정중' : `고객평가 ${level}등급`}</S.Level>
+						<S.PartnerWord>{title}</S.PartnerWord>
+						{level === 'NEW'
+							? <NewPartner showQuestionIcon={true}/>
+							: <S.Info>
+								<S.Card onClick={toggleVisibleLevel} id="dsl_booking_detail_info">
+						<span>평가등급
+							<Question width={16} height={16} />
+						</span>
+									<LevelIcon level={level}/>
+								</S.Card>
+								<S.Card>
+									<span>고객선택</span>
+									<em>{pick_cnt ? commaInNumbers(pick_cnt): 0}<p> 회</p></em>
+								</S.Card>
+								<S.Card>
+									<span>경력년차</span>
+									<em>{experience || 1}<p> 년</p></em>
+								</S.Card>
+							</S.Info>
+						}
+						<S.Description>
+							<S.Option>
+								<strong>사장님 한마디({adminname})</strong>
+								<p>{description.length !== 0 ? description : values.DEFAULT_TEXT}</p>
+							</S.Option>
+							{!isEmpty(keywords) &&
+							<S.Option>
+								<strong>고객이 많이 언급한 키워드</strong>
+								<ul>
+									{keywords.map((list, index) => (
+										<li key={index}>{list}</li>
+									))}
+								</ul>
+							</S.Option>
+							}
+							{addition.length > 0 && (
+								<S.Option>
+									<strong>추가 가능 옵션</strong>
+									<p>{addition}</p>
+								</S.Option>
+							)}
+						</S.Description>
+					</S.Wrap>
+					<S.Border />
+					<LevelModal visible={visibleLevelModal} onClose={toggleVisibleLevel} />
+				</S.Container>
+			)}
 		</>
 	)
 }

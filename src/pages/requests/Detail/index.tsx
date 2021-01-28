@@ -193,7 +193,7 @@ const CompanyDetail = () => {
             {getCompanyDetail.data && (
                 <>
                     {isDesktop ? <MainHeaderForDetail/> : <NavHeader title="이사업체 상제 정보"/>}
-                    <PartnerInfo title={getCompanyDetail.data.title ? getCompanyDetail.data.title : values.DEFAULT_TEXT} profile_img={getCompanyDetail.data.profile_img}
+                    <PartnerInfo title={getCompanyDetail.data.title ? getCompanyDetail.data.title : values.DEFAULT_TEXT} profile_img={getCompanyDetail.data.profile_img} status={'automatch'}
                                  level={getCompanyDetail.data.level} pick_cnt={getCompanyDetail.data.pick_cnt} experience={getCompanyDetail.data.experience}
                                  description={getCompanyDetail.data.description} keywords={getCompanyDetail.data.keywords} adminname={getCompanyDetail.data.adminname} addition={getCompanyDetail.data.addition} />
                     <ReviewContainer/>
