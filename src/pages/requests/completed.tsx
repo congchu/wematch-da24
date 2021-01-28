@@ -476,7 +476,7 @@ export default function CompletedPage() {
                                             label: `${getSubmittedForm?.data?.["match_list"].length}_${index + 1}`
                                         })
                                         // window.location.href = `${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`
-                                        history.push(`/company/detail/${list.adminid}`)
+                                        history.push(`/requests/completed/${list.adminid}`)
                                     }}>
                                         <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
                                     </S.LinkCompany>
