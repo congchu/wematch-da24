@@ -78,7 +78,7 @@ const ReviewContainer = () => {
   const dispatch = useDispatch()
 
   const [visibleTermsModal, setVisibleTermsModal] = useState(false)
-  const params = useParams<{username: string}>()
+  const params = useParams<{adminId: string}>()
   const getCompanyReviewList = useSelector(companySelector.getCompanyReviewList)
 
   const isMobile = useMedia({
@@ -87,7 +87,7 @@ const ReviewContainer = () => {
 
   useEffect(() => {
     dispatch(companyActions.fetchCompReviewListAsync.request({
-      username: params.username,
+      username: params.adminId,
       page: 1,
       size: values.DEFAULT_REVIEW_LIST_SIZE
     }))

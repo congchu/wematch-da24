@@ -133,7 +133,7 @@ const CompanyDetail = () => {
     })
     const history = useHistory()
     const router = useRouter()
-    const params = useParams<{ username: string }>()
+    const params = useParams<{ adminId: string }>()
     const dispatch = useDispatch()
 
     const getCompanyDetail = useSelector(companySelector.getCompanyDetail)
@@ -157,14 +157,14 @@ const CompanyDetail = () => {
 
     useEffect(() => {
         dispatch(companyActions.fetchCompanyDetailAsync.request({
-            username: params.username
+            username: params.adminId
         }))
         dispatch(companyActions.fetchCompReviewListAsync.request({
-            username: params.username,
+            username: params.adminId,
             page: 1,
             size: values.DEFAULT_REVIEW_LIST_SIZE
         }))
-    }, [dispatch, params.username])
+    }, [dispatch, params.adminId])
 
 
     useEffect(() => {
@@ -182,7 +182,7 @@ const CompanyDetail = () => {
     const handleMoreReview = () => {
         nextPage.current += 1;
         dispatch(companyActions.fetchCompReviewMoreListAsync.request({
-            username: params.username,
+            username: params.adminId,
             page: nextPage.current,
             size: values.DEFAULT_REVIEW_LIST_SIZE
         }))
