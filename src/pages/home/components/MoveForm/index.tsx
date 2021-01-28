@@ -379,7 +379,8 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
         if (getPhoneVerified.data.is_verified && visibleVerifyPhone) {
             setVisibleVerifyPhone(false)
             if (submitType === 'curation') {
-                dispatch(commonActions.fetchMoveIdx.request({...getFormData, legacy: true}))
+                /* AUTO MATCH */
+                dispatch(formActions.submitFormAsync.request({formData: {...getFormData, legacy: true}}));
             }
             if (submitType === 'select') {
                 dispatch(commonActions.fetchMoveIdx.request(getFormData))
@@ -396,14 +397,9 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
 
 
     useEffect(() => {
-        if (getMoveIdxData.idx && submitType === 'curation' && !getMoveIdxData.loading) {
-            dispatch(formActions.submitFormAsync.request({formData: getFormData}));
-        }
-
         if (getMoveIdxData.idx && submitType === 'select' && !getMoveIdxData.loading) {
             router.history.push(`/partner/list`)
         }
-
     }, [getMoveIdxData])
 
     return (
