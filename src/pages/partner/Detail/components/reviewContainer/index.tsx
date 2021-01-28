@@ -76,7 +76,7 @@ const ReviewContainer = () => {
   const dispatch = useDispatch()
 
   const [visibleTermsModal, setVisibleTermsModal] = useState(false)
-  const params = useParams<{username: string}>()
+  const params = useParams<{adminId: string}>()
   const getReviewList = useSelector(partnerSelector.getReviewList)
 
   const isMobile = useMedia({
@@ -85,7 +85,7 @@ const ReviewContainer = () => {
 
   useEffect(() => {
     dispatch(partnerActions.fetchReviewListAsync.request({
-      username: params.username,
+      username: params.adminId,
       page: 1,
       size: values.DEFAULT_REVIEW_LIST_SIZE
     }))
