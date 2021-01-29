@@ -216,46 +216,45 @@ const UserImage = ({ profile_img, status }: Props) => {
 		maxWidth: 767,
 	})
 
+	if(status === 'automatch') {
 		return(
-			<>
-				{status === "automatch" ? (
-					<Auto.WrapImg>
-						{profile_img ? (
-							<>
-								<Auto.ProfileImg profile_img={profile_img}>
-									<span />
-								</Auto.ProfileImg>
-							</>
-						) : (
-							<Auto.DefaultProfileImg>
-								<ProfileDefault width={60} height={60} color={colors.white} />
-							</Auto.DefaultProfileImg>
-						)}
-					</Auto.WrapImg>
+			<Auto.WrapImg>
+				{profile_img ? (
+					<>
+						<Auto.ProfileImg profile_img={profile_img}>
+							<span />
+						</Auto.ProfileImg>
+					</>
 				) : (
-						<S.WrapImg margin={isMobile ? 48 : 72}>
-							<S.Title>
-								<h3>업체<br />직접선택</h3>
-							</S.Title>
-							{profile_img ? (
-								<>
-									<S.ProfileImg profile_img={profile_img}>
-										<span />
-									</S.ProfileImg>
-								</>
-							) : (
-								<S.DefaultProfileImg>
-									{status === "unavailable" && (<S.Opacity />)}
-									<ProfileDefault width={60} height={60} color={colors.white} />
-									{status === "unavailable" && (<span>오늘 마감</span>)}
-								</S.DefaultProfileImg>
-							)}
-						</S.WrapImg>
-				) }
-
-			</>
-
+					<Auto.DefaultProfileImg>
+						<ProfileDefault width={60} height={60} color={colors.white} />
+					</Auto.DefaultProfileImg>
+				)}
+			</Auto.WrapImg>
 		)
+	}else{
+		return(
+			<S.WrapImg margin={isMobile ? 48 : 72}>
+				<S.Title>
+					<h3>업체<br />직접선택</h3>
+				</S.Title>
+				{profile_img ? (
+					<>
+						<S.ProfileImg profile_img={profile_img}>
+							<span />
+						</S.ProfileImg>
+					</>
+				) : (
+					<S.DefaultProfileImg>
+						{status === "unavailable" && (<S.Opacity />)}
+						<ProfileDefault width={60} height={60} color={colors.white} />
+						{status === "unavailable" && (<span>오늘 마감</span>)}
+					</S.DefaultProfileImg>
+				)}
+			</S.WrapImg>
+		)
+	}
+
 }
 
 export default UserImage
