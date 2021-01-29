@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
-import {useMedia} from "react-use-media";
+import {useMedia} from 'react-use-media'
 import { isEmpty } from 'lodash'
 
 import * as colors from 'styles/colors'
@@ -13,7 +13,7 @@ import NewPartner from 'components/common/NewPartner'
 import { Question } from 'components/Icon'
 import { Level, LevelText } from 'types/partner'
 import UserImage from './userImage'
-import {commaInNumbers} from "../../../../lib/numberUtil";
+import {commaInNumbers} from 'lib/numberUtil'
 
 const S = {
 	Container: styled.div`

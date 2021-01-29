@@ -1,7 +1,6 @@
 import {createAction, createAsyncAction} from "typesafe-actions";
 import {IPartnerList, IPartnerDetail, IReview, IPartnerDetailForCompleted, IReviewForCompleted} from "types/partner";
 import {Pagination} from "types/pagination";
-import {ICompanyReview} from "../company/type";
 
 interface ListType {
   data: IPartnerList[];

@@ -3,10 +3,9 @@ import { ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
 import * as request from './requests'
-import {isEmpty} from "lodash";
-import {dataLayer} from "lib/dataLayerUtil";
-import {IPartnerList} from "types/partner";
-import {getPartnerDetailForCompleted} from "./requests";
+import {isEmpty} from 'lodash'
+import {dataLayer} from 'lib/dataLayerUtil'
+import {IPartnerList} from 'types/partner'
 
 export function* fetchPartnerListSaga(action: ActionType<typeof actions.fetchPartnerListAsync.request>) {
     try {

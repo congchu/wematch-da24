@@ -9,7 +9,6 @@ import {
     IPartnerDetailForCompleted
 } from 'types/partner'
 import {API_MIDDLEWARE_URL} from 'constants/env'
-import {ICompanyDetail} from "../company/type";
 
 export const getPartnerList = async (page: number, size: number, idx?: string) => {
     const { data } = await bookingApi.request<ApiResponse<IPartnerList>>({

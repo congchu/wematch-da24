@@ -1,9 +1,9 @@
 import React from 'react'
+import {useMedia} from 'react-use-media'
 import Styled from 'styled-components'
 
 import { ProfileDefault } from 'components/Icon'
 import * as colors from 'styles/colors'
-import {useMedia} from "react-use-media";
 
 const S = {
 	WrapImg: Styled.div<{margin: number}>`

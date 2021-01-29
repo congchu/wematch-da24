@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import { useParams, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
+import { useRouter } from 'hooks/useRouter'
 
 import { DownArrow, UpArrow } from 'components/Icon'
 import Loading from 'components/Loading'
@@ -10,6 +11,8 @@ import MainHeader from 'components/common/MainHeader'
 import TopGnb from 'components/TopGnb'
 import PartnerInfo from 'components/da24/detail/PartnerInfo/index'
 import ReviewContainer from "components/da24/detail/ReviewContainer/index"
+import ToastPopup from 'components/wematch-ui/ToastPopup'
+import SetType from 'components/SetType'
 
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
@@ -19,9 +22,7 @@ import * as partnerSelector from 'store/partner/selectors'
 import * as formSelector from "store/form/selectors";
 import * as commonSelector from 'store/common/selectors'
 import { some } from "lodash";
-import { useRouter } from 'hooks/useRouter'
-import ToastPopup from "components/wematch-ui/ToastPopup";
-import SetType from "components/SetType";
+
 
 const S = {
     Container: styled.div``,
