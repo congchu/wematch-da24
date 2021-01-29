@@ -8,7 +8,7 @@ import { useRouter } from 'hooks/useRouter'
 
 import { DownArrow, UpArrow } from 'components/Icon'
 import Loading from 'components/Loading'
-import MainHeaderForDetail from 'components/MainHeaderForDetail'
+import MainHeaderForDetail from 'components/common/MainHeaderForDetail'
 import NavHeader from 'components/common/NavHeader'
 import PartnerInfo from 'components/da24/detail/PartnerInfo/index'
 import ReviewContainerCenter from 'components/da24/detail/ReviewContainerCenter/index'
