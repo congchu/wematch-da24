@@ -265,7 +265,7 @@ const PartnerDetail = () => {
                         level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
                         description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname} addition={getPartnerDetail.data.addition} />
                     {/*Review Container*/}
-                    <ReviewContainer />
+                    <ReviewContainer/>
                     <S.BottomContainer>
                         {getReviewList.moreLoading && (
                             <S.ReviewMoreLoading>
