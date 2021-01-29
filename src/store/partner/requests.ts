@@ -19,36 +19,36 @@ export const getPartnerList = async (page: number, size: number, idx?: string) =
     return data.data
 }
 
-export const getPartnerDetail = async (username: string, idx: string) => {
+export const getPartnerDetail = async (adminId: string, idx: string) => {
     const { data } = await bookingApi.request<ApiResponse<IPartnerDetail>>({
         method: 'get',
-        url: `/partners/${username}?idx=${idx}`
+        url: `/partners/${adminId}?idx=${idx}`
     })
 
     return data.data
 }
-export const getPartnerDetailForCompleted = async (username: string) => {
+export const getPartnerDetailForCompleted = async (adminId: string) => {
     const { data } = await bookingApi.request<ApiResponse<IPartnerDetailForCompleted>>({
         method: 'get',
-        url: `/partners/${username}`
+        url: `/partners/${adminId}`
     })
 
     return data.data
 }
 
-export const getReviewList = async (username:string, page: number, size: number) => {
+export const getReviewList = async (adminId:string, page: number, size: number) => {
     const { data } = await bookingApi.request<ApiResponse<IReview[]>>({
         method: 'get',
-        url: `/reviews/${username}?page=${page}&size=${size}`
+        url: `/reviews/${adminId}?page=${page}&size=${size}`
     })
 
     return data.data
 }
 
-export const getReviewForCompletedList = async (username:string, page: number, size: number) => {
+export const getReviewForCompletedList = async (adminId:string, page: number, size: number) => {
     const { data } = await bookingApi.request<ApiResponse<IReviewForCompleted[] >>({
         method: 'get',
-        url: `/reviews/${username}?page=${page}&size=${size}`
+        url: `/reviews/${adminId}?page=${page}&size=${size}`
     })
 
     return data.data

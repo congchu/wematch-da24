@@ -92,7 +92,7 @@ const ReviewContainer = () => {
 
   useEffect(() => {
     dispatch(partnerActions.fetchReviewListAsync.request({
-      username: params.adminId,
+      adminId: params.adminId,
       page: 1,
       size: values.DEFAULT_REVIEW_LIST_SIZE
     }))

@@ -87,7 +87,7 @@ const ReviewContainerCenter = () => {
 
   useEffect(() => {
     dispatch(partnerActions.fetchReviewListCompAsync.request({
-      username: params.adminId,
+      adminId: params.adminId,
       page: 1,
       size: values.DEFAULT_REVIEW_LIST_SIZE
     }))

@@ -33,37 +33,37 @@ export const fetchPartnerDetailAsync = createAsyncAction(
   "FETCH_PARTNER_DETAIL_REQUEST",
   "FETCH_PARTNER_DETAIL_RESPONSE",
   "FETCH_PARTNER_DETAIL_FAILURE"
-)<{username: string; idx: string}, IPartnerDetail, undefined>();
+)<{adminId: string; idx: string}, IPartnerDetail, undefined>();
 
 export const fetchPartnerDetailCompAsync = createAsyncAction(
     "FETCH_PARTNER_DETAIL_COMP_REQUEST",
     "FETCH_PARTNER_DETAIL_COMP_RESPONSE",
     "FETCH_PARTNER_DETAIL_COMP_FAILURE"
-)<{username: string}, IPartnerDetailForCompleted, undefined>();
+)<{adminId: string}, IPartnerDetailForCompleted, undefined>();
 
 export const fetchReviewListAsync = createAsyncAction(
   "FETCH_REVIEW_LIST_REQUEST",
   "FETCH_REVIEW_LIST_RESPONSE",
   "FETCH_REVIEW_LIST_FAILURE"
-)<{username: string; page: number; size: number}, ReviewType, undefined>();
+)<{adminId: string; page: number; size: number}, ReviewType, undefined>();
 
 export const fetchReviewMoreListAsync = createAsyncAction(
   "FETCH_REVIEW_MORE_LIST_REQUEST",
   "FETCH_REVIEW_MORE_LIST_RESPONSE",
   "FETCH_REVIEW_MORE_LIST_FAILURE"
-)<{username: string; page: number; size: number}, ReviewType, undefined>();
+)<{adminId: string; page: number; size: number}, ReviewType, undefined>();
 
 export const fetchReviewListCompAsync = createAsyncAction(
     "FETCH_REVIEW_LIST_COMP_REQUEST",
     "FETCH_REVIEW_LIST_COMP_RESPONSE",
     "FETCH_REVIEW_LIST_COMP_FAILURE"
-)<{username: string; page: number; size: number}, ReviewTypeForCompleted, undefined>();
+)<{adminId: string; page: number; size: number}, ReviewTypeForCompleted, undefined>();
 
 export const fetchReviewMoreListCompAsync = createAsyncAction(
     "FETCH_REVIEW_MORE_LIST_COMP_REQUEST",
     "FETCH_REVIEW_MORE_LIST_COMP_RESPONSE",
     "FETCH_REVIEW_MORE_LIST_COMP_FAILURE"
-)<{username: string; page: number; size: number}, ReviewTypeForCompleted, undefined>();
+)<{adminId: string; page: number; size: number}, ReviewTypeForCompleted, undefined>();
 
 export const setPartnerPick = createAction("SET_PARTNER_PICK")<
   IPartnerDetail[]

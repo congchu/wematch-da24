@@ -157,10 +157,10 @@ const PartnerDetailForCompleted = () => {
 
     useEffect(() => {
         dispatch(partnerActions.fetchPartnerDetailCompAsync.request({
-            username: params.adminId
+            adminId: params.adminId
         }))
         dispatch(partnerActions.fetchReviewListCompAsync.request({
-            username: params.adminId,
+            adminId: params.adminId,
             page: 1,
             size: values.DEFAULT_REVIEW_LIST_SIZE
         }))
@@ -182,7 +182,7 @@ const PartnerDetailForCompleted = () => {
     const handleMoreReview = () => {
         nextPage.current += 1;
         dispatch(partnerActions.fetchReviewMoreListCompAsync.request({
-            username: params.adminId,
+            adminId: params.adminId,
             page: nextPage.current,
             size: values.DEFAULT_REVIEW_LIST_SIZE
         }))

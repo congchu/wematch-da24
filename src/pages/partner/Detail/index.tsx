@@ -219,12 +219,12 @@ const PartnerDetail = () => {
     useEffect(() => {
         if (getMoveIdxData.idx) {
             dispatch(partnerActions.fetchPartnerDetailAsync.request({
-                username: params.adminId,
+                adminId: params.adminId,
                 idx: getMoveIdxData.idx
             }))
         }
         dispatch(partnerActions.fetchReviewListAsync.request({
-            username: params.adminId,
+            adminId: params.adminId,
             page: 1,
             size: values.DEFAULT_REVIEW_LIST_SIZE
         }))
@@ -250,7 +250,7 @@ const PartnerDetail = () => {
     const handleMoreReview = () => {
         nextPage.current += 1;
         dispatch(partnerActions.fetchReviewMoreListAsync.request({
-            username: params.adminId,
+            adminId: params.adminId,
             page: nextPage.current,
             size: values.DEFAULT_REVIEW_LIST_SIZE
         }))
