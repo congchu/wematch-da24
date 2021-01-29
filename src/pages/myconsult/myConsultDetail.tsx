@@ -354,11 +354,23 @@ const MyConsultDetail = () => {
               <S.MoveText>출발지</S.MoveText>
               <S.MoveSubtext>{selectedOrder?.start_address}</S.MoveSubtext>
             </li>
-            <li>
-              <S.MoveText>도착지</S.MoveText>
-              <S.MoveSubtext>{selectedOrder?.end_address}</S.MoveSubtext>
-            </li>
-            <li>
+            {
+              !selectedOrder?.type.includes('청소') && (
+                <li>
+                  <S.MoveText>도착지</S.MoveText>
+                  <S.MoveSubtext>{selectedOrder?.end_address}</S.MoveSubtext>
+                </li>
+              )
+            }
+            {
+              selectedOrder?.type === '원룸이사' && (
+                <li style={{ borderTop: `1px solid ${colors.lineDeco}`, paddingTop: 20 }}>
+                  <S.MoveText>짐량</S.MoveText>
+                  <S.MoveSubtext>{selectedOrder?.stuff}</S.MoveSubtext>
+                </li>
+              )
+            }
+            <li style={{ borderTop: `1px solid ${colors.lineDeco}`, paddingTop: 20 }}>
               <S.MoveText>전달메모</S.MoveText>
               <S.MoveSubtext>{selectedOrder?.memo}</S.MoveSubtext>
             </li>
