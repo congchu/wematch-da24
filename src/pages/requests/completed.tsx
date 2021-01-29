@@ -5,10 +5,10 @@ import last from 'lodash/last'
 import {useMedia} from 'react-use-media'
 import {useDispatch, useSelector} from 'react-redux'
 import {useCookies} from 'react-cookie'
+import {useHistory} from 'react-router-dom'
 
 import MainHeader from 'components/common/MainHeader/index'
 import Collapse from 'components/base/Collapse'
-
 import {Down, Up, Info} from 'components/wematch-ui/Icon'
 import {Triangle, Check, LevelA, LevelB, LevelC, LevelN, LevelS} from 'components/Icon'
 import ToastPopup from 'components/wematch-ui/ToastPopup'
@@ -24,7 +24,6 @@ import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
 import {formatDateDash2Dot, whatDay} from 'lib/dateUtil'
 import validatePhone from 'lib/validatePhone'
-import {useHistory} from "react-router-dom";
 
 const S = {
     Container: styled.div``,
