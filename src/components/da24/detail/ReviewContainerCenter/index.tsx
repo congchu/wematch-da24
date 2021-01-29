@@ -7,8 +7,8 @@ import {useMedia} from 'react-use-media'
 import Index from '../Review';
 import TermsModal from 'components/Modal/TermsModal'
 
-import * as companySelector from 'store/company/selectors'
-import * as companyActions from 'store/company/actions'
+import * as partnerSelector from 'store/partner/selectors'
+import * as partnerActions from 'store/partner/actions'
 
 import * as values from 'constants/values'
 import * as colors from 'styles/colors'
@@ -79,14 +79,14 @@ const ReviewContainerCenter = () => {
 
   const [visibleTermsModal, setVisibleTermsModal] = useState(false)
   const params = useParams<{adminId: string}>()
-  const getCompanyReviewList = useSelector(companySelector.getCompanyReviewList)
+  const getReviewCompList = useSelector(partnerSelector.getReviewCompList)
 
   const isMobile = useMedia({
     maxWidth: 767,
   })
 
   useEffect(() => {
-    dispatch(companyActions.fetchCompReviewListAsync.request({
+    dispatch(partnerActions.fetchReviewListCompAsync.request({
       username: params.adminId,
       page: 1,
       size: values.DEFAULT_REVIEW_LIST_SIZE
@@ -97,7 +97,7 @@ const ReviewContainerCenter = () => {
 
   const review = () => {
     /* 리뷰 없을때 */
-    if (getCompanyReviewList.data.length < 5) {
+    if (getReviewCompList.data.length < 5) {
       return (
         <S.ReviewPreview>
           <img src={require(`assets/images/review_${isMobile ? 'm' : 'pc'}.png`)} alt='review_img'/>
@@ -107,7 +107,7 @@ const ReviewContainerCenter = () => {
 
     return (
       <div>
-        {getCompanyReviewList.data.map((review, index) => {
+        {getReviewCompList.data.map((review, index) => {
           return (
             <Index key={index} id={review.id} created_at={review.created_at} professional={review.professional}
                    kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star} purpose={'automatch'}/>

@@ -12,11 +12,10 @@ import MainHeaderForDetail from 'components/MainHeaderForDetail'
 import NavHeader from 'components/common/NavHeader'
 import PartnerInfo from 'components/da24/detail/PartnerInfo/index'
 import ReviewContainerCenter from 'components/da24/detail/ReviewContainerCenter/index'
-import ReviewContainer from 'components/da24/detail/ReviewContainer/index'
 import SetType from 'components/SetType'
 
-import * as companyActions from 'store/company/actions'
-import * as companySelector from 'store/company/selectors'
+import * as partnerActions from 'store/partner/actions'
+import * as partnerSelector from 'store/partner/selectors'
 import * as formSelector from 'store/form/selectors'
 import * as commonSelector from 'store/common/selectors'
 
@@ -125,7 +124,7 @@ const S = {
 
 }
 
-const CompanyDetail = () => {
+const PartnerDetailForCompleted = () => {
     const nextPage = useRef(1)
     const [showScrollView, setShowScrollView] = useState(true)
 
@@ -137,8 +136,8 @@ const CompanyDetail = () => {
     const params = useParams<{ adminId: string }>()
     const dispatch = useDispatch()
 
-    const getCompanyDetail = useSelector(companySelector.getCompanyDetail)
-    const getReviewList = useSelector(companySelector.getCompanyReviewList)
+    const getPartnerDetailComp = useSelector(partnerSelector.getPartnerDetailComp)
+    const getReviewCompList = useSelector(partnerSelector.getReviewCompList)
     const getFormData = useSelector(formSelector.getFormData)
 
     const checkScrollTop = () => {
@@ -157,10 +156,10 @@ const CompanyDetail = () => {
 
 
     useEffect(() => {
-        dispatch(companyActions.fetchCompanyDetailAsync.request({
+        dispatch(partnerActions.fetchPartnerDetailCompAsync.request({
             username: params.adminId
         }))
-        dispatch(companyActions.fetchCompReviewListAsync.request({
+        dispatch(partnerActions.fetchReviewListCompAsync.request({
             username: params.adminId,
             page: 1,
             size: values.DEFAULT_REVIEW_LIST_SIZE
@@ -176,13 +175,13 @@ const CompanyDetail = () => {
     }, [checkScrollTop])
 
 
-    if (getCompanyDetail.loading) {
+    if (getPartnerDetailComp.loading) {
         return <Loading />
     }
 
     const handleMoreReview = () => {
         nextPage.current += 1;
-        dispatch(companyActions.fetchCompReviewMoreListAsync.request({
+        dispatch(partnerActions.fetchReviewMoreListCompAsync.request({
             username: params.adminId,
             page: nextPage.current,
             size: values.DEFAULT_REVIEW_LIST_SIZE
@@ -191,21 +190,20 @@ const CompanyDetail = () => {
 
     return (
         <S.Container>
-            {getCompanyDetail.data && (
+            {getPartnerDetailComp.data && (
                 <>
                     {isDesktop ? <MainHeaderForDetail/> : <NavHeader title="이사업체 상제 정보"/>}
-                    <PartnerInfo title={getCompanyDetail.data.title ? getCompanyDetail.data.title : values.DEFAULT_TEXT} profile_img={getCompanyDetail.data.profile_img} status={'automatch'}
-                                 level={getCompanyDetail.data.level} pick_cnt={getCompanyDetail.data.pick_cnt} experience={getCompanyDetail.data.experience}
-                                 description={getCompanyDetail.data.description} keywords={getCompanyDetail.data.keywords} adminname={getCompanyDetail.data.adminname} addition={getCompanyDetail.data.addition} />
+                    <PartnerInfo title={getPartnerDetailComp.data.title ? getPartnerDetailComp.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetailComp.data.profile_img} status={'automatch'}
+                                 level={getPartnerDetailComp.data.level} pick_cnt={getPartnerDetailComp.data.pick_cnt} experience={getPartnerDetailComp.data.experience}
+                                 description={getPartnerDetailComp.data.description} keywords={getPartnerDetailComp.data.keywords} adminname={getPartnerDetailComp.data.adminname} addition={getPartnerDetailComp.data.addition} />
                     <ReviewContainerCenter/>
-                    {/*<ReviewContainer/>*/}
                     <S.BottomContainer>
-                        {getReviewList.moreLoading && (
+                        {getReviewCompList.moreLoading && (
                             <S.ReviewMoreLoading>
                                 로딩중..
                             </S.ReviewMoreLoading>
                         )}
-                        {getReviewList.hasMore && (
+                        {getReviewCompList.hasMore && (
                             <S.MoreList onClick={handleMoreReview}>후기 더보기 <DownArrow width={16} height={16} /></S.MoreList>
                         )}
                         {showScrollView && (
@@ -222,4 +220,4 @@ const CompanyDetail = () => {
     )
 }
 
-export default CompanyDetail
+export default PartnerDetailForCompleted
