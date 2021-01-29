@@ -13,6 +13,7 @@ import {Down, Up, Info} from 'components/wematch-ui/Icon'
 import {Triangle, Check, LevelA, LevelB, LevelC, LevelN, LevelS} from 'components/Icon'
 import ToastPopup from 'components/wematch-ui/ToastPopup'
 
+import * as companyActions from 'store/company/actions'
 import * as formActions from 'store/form/actions'
 import * as formSelectors from 'store/form/selectors'
 import * as formSelector from 'store/form/selectors';
@@ -470,12 +471,15 @@ export default function CompletedPage() {
                                     </S.ListBox>
                                     <S.LinkCompany onClick={() => {
                                         dataLayer({
-                                            event: 'admin_idx',
-                                            category: '다이사_신청완료',
+                                            event: 'complete',
+                                            category: '매칭완료',
                                             action: '고객평가_확인',
-                                            label: `${getSubmittedForm?.data?.["match_list"].length}_${index + 1}`
+                                            label: `${getSubmittedForm?.data?.["match_list"].length}_${index + 1}`,
+                                            CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+                                            CD12: '바로매칭',
                                         })
                                         // window.location.href = `${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`
+                                        dispatch(companyActions.detailReset())
                                         history.push(`/requests/completed/${list.adminid}`)
                                     }}>
                                         <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
