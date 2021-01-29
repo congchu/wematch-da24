@@ -471,10 +471,12 @@ export default function CompletedPage() {
                                     </S.ListBox>
                                     <S.LinkCompany onClick={() => {
                                         dataLayer({
-                                            event: 'admin_idx',
-                                            category: '다이사_신청완료',
+                                            event: 'complete',
+                                            category: '매칭완료',
                                             action: '고객평가_확인',
-                                            label: `${getSubmittedForm?.data?.["match_list"].length}_${index + 1}`
+                                            label: `${getSubmittedForm?.data?.["match_list"].length}_${index + 1}`,
+                                            CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+                                            CD12: '바로매칭',
                                         })
                                         // window.location.href = `${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`
                                         dispatch(companyActions.detailReset())
