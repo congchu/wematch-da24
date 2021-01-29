@@ -1,5 +1,5 @@
 import {ICompanyDetail, ICompanyReview} from './type'
-import {createAsyncAction} from 'typesafe-actions'
+import {createAction, createAsyncAction} from 'typesafe-actions'
 
 interface CompanyReviewType {
   data: ICompanyReview[];
@@ -22,4 +22,6 @@ export const fetchCompReviewMoreListAsync = createAsyncAction(
     "FETCH_COMPANY_REVIEW_MORE_LIST_RESPONSE",
     "FETCH_COMPANY_REVIEW_MORE_LIST_FAILURE"
 )<{username: string; page: number; size: number}, CompanyReviewType, undefined>();
+
+export const detailReset = createAction("DETAIL_RESET")();
 

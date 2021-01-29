@@ -13,6 +13,7 @@ import {Down, Up, Info} from 'components/wematch-ui/Icon'
 import {Triangle, Check, LevelA, LevelB, LevelC, LevelN, LevelS} from 'components/Icon'
 import ToastPopup from 'components/wematch-ui/ToastPopup'
 
+import * as companyActions from 'store/company/actions'
 import * as formActions from 'store/form/actions'
 import * as formSelectors from 'store/form/selectors'
 import * as formSelector from 'store/form/selectors';
@@ -476,6 +477,7 @@ export default function CompletedPage() {
                                             label: `${getSubmittedForm?.data?.["match_list"].length}_${index + 1}`
                                         })
                                         // window.location.href = `${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`
+                                        dispatch(companyActions.detailReset())
                                         history.push(`/requests/completed/${list.adminid}`)
                                     }}>
                                         <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
