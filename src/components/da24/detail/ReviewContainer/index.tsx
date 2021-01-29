@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import {useMedia} from "react-use-media";
 
-import Review from './review';
+import Index from '../Review';
 import TermsModal from "components/Modal/TermsModal";
 
 import * as partnerSelector from "store/partner/selectors";
@@ -113,8 +113,8 @@ const ReviewContainer = () => {
       <div>
         {getReviewList.data.map((review, index) => {
           return (
-            <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional}
-                    kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>
+            <Index key={index} id={review.id} created_at={review.created_at} professional={review.professional}
+                   kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>
           )
         })}
       </div>
@@ -134,7 +134,7 @@ const ReviewContainer = () => {
         </S.Wrap>
         <TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
       </S.TitleContainer>
-      {/*Review Item*/}
+      {/*Index Item*/}
       {review()}
     </>
   )

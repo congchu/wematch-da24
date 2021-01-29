@@ -22,6 +22,19 @@ const S = {
 			padding-left:272px;
 		}
 	`,
+	CenterContainer: styled.div`
+
+		&:nth-child(1) {
+       * {
+        		border: none;
+        }
+    }
+		@media screen and (min-width:1200px) {
+			width:720px;
+			margin:0 auto;
+			padding-left:0px;
+		}
+	`,
 	Wrap: styled.div`
 		margin:0 24px 24px;
 		border-top:1px solid #d7dbe2;
@@ -179,9 +192,10 @@ interface Props {
 	kind: Grade;
 	price: Grade;
 	star: number;
+	purpose?: 'automatch' | 'partner'
 }
 
-const  Review = ({ id, created_at, memo, reply, professional, kind, price, star }: Props) => {
+const  Index = ({ id, created_at, memo, reply, professional, kind, price, star, purpose }: Props) => {
 	const isDesktop = useMedia({
 		minWidth: 1200,
 	})
@@ -226,14 +240,15 @@ const  Review = ({ id, created_at, memo, reply, professional, kind, price, star 
 		setMore(!more)
 	}
 
-	return (
-		<S.Container>
+
+	const mainContents = () => {
+		return(
 			<S.Wrap>
 				<S.UserInfo>
 					<strong>고객번호 {id}</strong>
 					<span>{getCreatedAt(created_at)}</span>
 				</S.UserInfo>
-				 <S.Grade>
+				<S.Grade>
 					<S.StarFill star={star}>
 						<span className="fill"></span>
 					</S.StarFill>
@@ -252,22 +267,22 @@ const  Review = ({ id, created_at, memo, reply, professional, kind, price, star 
 					</S.Emotion>
 				</S.Grade>
 				<S.Review>
-						<S.ReviewText>{memoText(memo)}</S.ReviewText>
-						{(memo.length >= 45 || isMobile) && (
-							<>
-								{more ? (
-									<S.MoreReview onClick={handleMore}>
-										접기
-										<UpArrow width={16} height={16} />
-									</S.MoreReview>
-								) : (
-									<S.MoreReview onClick={handleMore}>
-										더보기
-										<DownArrow width={16} height={16} />
-									</S.MoreReview>
-								)}
-							</>
-						)}
+					<S.ReviewText>{memoText(memo)}</S.ReviewText>
+					{(memo.length >= 45 || isMobile) && (
+						<>
+							{more ? (
+								<S.MoreReview onClick={handleMore}>
+									접기
+									<UpArrow width={16} height={16} />
+								</S.MoreReview>
+							) : (
+								<S.MoreReview onClick={handleMore}>
+									더보기
+									<DownArrow width={16} height={16} />
+								</S.MoreReview>
+							)}
+						</>
+					)}
 				</S.Review>
 				{reply && (
 					<S.Answer>
@@ -276,8 +291,22 @@ const  Review = ({ id, created_at, memo, reply, professional, kind, price, star 
 					</S.Answer>
 				)}
 			</S.Wrap>
-		</S.Container>
+		)
+	}
+
+	return (
+		<>
+			{purpose === 'automatch' ? (
+				<S.CenterContainer>
+					{mainContents()}
+				</S.CenterContainer>
+			):(
+				<S.Container>
+					{mainContents()}
+				</S.Container>
+			)}
+		</>
 	)
 }
 
-export default Review
+export default Index

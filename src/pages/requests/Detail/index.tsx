@@ -12,6 +12,7 @@ import MainHeaderForDetail from 'components/MainHeaderForDetail'
 import NavHeader from 'components/common/NavHeader'
 import PartnerInfo from 'components/da24/detail/PartnerInfo/index'
 import ReviewContainerCenter from 'components/da24/detail/ReviewContainerCenter/index'
+import ReviewContainer from 'components/da24/detail/ReviewContainer/index'
 import SetType from 'components/SetType'
 
 import * as companyActions from 'store/company/actions'
@@ -197,6 +198,7 @@ const CompanyDetail = () => {
                                  level={getCompanyDetail.data.level} pick_cnt={getCompanyDetail.data.pick_cnt} experience={getCompanyDetail.data.experience}
                                  description={getCompanyDetail.data.description} keywords={getCompanyDetail.data.keywords} adminname={getCompanyDetail.data.adminname} addition={getCompanyDetail.data.addition} />
                     <ReviewContainerCenter/>
+                    {/*<ReviewContainer/>*/}
                     <S.BottomContainer>
                         {getReviewList.moreLoading && (
                             <S.ReviewMoreLoading>

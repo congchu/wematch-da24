@@ -264,7 +264,7 @@ const PartnerDetail = () => {
                     <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetail.data.profile_img} status={getPartnerDetail.data.status}
                         level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
                         description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname} addition={getPartnerDetail.data.addition} />
-                    {/*Review Container*/}
+                    {/*Index Container*/}
                     <ReviewContainer/>
                     <S.BottomContainer>
                         {getReviewList.moreLoading && (

@@ -127,7 +127,7 @@ const ReviewContainer = () => {
         </S.Wrap>
         <TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
       </S.TitleContainer>
-      {/*Review Item*/}
+      {/*Index Item*/}
       {review()}
     </>
   )
