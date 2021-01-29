@@ -6,6 +6,7 @@ import * as request from './requests'
 import {isEmpty} from "lodash";
 import {dataLayer} from "lib/dataLayerUtil";
 import {IPartnerList} from "types/partner";
+import {getPartnerDetailForCompleted} from "./requests";
 
 export function* fetchPartnerListSaga(action: ActionType<typeof actions.fetchPartnerListAsync.request>) {
     try {
@@ -40,6 +41,15 @@ export function* fetchPartnerDetailSaga(action: ActionType<typeof actions.fetchP
     }
 }
 
+export function* fetchPartnerDetailForCompletedSaga(action: ActionType<typeof actions.fetchPartnerDetailCompAsync.request>) {
+    try {
+        const data = yield call(request.getPartnerDetailForCompleted, action.payload.username)
+        yield put(actions.fetchPartnerDetailCompAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchPartnerDetailCompAsync.failure())
+    }
+}
+
 export function* fetchReviewListSaga(action: ActionType<typeof actions.fetchReviewListAsync.request>) {
     try {
         const data = yield call(request.getReviewList, action.payload.username, action.payload.page, action.payload.size)
@@ -49,12 +59,30 @@ export function* fetchReviewListSaga(action: ActionType<typeof actions.fetchRevi
     }
 }
 
+export function* fetchReviewListForCompletedSaga(action: ActionType<typeof actions.fetchReviewListCompAsync.request>) {
+    try {
+        const data = yield call(request.getReviewForCompletedList, action.payload.username, action.payload.page, action.payload.size)
+        yield put(actions.fetchReviewListCompAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchReviewListCompAsync.failure())
+    }
+}
+
 export function* fetchReviewMoreListSaga(action: ActionType<typeof actions.fetchReviewMoreListAsync.request>) {
     try {
         const data = yield call(request.getReviewList, action.payload.username, action.payload.page, action.payload.size)
         yield put(actions.fetchReviewMoreListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchReviewMoreListAsync.failure())
+    }
+}
+
+export function* fetchReviewMoreListForCompletedSaga(action: ActionType<typeof actions.fetchReviewMoreListCompAsync.request>) {
+    try {
+        const data = yield call(request.getReviewForCompletedList, action.payload.username, action.payload.page, action.payload.size)
+        yield put(actions.fetchReviewMoreListCompAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchReviewMoreListCompAsync.failure())
     }
 }
 
@@ -83,6 +111,9 @@ export default function* () {
         takeEvery(actions.fetchReviewListAsync.request, fetchReviewListSaga),
         takeEvery(actions.fetchReviewMoreListAsync.request, fetchReviewMoreListSaga),
         takeEvery(actions.fetchCartListAsync.request, fetchRecommendedPartnerListSaga),
-        takeEvery(actions.fetchMatchingAsync.request, fetchMatchingPartnerSaga)
+        takeEvery(actions.fetchMatchingAsync.request, fetchMatchingPartnerSaga),
+        takeEvery(actions.fetchPartnerDetailCompAsync.request, fetchPartnerDetailForCompletedSaga),
+        takeEvery(actions.fetchReviewListCompAsync.request, fetchReviewListForCompletedSaga),
+        takeEvery(actions.fetchReviewMoreListCompAsync.request, fetchReviewMoreListForCompletedSaga),
     ])
 }

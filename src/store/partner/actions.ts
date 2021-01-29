@@ -1,6 +1,7 @@
 import {createAction, createAsyncAction} from "typesafe-actions";
-import {IPartnerList, IPartnerDetail, IReview} from "types/partner";
+import {IPartnerList, IPartnerDetail, IReview, IPartnerDetailForCompleted, IReviewForCompleted} from "types/partner";
 import {Pagination} from "types/pagination";
+import {ICompanyReview} from "../company/type";
 
 interface ListType {
   data: IPartnerList[];
@@ -11,6 +12,12 @@ interface ReviewType {
   data: IReview[];
   has_more: boolean;
 }
+
+interface ReviewTypeForCompleted {
+  data: IReviewForCompleted[];
+  has_more: boolean;
+}
+
 export const fetchPartnerListAsync = createAsyncAction(
   "FETCH_PARTNER_LIST_REQUEST",
   "FETCH_PARTNER_LIST_RESPONSE",
@@ -29,6 +36,12 @@ export const fetchPartnerDetailAsync = createAsyncAction(
   "FETCH_PARTNER_DETAIL_FAILURE"
 )<{username: string; idx: string}, IPartnerDetail, undefined>();
 
+export const fetchPartnerDetailCompAsync = createAsyncAction(
+    "FETCH_PARTNER_DETAIL_COMP_REQUEST",
+    "FETCH_PARTNER_DETAIL_COMP_RESPONSE",
+    "FETCH_PARTNER_DETAIL_COMP_FAILURE"
+)<{username: string}, IPartnerDetailForCompleted, undefined>();
+
 export const fetchReviewListAsync = createAsyncAction(
   "FETCH_REVIEW_LIST_REQUEST",
   "FETCH_REVIEW_LIST_RESPONSE",
@@ -40,6 +53,18 @@ export const fetchReviewMoreListAsync = createAsyncAction(
   "FETCH_REVIEW_MORE_LIST_RESPONSE",
   "FETCH_REVIEW_MORE_LIST_FAILURE"
 )<{username: string; page: number; size: number}, ReviewType, undefined>();
+
+export const fetchReviewListCompAsync = createAsyncAction(
+    "FETCH_REVIEW_LIST_COMP_REQUEST",
+    "FETCH_REVIEW_LIST_COMP_RESPONSE",
+    "FETCH_REVIEW_LIST_COMP_FAILURE"
+)<{username: string; page: number; size: number}, ReviewTypeForCompleted, undefined>();
+
+export const fetchReviewMoreListCompAsync = createAsyncAction(
+    "FETCH_REVIEW_MORE_LIST_COMP_REQUEST",
+    "FETCH_REVIEW_MORE_LIST_COMP_RESPONSE",
+    "FETCH_REVIEW_MORE_LIST_COMP_FAILURE"
+)<{username: string; page: number; size: number}, ReviewTypeForCompleted, undefined>();
 
 export const setPartnerPick = createAction("SET_PARTNER_PICK")<
   IPartnerDetail[]
