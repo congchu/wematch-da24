@@ -6,7 +6,7 @@ import { useMedia } from 'react-use-media'
 import { isEmpty } from 'lodash'
 
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
-import MainHeader from 'components/MainHeader'
+import MainHeader from 'components/common/MainHeader'
 import TopGnb from 'components/TopGnb'
 import EmptyPage from 'components/EmptyPage'
 import { KakaoIcon, ChatArrow } from 'components/Icon'
@@ -30,12 +30,15 @@ const S = {
         height:100%;
     `,
     WrapItem: styled.div`
+        margin-top: 105px;
         @media screen and (min-width:768px) {
             width:608px;
             margin:0 auto;
+            margin-top: 130px;
         }
         @media screen and (min-width:1200px) {
             width:720px;
+            margin-top: 130px;
         }
     `,
     PartnerItemContainer: styled.div<{ hasMore: boolean }>`
@@ -120,6 +123,9 @@ const PartnerList = () => {
     const isDesktop = useMedia({
         minWidth: 1200,
     })
+    const isMobile = useMedia({
+        maxWidth: 767,
+    })
 
     const history = useHistory()
     const dispatch = useDispatch()
@@ -153,17 +159,27 @@ const PartnerList = () => {
         window.open('https://api.happytalk.io/api/kakao/chat_open?yid=%40%EC%9C%84%EB%A7%A4%EC%B9%98&site_id=4000001315&category_id=111561&division_id=111564', '_blank')
     }
 
+    const handlePrevious = () => {
+        dispatch(partnerActions.partnerListReset())
+        history.goBack();
+    }
+
     useEffect(() => {
-        if(getFormData.moving_date.length === 0) {
+        if (getFormData.moving_date.length === 0) {
             setVisible(true)
         }
         if (!getMoveIdxData.idx) {
             setVisible(true)
         }
+
+        return () => {
+
+        }
     }, [])
 
+
     useEffect(() => {
-        if(getMoveIdxData.idx && !getMoveIdxData.loading) {
+        if (getMoveIdxData.idx && getPartnerList.data.length === 0 && !getMoveIdxData.loading) {
             dispatch(partnerActions.fetchPartnerListAsync.request({
                 page: values.DEFAULT_PAGE,
                 size: values.DEFAULT_PARTNER_LIST_SIZE,
@@ -211,17 +227,6 @@ const PartnerList = () => {
                     <KakaoIcon width={35} height={34} />
                 </S.BtnKakao>
             </>
-        )
-
-        let arr = new Array(10).fill(undefined).map((val,idx) => idx);
-        return (
-          <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
-              {arr.map((index:number) => {
-                  return (
-                    <PartnerItem key={index}/>
-                  )
-              })}
-          </S.PartnerItemContainer>
         )
     }
 

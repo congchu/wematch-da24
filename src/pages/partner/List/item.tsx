@@ -19,6 +19,10 @@ const S = {
 		padding:24px;
 		border-bottom:1px solid ${colors.lineDefault};
 		background-color: ${props => props.isSelected ? colors.grayBg : colors.white};
+
+		&:last-child {
+			border-bottom: none;
+		}
 		
 		* {
 			color: ${props => props.isFull && colors.gray66};

@@ -1,4 +1,4 @@
-export default (phone: string) => {
+export default (phone: string, isDash?: boolean) => {
     let splitPhone = '';
     for (let i = 0; i < phone.length; ++i) {
         if ('0123456789'.indexOf(phone[i]) !== -1) {
@@ -16,6 +16,10 @@ export default (phone: string) => {
     } else if (phone.length === 11) {
         phone2 = phone.substring(3, 7);
         phone3 = phone.substring(7, 11);
+    }
+
+    if (isDash) {
+        return phone1 + '-' + phone2 + '-' + phone3
     }
 
     return {

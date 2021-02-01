@@ -12,8 +12,8 @@ const Banner = styled.section`
   
   h3 {
     font-weight: bold;
-    font-size: 20px;
-    line-height: 29px;
+    font-size: 22px;
+    line-height: 32px;
     letter-spacing: -0.03em;
     color: ${colors.gray33};
     margin-bottom: 8px;
