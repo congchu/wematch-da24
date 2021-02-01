@@ -35,6 +35,7 @@ export type IPartnerDetail = {
     adminname: string;
     addition?: string;
     adminid?: string;
+    level_text?: string;
 }
 
 export type IReview = {

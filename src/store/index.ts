@@ -7,9 +7,11 @@ import browserHistory from 'lib/history'
 import PartnerService, { PartnerState } from './partner/reducers'
 import CommonService, { CommonState } from './common/reducers'
 import FormService, { FormState } from './form/reducers'
+import UserService, { UserState } from './user/reducers'
 import CompanyService, { CompanyState } from './company/reducers'
 import PartnerSaga from './partner/sagas'
 import CommonSaga from './common/sagas'
+import UserSaga from './user/sagas'
 import FormSaga from './form/sagas'
 import CompanySaga from './company/sagas'
 
@@ -18,8 +20,8 @@ export interface RootState {
     partnerState: PartnerState;
     commonState: CommonState;
     formState: FormState;
+    userState: UserState;
     companyState: CompanyState;
-
 }
 
 const rootReducer = combineReducers({
@@ -27,6 +29,7 @@ const rootReducer = combineReducers({
     partnerState: PartnerService,
     commonState: CommonService,
     formState: FormService,
+    userState: UserService,
     companyState: CompanyService
 })
 
@@ -50,6 +53,7 @@ const index = createStore(
 
 function* rootSaga() {
     yield all([
+        UserSaga(),
         PartnerSaga(),
         CommonSaga(),
         FormSaga(),

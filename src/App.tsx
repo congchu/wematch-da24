@@ -39,7 +39,9 @@ import { useCookies } from 'react-cookie'
 import SwiperCore, {Pagination, Autoplay} from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
-import {dataLayer} from 'lib/dataLayerUtil'
+import { dataLayer } from 'lib/dataLayerUtil'
+import MyConsult from 'pages/myconsult'
+import MyConsultDetail from 'pages/myconsult/myConsultDetail'
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -117,6 +119,8 @@ function AppRoute() {
                 <Route exact path="/banner/intro" component={Intro}/>
                 <Route exact path="/banner/customer" component={Customer}/>
                 <Route exact path="/banner/grade" component={Grade}/>
+                <Route exact path="/myconsult" component={MyConsult} />
+                <Route exact path="/myconsult/detail" component={MyConsultDetail} />
                 <Route exact path="/terms" component={Terms}/>
                 <Route exact path="/requests/completed" component={CompletedPage}/>
                 <Route exact path="/requests/nopartner" component={NoPartnerPage}/>
