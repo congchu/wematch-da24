@@ -8,6 +8,17 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
+import TagManager from 'react-gtm-module'
+import ReactPixel from 'react-facebook-pixel'
+
+//GTM init
+TagManager.initialize({
+    gtmId: 'GTM-N2SBGT7'
+})
+
+// Facebook init
+ReactPixel.init('1412857602168220')
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

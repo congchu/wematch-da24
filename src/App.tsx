@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom'
 import {Provider} from 'react-redux'
 import {ConnectedRouter} from 'connected-react-router'
+import ReactPixel from 'react-facebook-pixel'
 
 import store from 'store/index'
 import browserHistory from 'lib/history'
@@ -21,6 +22,12 @@ import Customer from 'pages/banner/Customer'
 import Grade from 'pages/banner/Grade'
 import UnSupported from 'pages/unsupported'
 import Terms from 'pages/terms'
+import CompletedPage from 'pages/requests/completed'
+import NoServicePage from 'pages/requests/noService'
+import NoPartnerPage from 'pages/requests/noPartner'
+import CompanyDetail from 'pages/company/Detail/index'
+import NotFound from 'pages/notFound'
+import ErrorService from 'pages/errorService'
 
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
@@ -31,11 +38,6 @@ import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
 import { dataLayer } from 'lib/dataLayerUtil'
 import MyConsult from 'pages/myconsult'
-import CompletedPage from 'pages/requests/completed'
-import NoServicePage from 'pages/requests/noService'
-import NoPartnerPage from 'pages/requests/noPartner'
-import NotFound from 'pages/notFound'
-import ErrorService from 'pages/errorService'
 import MyConsultDetail from 'pages/myconsult/myConsultDetail'
 
 SwiperCore.use([Pagination, Autoplay])
@@ -78,6 +80,7 @@ function AppRoute() {
         }
 
         dataLayer({event: 'pageview'})
+        ReactPixel.pageView()
     }, [location.pathname])
 
     useEffect(() => {
@@ -99,7 +102,7 @@ function AppRoute() {
             <Switch>
                 <Route exact path="/" component={Home}/>
                 <Route exact path="/partner/list" component={PartnerList}/>
-                <Route exact path="/partner/detail/:username" component={PartnerDetail}/>
+                <Route exact path="/partner/detail/:adminId" component={PartnerDetail}/>
                 <Route exact path="/partner/cart" component={PartnerCart}/>
                 <Route exact path="/banner/intro" component={Intro}/>
                 <Route exact path="/banner/customer" component={Customer}/>
@@ -110,6 +113,7 @@ function AppRoute() {
                 <Route exact path="/requests/completed" component={CompletedPage}/>
                 <Route exact path="/requests/nopartner" component={NoPartnerPage}/>
                 <Route exact path="/requests/noservice" component={NoServicePage}/>
+                <Route exact path="/requests/completed/:adminId" component={CompanyDetail}/>
                 <Route exact path="/error" component={ErrorService}/>
                 <Route component={NotFound}/>
             </Switch>

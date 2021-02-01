@@ -6,17 +6,11 @@ import * as colors from 'styles/colors'
 
 const S = {
 	WrapImg: Styled.div`
-		margin-top: 48px;
-		
-		@media screen and (min-width: 768px) {
-			margin-top: 72px;
-		}
 		@media screen and (min-width:1200px) {
 			position:relative;
 			width:720px;
 			margin:0 auto;
-			padding-left:272px;
-			margin-top: 110px;
+			padding-left:0px;
 		}
 	`,
 	Title: Styled.div`
@@ -41,27 +35,27 @@ const S = {
 		span{
 			display:inline-block;
 			width:100%;
-			height:228px;
+			height:284px;
 			background-image:url(${props => props.profile_img});
 			background-size:cover;
 			background-position:50% 50%;
 			background-repeat:no-repeat;
 			@media screen and (min-width:768px) {
-				height:486px;
+				height:558px;
 			}
 			@media screen and (min-width:1200px) {
 				height:474px;
 			}
 		}
 		@media screen and (min-width:1200px) {
-			margin-top:70px;
+			margin-top:40px;
 		}
 	`,
 	DefaultProfileImg: Styled.div`
 		position:relative;
 	  	background-color:${colors.lineDefault};
 	  	width:100%;
-	  	height:228px;
+	  	height:284px;
 	  	display: flex;
 	  	justify-content: center;
 	  	align-items: center;
@@ -81,13 +75,13 @@ const S = {
 	  	}
 	  	
 		@media screen and (min-width:768px) {
-			height:486px;
+			height:558px;
 		}
 		@media screen and (min-width:1200px) {
 			height:474px;
 		}
 		@media screen and (min-width:1200px) {
-			margin-top:70px;
+			margin-top:40px;
 		}
 	`,
 	Opacity: Styled.div`
@@ -109,16 +103,11 @@ const S = {
 
 interface Props {
 	profile_img: string;
-	status: 'selected' | 'available' | 'unavailable';
 }
 
-const UserImage = ({ profile_img, status }: Props) => {
-
+const UserImage = ({ profile_img}: Props) => {
 	return (
 		<S.WrapImg>
-			<S.Title>
-				<h3>업체<br />직접선택</h3>
-			</S.Title>
 			{profile_img ? (
 				<>
 				<S.ProfileImg profile_img={profile_img}>
@@ -127,9 +116,7 @@ const UserImage = ({ profile_img, status }: Props) => {
 				</>
 			) : (
 				<S.DefaultProfileImg>
-					{status === "unavailable" && (<S.Opacity />)}
 					<ProfileDefault width={60} height={60} color={colors.white} />
-					{status === "unavailable" && (<span>오늘 마감</span>)}
 				</S.DefaultProfileImg>
 			)}
 		</S.WrapImg>

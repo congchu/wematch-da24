@@ -47,15 +47,12 @@ const Home: React.FC<RouteComponentProps> = ({location}) => {
     const HomeRef = useRef<HTMLDivElement>(null)
     const [isFixed, setIsFixed] = useScrollDirection()
 
-
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
-
 
     useEffect(() => {
         const mda = queryString.parse(location.search).mda || '';
         setCookie('0dj38gepoekf98234aplyadmin', `agentid=${mda}`)
     }, [])
-
 
     useEffect(() => {
         if (cookies.report && getSubmittedForm.report) {
@@ -67,7 +64,6 @@ const Home: React.FC<RouteComponentProps> = ({location}) => {
     if (getSubmittedForm.loading) {
         return <ResponsiveSkeleton />
     }
-
 
     return (
         <>

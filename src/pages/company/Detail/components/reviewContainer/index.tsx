@@ -1,23 +1,24 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import {useDispatch, useSelector} from "react-redux";
-import {useParams} from "react-router-dom";
-import {useMedia} from "react-use-media";
+import {useDispatch, useSelector} from 'react-redux'
+import {useParams} from 'react-router-dom'
+import {useMedia} from 'react-use-media'
 
 import Review from './review';
-import TermsModal from "components/Modal/TermsModal";
+import TermsModal from 'components/Modal/TermsModal'
 
-import * as partnerSelector from "store/partner/selectors";
-import * as partnerActions from "store/partner/actions";
-import * as values from "constants/values";
-import * as colors from "styles/colors";
+import * as companySelector from 'store/company/selectors'
+import * as companyActions from 'store/company/actions'
+
+import * as values from 'constants/values'
+import * as colors from 'styles/colors'
 
 const S = {
   TitleContainer: styled.div`
 		@media screen and (min-width:1200px) {
 			width:720px;
 			margin:0 auto;
-			padding-left:272px;
+			padding-left:0px;
 		}
 	`,
   Wrap: styled.div`
@@ -62,7 +63,7 @@ const S = {
         @media screen and (min-width: 1200px) {
             width: 656px;
             margin: 0 auto;
-            padding-left: 272px;
+            padding-left: 0px;
         }       
         img {
             width: inherit;
@@ -73,18 +74,19 @@ const S = {
 }
 
 const ReviewContainer = () => {
+
   const dispatch = useDispatch()
 
   const [visibleTermsModal, setVisibleTermsModal] = useState(false)
   const params = useParams<{adminId: string}>()
-  const getReviewList = useSelector(partnerSelector.getReviewList)
+  const getCompanyReviewList = useSelector(companySelector.getCompanyReviewList)
 
   const isMobile = useMedia({
     maxWidth: 767,
   })
 
   useEffect(() => {
-    dispatch(partnerActions.fetchReviewListAsync.request({
+    dispatch(companyActions.fetchCompReviewListAsync.request({
       username: params.adminId,
       page: 1,
       size: values.DEFAULT_REVIEW_LIST_SIZE
@@ -94,7 +96,8 @@ const ReviewContainer = () => {
   const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
 
   const review = () => {
-    if (getReviewList.data.length < 5) {
+    /* 리뷰 없을때 */
+    if (getCompanyReviewList.data.length < 5) {
       return (
         <S.ReviewPreview>
           <img src={require(`assets/images/review_${isMobile ? 'm' : 'pc'}.png`)} alt='review_img'/>
@@ -104,7 +107,7 @@ const ReviewContainer = () => {
 
     return (
       <div>
-        {getReviewList.data.map((review, index) => {
+        {getCompanyReviewList.data.map((review, index) => {
           return (
             <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional}
                     kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>

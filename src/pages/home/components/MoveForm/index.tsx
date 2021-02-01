@@ -379,7 +379,8 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
         if (getPhoneVerified.data.is_verified && visibleVerifyPhone) {
             setVisibleVerifyPhone(false)
             if (submitType === 'curation') {
-                dispatch(commonActions.fetchMoveIdx.request({...getFormData, legacy: true}))
+                /* AUTO MATCH */
+                dispatch(formActions.submitFormAsync.request({formData: {...getFormData, legacy: true}}));
             }
             if (submitType === 'select') {
                 dispatch(commonActions.fetchMoveIdx.request(getFormData))
@@ -396,31 +397,9 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
 
 
     useEffect(() => {
-        if (getMoveIdxData.idx && submitType === 'curation' && !getMoveIdxData.loading) {
-            /* to asp*/
-            // document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
-
-            dataLayer({
-                event: 'step_4',
-                category: '다이사_신청',
-                // action: '견적정보',
-                // label: 'step_4'
-            })
-
-            events({
-                action: 'completed'
-            })
-
-            dispatch(formActions.submitFormAsync.request({formData: getFormData}));
-
-            // history.push('/requests/completed')
-
-        }
-
         if (getMoveIdxData.idx && submitType === 'select' && !getMoveIdxData.loading) {
             router.history.push(`/partner/list`)
         }
-
     }, [getMoveIdxData])
 
     return (
