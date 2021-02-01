@@ -76,7 +76,6 @@ const S = {
 
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-
     title: string;
     subTitle?: string;
 }
@@ -98,7 +97,7 @@ const Layout = ({children, title, subTitle} : Props) => {
             <S.SpaceLine/>
             <S.Wrap>
                 <S.Title>
-                    <h3>업체직접선택</h3>
+                    <h3>{title}</h3>
                     <br/>
                     {subTitle? <span>{subTitle}</span> : <></>}
                 </S.Title>
