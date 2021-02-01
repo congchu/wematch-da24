@@ -10,6 +10,12 @@ import * as commonSelector from "../../store/common/selectors";
 
 const S = {
 		Container: Styled.div`
+		position: fixed;
+		left: 0;
+      	top: 0;
+      	width: 100%;
+      	z-index: 100;
+      	background-color: #FFF
 		`,
 		BtnPrevious: Styled.a`
 			position:absolute;

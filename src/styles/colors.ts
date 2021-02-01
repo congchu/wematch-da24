@@ -25,3 +25,9 @@ export const levelD = '#d10707'
 //da24 colors
 export const pointSky = '#00b6ed';
 export const pointVividBlue = '#1689f7'
+
+
+//skeleton colors (currently for AUTO-MATCH)
+export const skeletonBg = '#EBEEF2';
+
+
