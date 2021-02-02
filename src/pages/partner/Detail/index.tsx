@@ -10,16 +10,17 @@ import Loading from 'components/Loading'
 import MainHeader from 'components/common/MainHeader'
 import TopGnb from 'components/TopGnb'
 import PartnerInfo from 'components/da24/PartnerInfo/index'
-import ReviewContainer from "components/da24/ReviewContainer/index"
 import ToastPopup from 'components/wematch-ui/ToastPopup'
 import SetType from 'components/SetType'
+import Index from 'components/da24/Review'
+import TermsModal from 'components/Modal/TermsModal'
 
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
 
 import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
-import * as formSelector from "store/form/selectors";
+import * as formSelector from 'store/form/selectors'
 import * as commonSelector from 'store/common/selectors'
 import { some } from "lodash";
 
@@ -145,12 +146,69 @@ const S = {
             margin: 0 auto;
         }
     `,
+    TitleContainer: styled.div`
+		@media screen and (min-width:1200px) {
+			width:720px;
+			margin:0 auto;
+			padding-left:272px;
+		}
+  `,
+    Wrap: styled.div`
+		padding:24px;
+		@media screen and (min-width:768px) {
+			width:608px;
+			margin:0 auto;
+			padding:24px 0;
+		}
+		@media screen and (min-width:1200px) {
+			width:656px;
+		}
+	`,
+    Box: styled.div`
+		padding:14px 16px 10px;
+		border-radius:8px;
+		background-color:${colors.boxBg};
+		p{
+			font-size:12px;
+			color:${colors.gray66};
+			line-height:20px;
+			letter-spacing:-0.5px;
+		}
+		span{
+			text-decoration:underline;
+			cursor:pointer;
+		}
+	`,
+    Average: styled.div`
+		margin-top:45px;
+		strong{
+			font-size:16px;
+			font-weight:700;
+		}
+	`,
+    ReviewContainer: styled.div`
+  
+          &:nth-child(1) {
+         * {
+                  border: none;
+          }
+      }
+          @media screen and (min-width:1200px) {
+              width:720px;
+              margin:0 auto;
+              padding-left:272px;
+          }
+      `,
+
 
 }
 
 const PartnerDetail = () => {
     const nextPage = useRef(1)
     const [showScrollView, setShowScrollView] = useState(true)
+    const [visibleTermsModal, setVisibleTermsModal] = useState(false)
+    const [sessionVisible, setSessionVisible] = useState(false)
+    const [unavailableCheck, setUnavailableCheck] = useState(false)
 
     const isDesktop = useMedia({
         minWidth: 1200,
@@ -166,8 +224,10 @@ const PartnerDetail = () => {
     const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
     const getFormData = useSelector(formSelector.getFormData)
 
-    const [sessionVisible, setSessionVisible] = useState(false)
-    const [unavailableCheck, setUnavailableCheck] = useState(false)
+    const isMobile = useMedia({
+        maxWidth: 767,
+    })
+
 
     const checkScrollTop = () => {
         if (!showScrollView && window.pageYOffset > 300) {
@@ -256,6 +316,30 @@ const PartnerDetail = () => {
         }))
     }
 
+    const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
+
+
+    const review = () => {
+        if (getReviewList.data.length < 5) {
+            return (
+                <S.ReviewPreview>
+                    <img src={require(`assets/images/review_${isMobile ? 'm' : 'pc'}.png`)} alt='review_img'/>
+                </S.ReviewPreview>
+            )
+        }
+
+        return (
+            <div>
+                {getReviewList.data.map((review, index) => {
+                    return (
+                        <Index key={index} id={review.id} created_at={review.created_at} professional={review.professional}
+                               kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>
+                    )
+                })}
+            </div>
+        )
+    }
+
     return (
         <S.Container>
             {getPartnerDetail.data && (
@@ -265,7 +349,24 @@ const PartnerDetail = () => {
                         level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
                         description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname} addition={getPartnerDetail.data.addition} />
                     {/*Index Container*/}
-                    <ReviewContainer purpose='partner'/>
+                    {/*<ReviewContainer purpose='partner'/>*/}
+                    <>
+                        <S.TitleContainer>
+                            <S.Wrap>
+                                <S.Box>
+                                    <p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
+                                </S.Box>
+                                <S.Average>
+                                    <strong>고객평가</strong>
+                                </S.Average>
+                            </S.Wrap>
+                            <TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
+                        </S.TitleContainer>
+                        {/*Index Item*/}
+                        <S.ReviewContainer>
+                            {review()}
+                        </S.ReviewContainer>
+                    </>
                     <S.BottomContainer>
                         {getReviewList.moreLoading && (
                             <S.ReviewMoreLoading>

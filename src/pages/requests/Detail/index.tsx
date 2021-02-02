@@ -11,8 +11,9 @@ import Loading from 'components/Loading'
 import MainHeaderForDetail from 'components/common/MainHeaderForDetail'
 import NavHeader from 'components/common/NavHeader'
 import PartnerInfo from 'components/da24/PartnerInfo/index'
-import ReviewContainer from 'components/da24/ReviewContainer/index'
 import SetType from 'components/SetType'
+import Index from 'components/da24/Review'
+import TermsModal from 'components/Modal/TermsModal'
 
 import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
@@ -121,12 +122,66 @@ const S = {
             margin: 0 auto;
         }
     `,
+    CenterTitleContainer: styled.div`
+		@media screen and (min-width:1200px) {
+			width:720px;
+			margin:0 auto;
+			padding-left:0px;
+		}
+	`,
+    Wrap: styled.div`
+		padding:24px;
+		@media screen and (min-width:768px) {
+			width:608px;
+			margin:0 auto;
+			padding:24px 0;
+		}
+		@media screen and (min-width:1200px) {
+			width:656px;
+		}
+	`,
+    Box: styled.div`
+		padding:14px 16px 10px;
+		border-radius:8px;
+		background-color:${colors.boxBg};
+		p{
+			font-size:12px;
+			color:${colors.gray66};
+			line-height:20px;
+			letter-spacing:-0.5px;
+		}
+		span{
+			text-decoration:underline;
+			cursor:pointer;
+		}
+	`,
+    Average: styled.div`
+		margin-top:45px;
+		strong{
+			font-size:16px;
+			font-weight:700;
+		}
+	`,
+    CenterReviewContainer: styled.div`
+  
+          &:nth-child(1) {
+         * {
+                  border: none;
+          }
+      }
+          @media screen and (min-width:1200px) {
+              width:720px;
+              margin:0 auto;
+              padding-left:0px;
+          }
+      `,
 
 }
 
 const PartnerDetailForCompleted = () => {
     const nextPage = useRef(1)
     const [showScrollView, setShowScrollView] = useState(true)
+    const [visibleTermsModal, setVisibleTermsModal] = useState(false)
 
     const isDesktop = useMedia({
         minWidth: 1200,
@@ -139,6 +194,11 @@ const PartnerDetailForCompleted = () => {
     const getPartnerDetailCompleted = useSelector(partnerSelector.getPartnerDetailCompleted)
     const getReviewCompList = useSelector(partnerSelector.getReviewList)
     const getFormData = useSelector(formSelector.getFormData)
+    const getReviewList = useSelector(partnerSelector.getReviewList)
+
+    const isMobile = useMedia({
+        maxWidth: 767,
+    })
 
     const checkScrollTop = () => {
         if (!showScrollView && window.pageYOffset > 300) {
@@ -188,6 +248,30 @@ const PartnerDetailForCompleted = () => {
         }))
     }
 
+    const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
+
+
+    const review = () => {
+        if (getReviewList.data.length < 5) {
+            return (
+                <S.ReviewPreview>
+                    <img src={require(`assets/images/review_${isMobile ? 'm' : 'pc'}.png`)} alt='review_img'/>
+                </S.ReviewPreview>
+            )
+        }
+
+        return (
+            <div>
+                {getReviewList.data.map((review, index) => {
+                    return (
+                        <Index key={index} id={review.id} created_at={review.created_at} professional={review.professional}
+                               kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>
+                    )
+                })}
+            </div>
+        )
+    }
+
     return (
         <S.Container>
             {getPartnerDetailCompleted.data && (
@@ -196,7 +280,24 @@ const PartnerDetailForCompleted = () => {
                     <PartnerInfo title={getPartnerDetailCompleted.data.title ? getPartnerDetailCompleted.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetailCompleted.data.profile_img} status={'automatch'}
                                  level={getPartnerDetailCompleted.data.level} pick_cnt={getPartnerDetailCompleted.data.pick_cnt} experience={getPartnerDetailCompleted.data.experience}
                                  description={getPartnerDetailCompleted.data.description} keywords={getPartnerDetailCompleted.data.keywords} adminname={getPartnerDetailCompleted.data.adminname} addition={getPartnerDetailCompleted.data.addition} />
-                    <ReviewContainer purpose='automatch'/>
+                    {/*<ReviewContainer purpose='automatch'/>*/}
+                    <>
+                        <S.CenterTitleContainer>
+                            <S.Wrap>
+                                <S.Box>
+                                    <p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
+                                </S.Box>
+                                <S.Average>
+                                    <strong>고객평가</strong>
+                                </S.Average>
+                            </S.Wrap>
+                            <TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
+                        </S.CenterTitleContainer>
+                        {/*Index Item*/}
+                        <S.CenterReviewContainer>
+                            {review()}
+                        </S.CenterReviewContainer>
+                    </>
                     <S.BottomContainer>
                         {getReviewCompList.moreLoading && (
                             <S.ReviewMoreLoading>
