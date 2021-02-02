@@ -37,8 +37,16 @@ interface IList {
 }
 
 const S = {
-  CartWrapper: styled.div<{padding: string}>`
-      padding-top: ${props => props.padding && props.padding};
+  CartWrapper: styled.div`
+      padding-top: 48px;
+      
+      @media screen and (min-width: 768px) {
+        padding-top: 72px;
+      }
+      
+      @media screen and (min-width: 1200px) {
+        padding-top: 72px;
+      }
     `,
   CartContainer: styled.div<{ isEmpty: boolean }>`
       display: flex;
@@ -262,10 +270,6 @@ const PartnerCart = () => {
     minWidth: 1200,
   })
 
-  const isMobile = useMedia({
-    maxWidth: 767,
-  })
-
   useEffect(() => {
       const selectedId = getPartnerPickList.data.map(list => list.adminid)
     if (!isEmpty(getPartnerPickList) && getMoveIdxData.idx) {
@@ -367,7 +371,7 @@ const PartnerCart = () => {
 
   return (
     <>
-      <S.CartWrapper padding={isMobile ? '48px' : '72px'}>
+      <S.CartWrapper>
         {isDesktop ? <MainHeader isFixed={true}/> : <TopGnb title="방문견적 요청" count={0} onPrevious={() => history.goBack()} showTruck={false} />}
         <S.TitleWrapper>
           <S.Title>

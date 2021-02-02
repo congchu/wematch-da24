@@ -14,8 +14,8 @@ import PartnerInfo from 'components/da24/PartnerInfo/index'
 import ReviewContainer from 'components/da24/ReviewContainer/index'
 import SetType from 'components/SetType'
 
-import * as partnerActions from 'store/partner/actions'
-import * as partnerSelector from 'store/partner/selectors'
+import * as companyActions from 'store/company/actions'
+import * as companySelector from 'store/company/selectors'
 import * as formSelector from 'store/form/selectors'
 import * as commonSelector from 'store/common/selectors'
 
@@ -192,7 +192,7 @@ const PartnerDetailForCompleted = () => {
         <S.Container>
             {getPartnerDetailCompleted.data && (
                 <>
-                    {isDesktop ? <MainHeaderForDetail/> : <NavHeader title="이사업체 상제 정보"/>}
+                    {isDesktop ? <MainHeaderForDetail/> : <NavHeader title="이사업체 상세 정보"/>}
                     <PartnerInfo title={getPartnerDetailCompleted.data.title ? getPartnerDetailCompleted.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetailCompleted.data.profile_img} status={'automatch'}
                                  level={getPartnerDetailCompleted.data.level} pick_cnt={getPartnerDetailCompleted.data.pick_cnt} experience={getPartnerDetailCompleted.data.experience}
                                  description={getPartnerDetailCompleted.data.description} keywords={getPartnerDetailCompleted.data.keywords} adminname={getPartnerDetailCompleted.data.adminname} addition={getPartnerDetailCompleted.data.addition} />
