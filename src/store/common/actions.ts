@@ -27,16 +27,3 @@ export const fetchMoveIdx = createAsyncAction(
     'FETCH_MOVE_IDX_SUCCESS',
     'FETCH_MOVE_IDX_FAILURE'
 )<types.RequestUserInfoInsert, types.RequestUserInfoInsertProps, undefined>()
-
-export const fetchSignInAsync = createAsyncAction(
-    'FETCH_SIGN_IN_REQUEST',
-    'FETCH_SIGN_IN_SUCCESS',
-    'FETCH_SIGN_IN_FAILURE'
-)<types.RequestSignInProps, types.ResponseSignInProps, undefined>()
-
-
-export const fetchSignUpAsync = createAsyncAction(
-    'FETCH_SIGN_UP_REQUEST',
-    'FETCH_SIGN_UP_SUCCESS',
-    'FETCH_SIGN_UP_FAILURE'
-)<types.RequestSignUpProps, types.ResponseSignUpProps, undefined>()

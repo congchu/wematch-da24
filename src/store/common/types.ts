@@ -29,34 +29,8 @@ export interface RequestVerifyCodeProps {
 }
 
 export interface ResponseVerifyCodeProps {
-    "is_verified": boolean | undefined;
+    isVerified: boolean | undefined;
 }
-
-export interface RequestSignUpProps {
-    tel: string;
-    name: string;
-    device_id?: string;
-    email?: string;
-    init_service: '가정이사' | '원룸' | '사무실' | undefined;
-    referer?: string;
-    user_agent?: string;
-    agreed_marketing?: string; // datetime
-    agent?: string;
-}
-
-export interface ResponseSignUpProps {
-}
-
-export interface RequestSignInProps {
-    token: string;
-}
-
-export interface ResponseSignInProps {
-    tel: string;
-    name: string;
-    agreed_marketing?: string;
-}
-
 export interface RequestUserInfoInsert {
     moving_type: '가정' | '원룸' | '사무실' | undefined;
     moving_date: string;

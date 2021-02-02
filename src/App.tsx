@@ -72,11 +72,11 @@ function AppRoute() {
         return pathname
     }
 
-    useEffect(() => {
-        if (cookie['X-Wematch-Token']) {
-            dispatch(commonActions.fetchSignInAsync.request(cookie['X-Wematch-Token']))
-        }
-    }, [cookie, dispatch])
+    // useEffect(() => {
+    //     if (cookie['X-Wematch-Token']) {
+    //         dispatch(commonActions.fetchSignInAsync.request(cookie['X-Wematch-Token']))
+    //     }
+    // }, [cookie, dispatch])
 
 
     useEffect(() => {

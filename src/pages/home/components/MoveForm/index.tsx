@@ -24,6 +24,7 @@ import * as commonActions from 'store/common/actions'
 import * as commonTypes from 'store/common/types'
 import * as formSelector from 'store/form/selectors'
 import * as formActions from 'store/form/actions'
+import * as userSelector from 'store/user/selectors';
 
 import * as colors from 'styles/colors'
 import {addressSplit, phoneSplit, translateMovingType} from 'components/wematch-ui/utils/form'
@@ -228,7 +229,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
 
     const getPhoneVerified = useSelector(commonSelector.getPhoneVerified)
     const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
-    const getLoginState = useSelector(commonSelector.getLoginState);
+    const {token, user, loading} = useSelector(userSelector.getUser);
 
     const [visibleTerms, setVisibleTerms] = useHashToggle('#terms')
     const [visibleVerifyPhone, setVisibleVerifyPhone] = useState(false)
@@ -298,7 +299,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
     const handleRequestClick = (submitType: 'curation' | 'select') => {
         if (!validateHouseOrOfficeForm()) return;
 
-        getLoginState.loginState ? handleSubmit(submitType) : setVisibleLogin(true);
+        user ? handleSubmit(submitType) : setVisibleLogin(true);
     }
 
     //TODO: 회원가입 로직 변경에 따른 submit 시점 변경

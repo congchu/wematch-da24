@@ -15,3 +15,29 @@ export interface IOrder {
     memo: string;
     partners: IPartnerDetail[];
 }
+
+export interface RequestSignUpProps {
+    tel: string;
+    name: string;
+    device_id?: string;
+    email?: string;
+    init_service: '가정이사' | '원룸' | '사무실' | undefined;
+    referer?: string;
+    user_agent?: string;
+    agreed_marketing?: string; // datetime
+    agent?: string;
+}
+
+export interface ResponseSignUpProps {
+}
+
+export interface RequestSignInProps {
+    token: string;
+}
+
+export interface ResponseSignInProps {
+    uuid: string;
+    tel: string;
+    name: string;
+    agreed_marketing?: string;
+}

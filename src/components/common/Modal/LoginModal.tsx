@@ -4,9 +4,11 @@ import PopupTemplate from 'components/wematch-ui/PopupTemplate'
 import { createPortal } from "react-dom";
 import * as colors from 'styles/colors';
 import * as commonActions from 'store/common/actions'
+import * as userActions from 'store/user/actions';
 import * as formActions from 'store/form/actions';
 import * as formSelector from 'store/form/selectors';
-import * as commonSelector from 'store/common/selectors'
+import * as commonSelector from 'store/common/selectors';
+import * as userSelector from 'store/user/selectors';
 import Input from "../Input";
 import Button from '../Button';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,8 +34,8 @@ const LoginModal: React.FC<Props> = (props) => {
     const getMoveType = useSelector(formSelector.getType)
     const getPhone = useSelector(formSelector.getPhone)
     const getName = useSelector(formSelector.getName)
-    const { loginState } = useSelector(commonSelector.getLoginState);
-    const { data: { is_verified }, isSendMessage, loading } = useSelector(commonSelector.getPhoneVerified)
+    const { user } = useSelector(userSelector.getUser);
+    const { data: { isVerified }, isSendMessage, loading } = useSelector(commonSelector.getPhoneVerified)
     const { counter, handleCounterStart, handleCounterStop } = useTimer(180);
     const [code, setCode] = useState<string>('')
     const [visibleTerms, setVisibleTerms] = useHashToggle('#terms');
@@ -55,7 +57,7 @@ const LoginModal: React.FC<Props> = (props) => {
         dispatch(formActions.setPhone(originPhoneValue))
     }
     const isNumRegex = /^[0-9]+$/g;
-    const isAuth = useMemo(() => !(!!getName && getPhone.length >= 11 && isNumRegex.test(getPhone)) || is_verified, [getName, getPhone, is_verified, isNumRegex]);
+    const isAuth = useMemo(() => !(!!getName && getPhone.length >= 11 && isNumRegex.test(getPhone)) || isVerified, [getName, getPhone, isVerified, isNumRegex]);
 
     const handleVerify = () => {
         dispatch(commonActions.fetchVerifyCodeAsync.request({
@@ -74,7 +76,7 @@ const LoginModal: React.FC<Props> = (props) => {
     }
 
     const handleSignUp = () => {
-        dispatch(commonActions.fetchSignUpAsync.request({
+        dispatch(userActions.fetchSignUpAsync.request({
             tel: getPhone,
             name: getName,
             init_service: getMoveType === 'house' ? '가정이사' : '사무실'
@@ -111,16 +113,16 @@ const LoginModal: React.FC<Props> = (props) => {
     }, [isSendMessage, loading, handleCounterStart])
 
     useEffect(() => {
-        if (is_verified) {
+        if (isVerified) {
             handleCounterStop()
         }
-    }, [is_verified, handleCounterStop])
+    }, [isVerified, handleCounterStop])
 
     useEffect(() => {
-        if (loginState) {
+        if (user) {
             onClose();
         }
-    }, [loginState])
+    }, [user])
 
 
     return createPortal((
@@ -137,16 +139,16 @@ const LoginModal: React.FC<Props> = (props) => {
                     <FormWrapper>
                         <Input theme="default" border placeholder="이름" maxLength={20}
                             onChange={(e) => dispatch(formActions.setName(e.target.value))} value={getName}
-                            style={{ backgroundColor: is_verified ? '' : "transparent" }}
+                            style={{ backgroundColor: isVerified ? '' : "transparent" }}
                         />
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Input theme="default" border placeholder="휴대폰 번호(-없이)" pattern="[0-9]*" inputMode="numeric"
-                                value={getPhone} onChange={handlePhone} style={{ backgroundColor: is_verified ? '' : "transparent" }} rootStyle={{ flex: 1 }} maxLength={11}
-                                disabled={is_verified}
+                                value={getPhone} onChange={handlePhone} style={{ backgroundColor: isVerified ? '' : "transparent" }} rootStyle={{ flex: 1 }} maxLength={11}
+                                disabled={isVerified}
                             />
                             <Button theme="primary" disabled={isAuth} style={{ width: "90px", marginLeft: '7px', borderRadius: '4px' }}
                                 onClick={handleSubmit} bold={true}>
-                                {!isSendMessage && !is_verified ? '인증요청' : '재전송'}
+                                {!isSendMessage && !isVerified ? '인증요청' : '재전송'}
                             </Button>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -154,21 +156,21 @@ const LoginModal: React.FC<Props> = (props) => {
                                 <Input theme="default" border placeholder="인증번호" maxLength={4}
                                     value={code} pattern="[0-9]*" inputMode="numeric"
                                     onChange={(e) => { setCode(e.target.value) }}
-                                    style={{ backgroundColor: !isSendMessage || is_verified ? '' : "transparent", borderColor: is_verified === false ? '#EC485C' : '' }} inputRef={verifyRef}
-                                    disabled={!isSendMessage || is_verified}
+                                    style={{ backgroundColor: !isSendMessage || isVerified ? '' : "transparent", borderColor: isVerified === false ? '#EC485C' : '' }} inputRef={verifyRef}
+                                    disabled={!isSendMessage || isVerified}
                                 />
                                 <CounterWrapper>
                                     <span>{isSendMessage && displayCount(counter)}</span>
                                 </CounterWrapper>
                             </div>
-                            <Button theme="primary" disabled={!isSendMessage || is_verified || isTimeout} onClick={handleVerify} bold={true}
+                            <Button theme="primary" disabled={!isSendMessage || isVerified || isTimeout} onClick={handleVerify} bold={true}
                                 style={{ width: "90px", marginLeft: '7px', borderRadius: '4px' }} >
                                 확인
                             </Button>
                         </div>
                         <div>
-                            {is_verified === false && !loading && code.length > 0 && <ErrorMessage>인증번호를 잘못 입력했습니다.</ErrorMessage>}
-                            {is_verified === true && !loading && code.length > 0 && <SuccessMessage>인증이 완료되었습니다.</SuccessMessage>}
+                            {isVerified === false && !loading && code.length > 0 && <ErrorMessage>인증번호를 잘못 입력했습니다.</ErrorMessage>}
+                            {isVerified === true && !loading && code.length > 0 && <SuccessMessage>인증이 완료되었습니다.</SuccessMessage>}
                         </div>
                     </FormWrapper>
                 </div>
@@ -177,7 +179,7 @@ const LoginModal: React.FC<Props> = (props) => {
                     <p>
                         <span onClick={() => setVisibleTerms(true)}>이용약관 및 개인정보처리방침 동의</span>, 견적상담을 위한 개인 정보 제3자 제공 및 마케팅 정보수신 동의 필요
                     </p>
-                    <Button theme="primary" disabled={!is_verified} style={{ fontSize: '18px' }}
+                    <Button theme="primary" disabled={!isVerified} style={{ fontSize: '18px' }}
                         bold={true} onClick={handleSignUp}>
                         동의하고 진행하기
                     </Button>
@@ -200,7 +202,7 @@ const LoginModalWrapper = styled.div`
     width: 100%;
     flex: 1;
     box-sizing: border-box;
-    backgrorund-color: white;
+    background-color: white;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

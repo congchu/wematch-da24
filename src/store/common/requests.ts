@@ -39,26 +39,3 @@ export const getMoveIdx = async (formData: types.RequestUserInfoInsert) => {
 }
 
 
-//TODO: 로그인 개발서버용 api 나올 시 로직 변경.
-export const postSignUp = async (formData: types.RequestSignUpProps) => {
-    // const response =  await api.request<types.RequestSignUpProps>({
-    //     method: 'post',
-    //     url: '/auth/users',
-    //     data: {...formData}
-    // })
-    const response = await axios.post(`/auth/users`, {...formData})
-
-    return response.headers['X-Wematch-Token'];
-}
-
-export const getUser = async (token: string) => {
-    const {data} = await api.request<types.RequestSignInProps>({
-        method: 'get',
-        url: '/auth/user',
-        headers: {
-            'X-Wematch-Token': token
-        }
-    })
-
-    return data;
-}

@@ -1,6 +1,5 @@
 import { createAction, createAsyncAction } from "typesafe-actions";
-import { IOrder } from "./types";
-
+import * as types from './types';
 
 /*
     TODO: 로그인 로직 user store로 이동
@@ -14,10 +13,23 @@ export const fetchUserConsultAsync = createAsyncAction(
     "FETCH_USER_CONSULT_REQUEST",
     "FETCH_USER_CONSULT_SUCCESS",
     "FETCH_USER_CONSULT_FAILURE",
-)<{name: string, phone: string}, {name: string; phone: string; clean_orders: IOrder[]; move_orders: IOrder[]; past_orders: IOrder[];}, undefined>()
+)<{name: string, phone: string}, {name: string; phone: string; clean_orders: types.IOrder[]; move_orders: types.IOrder[]; past_orders: types.IOrder[];}, undefined>()
+
+export const fetchSignInAsync = createAsyncAction(
+    'FETCH_SIGN_IN_REQUEST',
+    'FETCH_SIGN_IN_SUCCESS',
+    'FETCH_SIGN_IN_FAILURE'
+)<types.RequestSignInProps, types.ResponseSignInProps, undefined>()
 
 
-export const selectOrder = createAction('SELECT_ORDER')<{order: IOrder}>()
+export const fetchSignUpAsync = createAsyncAction(
+    'FETCH_SIGN_UP_REQUEST',
+    'FETCH_SIGN_UP_SUCCESS',
+    'FETCH_SIGN_UP_FAILURE'
+)<types.RequestSignUpProps, types.ResponseSignUpProps, undefined>()
+
+
+export const selectOrder = createAction('SELECT_ORDER')<{order: types.IOrder}>()
 export const resetOrder = createAction('RESET_ORDER')();
 
 export const signOut = createAction("SIGN_OUT")();

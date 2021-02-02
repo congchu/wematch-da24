@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { all, call, put, takeEvery } from "redux-saga/effects";
+import { setAgree } from "store/form/actions";
 import { ActionType } from "typesafe-actions";
 import * as actions from './actions';
 import * as requests from './requests';
@@ -32,8 +33,34 @@ export function* fetchUserConsultSaga(action: ActionType<typeof actions.fetchUse
     }
 }
 
+export function* fetchSignUpSaga(action: ActionType<typeof actions.fetchSignUpAsync.request>) {
+    try {
+        yield put(setAgree({
+            terms: true,
+            privacy: true,
+            marketing: true
+        }))
+        const data = yield call(requests.postSignUp, action.payload)
+        document.cookie=`X-Wematch-Token=${data}; max-age=${60*60*24*60}`
+        yield put(actions.fetchSignUpAsync.success(data))
+    } catch(e) {
+        yield put(actions.fetchSignUpAsync.failure())
+    }
+}
+
+export function* fetchSignInSaga(action: ActionType<typeof actions.fetchSignInAsync.request>) {
+    try {
+        const data = yield call(requests.getUser, action.payload.token)
+        console.log(data);
+        // yield put(actions.fetchSignInAsync.success(data))
+    } catch(e) {
+        yield put(actions.fetchSignInAsync.failure())
+    }
+}
+
 export default function* () {
     yield all([
         takeEvery(actions.fetchUserConsultAsync.request, fetchUserConsultSaga)
     ])
 }
+
