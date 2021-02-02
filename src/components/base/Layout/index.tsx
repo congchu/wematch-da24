@@ -10,7 +10,7 @@ const S = {
         display: block;
     `,
     HeaderContainer: styled.div`
-        //display: block;
+        display: block;
     `,
     SpaceLine: styled.div`
           display: block;
@@ -27,12 +27,12 @@ const S = {
     `,
 
     Wrap: styled.div`
-		
+        margin:66px auto 0 auto;
 		@media screen and (min-width: 768px) {
-			//margin-top: 72px;
             position: relative;
             width: 608px;
-            margin: 0 auto;
+            //margin: 0 auto;
+            margin:66px auto 0 auto;
             padding-bottom: 60px;
 		}
 		@media screen and (min-width:1200px) {
@@ -59,14 +59,14 @@ const S = {
 			letter-spacing:-1px;
 			line-height:48px;
 		}
-		@media screen and (min-width:1200px) {
-			display:block;
-		}
         span{
           font-size: 16px;
           font-weight: 400;
           line-height: 26px;
           letter-spacing: -1px;
+        }
+        @media screen and (min-width:1200px) {
+          display:block;
         }
 	`,
     Contents: styled.div`
