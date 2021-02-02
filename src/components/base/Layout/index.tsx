@@ -38,10 +38,11 @@ const S = {
 		@media screen and (min-width:1200px) {
 			position:relative;
 			width:720px;
-			margin:0 auto;
+			margin:72px auto 0 auto;
 			padding-left:272px;
 			padding-top: 80px;
 			padding-bottom: 80px;
+            
 		}
 	`,
     Title: styled.div`
@@ -94,7 +95,7 @@ const Layout = ({children, title, subTitle} : Props) => {
                     <MainHeader isFixed={true} border={true}/> :
                     <NavHeader title={title} />}
             </S.HeaderContainer>
-            <S.SpaceLine/>
+            {/*<S.SpaceLine/>*/}
             <S.Wrap>
                 <S.Title>
                     <h3>{title}</h3>
