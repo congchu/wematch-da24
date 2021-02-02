@@ -1,5 +1,5 @@
 import {createAction, createAsyncAction} from "typesafe-actions";
-import {IPartnerList, IPartnerDetail, IReview, IPartnerDetailForCompleted, IReviewForCompleted} from "types/partner";
+import {IPartnerList, IPartnerDetail, IReview, IPartnerDetailForCompleted} from "types/partner";
 import {Pagination} from "types/pagination";
 
 interface ListType {
@@ -9,11 +9,6 @@ interface ListType {
 
 interface ReviewType {
   data: IReview[];
-  has_more: boolean;
-}
-
-interface ReviewTypeForCompleted {
-  data: IReviewForCompleted[];
   has_more: boolean;
 }
 
@@ -53,17 +48,6 @@ export const fetchReviewMoreListAsync = createAsyncAction(
   "FETCH_REVIEW_MORE_LIST_FAILURE"
 )<{adminId: string; page: number; size: number}, ReviewType, undefined>();
 
-export const fetchReviewListCompAsync = createAsyncAction(
-    "FETCH_REVIEW_LIST_COMP_REQUEST",
-    "FETCH_REVIEW_LIST_COMP_RESPONSE",
-    "FETCH_REVIEW_LIST_COMP_FAILURE"
-)<{adminId: string; page: number; size: number}, ReviewTypeForCompleted, undefined>();
-
-export const fetchReviewMoreListCompAsync = createAsyncAction(
-    "FETCH_REVIEW_MORE_LIST_COMP_REQUEST",
-    "FETCH_REVIEW_MORE_LIST_COMP_RESPONSE",
-    "FETCH_REVIEW_MORE_LIST_COMP_FAILURE"
-)<{adminId: string; page: number; size: number}, ReviewTypeForCompleted, undefined>();
 
 export const setPartnerPick = createAction("SET_PARTNER_PICK")<
   IPartnerDetail[]

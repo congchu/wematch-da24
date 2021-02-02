@@ -5,7 +5,6 @@ import {
     IPartnerDetail,
     IReview,
     IRecommendedList,
-    IReviewForCompleted,
     IPartnerDetailForCompleted
 } from 'types/partner'
 import {API_MIDDLEWARE_URL} from 'constants/env'
@@ -38,15 +37,6 @@ export const getPartnerDetailForCompleted = async (adminId: string) => {
 
 export const getReviewList = async (adminId:string, page: number, size: number) => {
     const { data } = await bookingApi.request<ApiResponse<IReview[]>>({
-        method: 'get',
-        url: `/reviews/${adminId}?page=${page}&size=${size}`
-    })
-
-    return data.data
-}
-
-export const getReviewForCompletedList = async (adminId:string, page: number, size: number) => {
-    const { data } = await bookingApi.request<ApiResponse<IReviewForCompleted[] >>({
         method: 'get',
         url: `/reviews/${adminId}?page=${page}&size=${size}`
     })

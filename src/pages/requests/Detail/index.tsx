@@ -11,7 +11,7 @@ import Loading from 'components/Loading'
 import MainHeaderForDetail from 'components/common/MainHeaderForDetail'
 import NavHeader from 'components/common/NavHeader'
 import PartnerInfo from 'components/da24/PartnerInfo/index'
-import ReviewContainerCenter from 'components/da24/ReviewContainerCenter/index'
+import ReviewContainer from 'components/da24/ReviewContainer/index'
 import SetType from 'components/SetType'
 
 import * as partnerActions from 'store/partner/actions'
@@ -137,7 +137,7 @@ const PartnerDetailForCompleted = () => {
     const dispatch = useDispatch()
 
     const getPartnerDetailCompleted = useSelector(partnerSelector.getPartnerDetailCompleted)
-    const getReviewCompList = useSelector(partnerSelector.getReviewCompList)
+    const getReviewCompList = useSelector(partnerSelector.getReviewList)
     const getFormData = useSelector(formSelector.getFormData)
 
     const checkScrollTop = () => {
@@ -159,7 +159,7 @@ const PartnerDetailForCompleted = () => {
         dispatch(partnerActions.fetchPartnerDetailCompAsync.request({
             adminId: params.adminId
         }))
-        dispatch(partnerActions.fetchReviewListCompAsync.request({
+        dispatch(partnerActions.fetchReviewListAsync.request({
             adminId: params.adminId,
             page: 1,
             size: values.DEFAULT_REVIEW_LIST_SIZE
@@ -181,7 +181,7 @@ const PartnerDetailForCompleted = () => {
 
     const handleMoreReview = () => {
         nextPage.current += 1;
-        dispatch(partnerActions.fetchReviewMoreListCompAsync.request({
+        dispatch(partnerActions.fetchReviewMoreListAsync.request({
             adminId: params.adminId,
             page: nextPage.current,
             size: values.DEFAULT_REVIEW_LIST_SIZE
@@ -196,7 +196,7 @@ const PartnerDetailForCompleted = () => {
                     <PartnerInfo title={getPartnerDetailCompleted.data.title ? getPartnerDetailCompleted.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetailCompleted.data.profile_img} status={'automatch'}
                                  level={getPartnerDetailCompleted.data.level} pick_cnt={getPartnerDetailCompleted.data.pick_cnt} experience={getPartnerDetailCompleted.data.experience}
                                  description={getPartnerDetailCompleted.data.description} keywords={getPartnerDetailCompleted.data.keywords} adminname={getPartnerDetailCompleted.data.adminname} addition={getPartnerDetailCompleted.data.addition} />
-                    <ReviewContainerCenter/>
+                    <ReviewContainer purpose='automatch'/>
                     <S.BottomContainer>
                         {getReviewCompList.moreLoading && (
                             <S.ReviewMoreLoading>

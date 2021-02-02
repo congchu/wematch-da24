@@ -77,9 +77,39 @@ const S = {
             margin: 0 auto;
         }
     `,
+    ReviewContainer: styled.div`
+  
+          &:nth-child(1) {
+         * {
+                  border: none;
+          }
+      }
+          @media screen and (min-width:1200px) {
+              width:720px;
+              margin:0 auto;
+              padding-left:272px;
+          }
+      `,
+    CenterReviewContainer: styled.div`
+  
+          &:nth-child(1) {
+         * {
+                  border: none;
+          }
+      }
+          @media screen and (min-width:1200px) {
+              width:720px;
+              margin:0 auto;
+              padding-left:0px;
+          }
+      `,
 }
 
-const ReviewContainer = () => {
+interface Props {
+  purpose?: 'automatch' | 'partner'
+}
+
+const ReviewContainer = ({purpose}:Props) => {
   const dispatch = useDispatch()
 
   const [visibleTermsModal, setVisibleTermsModal] = useState(false)
@@ -121,23 +151,61 @@ const ReviewContainer = () => {
     )
   }
 
+
+  const reviewForCompletedPage = () => {
+    return(
+        <>
+          <S.CenterTitleContainer>
+            <S.Wrap>
+              <S.Box>
+                <p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
+              </S.Box>
+              <S.Average>
+                <strong>고객평가</strong>
+              </S.Average>
+            </S.Wrap>
+            <TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
+          </S.CenterTitleContainer>
+          {/*Index Item*/}
+          <S.CenterReviewContainer>
+            {review()}
+          </S.CenterReviewContainer>
+        </>
+    )
+  }
+
+  const reviewForPartnerPage = () => {
+    return (
+        <>
+          <S.TitleContainer>
+            <S.Wrap>
+              <S.Box>
+                <p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
+              </S.Box>
+              <S.Average>
+                <strong>고객평가</strong>
+              </S.Average>
+            </S.Wrap>
+            <TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
+          </S.TitleContainer>
+          {/*Index Item*/}
+          <S.ReviewContainer>
+            {review()}
+          </S.ReviewContainer>
+        </>
+    )
+  }
+
   return (
     <>
-      <S.TitleContainer>
-        <S.Wrap>
-          <S.Box>
-            <p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
-          </S.Box>
-          <S.Average>
-            <strong>고객평가</strong>
-          </S.Average>
-        </S.Wrap>
-        <TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
-      </S.TitleContainer>
-      {/*Index Item*/}
-      {review()}
+      {
+        purpose==='automatch'
+        ? reviewForCompletedPage()
+        : reviewForPartnerPage()
+      }
     </>
   )
-};
+
+}
 
 export default ReviewContainer

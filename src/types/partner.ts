@@ -69,23 +69,6 @@ export type IReview = {
     star: number;
 }
 
-export type IReviewForCompleted = {
-    id: number;
-    created_at: string;
-    partner: string;
-    user: string;
-    price: Grade;
-    kind: Grade;
-    professional: Grade;
-    memo: string;
-    reply: string | null;
-    star: number;
-    has_previous: boolean;
-    has_next: boolean;
-    num_pages: number;
-    count: number;
-}
-
 export type IRecommendedList = {
   adminname: string;
   adminid: string;

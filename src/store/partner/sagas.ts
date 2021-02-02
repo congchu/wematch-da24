@@ -58,14 +58,6 @@ export function* fetchReviewListSaga(action: ActionType<typeof actions.fetchRevi
     }
 }
 
-export function* fetchReviewListForCompletedSaga(action: ActionType<typeof actions.fetchReviewListCompAsync.request>) {
-    try {
-        const data = yield call(request.getReviewForCompletedList, action.payload.adminId, action.payload.page, action.payload.size)
-        yield put(actions.fetchReviewListCompAsync.success(data))
-    } catch (e) {
-        yield put(actions.fetchReviewListCompAsync.failure())
-    }
-}
 
 export function* fetchReviewMoreListSaga(action: ActionType<typeof actions.fetchReviewMoreListAsync.request>) {
     try {
@@ -76,14 +68,6 @@ export function* fetchReviewMoreListSaga(action: ActionType<typeof actions.fetch
     }
 }
 
-export function* fetchReviewMoreListForCompletedSaga(action: ActionType<typeof actions.fetchReviewMoreListCompAsync.request>) {
-    try {
-        const data = yield call(request.getReviewForCompletedList, action.payload.adminId, action.payload.page, action.payload.size)
-        yield put(actions.fetchReviewMoreListCompAsync.success(data))
-    } catch (e) {
-        yield put(actions.fetchReviewMoreListCompAsync.failure())
-    }
-}
 
 export function* fetchRecommendedPartnerListSaga(action: ActionType<typeof actions.fetchCartListAsync.request>) {
     try {
@@ -112,7 +96,5 @@ export default function* () {
         takeEvery(actions.fetchCartListAsync.request, fetchRecommendedPartnerListSaga),
         takeEvery(actions.fetchMatchingAsync.request, fetchMatchingPartnerSaga),
         takeEvery(actions.fetchPartnerDetailCompAsync.request, fetchPartnerDetailForCompletedSaga),
-        takeEvery(actions.fetchReviewListCompAsync.request, fetchReviewListForCompletedSaga),
-        takeEvery(actions.fetchReviewMoreListCompAsync.request, fetchReviewMoreListForCompletedSaga),
     ])
 }
