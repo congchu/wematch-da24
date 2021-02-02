@@ -9,8 +9,8 @@ import { DownArrow, UpArrow } from 'components/Icon'
 import Loading from 'components/Loading'
 import MainHeader from 'components/common/MainHeader'
 import TopGnb from 'components/TopGnb'
-import PartnerInfo from 'components/da24/detail/PartnerInfo/index'
-import ReviewContainer from "components/da24/detail/ReviewContainer/index"
+import PartnerInfo from 'components/da24/PartnerInfo/index'
+import ReviewContainer from "components/da24/ReviewContainer/index"
 import ToastPopup from 'components/wematch-ui/ToastPopup'
 import SetType from 'components/SetType'
 

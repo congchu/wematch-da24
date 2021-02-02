@@ -6,8 +6,8 @@ import last from 'lodash/last'
 import ReactPixel from 'react-facebook-pixel'
 import {useCookies} from 'react-cookie'
 
-import MainHeader from 'components/common/MainHeader/index'
-import NavHeader from 'components/common/NavHeader/index'
+import MainHeader from 'components/common/MainHeader'
+import NavHeader from 'components/common/NavHeader'
 import AreaIcon from 'components/Icon/generated/AreaIcon'
 import Kakao from 'components/Icon/generated/Kakao_fit'
 

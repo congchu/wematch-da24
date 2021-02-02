@@ -195,7 +195,7 @@ interface Props {
 	purpose?: 'automatch' | 'partner'
 }
 
-const  Index = ({ id, created_at, memo, reply, professional, kind, price, star, purpose }: Props) => {
+const Review  = ({ id, created_at, memo, reply, professional, kind, price, star, purpose }: Props) => {
 	const isDesktop = useMedia({
 		minWidth: 1200,
 	})
@@ -309,4 +309,4 @@ const  Index = ({ id, created_at, memo, reply, professional, kind, price, star, 
 	)
 }
 
-export default Index
+export default Review

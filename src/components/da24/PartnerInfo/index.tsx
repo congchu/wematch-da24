@@ -198,7 +198,7 @@ interface Props {
 }
 
 
-const Index = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition='', status='automatch', profile_img }: Props) => {
+const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition='', status='automatch', profile_img }: Props) => {
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 	const isMobile = useMedia({
 		maxWidth: 767,
@@ -280,4 +280,4 @@ const Index = ({ title, level, pick_cnt, experience, description='', keywords, a
 	)
 }
 
-export default Index
+export default PartnerInfo

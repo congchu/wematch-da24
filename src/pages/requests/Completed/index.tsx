@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {useCookies} from 'react-cookie'
 import {useHistory} from 'react-router-dom'
 
-import MainHeader from 'components/common/MainHeader/index'
+import MainHeader from 'components/common/MainHeader'
 import Collapse from 'components/base/Collapse'
 import {Down, Up, Info} from 'components/wematch-ui/Icon'
 import {Triangle, Check, LevelA, LevelB, LevelC, LevelN, LevelS} from 'components/Icon'
@@ -316,7 +316,7 @@ const S = {
     `,
 }
 
-export default function CompletedPage() {
+export default function Completed() {
 
     const getMoveType = useSelector(formSelector.getType)
     const getMoveDate = useSelector(formSelector.getDate)

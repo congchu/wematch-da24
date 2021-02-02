@@ -24,8 +24,7 @@ export interface PartnerState {
     detailForCompleted: {
         data: IPartnerDetailForCompleted | undefined;
         loading: boolean;
-    }
-    ,
+    },
     review: {
         data: IReview[];
         loading: boolean;
