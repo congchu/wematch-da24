@@ -67,3 +67,4 @@ export const fetchMatchingAsync = createAsyncAction(
 
 export const cartReset = createAction("CART_RESET")();
 export const partnerListReset = createAction("PARTNER_LIST_RESET")();
+export const detailReset = createAction("DETAIL_RESET")();

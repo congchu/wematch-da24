@@ -14,8 +14,8 @@ import PartnerInfo from 'components/da24/PartnerInfo/index'
 import ReviewContainer from 'components/da24/ReviewContainer/index'
 import SetType from 'components/SetType'
 
-import * as companyActions from 'store/company/actions'
-import * as companySelector from 'store/company/selectors'
+import * as partnerActions from 'store/partner/actions'
+import * as partnerSelector from 'store/partner/selectors'
 import * as formSelector from 'store/form/selectors'
 import * as commonSelector from 'store/common/selectors'
 
