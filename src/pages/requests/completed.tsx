@@ -394,8 +394,7 @@ export default function CompletedPage() {
             })
             ReactPixel.fbq('track', 'Purchase')
 
-            // @ts-ignore
-            TenpingScript.SendConversion() // 임시용
+            TenpingScript.SendConversion()
         }
     }, [getSubmittedForm])
 
