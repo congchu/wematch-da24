@@ -136,7 +136,7 @@ const PartnerDetailForCompleted = () => {
     const params = useParams<{ adminId: string }>()
     const dispatch = useDispatch()
 
-    const getPartnerDetailComp = useSelector(partnerSelector.getPartnerDetailComp)
+    const getPartnerDetailCompleted = useSelector(partnerSelector.getPartnerDetailCompleted)
     const getReviewCompList = useSelector(partnerSelector.getReviewCompList)
     const getFormData = useSelector(formSelector.getFormData)
 
@@ -175,7 +175,7 @@ const PartnerDetailForCompleted = () => {
     }, [checkScrollTop])
 
 
-    if (getPartnerDetailComp.loading) {
+    if (getPartnerDetailCompleted.loading) {
         return <Loading />
     }
 
@@ -190,12 +190,12 @@ const PartnerDetailForCompleted = () => {
 
     return (
         <S.Container>
-            {getPartnerDetailComp.data && (
+            {getPartnerDetailCompleted.data && (
                 <>
                     {isDesktop ? <MainHeaderForDetail/> : <NavHeader title="이사업체 상제 정보"/>}
-                    <PartnerInfo title={getPartnerDetailComp.data.title ? getPartnerDetailComp.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetailComp.data.profile_img} status={'automatch'}
-                                 level={getPartnerDetailComp.data.level} pick_cnt={getPartnerDetailComp.data.pick_cnt} experience={getPartnerDetailComp.data.experience}
-                                 description={getPartnerDetailComp.data.description} keywords={getPartnerDetailComp.data.keywords} adminname={getPartnerDetailComp.data.adminname} addition={getPartnerDetailComp.data.addition} />
+                    <PartnerInfo title={getPartnerDetailCompleted.data.title ? getPartnerDetailCompleted.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetailCompleted.data.profile_img} status={'automatch'}
+                                 level={getPartnerDetailCompleted.data.level} pick_cnt={getPartnerDetailCompleted.data.pick_cnt} experience={getPartnerDetailCompleted.data.experience}
+                                 description={getPartnerDetailCompleted.data.description} keywords={getPartnerDetailCompleted.data.keywords} adminname={getPartnerDetailCompleted.data.adminname} addition={getPartnerDetailCompleted.data.addition} />
                     <ReviewContainerCenter/>
                     <S.BottomContainer>
                         {getReviewCompList.moreLoading && (
