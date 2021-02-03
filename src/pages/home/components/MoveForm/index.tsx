@@ -380,7 +380,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
             setVisibleVerifyPhone(false)
             if (submitType === 'curation') {
                 /* AUTO MATCH */
-                dispatch(formActions.submitFormAsync.request({formData: {...getFormData, legacy: true}}));
+                dispatch(formActions.submitFormAsync.request({formData: {...getFormData}}));
             }
             if (submitType === 'select') {
                 dispatch(commonActions.fetchMoveIdx.request(getFormData))

@@ -44,6 +44,9 @@ declare global {
     interface Window {
         ReactNativeWebView: any; // eslint-disable-line
     }
+    interface TenpingScript {
+        SendConversion: () => void
+    }
 }
 
 function AppRoute() {
