@@ -4,11 +4,11 @@ import * as colors from 'styles/colors'
 
 import {Minus, Plus} from 'components/wematch-ui/Icon'
 
-export type faqCategory = '공통' | '이사' | '청소';
+export type faqCategory = '공통' | '이사' | '청소'
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
     category?: faqCategory;
-    title?: string;
+    title: string;
     date?:string;
     postNum?:string;
     defaultExpand: boolean;
@@ -77,40 +77,39 @@ const S = {
         float: right;
       }
       
-    h6{
-      font-weight: normal;
-      display: block;
-      font-size: 15px;
-      line-height: 16px;
-      color: #888;
-    }
+      h6{
+        font-weight: normal;
+        display: block;
+        font-size: 15px;
+        line-height: 16px;
+        color: #888;
+      }
       
       @media screen and (min-width: 768px) {
         //padding-top: 52px;
       }
     `,
-    Container: styled.div<{expand: boolean}>`
+    Contents: styled.div<{expand: boolean}>`
         display: ${props => props.expand ? 'block' : 'none'};
         //border-bottom: 1px solid #EBEEF2;
         padding-top: 16px;
     `,
-    AnswerWrap: styled.div`
+    ContentsWrapper: styled.div`
         display: block;
         font-size: 15px;
         line-height: 22px;
         color: #333;
         letter-spacing: -1px;
         padding: 5px 24px 14px 24px;
-        
     `
 }
 
 /*
-* < USAGE >  JAN.2021
+* < USAGE >  FEB.2021
 * FAQ : category, title, defaultExpand
 * 공지사항 : title, date, postNum
 * */
-export default function Collapsed({ category ,title, children, defaultExpand, date, postNum }: Props) {
+export default function Collapse({ category ,title, children, defaultExpand, date, postNum }: Props) {
 
     const [expand, setExpand] = useState(true)
 
@@ -129,11 +128,11 @@ export default function Collapsed({ category ,title, children, defaultExpand, da
                 </div>
                 <span>{expand ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>}</span>
             </S.TitleWrap>
-            <S.AnswerWrap>
-                <S.Container expand={expand}>
+            <S.ContentsWrapper>
+                <S.Contents expand={expand}>
                     {children}
-                </S.Container>
-            </S.AnswerWrap>
+                </S.Contents>
+            </S.ContentsWrapper>
         </>
 
     )
