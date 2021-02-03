@@ -9,6 +9,8 @@ export type faqCategory = '공통' | '이사' | '청소';
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
     category?: string;
     title?: string;
+    date?:string;
+    postNum?:string;
     defaultExpand: boolean;
 }
 
@@ -75,6 +77,14 @@ const S = {
         float: right;
       }
       
+    h6{
+      font-weight: normal;
+      display: block;
+      font-size: 15px;
+      line-height: 16px;
+      color: #888;
+    }
+      
       @media screen and (min-width: 768px) {
         //padding-top: 52px;
       }
@@ -95,7 +105,12 @@ const S = {
     `
 }
 
-export default function Collapsed({ category ,title, children, defaultExpand }: Props) {
+/*
+* < USAGE >  JAN.2021
+* FAQ : category, title, defaultExpand
+* 공지사항 : title, date, postNum
+* */
+export default function Collapsed({ category ,title, children, defaultExpand, date, postNum }: Props) {
 
     const [expand, setExpand] = useState(true)
 
@@ -108,9 +123,9 @@ export default function Collapsed({ category ,title, children, defaultExpand }: 
         <>
             <S.TitleWrap onClick={() => setExpand(!expand)} className="toggle">
                 <div className='textWrapper'>
-                    <em>Q {category}</em>
-                    <br/>
+                    {category? <em>Q {category}<br/></em> : <></>}
                     {title}
+                    <h6>{date && <>{date}..{postNum}</>}</h6>
                 </div>
                 <span>{expand ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>}</span>
             </S.TitleWrap>

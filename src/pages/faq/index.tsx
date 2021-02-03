@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 
 import Layout from 'components/base/Layout'
-import Collapsed from './collapsed'
+import Collapsed from '../../components/common/Collapse/collapsed'
 
 export type faqCategory = '공통' | '이사' | '청';
 
@@ -25,7 +25,7 @@ export default function FaqPage() {
         <Layout title="자주 묻는 질문">
             {/*이렇게 나중에 나누기*/}
             <S.TopCollapsedWrap>
-                <Collapsed category='공통' title='소비자평가등급은 무엇인가요?' defaultExpand={false}>
+                <Collapsed category='공통' title='소비자평가등급은 무엇인가요?' defaultExpand={true} >
                     이사/청소 업체의 서비스 품질을 가장 정확하게 예측할 수 있는 객관적인 지표입니다. <br/>
                     소고기, 호텔 등을 고를 때 공인된 등급을 확인하듯, 이사/청소 업체 선택 시 가장 합리적인 기준이 됩니다. <br/>
                     <br/>
