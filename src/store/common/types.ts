@@ -52,7 +52,6 @@ export interface RequestUserInfoInsert {
     keep_move: boolean;
     mkt_agree: boolean;
     agent_id: string | string[] | null | undefined;
-    legacy?: boolean;
 }
 
 export interface RequestUserInfoInsertProps {
