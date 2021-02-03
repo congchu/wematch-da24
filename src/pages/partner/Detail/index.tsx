@@ -348,25 +348,20 @@ const PartnerDetail = () => {
                     <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetail.data.profile_img} status={getPartnerDetail.data.status}
                         level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
                         description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname} addition={getPartnerDetail.data.addition} />
-                    {/*Index Container*/}
-                    {/*<ReviewContainer purpose='partner'/>*/}
-                    <>
-                        <S.TitleContainer>
-                            <S.Wrap>
-                                <S.Box>
-                                    <p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
-                                </S.Box>
-                                <S.Average>
-                                    <strong>고객평가</strong>
-                                </S.Average>
-                            </S.Wrap>
-                            <TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
-                        </S.TitleContainer>
-                        {/*Index Item*/}
-                        <S.ReviewContainer>
-                            {review()}
-                        </S.ReviewContainer>
-                    </>
+                    <S.TitleContainer>
+                        <S.Wrap>
+                            <S.Box>
+                                <p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
+                            </S.Box>
+                            <S.Average>
+                                <strong>고객평가</strong>
+                            </S.Average>
+                        </S.Wrap>
+                        <TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
+                    </S.TitleContainer>
+                    <S.ReviewContainer>
+                        {review()}
+                    </S.ReviewContainer>
                     <S.BottomContainer>
                         {getReviewList.moreLoading && (
                             <S.ReviewMoreLoading>

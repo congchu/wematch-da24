@@ -280,24 +280,20 @@ const PartnerDetailForCompleted = () => {
                     <PartnerInfo title={getPartnerDetailCompleted.data.title ? getPartnerDetailCompleted.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetailCompleted.data.profile_img} status={'automatch'}
                                  level={getPartnerDetailCompleted.data.level} pick_cnt={getPartnerDetailCompleted.data.pick_cnt} experience={getPartnerDetailCompleted.data.experience}
                                  description={getPartnerDetailCompleted.data.description} keywords={getPartnerDetailCompleted.data.keywords} adminname={getPartnerDetailCompleted.data.adminname} addition={getPartnerDetailCompleted.data.addition} />
-                    {/*<ReviewContainer purpose='automatch'/>*/}
-                    <>
-                        <S.CenterTitleContainer>
-                            <S.Wrap>
-                                <S.Box>
-                                    <p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
-                                </S.Box>
-                                <S.Average>
-                                    <strong>고객평가</strong>
-                                </S.Average>
-                            </S.Wrap>
-                            <TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
-                        </S.CenterTitleContainer>
-                        {/*Index Item*/}
-                        <S.CenterReviewContainer>
-                            {review()}
-                        </S.CenterReviewContainer>
-                    </>
+                    <S.CenterTitleContainer>
+                        <S.Wrap>
+                            <S.Box>
+                                <p>고객들의 업체 평가는 위매치 약관에 의해 보호 받는 저작물로서, 무단복제 및 배포를 금합니다. <span onClick={toggleVisibleTerms}>자세히</span></p>
+                            </S.Box>
+                            <S.Average>
+                                <strong>고객평가</strong>
+                            </S.Average>
+                        </S.Wrap>
+                        <TermsModal visible={visibleTermsModal} onClose={toggleVisibleTerms} />
+                    </S.CenterTitleContainer>
+                    <S.CenterReviewContainer>
+                        {review()}
+                    </S.CenterReviewContainer>
                     <S.BottomContainer>
                         {getReviewCompList.moreLoading && (
                             <S.ReviewMoreLoading>

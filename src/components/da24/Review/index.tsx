@@ -194,7 +194,7 @@ interface Props {
 	star: number;
 }
 
-const Review  = ({ id, created_at, memo, reply, professional, kind, price, star }: Props) => {
+const Review = ({ id, created_at, memo, reply, professional, kind, price, star }: Props) => {
 	const isDesktop = useMedia({
 		minWidth: 1200,
 	})
