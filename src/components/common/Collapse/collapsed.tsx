@@ -7,7 +7,7 @@ import {Minus, Plus} from 'components/wematch-ui/Icon'
 export type faqCategory = '공통' | '이사' | '청소';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-    category?: string;
+    category?: faqCategory;
     title?: string;
     date?:string;
     postNum?:string;
@@ -125,7 +125,7 @@ export default function Collapsed({ category ,title, children, defaultExpand, da
                 <div className='textWrapper'>
                     {category? <em>Q {category}<br/></em> : <></>}
                     {title}
-                    <h6>{date && <>{date}..{postNum}</>}</h6>
+                    <h6>{ (date && postNum) && <>{date}..{postNum}</>}</h6>
                 </div>
                 <span>{expand ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>}</span>
             </S.TitleWrap>
