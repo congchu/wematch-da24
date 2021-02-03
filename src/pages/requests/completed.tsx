@@ -393,6 +393,8 @@ export default function CompletedPage() {
                 action: 'app_move_done'
             })
             ReactPixel.fbq('track', 'Purchase')
+
+            TenpingScript.SendConversion()
         }
     }, [getSubmittedForm])
 
