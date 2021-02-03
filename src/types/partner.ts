@@ -1,4 +1,4 @@
-export type Level = 'S' | 'A' | 'B' | 'C' | 'NEW';
+export type Level = 'S' | 'A' | 'B' | 'C' | 'NEW' ;
 export type Grade = 'verygood' | 'good' | 'normal' | 'bad' | 'verybad';
 
 export type IPartnerList = {

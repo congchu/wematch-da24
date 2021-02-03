@@ -1,7 +1,7 @@
 import { createReducer, ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
-import {IPartnerList, IPartnerDetail, IReview, IPartnerDetailForCompleted} from 'types/partner'
+import {IPartnerList, IPartnerDetail, IReview, IPartnerDetailForCompleted, Level} from 'types/partner'
 
 import { DEFAULT_REVIEW_LIST_SIZE } from 'constants/values'
 
@@ -92,4 +92,4 @@ export default createReducer<PartnerState, Actions>(initialState)
     .handleAction(actions.partnerListReset, (state) => ({...state, list: {...state.list, data: []}}))
     .handleAction(actions.fetchPartnerDetailCompAsync.request, (state) => ({ ...state, detailForCompleted: { ...state.detailForCompleted, loading: true }, reviewForCompleted: {data: [], loading: false, moreLoading: false, hasMore: false}}))
     .handleAction(actions.fetchPartnerDetailCompAsync.success, (state, action) => ({ ...state, detailForCompleted: { data: action.payload, loading: false }}))
-    .handleAction(actions.detailReset, (state) => ({...state, detail: {data: undefined, loading: false}}))
+    .handleAction(actions.detailReset, (state) => ({...state, detailForCompleted: {data: {adminname: '', adminid: '', experience: 0, pick_cnt: 0, feedback_cnt: 0, level:'NEW', level_text: '', meta: false, id:0, title: '', description: '', addition: '', profile_img: '', keywords: []}, loading: false}}))
