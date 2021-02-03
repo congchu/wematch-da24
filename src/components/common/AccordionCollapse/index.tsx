@@ -41,6 +41,13 @@ const S = {
         em {
           color: #1672f7;
         }
+        h6{
+          font-weight: normal;
+          display: block;
+          font-size: 15px;
+          line-height: 16px;
+          color: #888;
+        }
       }
 
       span {
@@ -54,13 +61,7 @@ const S = {
         float: right;
       }
 
-      h6{
-        font-weight: normal;
-        display: block;
-        font-size: 15px;
-        line-height: 16px;
-        color: #888;
-      }
+      
 
       @media screen and (min-width: 768px) {
         //padding-top: 52px;
