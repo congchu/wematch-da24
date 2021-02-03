@@ -37,6 +37,7 @@ import SwiperCore, {Pagination, Autoplay} from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
 import {dataLayer} from 'lib/dataLayerUtil'
+import ContactPage from "./pages/contact";
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -98,7 +99,7 @@ function AppRoute() {
     } else {
         return (
             <Switch>
-                <Route exact path="/" component={Home}/>
+                <Route exact path="/" component={ContactPage}/>
                 <Route exact path="/partner/list" component={PartnerList}/>
                 <Route exact path="/partner/detail/:adminId" component={PartnerDetail}/>
                 <Route exact path="/partner/cart" component={PartnerCart}/>
