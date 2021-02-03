@@ -4,7 +4,7 @@ import * as colors from 'styles/colors'
 
 import {Minus, Plus} from 'components/wematch-ui/Icon'
 
-export type faqCategory = '공통' | '이사' | '청';
+export type faqCategory = '공통' | '이사' | '청소';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
     category?: string;
