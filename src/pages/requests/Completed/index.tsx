@@ -434,115 +434,115 @@ export default function Completed() {
         memo: getContents|| ''
     };
 
+    if(!cookies.report && !getSubmittedForm.report) {
+        return <></>
+    }
+
     return (
-        <>
-            { (!cookies.report && !getSubmittedForm.report) ? <></> :
-                <S.Container>
-                    {isDesktop && <MainHeader/>}
-                    <S.TopContents>
-                        <S.Icon><Check fill={'#fff'}/></S.Icon>
-                        <S.TopTitle>
-                            <em>이사업체 매칭</em> 완료 <br/>
-                            <span>업체에서 연락이 없다면 먼저 전화해주세요!<br/> 전화번호를 알림톡으로 보내드립니다.</span>
-                        </S.TopTitle>
-                    </S.TopContents>
-                    <S.ContentsWrap>
-                        <S.TitleWrap>
-                            <S.BoxTitle>업체 정보</S.BoxTitle>
-                            <S.LevelInfo onClick={toggleInfoBox}>소비자평가등급 <Info/></S.LevelInfo>
-                        </S.TitleWrap>
-                        <S.LevelInfoBox visible={infoVisible}>
-                            <Triangle/>
-                            이용 고객이 평가한 내용으로 산출한 빅 데이터 등급입니다.
-                        </S.LevelInfoBox>
-                        <S.CompanyList>
-                            {getSubmittedForm?.data?.["match_list"]?.map((list, index) => (
-                                <li key={index}>
-                                    <S.ListBox>
-                                        {list.level === 'NEW' && <LevelN/>}
-                                        {list.level === 'S' && <LevelS/>}
-                                        {list.level === 'A' && <LevelA/>}
-                                        {list.level === 'B' && <LevelB/>}
-                                        {list.level === 'C' && <LevelC/>}
-                                        <S.CompanyTitle>
-                                            {list.adminname} <br/>
-                                            <span>{list.level_text}</span>
-                                        </S.CompanyTitle>
-                                    </S.ListBox>
-                                    <S.LinkCompany onClick={() => {
-                                        dataLayer({
-                                            event: 'complete',
-                                            category: '매칭완료',
-                                            action: '고객평가_확인',
-                                            label: `${getSubmittedForm?.data?.["match_list"].length}_${index + 1}`,
-                                            CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
-                                            CD12: '바로매칭',
-                                        })
-                                        // window.location.href = `${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`
-                                        dispatch(partnerActions.detailReset())
-                                        history.push(`/requests/completed/${list.adminid}`)
-                                    }}>
-                                        <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
-                                    </S.LinkCompany>
-                                </li>
-                            ))}
-                        </S.CompanyList>
-                        <S.TitleWrap onClick={() => setExpand(!expand)} className="toggle">
-                            <S.BoxTitle>내 신청 정보</S.BoxTitle>
-                            {expand ? <Up style={{marginTop: 6}}/> : <Down style={{marginTop: 6}}/>}
-                        </S.TitleWrap>
-                        <Collapse expand={expand}>
-                            <S.MoveInfo>
-                                <li>
-                                    <S.MoveText>연락처</S.MoveText>
-                                    <S.MoveSubtext>{userRequestInfo.contact}</S.MoveSubtext>
-                                </li>
-                                <li>
-                                    <S.MoveText>이사날짜</S.MoveText>
-                                    <S.MoveSubtext>{userRequestInfo.movingDate}</S.MoveSubtext>
-                                </li>
-                                <li>
-                                    <S.MoveText>이사 종류</S.MoveText>
-                                    <S.MoveSubtext>{userRequestInfo.movingType}</S.MoveSubtext>
-                                </li>
-                                <li>
-                                    <S.MoveText>출발지</S.MoveText>
-                                    <S.MoveSubtext>{userRequestInfo.startAddr}</S.MoveSubtext>
-                                </li>
-                                <li>
-                                    <S.MoveText>도착지</S.MoveText>
-                                    <S.MoveSubtext>{userRequestInfo.endAddr}</S.MoveSubtext>
-                                </li>
-                                <li>
-                                    <S.MoveText>전달메모</S.MoveText>
-                                    <S.MoveSubtext>{userRequestInfo.memo}</S.MoveSubtext>
-                                </li>
-                            </S.MoveInfo>
-                        </Collapse>
-                    </S.ContentsWrap>
-                    <S.Box href={CLEAN_URL}>
-                        <img className='left' src={require('assets/images/components/Completed/home.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사"/>
-                        <div>
-                            <h3 className='title'>{last(getAddress.end.split(' '))}</h3>
-                            <p className='desc'>잘하는 입주청소 업체 찾기</p>
-                        </div>
-                        <img className='right' src={require('assets/images/components/Completed/right.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사"/>
-                    </S.Box>
-                    <S.Button onClick={togglePopup}>신청 정보 확인완료</S.Button>
-                    {showPopup &&
-                        <ToastPopup
-                            visible={showPopup}
-                            showHeaderCancelButton={true}
-                            closeClick={togglePopup}
-                            confirmText="네, 찾아주세요"
-                            confirmClick={() => window.location.href = `${CLEAN_URL}`}
-                            cancelText="다음에할게요"
-                            cancelClick={() => window.location.href = `${MOVE_URL}`}
-                        >
-                            입주청소도 필요하세요?
-                        </ToastPopup>}
-                </S.Container>
-            }
-        </>
+        <S.Container>
+            {isDesktop && <MainHeader/>}
+            <S.TopContents>
+                <S.Icon><Check fill={'#fff'}/></S.Icon>
+                <S.TopTitle>
+                    <em>이사업체 매칭</em> 완료 <br/>
+                    <span>업체에서 연락이 없다면 먼저 전화해주세요!<br/> 전화번호를 알림톡으로 보내드립니다.</span>
+                </S.TopTitle>
+            </S.TopContents>
+            <S.ContentsWrap>
+                <S.TitleWrap>
+                    <S.BoxTitle>업체 정보</S.BoxTitle>
+                    <S.LevelInfo onClick={toggleInfoBox}>소비자평가등급 <Info/></S.LevelInfo>
+                </S.TitleWrap>
+                <S.LevelInfoBox visible={infoVisible}>
+                    <Triangle/>
+                    이용 고객이 평가한 내용으로 산출한 빅 데이터 등급입니다.
+                </S.LevelInfoBox>
+                <S.CompanyList>
+                    {getSubmittedForm?.data?.["match_list"]?.map((list, index) => (
+                        <li key={index}>
+                            <S.ListBox>
+                                {list.level === 'NEW' && <LevelN/>}
+                                {list.level === 'S' && <LevelS/>}
+                                {list.level === 'A' && <LevelA/>}
+                                {list.level === 'B' && <LevelB/>}
+                                {list.level === 'C' && <LevelC/>}
+                                <S.CompanyTitle>
+                                    {list.adminname} <br/>
+                                    <span>{list.level_text}</span>
+                                </S.CompanyTitle>
+                            </S.ListBox>
+                            <S.LinkCompany onClick={() => {
+                                dataLayer({
+                                    event: 'complete',
+                                    category: '매칭완료',
+                                    action: '고객평가_확인',
+                                    label: `${getSubmittedForm?.data?.["match_list"].length}_${index + 1}`,
+                                    CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+                                    CD12: '바로매칭',
+                                })
+                                /* 페이지 재접속시 이전상태 초기화 */
+                                dispatch(partnerActions.detailReset())
+                                history.push(`/requests/completed/${list.adminid}`)
+                            }}>
+                                <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
+                            </S.LinkCompany>
+                        </li>
+                    ))}
+                </S.CompanyList>
+                <S.TitleWrap onClick={() => setExpand(!expand)} className="toggle">
+                    <S.BoxTitle>내 신청 정보</S.BoxTitle>
+                    {expand ? <Up style={{marginTop: 6}}/> : <Down style={{marginTop: 6}}/>}
+                </S.TitleWrap>
+                <Collapse expand={expand}>
+                    <S.MoveInfo>
+                        <li>
+                            <S.MoveText>연락처</S.MoveText>
+                            <S.MoveSubtext>{userRequestInfo.contact}</S.MoveSubtext>
+                        </li>
+                        <li>
+                            <S.MoveText>이사날짜</S.MoveText>
+                            <S.MoveSubtext>{userRequestInfo.movingDate}</S.MoveSubtext>
+                        </li>
+                        <li>
+                            <S.MoveText>이사 종류</S.MoveText>
+                            <S.MoveSubtext>{userRequestInfo.movingType}</S.MoveSubtext>
+                        </li>
+                        <li>
+                            <S.MoveText>출발지</S.MoveText>
+                            <S.MoveSubtext>{userRequestInfo.startAddr}</S.MoveSubtext>
+                        </li>
+                        <li>
+                            <S.MoveText>도착지</S.MoveText>
+                            <S.MoveSubtext>{userRequestInfo.endAddr}</S.MoveSubtext>
+                        </li>
+                        <li>
+                            <S.MoveText>전달메모</S.MoveText>
+                            <S.MoveSubtext>{userRequestInfo.memo}</S.MoveSubtext>
+                        </li>
+                    </S.MoveInfo>
+                </Collapse>
+            </S.ContentsWrap>
+            <S.Box href={CLEAN_URL}>
+                <img className='left' src={require('assets/images/components/Completed/home.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사"/>
+                <div>
+                    <h3 className='title'>{last(getAddress.end.split(' '))}</h3>
+                    <p className='desc'>잘하는 입주청소 업체 찾기</p>
+                </div>
+                <img className='right' src={require('assets/images/components/Completed/right.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사"/>
+            </S.Box>
+            <S.Button onClick={togglePopup}>신청 정보 확인완료</S.Button>
+            {showPopup &&
+                <ToastPopup
+                    visible={showPopup}
+                    showHeaderCancelButton={true}
+                    closeClick={togglePopup}
+                    confirmText="네, 찾아주세요"
+                    confirmClick={() => window.location.href = `${CLEAN_URL}`}
+                    cancelText="다음에할게요"
+                    cancelClick={() => window.location.href = `${MOVE_URL}`}
+                >
+                    입주청소도 필요하세요?
+                </ToastPopup>}
+        </S.Container>
     )
 }
