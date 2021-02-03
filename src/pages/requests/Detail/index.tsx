@@ -6,14 +6,14 @@ import { useMedia } from 'react-use-media'
 import {RouteComponentProps} from 'react-router'
 import { useRouter } from 'hooks/useRouter'
 
-import { DownArrow, UpArrow } from 'components/Icon'
+import {DownArrow, ProfileDefault, Question, UpArrow} from 'components/Icon'
 import Loading from 'components/Loading'
 import MainHeaderForDetail from 'components/common/MainHeaderForDetail'
 import NavHeader from 'components/common/NavHeader'
-import PartnerInfo from 'components/da24/PartnerInfo/index'
 import SetType from 'components/SetType'
-import Index from 'components/da24/Review'
 import TermsModal from 'components/Modal/TermsModal'
+import PartnerInfo from 'components/da24/PartnerInfo'
+import Review from 'components/da24/Review'
 
 import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
@@ -23,12 +23,25 @@ import * as commonSelector from 'store/common/selectors'
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
 
-import { some } from "lodash";
-import { dataLayer } from "lib/dataLayerUtil";
 
 
 const S = {
-    Container: styled.div``,
+    Container: styled.div`
+    `,
+    PartnerInfoContainer: styled.div`
+		position:relative;
+		margin-top:-16px;
+		border-top-left-radius:10px;
+		border-top-right-radius:10px;
+		background:${colors.white};
+		border-bottom:8px solid ${colors.lineDeco};
+		@media screen and (min-width:1200px) {
+			width:720px;
+			margin:-16px auto 0 auto;
+			padding-left:0px;
+			border-bottom:0;
+		}
+	`,
     BottomContainer: styled.div`
 		position:relative;
 		margin-top:10px;
@@ -178,14 +191,118 @@ const S = {
 
 }
 
+const PartnerImg = {
+    WrapImg: styled.div`
+		@media screen and (min-width:1200px) {
+			position:relative;
+			width:720px;
+			margin:0 auto;
+			padding-left:0px;
+		}
+	`,
+    Title: styled.div`
+		display:none;
+		position:absolute;
+		z-index:1;
+		top:74px;
+		left:50%;
+		width:240px;
+		margin-left:-496px;
+		h3{
+			font-size:32px;
+			font-weight:700;
+			letter-spacing:-1px;
+			line-height:48px;
+		}
+		@media screen and (min-width:1200px) {
+			display:block;
+		}
+	`,
+    ProfileImg: styled.div<{profile_img: string}>`
+		span{
+			display:inline-block;
+			width:100%;
+			height:284px;
+			background-image:url(${props => props.profile_img});
+			background-size:cover;
+			background-position:50% 50%;
+			background-repeat:no-repeat;
+			@media screen and (min-width:768px) {
+				height:558px;
+			}
+			@media screen and (min-width:1200px) {
+				height:474px;
+			}
+		}
+		@media screen and (min-width:1200px) {
+			margin-top:40px;
+		}
+	`,
+    DefaultProfileImg: styled.div`
+		position:relative;
+	  	background-color:${colors.lineDefault};
+	  	width:100%;
+	  	height:284px;
+	  	display: flex;
+	  	justify-content: center;
+	  	align-items: center;
+
+	  	span{
+	  		position:absolute;
+	  		left:50%;
+	  		top:50%;
+	  		transform:translate(-50%, -50%);
+	  		font-size: 18px;
+			font-weight: bold;
+			font-stretch: normal;
+			font-style: normal;
+			line-height: 0.89;
+			letter-spacing: -1.29px;
+			color: ${colors.white};
+	  	}
+	  	
+		@media screen and (min-width:768px) {
+			height:558px;
+		}
+		@media screen and (min-width:1200px) {
+			height:474px;
+		}
+		@media screen and (min-width:1200px) {
+			margin-top:40px;
+		}
+	`,
+    Opacity: styled.div`
+		position: absolute;
+		left:0;
+		top:0;
+		width: 100%;
+		height: 228px;
+		background-color: rgba(0,0,0,0.4);
+		
+		@media screen and (min-width:768px) {
+			height:486px;
+		}
+		@media screen and (min-width:1200px) {
+			height:474px;
+		}
+	`
+}
+
+
 const PartnerDetailForCompleted = () => {
     const nextPage = useRef(1)
     const [showScrollView, setShowScrollView] = useState(true)
     const [visibleTermsModal, setVisibleTermsModal] = useState(false)
 
+
     const isDesktop = useMedia({
         minWidth: 1200,
     })
+    const isMobile = useMedia({
+        maxWidth: 767,
+    })
+
+
     const history = useHistory()
     const router = useRouter()
     const params = useParams<{ adminId: string }>()
@@ -196,9 +313,6 @@ const PartnerDetailForCompleted = () => {
     const getFormData = useSelector(formSelector.getFormData)
     const getReviewList = useSelector(partnerSelector.getReviewList)
 
-    const isMobile = useMedia({
-        maxWidth: 767,
-    })
 
     const checkScrollTop = () => {
         if (!showScrollView && window.pageYOffset > 300) {
@@ -251,6 +365,26 @@ const PartnerDetailForCompleted = () => {
     const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
 
 
+    /* Partner Info  - UserImage */
+    const partnerImage = () => {
+        return (
+            <PartnerImg.WrapImg>
+                {getPartnerDetailCompleted.data?.profile_img ? (
+                    <>
+                        <PartnerImg.ProfileImg profile_img={getPartnerDetailCompleted.data?.profile_img}>
+                            <span />
+                        </PartnerImg.ProfileImg>
+                    </>
+                ) : (
+                    <PartnerImg.DefaultProfileImg>
+                        <ProfileDefault width={60} height={60} color={colors.white} />
+                    </PartnerImg.DefaultProfileImg>
+                )}
+            </PartnerImg.WrapImg>
+        )
+    }
+
+    /* Review */
     const review = () => {
         if (getReviewList.data.length < 5) {
             return (
@@ -264,7 +398,7 @@ const PartnerDetailForCompleted = () => {
             <div>
                 {getReviewList.data.map((review, index) => {
                     return (
-                        <Index key={index} id={review.id} created_at={review.created_at} professional={review.professional}
+                        <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional}
                                kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>
                     )
                 })}
@@ -272,14 +406,18 @@ const PartnerDetailForCompleted = () => {
         )
     }
 
+
     return (
         <S.Container>
             {getPartnerDetailCompleted.data && (
                 <>
                     {isDesktop ? <MainHeaderForDetail/> : <NavHeader title="이사업체 상세 정보"/>}
-                    <PartnerInfo title={getPartnerDetailCompleted.data.title ? getPartnerDetailCompleted.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetailCompleted.data.profile_img} status={'automatch'}
-                                 level={getPartnerDetailCompleted.data.level} pick_cnt={getPartnerDetailCompleted.data.pick_cnt} experience={getPartnerDetailCompleted.data.experience}
-                                 description={getPartnerDetailCompleted.data.description} keywords={getPartnerDetailCompleted.data.keywords} adminname={getPartnerDetailCompleted.data.adminname} addition={getPartnerDetailCompleted.data.addition} />
+                    {partnerImage()}
+                    <S.PartnerInfoContainer>
+                        <PartnerInfo title={getPartnerDetailCompleted.data.title ? getPartnerDetailCompleted.data.title : values.DEFAULT_TEXT} level={getPartnerDetailCompleted.data.level} pick_cnt={getPartnerDetailCompleted.data.pick_cnt}
+                            experience={getPartnerDetailCompleted.data.experience} description={getPartnerDetailCompleted.data.description} keywords={getPartnerDetailCompleted.data.keywords}
+                            adminname={getPartnerDetailCompleted.data.adminname} addition={getPartnerDetailCompleted.data.addition} />
+                    </S.PartnerInfoContainer>
                     <S.CenterTitleContainer>
                         <S.Wrap>
                             <S.Box>

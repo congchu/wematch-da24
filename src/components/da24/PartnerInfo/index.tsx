@@ -1,19 +1,17 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-
 import {useMedia} from 'react-use-media'
-import { isEmpty } from 'lodash'
-
-import * as colors from 'styles/colors'
-import * as values from 'constants/values'
 
 import LevelModal from 'components/Modal/LevelModal'
 import LevelIcon from 'components/LevelIcon'
 import NewPartner from 'components/common/NewPartner'
 import { Question } from 'components/Icon'
+
+import * as colors from 'styles/colors'
+import * as values from 'constants/values'
 import { Level, LevelText } from 'types/partner'
-import UserImage from './userImage'
 import {commaInNumbers} from 'lib/numberUtil'
+import { isEmpty } from 'lodash'
 
 const S = {
 	Container: styled.div`
@@ -193,12 +191,10 @@ interface Props {
 	keywords: string[];
 	adminname: string;
 	addition?: string;
-	profile_img: string;
-	status: 'selected' | 'available' | 'unavailable' | 'automatch';
 }
 
 
-const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition='', status='automatch', profile_img }: Props) => {
+const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition=''}: Props) => {
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 	const isMobile = useMedia({
 		maxWidth: 767,
@@ -207,75 +203,56 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
 
 
-	const mainContents = () => {
-		return(
-			<>
-				<S.Wrap>
-					<S.LevelDescription>{LevelText[level]}</S.LevelDescription>
-					<S.Level>{level === 'NEW' ? '등급산정중' : `고객평가 ${level}등급`}</S.Level>
-					<S.PartnerWord>{title}</S.PartnerWord>
-					{level === 'NEW'
-						? <NewPartner showQuestionIcon={true}/>
-						: <S.Info>
-							<S.Card onClick={toggleVisibleLevel} id="dsl_booking_detail_info">
+	return (
+		<>
+			<S.Wrap>
+				<S.LevelDescription>{LevelText[level]}</S.LevelDescription>
+				<S.Level>{level === 'NEW' ? '등급산정중' : `고객평가 ${level}등급`}</S.Level>
+				<S.PartnerWord>{title}</S.PartnerWord>
+				{level === 'NEW'
+					? <NewPartner showQuestionIcon={true}/>
+					: <S.Info>
+						<S.Card onClick={toggleVisibleLevel} id="dsl_booking_detail_info">
 						<span>평가등급
 							<Question width={16} height={16} />
 						</span>
-								<LevelIcon level={level}/>
-							</S.Card>
-							<S.Card>
-								<span>고객선택</span>
-								<em>{pick_cnt ? commaInNumbers(pick_cnt): 0}<p> 회</p></em>
-							</S.Card>
-							<S.Card>
-								<span>경력년차</span>
-								<em>{experience || 1}<p> 년</p></em>
-							</S.Card>
-						</S.Info>
+							<LevelIcon level={level}/>
+						</S.Card>
+						<S.Card>
+							<span>고객선택</span>
+							<em>{pick_cnt ? commaInNumbers(pick_cnt): 0}<p> 회</p></em>
+						</S.Card>
+						<S.Card>
+							<span>경력년차</span>
+							<em>{experience || 1}<p> 년</p></em>
+						</S.Card>
+					</S.Info>
+				}
+				<S.Description>
+					<S.Option>
+						<strong>사장님 한마디({adminname})</strong>
+						<p>{description.length !== 0 ? description : values.DEFAULT_TEXT}</p>
+					</S.Option>
+					{!isEmpty(keywords) &&
+					<S.Option>
+						<strong>고객이 많이 언급한 키워드</strong>
+						<ul>
+							{keywords.map((list, index) => (
+								<li key={index}>{list}</li>
+							))}
+						</ul>
+					</S.Option>
 					}
-					<S.Description>
+					{addition.length > 0 && (
 						<S.Option>
-							<strong>사장님 한마디({adminname})</strong>
-							<p>{description.length !== 0 ? description : values.DEFAULT_TEXT}</p>
+							<strong>추가 가능 옵션</strong>
+							<p>{addition}</p>
 						</S.Option>
-						{!isEmpty(keywords) &&
-						<S.Option>
-							<strong>고객이 많이 언급한 키워드</strong>
-							<ul>
-								{keywords.map((list, index) => (
-									<li key={index}>{list}</li>
-								))}
-							</ul>
-						</S.Option>
-						}
-						{addition.length > 0 && (
-							<S.Option>
-								<strong>추가 가능 옵션</strong>
-								<p>{addition}</p>
-							</S.Option>
-						)}
-					</S.Description>
-				</S.Wrap>
-				<S.Border />
-				<LevelModal visible={visibleLevelModal} onClose={toggleVisibleLevel} />
-			</>
-		)
-	}
-
-
-	return (
-		<>
-			<UserImage profile_img={profile_img} status={status} />
-			{ status === 'automatch' ? (
-				// automatch :  가운데정렬
-				<S.CenterContainer>
-					{mainContents()}
-				</S.CenterContainer>
-			):(
-				<S.Container>
-					{mainContents()}
-				</S.Container>
-			)}
+					)}
+				</S.Description>
+			</S.Wrap>
+			<S.Border />
+			<LevelModal visible={visibleLevelModal} onClose={toggleVisibleLevel} />
 		</>
 	)
 }
