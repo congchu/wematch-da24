@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
 import { useRouter } from 'hooks/useRouter'
 
-import { DownArrow, UpArrow } from 'components/Icon'
+import {DownArrow, ProfileDefault, UpArrow} from 'components/Icon'
 import Loading from 'components/Loading'
 import MainHeader from 'components/common/MainHeader'
 import TopGnb from 'components/TopGnb'
@@ -14,19 +14,36 @@ import ToastPopup from 'components/wematch-ui/ToastPopup'
 import SetType from 'components/SetType'
 import Index from 'components/da24/Review'
 import TermsModal from 'components/Modal/TermsModal'
-
-import * as colors from 'styles/colors'
-import * as values from 'constants/values'
+import Review from 'components/da24/Review'
 
 import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
 import * as formSelector from 'store/form/selectors'
 import * as commonSelector from 'store/common/selectors'
-import { some } from "lodash";
+
+import * as colors from 'styles/colors'
+import * as values from 'constants/values'
+import { some } from 'lodash'
+
 
 
 const S = {
-    Container: styled.div``,
+    Container: styled.div`
+    `,
+    PartnerInfoContainer: styled.div`
+		position:relative;
+		margin-top:-16px;
+		border-top-left-radius:10px;
+		border-top-right-radius:10px;
+		background:${colors.white};
+		border-bottom:8px solid ${colors.lineDeco};
+		@media screen and (min-width:1200px) {
+			width:720px;
+			margin:0 auto;
+			padding-left:272px;
+			border-bottom:0;
+		}
+	`,
     BottomContainer: styled.div`
 		position:relative;
 		margin-top:10px;
@@ -203,6 +220,110 @@ const S = {
 
 }
 
+const PartnerImg = {
+    WrapImg: styled.div<{margin: number}>`
+		margin-top: ${props => props.margin && props.margin}px;
+		
+		@media screen and (min-width: 768px) {
+			margin-top: ${props => props.margin && props.margin}px;
+		}
+		@media screen and (min-width:1200px) {
+			position:relative;
+			width:720px;
+			margin:0 auto;
+			padding-left:272px;
+			margin-top: ${props => props.margin && props.margin + 45}px;
+		}
+	`,
+    Title: styled.div`
+		display:none;
+		position:absolute;
+		z-index:1;
+		top:74px;
+		left:50%;
+		width:240px;
+		margin-left:-496px;
+		h3{
+			font-size:32px;
+			font-weight:700;
+			letter-spacing:-1px;
+			line-height:48px;
+		}
+		@media screen and (min-width:1200px) {
+			display:block;
+		}
+	`,
+    ProfileImg: styled.div<{profile_img: string}>`
+		span{
+			display:inline-block;
+			width:100%;
+			height:228px;
+			background-image:url(${props => props.profile_img});
+			background-size:cover;
+			background-position:50% 50%;
+			background-repeat:no-repeat;
+			@media screen and (min-width:768px) {
+				height:486px;
+			}
+			@media screen and (min-width:1200px) {
+				height:474px;
+			}
+		}
+		@media screen and (min-width:1200px) {
+			margin-top:70px;
+		}
+	`,
+    DefaultProfileImg: styled.div`
+		position:relative;
+	  	background-color:${colors.lineDefault};
+	  	width:100%;
+	  	height:228px;
+	  	display: flex;
+	  	justify-content: center;
+	  	align-items: center;
+
+	  	span{
+	  		position:absolute;
+	  		left:50%;
+	  		top:50%;
+	  		transform:translate(-50%, -50%);
+	  		font-size: 18px;
+			font-weight: bold;
+			font-stretch: normal;
+			font-style: normal;
+			line-height: 0.89;
+			letter-spacing: -1.29px;
+			color: ${colors.white};
+	  	}
+	  	
+		@media screen and (min-width:768px) {
+			height:486px;
+		}
+		@media screen and (min-width:1200px) {
+			height:474px;
+		}
+		@media screen and (min-width:1200px) {
+			margin-top:70px;
+		}
+	`,
+    Opacity: styled.div`
+		position: absolute;
+		left:0;
+		top:0;
+		width: 100%;
+		height: 228px;
+		background-color: rgba(0,0,0,0.4);
+		
+		@media screen and (min-width:768px) {
+			height:486px;
+		}
+		@media screen and (min-width:1200px) {
+			height:474px;
+		}
+	`
+}
+
+
 const PartnerDetail = () => {
     const nextPage = useRef(1)
     const [showScrollView, setShowScrollView] = useState(true)
@@ -318,7 +439,31 @@ const PartnerDetail = () => {
 
     const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
 
+    /* Partner Info  - UserImage */
+    const partnerImage = () => {
+        return(
+            <PartnerImg.WrapImg margin={isMobile ? 48 : 72}>
+                <PartnerImg.Title>
+                    <h3>업체<br />직접선택</h3>
+                </PartnerImg.Title>
+                {getPartnerDetail.data?.profile_img ? (
+                    <>
+                        <PartnerImg.ProfileImg profile_img={getPartnerDetail.data?.profile_img}>
+                            <span />
+                        </PartnerImg.ProfileImg>
+                    </>
+                ) : (
+                    <PartnerImg.DefaultProfileImg>
+                        {getPartnerDetail.data?.status === "unavailable" && (<PartnerImg.Opacity />)}
+                        <ProfileDefault width={60} height={60} color={colors.white} />
+                        {getPartnerDetail.data?.status === "unavailable" && (<span>오늘 마감</span>)}
+                    </PartnerImg.DefaultProfileImg>
+                )}
+            </PartnerImg.WrapImg>
+        )
+    }
 
+    /* Review */
     const review = () => {
         if (getReviewList.data.length < 5) {
             return (
@@ -332,7 +477,7 @@ const PartnerDetail = () => {
             <div>
                 {getReviewList.data.map((review, index) => {
                     return (
-                        <Index key={index} id={review.id} created_at={review.created_at} professional={review.professional}
+                        <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional}
                                kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>
                     )
                 })}
@@ -345,9 +490,12 @@ const PartnerDetail = () => {
             {getPartnerDetail.data && (
                 <>
                     {isDesktop ? <MainHeader isFixed={true}/> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true} />}
-                    <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetail.data.profile_img} status={getPartnerDetail.data.status}
-                        level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
-                        description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname} addition={getPartnerDetail.data.addition} />
+                    {partnerImage()}
+                    <S.PartnerInfoContainer>
+                        <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT} level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt}
+                            experience={getPartnerDetail.data.experience} description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords}
+                            adminname={getPartnerDetail.data.adminname} addition={getPartnerDetail.data.addition} />
+                    </S.PartnerInfoContainer>
                     <S.TitleContainer>
                         <S.Wrap>
                             <S.Box>
