@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import * as colors from 'styles/colors'
 import Layout from 'components/base/Layout'
-import CollapseItem from "./collapseItem";
-import {Down, Minus, Plus, Up} from "../../components/wematch-ui/Icon";
+import {Down, Minus, Plus, Up} from 'components/wematch-ui/Icon'
 
 export type faqCategory = '공통' | '이사' | '청';
 
@@ -81,8 +80,9 @@ const S = {
       }
     `,
     Container: styled.div<{expand: boolean}>`
-    display: ${props => props.expand ? 'block' : 'none'};
-    //border-bottom: 1px solid #EBEEF2;
+        display: ${props => props.expand ? 'block' : 'none'};
+        //border-bottom: 1px solid #EBEEF2;
+        padding-top: 16px;
     `,
     AnswerWrap: styled.div`
         display: block;
@@ -90,7 +90,8 @@ const S = {
         line-height: 22px;
         color: #333;
         letter-spacing: -1px;
-        padding: 5px 24px 14px 24px
+        padding: 5px 24px 14px 24px;
+        
     `
 }
 
@@ -107,7 +108,7 @@ export default function Collapsed({ category ,title, children, defaultExpand }: 
         <>
             <S.TitleWrap onClick={() => setExpand(!expand)} className="toggle">
                 <div className='textWrapper'>
-                    <em>Q{category}</em>
+                    <em>Q {category}</em>
                     <br/>
                     {title}
                 </div>
