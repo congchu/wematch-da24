@@ -1,37 +1,12 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import * as colors from 'styles/colors'
 
 import Layout from 'components/base/Layout'
-import {Down, Minus, Plus, Up} from 'components/wematch-ui/Icon';
 import Collapsed from './collapsed'
 
 export type faqCategory = '공통' | '이사' | '청';
 
 const S = {
-    TitleWrap: styled.div`
-      overflow: hidden;
-      svg {
-        float: right;
-      }
-      
-      em {
-        font-size: 16px;
-        color: #1672f7;
-        letter-spacing: -1px;
-        font-weight: 500
-      }
-      
-      span {
-        font-size: 16px;
-        letter-spacing: -1px;
-        font-weight: 500
-      }
-      
-      @media screen and (min-width: 768px) {
-        //padding-top: 52px;
-      }
-    `,
     CollapsedWrap: styled.div `
       padding-top: 18px;
       border-bottom: 1px solid #d7dbe2;

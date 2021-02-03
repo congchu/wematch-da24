@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import * as colors from 'styles/colors'
-import Layout from 'components/base/Layout'
-import {Down, Minus, Plus, Up} from 'components/wematch-ui/Icon'
+
+import {Minus, Plus} from 'components/wematch-ui/Icon'
 
 export type faqCategory = '공통' | '이사' | '청';
 
