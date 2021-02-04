@@ -11,7 +11,7 @@ import {Icon} from 'components/wematch-ui'
 import {Checkbox} from 'components/wematch-ui/Checkbox'
 
 import Button from 'components/common/Button'
-import PhoneVerifyPopup from 'components/common/Popup/PhoneVerifyPopup'
+// import PhoneVerifyPopup from 'components/common/Popup/PhoneVerifyPopup'
 import NoticePopup from 'components/common/Popup/NoticePopup'
 import OneroomNoticePopup from 'components/common/Popup/OneroomNoticePopup'
 import TermsModal from 'components/common/Modal/TermsModal'
@@ -226,8 +226,6 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
     const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
     const getAgree = useSelector(formSelector.getAgree)
     const getFormData = useSelector(formSelector.getFormData)
-
-    const getPhoneVerified = useSelector(commonSelector.getPhoneVerified)
     const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
     const {token, user, loading} = useSelector(userSelector.getUser);
 
@@ -472,7 +470,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
             </>
 
             {/*본인인증*/}
-            <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone}
+            {/* <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone}
                               onClose={() => setVisibleVerifyPhone(!visibleVerifyPhone)} tags={{
                 authBtn: "dsl_move_button_verify_1",
                 closeBtn: "dsl_move_button_verify_X_1"
@@ -496,7 +494,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
                     CD10: getIsMoveStore ? 'Y' : 'N',
                     CD12: submitType === "curation" ? '바로매칭' : "직접고르기"
                 })
-            }} />
+            }} /> */}
             <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
             <OneroomNoticePopup visible={visibleOneroom} footerButton border onClose={() => setVisibleOneroom(!visibleOneroom)} />
