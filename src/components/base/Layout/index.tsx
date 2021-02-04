@@ -78,7 +78,7 @@ const S = {
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
-    subTitle?: string;
+    subTitle?: string | React.ReactNode;
 }
 
 
