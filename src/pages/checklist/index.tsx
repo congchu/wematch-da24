@@ -5,6 +5,7 @@ import Layout from 'components/base/Layout'
 // 아이콘 수정 필요
 import {CheckCircleOff, CheckCircleOn} from 'components/wematch-ui/Icon'
 import SvgSearch from 'components/wematch-ui/Icon/generated/Search'
+import {useRouter} from "../../hooks/useRouter";
 
 const S = {
     Container: styled.div`
@@ -132,6 +133,8 @@ const S = {
 * */
 
 function ChecklistPage() {
+    const router = useRouter()
+
     return (
         <Layout title='체크리스트' subTitle={<>이사/청소 준비 어려우셨죠?<br/>체크리스트만 따라해보세요!</>}>
             <S.Container>
@@ -151,20 +154,20 @@ function ChecklistPage() {
                             <strong>이사 1달 전</strong>
                             <p>이사/청소업체를 알아볼 시기입니다.<br/>업체평가등급을 확인하고 방문견적까지 꼼꼼하게 받아보세요.</p>
                             <p>견적상담 시 체크리스트를 확인해 보세요.</p>
-                            <a><SvgSearch/>이사 견적 시</a>
-                            <a><SvgSearch/>청소 견적 시</a>
+                            <a onClick={()=> {router.history.push('/checklist/moveestimation')}}><SvgSearch/>이사 견적 시</a>
+                            <a onClick={()=> {router.history.push('/checklist/cleanestimation')}}><SvgSearch/>청소 견적 시</a>
                         </li>
                         <li>
                             <span><CheckCircleOff/></span>
                             <strong>이사 1주 전</strong>
                             <p>가져갈 짐/버릴 짐 구분, 가스차단, 공과금 납부 등 놓치기 쉬운 사소한 일들을 잘 체크해주세요.</p>
-                            <a><SvgSearch/>이사준비 체크리스트</a>
+                            <a onClick={()=> {router.history.push('/checklist/moveprep')}}><SvgSearch/>이사준비 체크리스트</a>
                         </li>
                         <li>
                             <span><CheckCircleOff/></span>
                             <strong>청소 당일</strong>
                             <p>청소 마무리 후 점검사항을 꼼꼼히 검수하세요.</p>
-                            <a><SvgSearch/>점검사항</a>
+                            <a onClick={()=> {router.history.push('/checklist/cleancheck')}}><SvgSearch/>점검사항</a>
                         </li>
                         <li>
                             <span><CheckCircleOff/></span>
