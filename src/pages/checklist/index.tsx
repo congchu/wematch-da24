@@ -121,6 +121,10 @@ const S = {
           width: 2px;
           height: 85%;
           background-color: #1672f7;
+
+          @media screen and (max-width:464px) {
+            height: 83%;
+          } 
         }
       
       
