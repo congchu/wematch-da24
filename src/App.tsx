@@ -13,7 +13,6 @@ import store from 'store/index'
 import browserHistory from 'lib/history'
 import GlobalStyled from 'styles/global'
 
-import ChecklistPage from "./pages/checklist";
 import Home from 'pages/home'
 import PartnerList from 'pages/partner/List/index'
 import PartnerDetail from 'pages/partner/Detail/index'
@@ -105,7 +104,7 @@ function AppRoute() {
     } else {
         return (
             <Switch>
-                <Route exact path="/" component={ChecklistPage}/>
+                <Route exact path="/" component={Home}/>
                 <Route exact path="/partner/list" component={PartnerList}/>
                 <Route exact path="/partner/detail/:adminId" component={PartnerDetail}/>
                 <Route exact path="/partner/cart" component={PartnerCart}/>
