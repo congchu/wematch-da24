@@ -57,7 +57,7 @@ function AppRoute() {
     const location = useLocation()
     const customScript = useScript(script)
     const { isIE } = useUserAgent()
-    const [cookie] = useCookies(['X-Wematch-Token'])
+    const [cookie] = useCookies(['x-wematch-token'])
 
     const getPathname = () => {
         let pathname = 5
@@ -73,8 +73,8 @@ function AppRoute() {
     }
 
     // useEffect(() => {
-    //     if (cookie['X-Wematch-Token']) {
-    //         dispatch(commonActions.fetchSignInAsync.request(cookie['X-Wematch-Token']))
+    //     if (cookie['x-wematch-token']) {
+    //         dispatch(commonActions.fetchSignInAsync.request(cookie['x-wematch-token']))
     //     }
     // }, [cookie, dispatch])
 

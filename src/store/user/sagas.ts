@@ -62,7 +62,7 @@ export function* fetchSignUpSaga(action: ActionType<typeof actions.fetchSignUpAs
         }))
 
         const response = yield call(requests.postSignUp, action.payload)
-        document.cookie=`X-Wematch-Token=${response}; max-age=${60*60*24*60}`
+        document.cookie=`x-wematch-token=${response}; max-age=${60*60*24*60}`
         const { data } = yield call(requests.getUser, response);
         yield put(actions.fetchSignUpAsync.success({token: response, user: { ...data.user}}))
     } catch(e) {
@@ -78,7 +78,7 @@ export function* fetchSignInSaga(action: ActionType<typeof actions.fetchSignInAs
     try {
         const { phone, code } = action.payload;
         const response = yield call(requests.getSignIn, phone, code)
-        document.cookie=`X-Wematch-Token=${response}; max-age=${60*60*24*60}`;
+        document.cookie=`x-wematch-token=${response}; max-age=${60*60*24*60}`;
         const { data } = yield call(requests.getUser, response);
         yield put(actions.fetchSignInAsync.success({token: response, user: { ...data.user}}));
     } catch(e) {
