@@ -13,6 +13,11 @@ export interface UserState {
         loading: boolean; 
         user: IUser | null;
     };
+    phoneVerify: {
+        isVerified: boolean | null;
+        isSendMessage?: boolean;
+        loading: boolean;
+    };
     consult: {
         data: {
             name: string;
@@ -23,7 +28,8 @@ export interface UserState {
         },
         selected: IOrder | null;
         loading: boolean;
-    }
+    };
+
 }
 
 
@@ -32,6 +38,11 @@ const initialState: UserState = {
         token: null,
         user: null,
         loading: false,
+    },
+    phoneVerify: {
+        isVerified: null,
+        isSendMessage: false,
+        loading: false
     },
     consult: {
         data: {
@@ -50,8 +61,13 @@ const initialState: UserState = {
 export default createReducer<UserState, Actions>(initialState)
     .handleAction(actions.fetchUserConsultAsync.request, (state) => ({...state, consult: {...state.consult, loading: true}}))
     .handleAction(actions.fetchUserConsultAsync.success, (state, action) => ({...state, consult: { data: {...action.payload}, loading: false, selected: null}}))
+    .handleAction(actions.fetchVerifySendMessageAsync.request, (state) => ({ ...state, phoneVerify: {...state.phoneVerify, loading: true}}))
+    .handleAction(actions.fetchVerifySendMessageAsync.success, (state) => ({ ...state, phoneVerify: {...state.phoneVerify, isSendMessage: true, loading: false}}))
+    .handleAction(actions.fetchVerifyCodeAsync.request, (state) => ({...state, phoneVerify: { ...state.phoneVerify, loading: true }}))
+    .handleAction(actions.fetchVerifyCodeAsync.success, (state, action) => ({ ...state, phoneVerify: { isVerified: action.payload.isVerified, isSendMessage: !action.payload.isVerified, loading: false }}))
+    .handleAction(actions.fetchVerifyCodeAsync.failure, (state) => ({ ...state, phoneVerify: { ...state.phoneVerify, isVerified: false, loading: false}}))
+    .handleAction([actions.fetchSignUpAsync.request, actions.fetchSignInAsync.request], (state) => ({ ...state, auth: { ...state.auth, loading: true}}))
+    .handleAction([actions.fetchSignInAsync.success, actions.fetchSignUpAsync.success], (state, action) => ({ ...state, auth: { token: action.payload.token, user: action.payload.user, loading: false }}))
+    .handleAction([actions.fetchSignInAsync.failure, actions.fetchSignUpAsync.failure], (state) => ({...state, auth: { ...state.auth, loading: false}}))
     .handleAction(actions.selectOrder, (state, action) => ({...state, consult: {...state.consult, selected: {...action.payload.order}}}))
     .handleAction(actions.resetOrder, (state) => ({...state, consult: {...state.consult, selected: null}}))
-    .handleAction(actions.fetchSignUpAsync.request, (state) => ({...state, auth: {...state.auth, loading: true}}))
-    .handleAction(actions.fetchSignUpAsync.success, (state, action) => ({...state, auth: { ...state.auth, loginState: true, loading: false}}))
-    .handleAction(actions.fetchSignInAsync.success, (state, action) =>({...state, auth: {...state.auth, user: action.payload}}))

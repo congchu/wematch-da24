@@ -1,3 +1,4 @@
+import { EInitService, IUser } from "types/auth";
 import { IPartnerDetail } from "types/partner";
 
 
@@ -19,25 +20,48 @@ export interface IOrder {
 export interface RequestSignUpProps {
     tel: string;
     name: string;
+    init_service: EInitService;
+    code: string;
     device_id?: string;
     email?: string;
-    init_service: '가정이사' | '원룸' | '사무실' | undefined;
     referer?: string;
     user_agent?: string;
     agreed_marketing?: string; // datetime
     agent?: string;
 }
-
 export interface ResponseSignUpProps {
+    token: string;
+    user: IUser;
 }
 
 export interface RequestSignInProps {
-    token: string;
+    phone: string;
+    code: string;
 }
 
 export interface ResponseSignInProps {
-    uuid: string;
-    tel: string;
-    name: string;
-    agreed_marketing?: string;
+    token: string;
+    user: IUser;
+}
+
+export interface RequestVerifySendMessageProps {
+    phone: string;
+}
+
+export interface ResponseVerifySendMessageProps {
+    message: string;
+}
+
+export interface RequestVerifyAuthCodeProps {
+    phone: string;
+    code: string;
+}
+
+export interface RequestVerifyCodeProps {
+    phone: string;
+    code: string;
+}
+
+export interface ResponseVerifyCodeProps {
+    isVerified: boolean | null;
 }

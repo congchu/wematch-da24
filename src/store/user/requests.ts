@@ -20,24 +20,48 @@ export const getUserConsult = async (name:string, phone: string[]) => {
 
 //TODO: 로그인 개발서버용 api 나올 시 로직 변경.
 export const postSignUp = async (formData: types.RequestSignUpProps) => {
-    // const response =  await api.request<types.RequestSignUpProps>({
-    //     method: 'post',
-    //     url: '/auth/users',
-    //     data: {...formData}
-    // })
-    const response = await axios.post(`/auth/users`, {...formData})
+    const response = await axios.post(`https://www.devops.wematch.com/auth/signup`, {...formData})
+    
+    return response.headers['x-wematch-token'];
+}
 
-    return response.headers['X-Wematch-Token'];
+export const getSignIn = async (phone: string, code: string) => {
+    const response = await axios({
+        method: 'get',
+        url: `https://www.devops.wematch.com/auth/signin?tel=${phone}&code=${code}`
+    })  
+    return response.headers['x-wematch-token'];
 }
 
 export const getUser = async (token: string) => {
-    const {data} = await api.request<types.RequestSignInProps>({
+    const {data} = await axios({
         method: 'get',
-        url: '/auth/user',
+        url: 'https://www.devops.wematch.com/auth/user',
         headers: {
-            'X-Wematch-Token': token
+            'x-wematch-token': token
         }
     })
 
     return data;
+}
+
+export const verifySendMessage = async (phone: string) => {
+    const { data } = await axios({
+        method: 'post',
+        url: `https://www.devops.wematch.com/auth/tel`,
+        data: {
+            tel: phone
+        }
+    })
+
+    return data
+}
+
+export const verifyAuthCode = async (phone: string, code: string) => {
+    const { data } = await axios({
+        method: 'get',
+        url: `https://www.devops.wematch.com/auth/tel?tel=${phone}&code=${code}`,
+    })
+
+    return data
 }

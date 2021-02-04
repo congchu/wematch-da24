@@ -28,6 +28,18 @@ export const fetchSignUpAsync = createAsyncAction(
     'FETCH_SIGN_UP_FAILURE'
 )<types.RequestSignUpProps, types.ResponseSignUpProps, undefined>()
 
+export const fetchVerifySendMessageAsync = createAsyncAction(
+    'FETCH_VERIFY_SEND_MESSAGE_REQUEST',
+    'FETCH_VERIFY_SEND_MESSAGE_SUCCESS',
+    'FETCH_VERIFY_SEND_MESSAGE_FAILURE'
+)<types.RequestVerifySendMessageProps, types.ResponseVerifySendMessageProps, undefined>()
+
+export const fetchVerifyCodeAsync = createAsyncAction(
+    'FETCH_VERIFY_CODE_REQUEST',
+    'FETCH_VERIFY_CODE_SUCCESS',
+    'FETCH_VERIFY_CODE_FAILURE'
+)<types.RequestVerifyAuthCodeProps, types.ResponseVerifyCodeProps, undefined>()
+
 
 export const selectOrder = createAction('SELECT_ORDER')<{order: types.IOrder}>()
 export const resetOrder = createAction('RESET_ORDER')();

@@ -33,26 +33,54 @@ export function* fetchUserConsultSaga(action: ActionType<typeof actions.fetchUse
     }
 }
 
+export function* fetchVerifySendMessageSaga(action: ActionType<typeof actions.fetchVerifySendMessageAsync.request>) {
+    try {
+        const data = yield call(requests.verifySendMessage, action.payload.phone)
+        yield put(actions.fetchVerifySendMessageAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchVerifySendMessageAsync.failure())
+    }
+}
+
+export function* fetchVerifyCodeSaga(action: ActionType<typeof actions.fetchVerifyCodeAsync.request>) {
+    try {
+        const {data: {isVerified}} = yield call(requests.verifyAuthCode, action.payload.phone, action.payload.code)
+        console.log(isVerified);
+        yield put(actions.fetchVerifyCodeAsync.success({isVerified: isVerified}))
+    } catch (e) {
+        yield put(actions.fetchVerifyCodeAsync.failure())
+    }
+}
+
 export function* fetchSignUpSaga(action: ActionType<typeof actions.fetchSignUpAsync.request>) {
+    const { tel, code } = action.payload;
     try {
         yield put(setAgree({
             terms: true,
             privacy: true,
             marketing: true
         }))
-        const data = yield call(requests.postSignUp, action.payload)
-        document.cookie=`X-Wematch-Token=${data}; max-age=${60*60*24*60}`
-        yield put(actions.fetchSignUpAsync.success(data))
+
+        const response = yield call(requests.postSignUp, action.payload)
+        document.cookie=`X-Wematch-Token=${response}; max-age=${60*60*24*60}`
+        const { data } = yield call(requests.getUser, response);
+        yield put(actions.fetchSignUpAsync.success({token: response, user: { ...data.user}}))
     } catch(e) {
-        yield put(actions.fetchSignUpAsync.failure())
+        console.dir(e);
+        if(e.response.status === 409) {
+            yield put(actions.fetchSignInAsync.request({phone: tel, code }))
+        }
+        
     }
 }
 
 export function* fetchSignInSaga(action: ActionType<typeof actions.fetchSignInAsync.request>) {
     try {
-        const data = yield call(requests.getUser, action.payload.token)
-        console.log(data);
-        // yield put(actions.fetchSignInAsync.success(data))
+        const { phone, code } = action.payload;
+        const response = yield call(requests.getSignIn, phone, code)
+        document.cookie=`X-Wematch-Token=${response}; max-age=${60*60*24*60}`;
+        const { data } = yield call(requests.getUser, response);
+        yield put(actions.fetchSignInAsync.success({token: response, user: { ...data.user}}));
     } catch(e) {
         yield put(actions.fetchSignInAsync.failure())
     }
@@ -60,7 +88,11 @@ export function* fetchSignInSaga(action: ActionType<typeof actions.fetchSignInAs
 
 export default function* () {
     yield all([
-        takeEvery(actions.fetchUserConsultAsync.request, fetchUserConsultSaga)
+        takeEvery(actions.fetchUserConsultAsync.request, fetchUserConsultSaga),
+        takeEvery(actions.fetchVerifySendMessageAsync.request, fetchVerifySendMessageSaga),
+        takeEvery(actions.fetchVerifyCodeAsync.request, fetchVerifyCodeSaga),
+        takeEvery(actions.fetchSignUpAsync.request, fetchSignUpSaga),
+        takeEvery(actions.fetchSignInAsync.request, fetchSignInSaga)
     ])
 }
 
