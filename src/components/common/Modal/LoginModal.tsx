@@ -3,11 +3,9 @@ import styled, { css } from 'styled-components';
 import PopupTemplate from 'components/wematch-ui/PopupTemplate'
 import { createPortal } from "react-dom";
 import * as colors from 'styles/colors';
-import * as commonActions from 'store/common/actions'
 import * as userActions from 'store/user/actions';
 import * as formActions from 'store/form/actions';
 import * as formSelector from 'store/form/selectors';
-import * as commonSelector from 'store/common/selectors';
 import * as userSelector from 'store/user/selectors';
 import Input from "../Input";
 import Button from '../Button';
@@ -17,6 +15,7 @@ import useHashToggle from 'hooks/useHashToggle';
 import TermsModal from './TermsModal';
 import NewModal from 'components/NewModalTemplate';
 import getMobileOS from 'lib/getMobileOS';
+import { EInitService } from 'types/auth';
 
 interface Props {
     visible: boolean;
@@ -34,8 +33,8 @@ const LoginModal: React.FC<Props> = (props) => {
     const getMoveType = useSelector(formSelector.getType)
     const getPhone = useSelector(formSelector.getPhone)
     const getName = useSelector(formSelector.getName)
-    const { user } = useSelector(userSelector.getUser);
-    const { data: { isVerified }, isSendMessage, loading } = useSelector(commonSelector.getPhoneVerified)
+    const { token } = useSelector(userSelector.getUser);
+    const {  isVerified, isSendMessage, loading } = useSelector(userSelector.getPhoneVerified)
     const { counter, handleCounterStart, handleCounterStop } = useTimer(180);
     const [code, setCode] = useState<string>('')
     const [visibleTerms, setVisibleTerms] = useHashToggle('#terms');
@@ -47,7 +46,7 @@ const LoginModal: React.FC<Props> = (props) => {
 
     const handleSubmit = () => {
         setIsTimeout(false);
-        dispatch(commonActions.fetchVerifySendMessageAsync.request({
+        dispatch(userActions.fetchVerifySendMessageAsync.request({
             phone: getPhone
         }))
     }
@@ -57,10 +56,10 @@ const LoginModal: React.FC<Props> = (props) => {
         dispatch(formActions.setPhone(originPhoneValue))
     }
     const isNumRegex = /^[0-9]+$/g;
-    const isAuth = useMemo(() => !(!!getName && getPhone.length >= 11 && isNumRegex.test(getPhone)) || isVerified, [getName, getPhone, isVerified, isNumRegex]);
+    const isAuth = useMemo(() => !(!!getName && getPhone.length >= 11 && isNumRegex.test(getPhone)) || !!isVerified, [getName, getPhone, isVerified, isNumRegex]);
 
     const handleVerify = () => {
-        dispatch(commonActions.fetchVerifyCodeAsync.request({
+        dispatch(userActions.fetchVerifyCodeAsync.request({
             phone: getPhone,
             code
         }))
@@ -79,7 +78,8 @@ const LoginModal: React.FC<Props> = (props) => {
         dispatch(userActions.fetchSignUpAsync.request({
             tel: getPhone,
             name: getName,
-            init_service: getMoveType === 'house' ? '가정이사' : '사무실'
+            init_service: getMoveType === 'house' ? EInitService.MOVE_HOUSE : EInitService.MOVE_OFFICE,
+            code
         }))
     }
 
@@ -106,11 +106,11 @@ const LoginModal: React.FC<Props> = (props) => {
     }, [counter])
 
     useEffect(() => {
-        if (isSendMessage && !loading) {
+        if (isSendMessage) {
             verifyRef?.current?.focus();
             handleCounterStart()
         }
-    }, [isSendMessage, loading, handleCounterStart])
+    }, [isSendMessage, handleCounterStart])
 
     useEffect(() => {
         if (isVerified) {
@@ -119,10 +119,10 @@ const LoginModal: React.FC<Props> = (props) => {
     }, [isVerified, handleCounterStop])
 
     useEffect(() => {
-        if (user) {
+        if (token) {
             onClose();
         }
-    }, [user])
+    }, [token])
 
 
     return createPortal((
@@ -130,7 +130,7 @@ const LoginModal: React.FC<Props> = (props) => {
             <LoginModalWrapper>
                 <div style={{ width: '100%' }}>
                     <TextWrppaer>
-                        <strong>앗! 위매치 처음 이용하시나요?</strong>
+                        <strong>로그인/가입</strong>
                         <p>
                             업체와의 <span>견적상담신청/내신청내역 확인</span>을 위해<br />
                             <span>번호인증</span>이 필요해요. (최초 1회만 인증)
@@ -144,7 +144,7 @@ const LoginModal: React.FC<Props> = (props) => {
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Input theme="default" border placeholder="휴대폰 번호(-없이)" pattern="[0-9]*" inputMode="numeric"
                                 value={getPhone} onChange={handlePhone} style={{ backgroundColor: isVerified ? '' : "transparent" }} rootStyle={{ flex: 1 }} maxLength={11}
-                                disabled={isVerified}
+                                disabled={!!isVerified}
                             />
                             <Button theme="primary" disabled={isAuth} style={{ width: "90px", marginLeft: '7px', borderRadius: '4px' }}
                                 onClick={handleSubmit} bold={true}>
@@ -153,11 +153,11 @@ const LoginModal: React.FC<Props> = (props) => {
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div style={{ flex: 1, position: 'relative' }}>
-                                <Input theme="default" border placeholder="인증번호" maxLength={4}
+                                <Input theme="default" border placeholder="인증번호" maxLength={6}
                                     value={code} pattern="[0-9]*" inputMode="numeric"
                                     onChange={(e) => { setCode(e.target.value) }}
                                     style={{ backgroundColor: !isSendMessage || isVerified ? '' : "transparent", borderColor: isVerified === false ? '#EC485C' : '' }} inputRef={verifyRef}
-                                    disabled={!isSendMessage || isVerified}
+                                    disabled={!isSendMessage || !!isVerified}
                                 />
                                 <CounterWrapper>
                                     <span>{isSendMessage && displayCount(counter)}</span>
@@ -211,6 +211,7 @@ const LoginModalWrapper = styled.div`
         justify-content: space-between;
         align-items: center;
         padding-top: 16px;
+    }
 `;
 
 const MobileKeyboardSection = styled.div<{ isMobileKeyboard: boolean }>`
