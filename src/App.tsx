@@ -12,8 +12,7 @@ import ReactPixel from 'react-facebook-pixel'
 import store from 'store/index'
 import browserHistory from 'lib/history'
 import GlobalStyled from 'styles/global'
-import * as commonSelector from 'store/common/selectors'
-import * as commonActions from 'store/common/actions'
+import * as userActions from 'store/user/actions';
 
 import Home from 'pages/home'
 import PartnerList from 'pages/partner/List/index'
@@ -42,6 +41,7 @@ import 'swiper/components/pagination/pagination.scss'
 import { dataLayer } from 'lib/dataLayerUtil'
 import MyConsult from 'pages/myconsult'
 import MyConsultDetail from 'pages/myconsult/myConsultDetail'
+import { get } from 'lodash'
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -57,7 +57,7 @@ function AppRoute() {
     const location = useLocation()
     const customScript = useScript(script)
     const { isIE } = useUserAgent()
-    const [cookie] = useCookies(['x-wematch-token'])
+    const [cookies] = useCookies(['x-wematch-token'])
 
     const getPathname = () => {
         let pathname = 5
@@ -72,11 +72,12 @@ function AppRoute() {
         return pathname
     }
 
-    // useEffect(() => {
-    //     if (cookie['x-wematch-token']) {
-    //         dispatch(commonActions.fetchSignInAsync.request(cookie['x-wematch-token']))
-    //     }
-    // }, [cookie, dispatch])
+    useEffect(() => {
+        const wematchToken = get(cookies, 'x-wematch-token');
+        if (wematchToken !== undefined) {
+            dispatch(userActions.fetchGetUserAsync.request({token: wematchToken}))
+        }
+    }, [cookies, dispatch])
 
 
     useEffect(() => {

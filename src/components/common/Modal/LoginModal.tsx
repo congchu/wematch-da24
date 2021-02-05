@@ -20,6 +20,7 @@ import { EInitService } from 'types/auth';
 interface Props {
     visible: boolean;
     onClose: () => void;
+    onSuccess: () => void;
 }
 
 const LoginModal: React.FC<Props> = (props) => {
@@ -28,11 +29,12 @@ const LoginModal: React.FC<Props> = (props) => {
     const dispatch = useDispatch();
     const {
         visible = false,
-        onClose
+        onClose,
+        onSuccess
     } = props;
     const getMoveType = useSelector(formSelector.getType)
-    const getPhone = useSelector(formSelector.getPhone)
-    const getName = useSelector(formSelector.getName)
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
     const { token } = useSelector(userSelector.getUser);
     const {  isVerified, isSendMessage, loading } = useSelector(userSelector.getPhoneVerified)
     const { counter, handleCounterStart, handleCounterStop } = useTimer(180);
@@ -47,20 +49,20 @@ const LoginModal: React.FC<Props> = (props) => {
     const handleSubmit = () => {
         setIsTimeout(false);
         dispatch(userActions.fetchVerifySendMessageAsync.request({
-            phone: getPhone
+            phone
         }))
     }
 
     const handlePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
         const originPhoneValue = event.target.value.replace(/-/gi, '')
-        dispatch(formActions.setPhone(originPhoneValue))
+        setPhone(originPhoneValue);
     }
     const isNumRegex = /^[0-9]+$/g;
-    const isAuth = useMemo(() => !(!!getName && getPhone.length >= 11 && isNumRegex.test(getPhone)) || !!isVerified, [getName, getPhone, isVerified, isNumRegex]);
+    const isAuth = useMemo(() => !(!!name && phone.length >= 11 && isNumRegex.test(phone)) || !!isVerified, [name, phone, isVerified, isNumRegex]);
 
     const handleVerify = () => {
         dispatch(userActions.fetchVerifyCodeAsync.request({
-            phone: getPhone,
+            phone,
             code
         }))
     }
@@ -76,8 +78,8 @@ const LoginModal: React.FC<Props> = (props) => {
 
     const handleSignUp = () => {
         dispatch(userActions.fetchSignUpAsync.request({
-            tel: getPhone,
-            name: getName,
+            tel: phone,
+            name: name,
             init_service: getMoveType === 'house' ? EInitService.MOVE_HOUSE : EInitService.MOVE_OFFICE,
             code
         }))
@@ -120,7 +122,7 @@ const LoginModal: React.FC<Props> = (props) => {
 
     useEffect(() => {
         if (token) {
-            onClose();
+            onSuccess();
         }
     }, [token])
 
@@ -138,12 +140,12 @@ const LoginModal: React.FC<Props> = (props) => {
                     </TextWrppaer>
                     <FormWrapper>
                         <Input theme="default" border placeholder="이름" maxLength={20}
-                            onChange={(e) => dispatch(formActions.setName(e.target.value))} value={getName}
+                            onChange={(e) => setName(e.target.value)} value={name}
                             style={{ backgroundColor: isVerified ? '' : "transparent" }}
                         />
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Input theme="default" border placeholder="휴대폰 번호(-없이)" pattern="[0-9]*" inputMode="numeric"
-                                value={getPhone} onChange={handlePhone} style={{ backgroundColor: isVerified ? '' : "transparent" }} rootStyle={{ flex: 1 }} maxLength={11}
+                                value={phone} onChange={handlePhone} style={{ backgroundColor: isVerified ? '' : "transparent" }} rootStyle={{ flex: 1 }} maxLength={11}
                                 disabled={!!isVerified}
                             />
                             <Button theme="primary" disabled={isAuth} style={{ width: "90px", marginLeft: '7px', borderRadius: '4px' }}

@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { deleteCookie, setCookie } from "lib/cookie";
 import { all, call, put, takeEvery } from "redux-saga/effects";
 import { setAgree } from "store/form/actions";
 import { ActionType } from "typesafe-actions";
@@ -62,7 +63,9 @@ export function* fetchSignUpSaga(action: ActionType<typeof actions.fetchSignUpAs
         }))
 
         const response = yield call(requests.postSignUp, action.payload)
-        document.cookie=`x-wematch-token=${response}; max-age=${60*60*24*60}`
+        setCookie('x-wematch-token', response, { secure: true, 'max-age': 60*60*24*60})
+        // document.cookie=`x-wematch-token=${response}; max-age=${60*60*24*60}`
+        console.log('token', response);
         const { data } = yield call(requests.getUser, response);
         yield put(actions.fetchSignUpAsync.success({token: response, user: { ...data.user}}))
     } catch(e) {
@@ -78,11 +81,22 @@ export function* fetchSignInSaga(action: ActionType<typeof actions.fetchSignInAs
     try {
         const { phone, code } = action.payload;
         const response = yield call(requests.getSignIn, phone, code)
-        document.cookie=`x-wematch-token=${response}; max-age=${60*60*24*60}`;
+        setCookie('x-wematch-token', response, { 'max-age': 60*60*24*60, expires: new Date(dayjs().add(60, 'day').format()) })
         const { data } = yield call(requests.getUser, response);
         yield put(actions.fetchSignInAsync.success({token: response, user: { ...data.user}}));
     } catch(e) {
         yield put(actions.fetchSignInAsync.failure())
+    }
+}
+
+export function* fetchGetUserSaga(action: ActionType<typeof actions.fetchGetUserAsync.request>) {
+    try {
+        const {token} = action.payload;
+        const response = yield call(requests.getUser, token);
+        yield put(actions.fetchGetUserAsync.success(response));
+    } catch(e) {
+        deleteCookie('x-wematch-token');
+        yield put(actions.fetchGetUserAsync.failure())
     }
 }
 
@@ -92,7 +106,8 @@ export default function* () {
         takeEvery(actions.fetchVerifySendMessageAsync.request, fetchVerifySendMessageSaga),
         takeEvery(actions.fetchVerifyCodeAsync.request, fetchVerifyCodeSaga),
         takeEvery(actions.fetchSignUpAsync.request, fetchSignUpSaga),
-        takeEvery(actions.fetchSignInAsync.request, fetchSignInSaga)
+        takeEvery(actions.fetchSignInAsync.request, fetchSignInSaga),
+        takeEvery(actions.fetchGetUserAsync.request, fetchGetUserSaga),
     ])
 }
 

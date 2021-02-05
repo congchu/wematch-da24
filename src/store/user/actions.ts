@@ -1,3 +1,4 @@
+import { IUser } from "types/auth";
 import { createAction, createAsyncAction } from "typesafe-actions";
 import * as types from './types';
 
@@ -40,6 +41,11 @@ export const fetchVerifyCodeAsync = createAsyncAction(
     'FETCH_VERIFY_CODE_FAILURE'
 )<types.RequestVerifyAuthCodeProps, types.ResponseVerifyCodeProps, undefined>()
 
+export const fetchGetUserAsync = createAsyncAction(
+    'FETCH_GET_USER_REQUEST',
+    'FETCH_GET_USER_SUCCESS',
+    'FETCH_GET_USER_FAILURE',
+)<{token: string}, IUser, undefined>()
 
 export const selectOrder = createAction('SELECT_ORDER')<{order: types.IOrder}>()
 export const resetOrder = createAction('RESET_ORDER')();

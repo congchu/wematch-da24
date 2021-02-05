@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {useCookies} from 'react-cookie'
 import {useRouter} from 'hooks/useRouter'
@@ -6,8 +6,6 @@ import queryString from 'query-string'
 import styled, {css} from 'styled-components'
 import {debounce, get, isEmpty} from 'lodash'
 import dayjs from 'dayjs'
-
-import {Icon} from 'components/wematch-ui'
 import {Checkbox} from 'components/wematch-ui/Checkbox'
 
 import Button from 'components/common/Button'
@@ -228,15 +226,13 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
     const getFormData = useSelector(formSelector.getFormData)
     const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
     const {token, user, loading} = useSelector(userSelector.getUser);
-
+    
     const [visibleTerms, setVisibleTerms] = useHashToggle('#terms')
-    const [visibleVerifyPhone, setVisibleVerifyPhone] = useState(false)
     const [visibleOneroom, setVisibleOneroom] = useState(false)
     const [visibleLogin, setVisibleLogin] = useState(false)
     const [isVerifySuccess, setIsVerifySuccess] = useState(false)
     const [distance, setDistance] = useState<string | null>(null)
-    const [submitType, setSubmitType] = useState<'curation' | 'select' | null>(null)
-
+    const selectedSubmitType = useRef<'curation' | 'select' | null>(null)
     const [cookies, setCookies, removeCookies] = useCookies(['0dj38gepoekf98234aplyadmin'])
     const router = useRouter();
 
@@ -280,36 +276,39 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
         }
     }, [getMoveType])
 
-    const handleLogin = () => {
-        //TODO: 로그인 로직 & 쿠키 추가.
+    const handleLoginSuccess = (submitType: 'curation' | 'select' | null) => {
+      if( submitType !== null) {
+        handleSubmit(submitType);
+      }
 
-        if (submitType !== null) {
-            setVisibleLogin(false);
-            dispatch(formActions.setAgree({
-                terms: true,
-                privacy: true,
-                marketing: true
-            }))
-            handleSubmit(submitType);
-        }
+      console.log(getFormData);
+      if (submitType === 'curation') {
+        console.log('start!!!!!!!!!');
+          /* AUTO MATCH */
+          dispatch(formActions.submitFormAsync.request({formData: {...getFormData, legacy: true}}));
+      }
+      if (submitType === 'select') {
+          dispatch(commonActions.fetchMoveIdx.request(getFormData))
+      }
+      setVisibleLogin(!visibleLogin)
     }
 
     const handleRequestClick = (submitType: 'curation' | 'select') => {
         if (!validateHouseOrOfficeForm()) return;
-
+        selectedSubmitType.current = submitType;
         user ? handleSubmit(submitType) : setVisibleLogin(true);
     }
 
     //TODO: 회원가입 로직 변경에 따른 submit 시점 변경
-    const handleSubmit = debounce((submitType: 'curation' | 'select') => {
+    const handleSubmit = (submitType: 'curation' | 'select') => {
 
         let result = false
-
+        
         if (getMoveType === 'house' || getMoveType === 'office') {
             result = validateHouseOrOfficeForm()
         }
 
-        if (result) {
+        if (result && user) {
             calcRouteByDirectionService({
                 start: getAddress.start,
                 end: getAddress.end
@@ -325,6 +324,8 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
                     })
                 }
 
+                const { phone1, phone2, phone3 } = phoneSplit(user.tel);
+
                 const formData: commonTypes.RequestUserInfoInsert = {
                     moving_type: translateMovingType(getMoveType),
                     moving_date: getMoveDate[0],
@@ -338,14 +339,10 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
                     dong2: addressSplit(getAddress.end).dong,
                     floor2: `${getFloor.end}`,
                     detail_addr2: getAddress.detailEnd,
-                    // name: getName,
-                    // phone1: phoneSplit(getPhone).phone1,
-                    // phone2: phoneSplit(getPhone).phone2,
-                    // phone3: phoneSplit(getPhone).phone3,
-                    name: '',
-                    phone1: '',
-                    phone2: '',
-                    phone3: '',
+                    name: user.name,
+                    phone1: phone1,
+                    phone2: phone2,
+                    phone3: phone3,
                     keep_move: getIsMoveStore,
                     mkt_agree: getAgree.marketing,
                     distance: Number(distance) || 1,
@@ -371,7 +368,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
             })
 
         }
-    }, 500)
+    }
 
     useEffect(() => {
         const {type} = router.query
@@ -397,15 +394,14 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
     //         }
     //     }
 
-    // }, [getPhoneVerified.data])
-
+    // }, [getFormData])
 
 
     useEffect(() => {
-        if (getMoveIdxData.idx && submitType === 'curation' && !getMoveIdxData.loading) {
+        if (getMoveIdxData.idx && selectedSubmitType.current === 'curation' && !getMoveIdxData.loading) {
             document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
         }
-        if (getMoveIdxData.idx && submitType === 'select' && !getMoveIdxData.loading) {
+        if (getMoveIdxData.idx && selectedSubmitType.current === 'select' && !getMoveIdxData.loading) {
             router.history.push(`/partner/list`)
         }
     }, [getMoveIdxData])
@@ -498,7 +494,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
             <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
             <OneroomNoticePopup visible={visibleOneroom} footerButton border onClose={() => setVisibleOneroom(!visibleOneroom)} />
-            <LoginModal visible={visibleLogin} onClose={() => setVisibleLogin(!visibleLogin)} />
+            <LoginModal visible={visibleLogin} onClose={() => setVisibleLogin(!visibleLogin)} onSuccess={() => handleLoginSuccess(selectedSubmitType.current)} />
         </Visual.Section>
     )
 }
