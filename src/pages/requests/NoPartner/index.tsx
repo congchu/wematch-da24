@@ -4,11 +4,12 @@ import last from 'lodash/last'
 import ReactPixel from 'react-facebook-pixel'
 import {useDispatch, useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
-import {useMedia} from 'react-use-media';
+import {useMedia} from 'react-use-media'
 import useHashToggle from 'hooks/useHashToggle'
+import {useCookies} from 'react-cookie'
 
-import MainHeader from 'components/common/MainHeader';
-import NavHeader from 'components/common/NavHeader';
+import MainHeader from 'components/common/MainHeader'
+import NavHeader from 'components/common/NavHeader'
 import Input from 'components/common/Input'
 import {SoldOut} from 'components/Icon'
 import CalendarModal from 'components/common/Modal/CalendarModal'
@@ -19,7 +20,6 @@ import * as formActions from 'store/form/actions'
 import * as formSelectors from 'store/form/selectors'
 import * as formSelector from 'store/form/selectors'
 import {FormState} from 'store/form/reducers'
-import {useCookies} from "react-cookie";
 
 import {CALENDAR_MAX_DAYS} from 'constants/values';
 import {MOVE_URL} from 'constants/env'

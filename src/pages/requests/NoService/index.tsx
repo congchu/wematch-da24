@@ -4,9 +4,10 @@ import {useMedia} from 'react-use-media'
 import styled from 'styled-components'
 import last from 'lodash/last'
 import ReactPixel from 'react-facebook-pixel'
+import {useCookies} from 'react-cookie'
 
-import MainHeader from 'components/common/MainHeader/index'
-import NavHeader from 'components/common/NavHeader/index'
+import MainHeader from 'components/common/MainHeader'
+import NavHeader from 'components/common/NavHeader'
 import AreaIcon from 'components/Icon/generated/AreaIcon'
 import Kakao from 'components/Icon/generated/Kakao_fit'
 
@@ -14,7 +15,6 @@ import * as formSelectors from 'store/form/selectors'
 import * as formActions from 'store/form/actions'
 import * as formSelector from 'store/form/selectors'
 import {FormState} from 'store/form/reducers'
-import {useCookies} from "react-cookie"
 
 import {MOVE_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
