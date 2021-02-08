@@ -43,18 +43,19 @@ const S = {
       border-top: 0 none;
       padding: 35px 0 38px;
       text-align: center;
+      
       @media screen and (min-width: 1200px) {
         width: 720px;
+        margin: 0;
+        padding: 58px 0;
       }
 
-      @media screen and (min-width: 768px) {
-        .box_g {
-          width: 608px;
-          margin: 0 auto;
-          padding: 58px 0;
-        }
+      @media screen and (min-width: 768px) and (max-width: 1119px){
+        width: 608px;
+        margin: 0 auto;
+        padding: 58px 0;
       }
-      
+
       h3 {
         padding-bottom: 8px;
         font-size: 20px;
@@ -62,24 +63,108 @@ const S = {
         line-height: 29px;
         letter-spacing: -1px;
       }
+      
+      ul{
+        list-style: none;
+        
+        @media screen and (min-width: 768px){
+          overflow: hidden;
+        }
+        
+        li {
+          letter-spacing: -0.75px;
+          padding-top: 20px;
+          
+          @media screen and (min-width: 768px){
+            float: left;
+            width: 33.33%;
+            padding-top: 32px;
+           
+          }
+          
+          p {
+            font-size: 14px;
+            line-height: 20px;
+          }
+
+          strong {
+            display: block;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 20px;
+            font-style: normal;
+          }
+          
+          .display_t{
+            display: none !important;
+            @media screen and (min-width: 768px){
+              display: block !important;
+              em {
+                display: block;
+                padding: 16px 0 5px;
+                font-size: 16px;
+                font-weight: 700;
+                color: #888;
+                line-height: 20px;
+                letter-spacing: -0.5px;
+              }
+            }
+            p {
+              font-size: 14px;
+              line-height: 20px;
+              display: block;
+              margin-block-start: 1em;
+              margin-block-end: 1em;
+              margin-inline-start: 0px;
+              margin-inline-end: 0px;
+              @media screen and (min-width: 768px){
+                  .br_t {
+                    display: block;
+              }
+            }
+            img {
+              width: 194px;
+              margin: 0 auto 16px;
+              border: 0 none;
+
+              @media screen and (min-width: 768px) {
+                width: 76px;
+                height: 47px;
+                margin: 0 0 16px;
+
+              }
+            }
             
+          }
+          
+          
+          
+          
+          
+        }
+        
+        
+      }
+      
+
     `,
     BenefitContainer: styled.div`
       border-top: 0 none;
       padding: 35px 0 38px;
       text-align: center;
+
       @media screen and (min-width: 1200px) {
         width: 720px;
+        margin: 0;
+        padding: 58px 0;
       }
 
-      @media screen and (min-width: 768px) {
-        .box_g {
-          width: 608px;
-          margin: 0 auto;
-          padding: 58px 0;
-        }
+      @media screen and (min-width: 768px) and (max-width: 1119px){
+        width: 608px;
+        margin: 0 auto;
+        padding: 58px 0;
       }
-      
+
       h3 {
         padding-bottom: 8px;
         font-size: 20px;
@@ -87,7 +172,82 @@ const S = {
         line-height: 29px;
         letter-spacing: -1px;
       }
-            
+
+      ul{
+        list-style: none;
+
+        @media screen and (min-width: 768px){
+          overflow: hidden;
+        }
+
+        li {
+          letter-spacing: -0.75px;
+          padding-top: 20px;
+
+          @media screen and (min-width: 768px){
+            float: left;
+            width: 33.33%;
+            padding-top: 32px;
+
+          }
+
+          p {
+            font-size: 14px;
+            line-height: 20px;
+          }
+
+          strong {
+            display: block;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 20px;
+            font-style: normal;
+          }
+
+          .display_t{
+            display: none !important;
+            @media screen and (min-width: 768px){
+              display: block !important;
+              em {
+                display: block;
+                padding: 16px 0 5px;
+                font-size: 16px;
+                font-weight: 700;
+                color: #888;
+                line-height: 20px;
+                letter-spacing: -0.5px;
+              }
+            }
+            p {
+              font-size: 14px;
+              line-height: 20px;
+              display: block;
+              margin-block-start: 1em;
+              margin-block-end: 1em;
+              margin-inline-start: 0px;
+              margin-inline-end: 0px;
+              @media screen and (min-width: 768px){
+                .br_t {
+                  display: block;
+                }
+              }
+              img {
+                width: 194px;
+                margin: 0 auto 16px;
+                border: 0 none;
+
+                @media screen and (min-width: 768px) {
+                  width: 76px;
+                  height: 47px;
+                  margin: 0 0 16px;
+
+                }
+              }
+
+            }
+
+          }
+
     `,
     Form: styled.form`
       display: flex;
@@ -365,6 +525,7 @@ const S = {
           a{
             display: block;
             width: 56px;
+            
             @media screen and (min-width: 768px){
               width: auto;
             }
@@ -436,7 +597,42 @@ function PartnerRegisterPage() {
                 </S.VideoContainer>
                 <S.ReasonContainer>
                     <h3>왜, 위매치다이사 인가요?</h3>
+
+                    <ul>
+                        <li>
+                            <p className="display_t">
+                                <img
+                                    src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/network/service/com_service_icon_01.png"
+                                    alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,Sales"/>
+                                    <em>Sales</em>
+                            </p>
+                            <strong>더욱 커진 영업기회</strong>
+                            <p>업계 최고수준의 이용자 수<br/>이사 월 오더 3만건 이상 <span className="br_t">(2018년 5월 기준)</span></p>
+                        </li>
+                        <li>
+                            <p className="display_t">
+                                <img
+                                    src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/network/service/com_service_icon_02.png"
+                                    alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,Marketing"/>
+                                    <em>Marketing</em>
+                            </p>
+                            <strong>안정적인 고객유치</strong>
+                            <p>업계 최고 수준의 이용자 수<br/><span className="br_t">온/오프라인에서 공격적인</span> 고객마케팅 지원</p>
+                        </li>
+                        <li>
+                            <p className="display_t">
+                                <img
+                                    src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/network/service/com_service_icon_03.png"
+                                    alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,Benefit"/>
+                                    <em>Benefit</em>
+                            </p>
+                            <strong>신규가입 우대 혜택</strong>
+                            <p><span>고객 조회화면</span> 상단 노출<br/>(최소 2개월)</p>
+                        </li>
+                    </ul>
+
                 </S.ReasonContainer>
+
                 <S.BenefitContainer>
                     <h3>소비자평가등급제 특장점</h3>
                 </S.BenefitContainer>
@@ -516,8 +712,9 @@ function PartnerRegisterPage() {
                         <p>위매치다이사를 <span>다른 사장님들께도 </span>알려주세요!</p>
                         <ul>
                             <li>
-                                {/*링크복사 나중에 새로운 주소로 넣어주어야함!*/}
-                                <a href="javascript:void(0);" data-clipboard-text="https://wematch.com/partnernew.asp">
+                                {/*링크복사 나중에 새로운 주소로 넣어주어야함! => 리액트 방식으로 변경 필요 */}
+                                <a href="javascript:void(0);" data-clipboard-text="https://wematch.com/partnernew.asp" >
+
                                     <img
                                         src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/sns_link.png"
                                         alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,링크복사"/><span>링크복사<span>하기</span></span>
