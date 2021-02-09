@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import styled, {css} from 'styled-components'
 import useHashToggle from 'hooks/useHashToggle'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 import Layout from 'components/base/Layout'
 import Input from 'components/common/Input'
@@ -11,6 +12,118 @@ import SvgSearch from "../../components/wematch-ui/Icon/generated/Search";
 import {Checkbox} from "../../components/wematch-ui";
 import * as formActions from "../../store/form/actions";
 import TermsModal from "../../components/common/Modal/TermsModal";
+import {gray33, gray66, pointBlue} from "styles/colors";
+import {dataLayer} from "../../lib/dataLayerUtil";
+
+
+const CustomSwiper = styled(Swiper)`  
+  .swiper-pagination-bullets {
+    display: block;
+    bottom: 40px;
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+  
+  .swiper-pagination-bullet {
+    color: #C4C9D1;
+  }
+  
+  .swiper-pagination-bullet-active {
+    border-radius: 40px;
+    background: ${pointBlue};
+  }
+`
+
+const Slide = styled.div<{image: string}>`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  width: 90%;
+  height: 410px;
+  margin: 0;
+  padding: 20px;
+  
+  ${props => props.image && css`
+    background-image: url(${props.image});
+  `};
+  background-size: 85%;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  font-style: normal;
+  font-weight: normal;
+  color: ${gray33};
+
+  @media screen and (min-width: 768px){
+    padding: 60px 0;
+  }
+  
+  
+  .wrapper {
+    max-width: 768px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  span {
+    font-size: 14px;
+    line-height: 21px;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+    
+    > strong {
+      font-weight: bold;
+    }
+  } 
+  
+  p {
+    font-size: 24px;
+    line-height: 35px;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    
+    > strong {
+      font-weight: bold;
+    }
+  }
+  
+  a {
+    font-size: 14px;
+    line-height: 21px;
+    letter-spacing: -0.01em;
+    color: ${gray66};
+  }
+  
+  @media screen and (min-width: 768px) {
+    width: 608px;
+    height: 410px;
+    background-size: 60%;
+    ${props => props.image && css`
+      background-image: url(${props.image});
+    `};
+  }
+  
+  @media screen and (min-width: 1200px) {
+    width: 720px;
+    height: 410px;
+    background-size: 50%;
+    span {
+      font-size: 18px;
+      line-height: 27px;
+    } 
+    
+    p {
+      font-size: 36px;
+      line-height: 52px;
+    } 
+  }
+`
+
+
+
+
 
 
 const S = {
@@ -18,13 +131,57 @@ const S = {
       display: block;
     `,
     Title: styled.h3`
-      font-style: normal;
-      font-weight: normal;
-      font-size: 16px;
-      line-height: 24px;
-      letter-spacing: -0.03em;
-      color: ${colors.gray66};
-      margin-bottom: 16px;
+      display: block;
+      padding: 40px 0 16px;
+      font-weight: 600;
+      font-size: 22px;
+      line-height: 33px;
+      color: #333;
+      letter-spacing: -1px;
+      text-align: center;
+      
+      strong{
+        display: block;
+        padding-top: 0;
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 29px;
+      }
+      
+      span{
+        display: block;
+        font-weight: 100;
+        font-size: 16px;
+        line-height: 24px;
+      }
+      
+      .br_m {
+        display: block;
+      }
+
+      @media screen and (min-width: 1200px){
+        display: none;
+      }
+      
+      @media screen and (min-width: 768px){
+        strong{
+          padding-top: 0;
+          font-size: 32px;
+          font-weight: 600;
+          line-height: 34px;
+        }
+        
+        span{
+          padding-top: 10px;
+          font-size: 18px;
+        }
+        
+        .br_m {
+          display: inline;
+        }
+        
+      }
+      
     `,
     VideoContainer: styled.div`
       display: block;
@@ -356,9 +513,9 @@ const S = {
       margin: 0 auto;
       width: 90%;
 
-      @media screen and (max-width: 768px) {
-        width: 90%;
-        padding: 0 0 82px 0;
+      @media screen and (min-width: 768px) {
+        width: 100%;
+        padding: 0 0 12px 0;
         h3 {
           text-align: center;
           padding-bottom: 26px;
@@ -368,7 +525,7 @@ const S = {
           letter-spacing: -1px;
         }
       }
-      @media screen and (max-width: 1200px) and (min-width: 769px) {
+      @media screen and (max-width: 1200px) {
         width: 100%;
         padding: 40px 0 82px 0;
       }
@@ -419,18 +576,18 @@ const S = {
       font-size: 18px;
       background: #1672F7;
       color: #fff;
-
-
+      
       @media screen and (max-width: 768px) {
         //position: fixed;
         bottom: 0;
         right: 0;
-        margin: 20px auto 58px auto ;
+        margin: 15px auto;
       }
-      @media screen and (max-width: 1200px) {
+      @media screen and (min-width: 769px) {
         //position: fixed;
         bottom: 0;
-        right: 0
+        right: 0;
+        margin: 20px auto 0 auto;
       }
 
       &:disabled {
@@ -523,18 +680,19 @@ const S = {
     `,
     ContactContainer: styled.div`
       border-top: 0 none;
-      padding: 35px 0 38px;
+      margin: 35px 0 38px;
       
       text-align: center;
+      
       @media screen and (min-width: 1200px) {
         width: 720px;
-        margin: 0;
-        padding: 62px 0 52px;;
+        //margin: 0;
+        margin: 62px 0 52px;;
       }
 
       @media screen and (min-width: 768px) {
           width: 608px;
-          margin: 0 auto;
+          margin: 62px auto 52px;
           padding: 62px 0 52px;
       }
 
@@ -689,8 +847,6 @@ const S = {
 }
 
 
-
-
 const Terms = {
     NewLink: styled.div`
       margin-top: 20px;
@@ -752,6 +908,10 @@ const Funnel = [
 
 function PartnerRegisterPage() {
 
+    const autoPlayOptions = {
+        delay: 4000
+    }
+
     const [visibleCategoryModal, setVisibleCategoryModal] = useHashToggle('#category')
     const [visibleFunnelModal, setVisibleFunnelModal] = useHashToggle('#funnel')
     const [visibleSidoModal, setVisibleSidoModal] = useHashToggle('#sido')
@@ -777,6 +937,10 @@ function PartnerRegisterPage() {
     return (
         <Layout title='파트너 등록문의' subTitle={<>좋은 서비스를 제공할 수 있는<br/>이사/청소업체 사장님을 모십니다</>}>
             <S.Container>
+                <S.Title>
+                        <strong>파트너 등록문의</strong>
+                        <span>좋은 서비스를 제공할 수 있는 <span className="br_m">이사/청소업체 사장님을 모십니다</span></span>
+                </S.Title>
                 <S.VideoContainer>
                     <iframe width="100%" height="100%"
                             src="https://www.youtube.com/embed/ZobFP-2xf2U?version=3&amp;enablejsapi=1&amp;rel=0&amp;autoplay=0"
@@ -840,6 +1004,29 @@ function PartnerRegisterPage() {
                         </li>
                     </ul>
                 </S.BenefitContainer>
+
+                {/*스와이프*/}
+                <CustomSwiper
+                    id="dsl_move_banner_1"
+                    slidesPerView={1}
+                    pagination={{ clickable: true }}
+                    loop={true}
+                    autoplay={autoPlayOptions}
+                >
+                    <SwiperSlide>
+                        <Slide image="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_slide01_201222.png"/>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <Slide image="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_slide02_201222.png"/>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <Slide image="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_slide03_201222.png"/>
+                    </SwiperSlide>
+                </CustomSwiper>
+
+
+                {/*스와이프*/}
+
                 <S.GuideContainer>
                         <div className="box_process">
                             <h3>등록절차</h3>
