@@ -121,10 +121,10 @@ const LoginModal: React.FC<Props> = (props) => {
     }, [isVerified, handleCounterStop])
 
     useEffect(() => {
-        if (token) {
+        if (token && visible) {
             onSuccess();
         }
-    }, [token])
+    }, [token, visible])
 
 
     return createPortal((

@@ -280,17 +280,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
       if( submitType !== null) {
         handleSubmit(submitType);
       }
-
-      console.log(getFormData);
-      if (submitType === 'curation') {
-        console.log('start!!!!!!!!!');
-          /* AUTO MATCH */
-          dispatch(formActions.submitFormAsync.request({formData: {...getFormData, legacy: true}}));
-      }
-      if (submitType === 'select') {
-          dispatch(commonActions.fetchMoveIdx.request(getFormData))
-      }
-      setVisibleLogin(!visibleLogin)
+      setVisibleLogin(false)
     }
 
     const handleRequestClick = (submitType: 'curation' | 'select') => {
@@ -382,19 +372,16 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
 
     }, [])
 
-    // useEffect(() => {
-    //     if (getPhoneVerified.data.is_verified && visibleVerifyPhone) {
-    //         setVisibleVerifyPhone(false)
-    //         if (submitType === 'curation') {
-    //             /* AUTO MATCH */
-    //             dispatch(formActions.submitFormAsync.request({formData: {...getFormData, legacy: true}}));
-    //         }
-    //         if (submitType === 'select') {
-    //             dispatch(commonActions.fetchMoveIdx.request(getFormData))
-    //         }
-    //     }
+    useEffect(() => {
+        if (selectedSubmitType.current === 'curation') {
+          /* AUTO MATCH */
+          dispatch(formActions.submitFormAsync.request({formData: {...getFormData, legacy: true}}));
+        }
+        if (selectedSubmitType.current === 'select') {
+            dispatch(commonActions.fetchMoveIdx.request(getFormData))
+        }
 
-    // }, [getFormData])
+    }, [getFormData])
 
 
     useEffect(() => {
