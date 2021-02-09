@@ -14,7 +14,7 @@ import * as colors from 'styles/colors'
 import {gray33, gray66, pointBlue} from 'styles/colors';
 
 
-/* Carousel Slider */
+
 const CustomSwiper = styled(Swiper)`
   .swiper-pagination-bullets {
     display: block;
@@ -33,6 +33,7 @@ const CustomSwiper = styled(Swiper)`
     background: ${pointBlue};
   }
 `
+
 const Slide = styled.div<{ image: string }>`
   display: flex;
   flex-direction: column;
@@ -120,9 +121,6 @@ const Slide = styled.div<{ image: string }>`
     }
   }
 `
-
-
-/* Common Styles*/
 
 const S = {
     Container: styled.div`
@@ -289,7 +287,6 @@ const S = {
     `
 
 }
-
 
 const Reason = styled.div`
       border-top: 0 none;
