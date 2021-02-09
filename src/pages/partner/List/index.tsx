@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import styled, {css} from 'styled-components'
+import styled, { css } from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
-import {isEmpty, some} from 'lodash'
-import useInfiniteScroll from 'hooks/useInfiniteScroll'
+import { isEmpty } from 'lodash'
 
-import MainHeader from 'components/MainHeader'
+import useInfiniteScroll from 'hooks/useInfiniteScroll'
+import MainHeader from 'components/common/MainHeader'
 import TopGnb from 'components/TopGnb'
 import EmptyPage from 'components/EmptyPage'
 import Loading from 'components/Loading'
@@ -15,7 +15,6 @@ import ToastPopup from "components/wematch-ui/ToastPopup";
 
 import SetType from 'components/SetType'
 import PartnerItem from './item'
-import {useCookies} from "react-cookie";
 
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
@@ -24,21 +23,24 @@ import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
 import * as formSelector from "store/form/selectors";
 import * as commonSelector from "store/common/selectors";
-import {dataLayer} from "lib/dataLayerUtil";
+import { dataLayer } from "lib/dataLayerUtil";
 const S = {
     Container: styled.div`
         height:100%;
     `,
     WrapItem: styled.div`
+        margin-top: 105px;
         @media screen and (min-width:768px) {
             width:608px;
             margin:0 auto;
+            margin-top: 130px;
         }
         @media screen and (min-width:1200px) {
             width:720px;
+            margin-top: 130px;
         }
     `,
-    PartnerItemContainer: styled.div<{hasMore: boolean}>`
+    PartnerItemContainer: styled.div<{ hasMore: boolean }>`
       a {
         ${props => !props.hasMore && css`
            &:nth-last-child(1) {
@@ -48,7 +50,7 @@ const S = {
         @media screen and (min-width:380px) {
         }
 `,
-	BtnKakao: styled.a`
+    BtnKakao: styled.a`
 		display:inline-block;
 		position:fixed;
     bottom:24px;
@@ -107,7 +109,7 @@ const S = {
     `
 }
 
-{/* 임시용 디자인 없음*/}
+{/* 임시용 디자인 없음*/ }
 function MoreLoading() {
     return (
         <S.More>
@@ -119,6 +121,9 @@ function MoreLoading() {
 const PartnerList = () => {
     const isDesktop = useMedia({
         minWidth: 1200,
+    })
+    const isMobile = useMedia({
+        maxWidth: 767,
     })
 
     const history = useHistory()
@@ -153,17 +158,27 @@ const PartnerList = () => {
         window.open('https://api.happytalk.io/api/kakao/chat_open?yid=%40%EC%9C%84%EB%A7%A4%EC%B9%98&site_id=4000001315&category_id=111561&division_id=111564', '_blank')
     }
 
+    const handlePrevious = () => {
+        dispatch(partnerActions.partnerListReset())
+        history.goBack();
+    }
+
     useEffect(() => {
-        if(getFormData.moving_date.length === 0) {
+        if (getFormData.moving_date.length === 0) {
             setVisible(true)
         }
-        if(!getMoveIdxData.idx) {
+        if (!getMoveIdxData.idx) {
             setVisible(true)
+        }
+
+        return () => {
+
         }
     }, [])
 
+
     useEffect(() => {
-        if(getMoveIdxData.idx && !getMoveIdxData.loading) {
+        if (getMoveIdxData.idx && getPartnerList.data.length === 0 && !getMoveIdxData.loading) {
             dispatch(partnerActions.fetchPartnerListAsync.request({
                 page: values.DEFAULT_PAGE,
                 size: values.DEFAULT_PARTNER_LIST_SIZE,
@@ -173,42 +188,42 @@ const PartnerList = () => {
     }, [dispatch])
 
     if (getPartnerList.loading) {
-        return <Loading text={'조건에 맞는 업체 찾는 중..'}/>
+        return <Loading text={'조건에 맞는 업체 찾는 중..'} />
     }
 
     return (
         <S.Container>
-            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true}/>}
-            <SetType count={getPartnerPick.data.length} formData={getFormData}/>
+            {isDesktop ? <MainHeader isFixed={true}/> : <TopGnb title="이사업체 목록" count={getPartnerPick.data.length} onPrevious={handlePrevious} showTruck={true} />}
+            <SetType count={getPartnerPick.data.length} formData={getFormData} />
             {isEmpty(getPartnerList.data)
-                ?   <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다."/>
+                ? <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다." />
                 :
                 <>
-                <S.WrapItem id="dsl_booking_list_partner">
-                    <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
-                        {getPartnerList.data.map((list:any, index: number) => {
-                            return (
-                                <PartnerItem key={list.id} profile_img={list.profile_img}
-                                             level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
-                                             pick_cnt={list.pick_cnt} feedback_cnt={list.feedback_cnt} experience={list.experience} status={list.status}
-                                             adminid={list.adminid}
-                                             onClick={() => {
-                                                 history.push(`/partner/detail/${list.adminid}`)
-                                                 dataLayer({event: 'partner_select', label: `${getPartnerList.data.length}_${index+1}`, CD7: `${list.level}등급`, CD8: `${list.title}`})
-                                             }}
-                                />
-                            )
-                        })}
-                    </S.PartnerItemContainer>
-                    <S.ChatText onClick={handleLinkKakao} id="dsl_booking_list_katalk2">
-                        {getPartnerList.data[0].status === 'unavailable' ? "가능업체를 찾아드릴까요?":"도움이 필요하세요?"}
-                        <ChatArrow width={20} height={12} />
-                    </S.ChatText>
-                    <S.BtnKakao onClick={handleLinkKakao} id="dsl_booking_list_katalk">
-                        <KakaoIcon width={35} height={34} />
-                    </S.BtnKakao>
-                </S.WrapItem>
-                {(isFetching && getPartnerList.hasMore) && <MoreLoading />}
+                    <S.WrapItem id="dsl_booking_list_partner">
+                        <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
+                            {getPartnerList.data.map((list: any, index: number) => {
+                                return (
+                                    <PartnerItem key={list.adminid} profile_img={list.profile_img}
+                                        level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
+                                        pick_cnt={list.pick_cnt} feedback_cnt={list.feedback_cnt} experience={list.experience} status={list.status}
+                                        adminid={list.adminid}
+                                        onClick={() => {
+                                            history.push(`/partner/detail/${list.adminid}`)
+                                            dataLayer({ event: 'partner_select', label: `${getPartnerList.data.length}_${index + 1}`, CD7: `${list.level}등급`, CD8: `${list.title}` })
+                                        }}
+                                    />
+                                )
+                            })}
+                        </S.PartnerItemContainer>
+                        <S.ChatText onClick={handleLinkKakao} id="dsl_booking_list_katalk2">
+                            {getPartnerList.data[0].status === 'unavailable' ? "가능업체를 찾아드릴까요?" : "도움이 필요하세요?"}
+                            <ChatArrow width={20} height={12} />
+                        </S.ChatText>
+                        <S.BtnKakao onClick={handleLinkKakao} id="dsl_booking_list_katalk">
+                            <KakaoIcon width={35} height={34} />
+                        </S.BtnKakao>
+                    </S.WrapItem>
+                    {(isFetching && getPartnerList.hasMore) && <MoreLoading />}
                 </>
             }
             <ToastPopup visible={visible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>

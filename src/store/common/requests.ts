@@ -1,7 +1,7 @@
 import {api} from 'lib/api'
 import axios from 'axios';
 import * as types from './types'
-import {API_MIDDLEWARE_URL} from "constants/env";
+import {API_MIDDLEWARE_URL,API_MESSAGE_URL} from "constants/env";
 
 export const getAddress = async (dong: string) => {
     const { data } = await api.request<types.RequestAddressProps[]>({
@@ -28,8 +28,7 @@ export const verifySendMessage = async (phone: string) => {
 export const verifyAuthCode = async (phone: string, code: string) => {
     const { data } = await api.request<types.RequestVerifyAuthCodeProps>({
         method: 'get',
-        // url: `/msg/auth?dest_phone=${phone}&code=${code}`
-        url: `/msg/auth?dest_phone=${phone}&code=${code}`
+        url: `${API_MESSAGE_URL}?dest_phone=${phone}&code=${code}`
     })
 
     return data

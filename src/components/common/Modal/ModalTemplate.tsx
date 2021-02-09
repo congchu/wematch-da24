@@ -23,6 +23,8 @@ interface Props extends React.HTMLAttributes<HTMLElement> {
     warning?: boolean;
     /* 푸터 visible */
     footer?: boolean;
+    /* Panel Height 설정 - PC */
+    panelHeight?: number
 }
 
 const fadeIn = keyframes`
@@ -87,7 +89,7 @@ const S = {
             background-color: rgba(18, 18, 18, 0.6);
         }
     `,
-    Panel: styled.div<{visible: boolean}>`
+    Panel: styled.div<{visible: boolean, panelHeight: number}>`
         position: fixed;
         top: 0;
         left: 0;
@@ -112,7 +114,8 @@ const S = {
             top: 50%;
             left: 50%;
             width: 360px;
-            height: 500px;
+            //height: 500px;
+            height: ${(props) => props.panelHeight + 'px'};
             margin-top: -238px;
             margin-left: -180px;
         }
@@ -139,13 +142,13 @@ const S = {
         height: 100%;
     `,
     Footer: styled.div`
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 10;
-    cursor: pointer;
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      cursor: pointer;
     `,
     Warning: styled.div`
         display: flex;
@@ -196,6 +199,7 @@ const Modal: React.FC<Props> = (props) => {
         onClose,
         warning,
         footer = true,
+        panelHeight = 500,
         ...restProps
     } = props
 
@@ -224,7 +228,7 @@ const Modal: React.FC<Props> = (props) => {
         <ScrollLock>
             <S.Container {...restProps}>
                 <S.Overlay onClick={onOverlayClose} visible={!visible} />
-                <S.Panel visible={!visible}>
+                <S.Panel visible={!visible} panelHeight={panelHeight}>
                     <S.Header>
                         <strong>{title}</strong>
                         <button onClick={onClose}>

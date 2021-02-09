@@ -5,7 +5,7 @@ import "./style.css"
 
 interface Props {}
 
-const MainHeader = ({}: Props) => {
+const MainHeaderForDetail = ({}: Props) => {
     return (
         <div id="wmWrap" className="main_head">
             <div id="wmHead">
@@ -19,12 +19,8 @@ const MainHeader = ({}: Props) => {
                         </ul>
                     </div>
                     <div id="wmLnb">
-                        <div className="quick_gnb">
-                            {/*<a href="https://wematch.com/service_search.html" className="link_find">서비스찾기</a>*/}
-                            <a href={constants.MOVE_URL + "/myconsult.asp"} className="link_report">내 신청내역 확인</a>
-                        </div>
                         <div className="head_info">
-                            <a href="https://wematch.com/partner_gate.html" className="link_partner">파트너 가입</a>
+                            <a href={constants.MOVE_URL + "/myconsult.asp"} className="link_request">내 신청내역</a>
                         </div>
                     </div>
                 </div>
@@ -33,4 +29,4 @@ const MainHeader = ({}: Props) => {
     )
 }
 
-export default MainHeader
+export default MainHeaderForDetail

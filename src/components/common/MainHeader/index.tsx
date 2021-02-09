@@ -219,14 +219,8 @@ const MainHeader = ({ isFixed = false, border = false }: Props) => {
                     <S.Categories>
                         <li className="on"><a href={constants.MOVE_URL}>이사</a></li>
                         <li><a href={constants.CLEAN_URL}>청소</a></li>
-                        {/*<li><a href={constants.INTERIOR_URL}>인테리어</a></li>*/}
                     </S.Categories>
                     <S.Lnb>
-                        <S.QuickGnb>
-                            {/*<a href="https://wematch.com/service_search.html">서비스찾기</a>*/}
-                            {/* 2020.11.23 삭제 요쳥 (kaya) */}
-                            {/*<a href="https://wematch.com/inquiry">내 신청내역 확인</a>*/}
-                        </S.QuickGnb>
                         <S.Partner>
                             <a href={constants.MOVE_URL + "/myconsult.asp"}>내 신청내역</a>
                         </S.Partner>

@@ -6,15 +6,16 @@ import { useMedia } from 'react-use-media'
 import * as colors from 'styles/colors'
 import { useSelector } from 'react-redux'
 import * as formSelector from 'store/form/selectors'
+import { onMessageHandler } from 'lib/MessageUtil'
 
 type StyleProps = Pick<Props, 'direction'>
 
 interface GroupProp {
     type: 'house' | 'oneroom' | 'office' | undefined
-    value: '가정' | '원룸' | '사무실' | undefined
+    value: '가정이사' | '원룸이사' | '사무실이사' | undefined
 }
 
-interface Props  {
+interface Props {
     /** 버튼을 보여줄 방향 */
     direction?: 'row' | 'column';
     /** 클릭 이벤트 */
@@ -37,7 +38,6 @@ const S = {
         //box-shadow: 0 4px 10px 4px rgba(0, 104, 255, 0.1);
         background-color: white;
         height: 64px;
-
         ${({ direction }) => direction === 'column' && css`
             flex-direction: column;
         `}
@@ -55,15 +55,19 @@ const S = {
     Button: Styled.button<buttonProps>`
         flex: 1;
         height: 100%;
-        font-size: 16px;
-        font-weight: bold;
-        color: ${props => props.active ? colors.white : colors.pointBlue};
-        background-color: ${props => props.active ? colors.pointBlue: 'transparent'};
+        background-color: ${props => props.active ? colors.pointBlue : 'transparent'};
         user-select: none;
         padding: 1rem 0;
         cursor: pointer;
         border-right: 1px solid #1672f7;
-        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        span {
+            font-size: 16px;
+            font-weight: bold;
+            color: ${props => props.active ? colors.white : colors.pointBlue};
+        }
         &:last-child {
             border-right: 0px;
         }
@@ -88,10 +92,10 @@ const ButtonGroup: React.FC<Props> = (props) => {
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const getMoveType = useSelector(formSelector.getType)
 
-    const groups:GroupProp[] = [
-        { type: 'house', value: '가정' },
-        { type: 'oneroom', value: '원룸' },
-        { type: 'office', value: '사무실' },
+    const groups: GroupProp[] = [
+        { type: 'house', value: '가정이사' },
+        { type: 'oneroom', value: '원룸이사' },
+        { type: 'office', value: '사무실이사' },
     ];
 
     const isDesktop = useMedia({
@@ -130,7 +134,7 @@ const ButtonGroup: React.FC<Props> = (props) => {
 
     return (
         <S.Container id="dsl_move_tab_types_1" direction={direction} {...restProps}>
-            {groups.map((group:GroupProp, idx:number) =>
+            {groups.map((group: GroupProp, idx: number) =>
                 <S.Button
                     key={idx}
                     ref={buttonRef}
@@ -143,10 +147,15 @@ const ButtonGroup: React.FC<Props> = (props) => {
                         if (onClick) {
                             onClick(group.type)
                         }
+                        // 상단 status 폰트 색상을 강제로 바꾼다. (App에서 버그가 해결되면 삭제해도 된다.)
+                        onMessageHandler({
+                            action: 'setBarStyle'
+                        })
                     }}
                 >
-                    {group.value}
-                    <Next size={16} color={group.type === getMoveType ? colors.white : colors.pointBlue} />
+                    <div style={{ height: '24px', lineHeight: '24px' }}><span>{group.value}</span></div>
+                    <div><Next size={14} color={group.type === getMoveType ? colors.white : colors.pointBlue} /></div>
+
                 </S.Button>
             )}
         </S.Container>

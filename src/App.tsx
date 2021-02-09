@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import {
     Switch,
     Route,
@@ -6,7 +6,8 @@ import {
     useLocation
 } from 'react-router-dom'
 import {Provider} from 'react-redux'
-import { ConnectedRouter } from 'connected-react-router'
+import {ConnectedRouter} from 'connected-react-router'
+import ReactPixel from 'react-facebook-pixel'
 
 import store from 'store/index'
 import browserHistory from 'lib/history'
@@ -21,22 +22,35 @@ import Customer from 'pages/banner/Customer'
 import Grade from 'pages/banner/Grade'
 import UnSupported from 'pages/unsupported'
 import Terms from 'pages/terms'
+import CompletedPage from 'pages/requests/completed'
+import NoServicePage from 'pages/requests/noService'
+import NoPartnerPage from 'pages/requests/noPartner'
+import CompanyDetail from 'pages/company/Detail/index'
+import NotFound from 'pages/notFound'
+import ErrorService from 'pages/errorService'
 
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
 
 //swiper lib
-import SwiperCore, { Pagination, Autoplay } from 'swiper'
+import SwiperCore, {Pagination, Autoplay} from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
+import {dataLayer} from 'lib/dataLayerUtil'
 
 SwiperCore.use([Pagination, Autoplay])
+
+declare global {
+    interface Window {
+        ReactNativeWebView: any; // eslint-disable-line
+    }
+}
 
 function AppRoute() {
     const [script, setScript] = useState('');
     const location = useLocation()
     const customScript = useScript(script)
-    const { isIE } = useUserAgent()
+    const {isIE} = useUserAgent()
 
     const getPathname = () => {
         let pathname = 5
@@ -62,6 +76,9 @@ function AppRoute() {
             `;
             setScript(script)
         }
+
+        dataLayer({event: 'pageview'})
+        ReactPixel.pageView()
     }, [location.pathname])
 
     useEffect(() => {
@@ -74,38 +91,44 @@ function AppRoute() {
     if (isIE) {
         return (
             <Switch>
-                <Route exact path="/unsupported" component={UnSupported} />
-                <Redirect path="/" to="/unsupported" />
+                <Route exact path="/unsupported" component={UnSupported}/>
+                <Redirect path="/" to="/unsupported"/>
             </Switch>
         )
     } else {
         return (
             <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/partner/list" component={PartnerList} />
-                <Route exact path="/partner/detail/:username" component={PartnerDetail} />
+                <Route exact path="/" component={Home}/>
+                <Route exact path="/partner/list" component={PartnerList}/>
+                <Route exact path="/partner/detail/:adminId" component={PartnerDetail}/>
                 <Route exact path="/partner/cart" component={PartnerCart}/>
-                <Route exact path="/banner/intro" component={Intro} />
-                <Route exact path="/banner/customer" component={Customer} />
-                <Route exact path="/banner/grade" component={Grade} />
-                <Route exact path="/unsupported" component={UnSupported} />
-                <Route exact path="/terms" component={Terms} />
+                <Route exact path="/banner/intro" component={Intro}/>
+                <Route exact path="/banner/customer" component={Customer}/>
+                <Route exact path="/banner/grade" component={Grade}/>
+                <Route exact path="/terms" component={Terms}/>
+                <Route exact path="/requests/completed" component={CompletedPage}/>
+                <Route exact path="/requests/nopartner" component={NoPartnerPage}/>
+                <Route exact path="/requests/noservice" component={NoServicePage}/>
+                <Route exact path="/requests/completed/:adminId" component={CompanyDetail}/>
+                <Route exact path="/error" component={ErrorService}/>
+                <Route component={NotFound}/>
+
             </Switch>
         )
     }
 }
 
 function App() {
-  return (
-      <>
-          <GlobalStyled />
-          <Provider store={store}>
-              <ConnectedRouter history={browserHistory}>
-                  <AppRoute />
-              </ConnectedRouter>
-          </Provider>
-      </>
-  );
+    return (
+        <>
+            <GlobalStyled/>
+            <Provider store={store}>
+                <ConnectedRouter history={browserHistory}>
+                    <AppRoute/>
+                </ConnectedRouter>
+            </Provider>
+        </>
+    );
 }
 
 export default App;

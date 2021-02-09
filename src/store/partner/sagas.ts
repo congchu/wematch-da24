@@ -3,10 +3,19 @@ import { ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
 import * as request from './requests'
+import {isEmpty} from "lodash";
+import {dataLayer} from "lib/dataLayerUtil";
+import {IPartnerList} from "types/partner";
 
 export function* fetchPartnerListSaga(action: ActionType<typeof actions.fetchPartnerListAsync.request>) {
     try {
         const data = yield call(request.getPartnerList, action.payload.page, action.payload.size, action.payload.idx)
+        if(isEmpty(data.data)) {
+            dataLayer({event: 'partner_inventory', CD5: "noservice_0"})
+        } else {
+            const availableLength = data.data.filter((item:IPartnerList) => item.status !== 'unavailable').length
+            dataLayer({event: 'partner_inventory', CD5: availableLength > 0 ? `showcnt_${availableLength}` : "nopartner_0"})
+        }
         yield put(actions.fetchPartnerListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchPartnerListAsync.failure())
