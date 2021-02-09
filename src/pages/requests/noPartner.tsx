@@ -223,6 +223,8 @@ export default function NoPartner() {
                 CD12: '바로매칭',
             })
             ReactPixel.fbq('track', 'Purchase')
+
+            gtag('event', 'conversion', {'send_to': 'AW-862163644/CmzdCIej6G0QvKWOmwM'})
         }
 
         events({
