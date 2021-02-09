@@ -92,8 +92,8 @@ export function* fetchSignInSaga(action: ActionType<typeof actions.fetchSignInAs
 export function* fetchGetUserSaga(action: ActionType<typeof actions.fetchGetUserAsync.request>) {
     try {
         const {token} = action.payload;
-        const response = yield call(requests.getUser, token);
-        yield put(actions.fetchGetUserAsync.success(response));
+        const { data: { user } } = yield call(requests.getUser, token);
+        yield put(actions.fetchGetUserAsync.success({token, user}));
     } catch(e) {
         deleteCookie('x-wematch-token');
         yield put(actions.fetchGetUserAsync.failure())
@@ -107,7 +107,7 @@ export default function* () {
         takeEvery(actions.fetchVerifyCodeAsync.request, fetchVerifyCodeSaga),
         takeEvery(actions.fetchSignUpAsync.request, fetchSignUpSaga),
         takeEvery(actions.fetchSignInAsync.request, fetchSignInSaga),
-        takeEvery(actions.fetchGetUserAsync.request, fetchGetUserSaga),
+        takeEvery(actions.fetchGetUserAsync.request, fetchGetUserSaga)
     ])
 }
 

@@ -45,7 +45,7 @@ export const fetchGetUserAsync = createAsyncAction(
     'FETCH_GET_USER_REQUEST',
     'FETCH_GET_USER_SUCCESS',
     'FETCH_GET_USER_FAILURE',
-)<{token: string}, IUser, undefined>()
+)<{token: string}, {token: string, user: IUser}, undefined>()
 
 export const selectOrder = createAction('SELECT_ORDER')<{order: types.IOrder}>()
 export const resetOrder = createAction('RESET_ORDER')();

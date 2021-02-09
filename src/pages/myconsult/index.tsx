@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import BottomNav from 'components/common/BottomNav';
 import MainHeader from 'components/common/MainHeader';
 import { useHistory } from 'react-router-dom';
@@ -11,28 +11,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as userSelector from 'store/user/selectors';
 import dayjs from 'dayjs';
 import { IOrder } from 'store/user/types';
+import Button from 'components/common/Button';
+import LoginModal from 'components/common/Modal/LoginModal';
+import { deleteCookie } from 'lib/cookie';
 
 const MyConsult = () => {
     const history = useHistory();
-
     const dispatch = useDispatch();
-
     const isDesktop = useMedia({
         minWidth: 1200,
     })
+    const [visibleLoginModal, setVisibleLoginModal] = useState(false);
 
     const handleLogout = () => {
-        //TODO: add logout logic
-
+        dispatch(userActions.signOut());
+        deleteCookie('x-wematch-token');
         history.replace('/');
     }
 
     const { data: { name, phone, clean_orders, move_orders, past_orders }, loading } = useSelector(userSelector.getConsult);
-
+    const { user, token } = useSelector(userSelector.getUser);
 
     useEffect(() => {
-        dispatch(userActions.fetchUserConsultAsync.request({ name: '이장희', phone: '01053063796' }))
-    }, [dispatch])
+        if(token && user) {
+            dispatch(userActions.fetchUserConsultAsync.request({ name: user.name, phone: user.tel }))
+        }
+    }, [dispatch, token, user])
 
 
     const handleSelectConsult = (order: IOrder) => {
@@ -43,6 +47,23 @@ const MyConsult = () => {
     // TODO: 로딩 디자인 필요
     if(loading) {
       return <Container>로딩중입니다...</Container>
+    }
+
+    if(!user) {
+        return (
+            <Container>
+                {isDesktop && <MainHeader isFixed={true} border={true}/>}
+                <LoginContent>
+                    <LoginWrapper>
+                        <strong>쉽고, 빠르게 로그인/가입하기</strong>
+                        <p>로그인 또는 가입을 하시면 무료 견적상담 및 <br/> 내 신청내역 기능을 자유롭게 이용하실 수 있어요!</p>
+                    </LoginWrapper>
+                    <Button theme="primary" border={true} bold={true} onClick={() => setVisibleLoginModal(true)}>로그인/가입</Button>               
+                </LoginContent>
+                <BottomNav />
+                <LoginModal visible={visibleLoginModal} onClose={() => setVisibleLoginModal(!visibleLoginModal)} onSuccess={() => setVisibleLoginModal(!visibleLoginModal)}/>
+            </Container>
+        )
     }
 
     return (
@@ -66,7 +87,7 @@ const MyConsult = () => {
                         <ContentList>
                             {
                                 clean_orders.length === 0 ? <FindCard title="입주/이사청소" link="https://wematch.com/clean_step_01.asp" /> :
-                                    clean_orders.map((order) => <ConsultCard handleSelectConsult={() => handleSelectConsult(order)} key={order.idx} category={'clean'} link={'/myconsult/detail'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
+                                    clean_orders.map((order: IOrder) => <ConsultCard handleSelectConsult={() => handleSelectConsult(order)} key={order.idx} category={'clean'} link={'/myconsult/detail'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
                             }
                         </ContentList>
                     </ContentSection>
@@ -77,8 +98,8 @@ const MyConsult = () => {
                         </ContentSubTitle>
                         <ContentList>
                             {
-                                move_orders.length === 0 ? <FindCard title="이사" link="https://wematch.com/clean_step_01.asp" /> :
-                                    move_orders.map((order) => <ConsultCard handleSelectConsult={() => handleSelectConsult(order)} key={order.idx} category={'move'} link={'/myconsult/detail'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
+                                move_orders.length === 0 ? <FindCard title="이사" link="/" /> :
+                                    move_orders.map((order: IOrder) => <ConsultCard handleSelectConsult={() => handleSelectConsult(order)} key={order.idx} category={'move'} link={'/myconsult/detail'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
                             }
                         </ContentList>
                     </ContentSection>
@@ -94,7 +115,7 @@ const MyConsult = () => {
                         ) : (
                                 <ContentList style={{ paddingTop: 24, paddingBottom: 40 }}>
                                     {
-                                        past_orders.map(order => <ConsultCard key={order.idx} link={'/myconsult/detail'} category={order.type.includes('이사') ? 'clean' : 'move'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} handleSelectConsult={() => handleSelectConsult(order)} />)
+                                        past_orders.map((order: IOrder) => <ConsultCard key={order.idx} link={'/myconsult/detail'} category={order.type.includes('이사') ? 'clean' : 'move'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} handleSelectConsult={() => handleSelectConsult(order)} />)
                                     }
                                 </ContentList>
                             )
@@ -175,6 +196,27 @@ const Content = styled.div`
       }
 `
 
+const LoginContent = styled.div`
+position: relative;
+padding: 0px 24px;
+
+@media (min-width: 1200px) {
+    max-width: 312px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    padding: 0;
+    box-shadow: none;
+    padding-top: 50px;
+    strong {
+        text-align: center;
+    }
+
+    p {
+        text-align: center;
+    }
+  }
+`
+
 const Wrapper = styled.div`
     width: 100%;
     padding-top: 24px;
@@ -230,6 +272,27 @@ const NoContent = styled.div`
     font-size: 16px;
     line-height: 24px;
     color: ${colors.gray99};
+`;
+
+const LoginWrapper = styled.div`
+    padding-top: 78px;
+    margin-bottom: 84px;
+    strong {
+        display: block;
+        font-weight: bold;
+        font-size: 20px;
+        color: ${colors.gray33};
+        line-height: 27px;
+        letter-spacing: -0.02rem;
+        margin-bottom: 17px;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 22px;
+        letter-spacing: -0.5px;
+        color: ${colors.gray66};
+    }
 `;
 
 const LogoutWrapper = styled.div`
