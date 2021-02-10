@@ -3,9 +3,9 @@ import { ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
 import * as request from './requests'
-import {isEmpty} from "lodash";
-import {dataLayer} from "lib/dataLayerUtil";
-import {IPartnerList} from "types/partner";
+import {isEmpty} from 'lodash'
+import {dataLayer} from 'lib/dataLayerUtil'
+import {IPartnerList} from 'types/partner'
 
 export function* fetchPartnerListSaga(action: ActionType<typeof actions.fetchPartnerListAsync.request>) {
     try {
@@ -33,30 +33,41 @@ export function* fetchPartnerMoreListSaga(action: ActionType<typeof actions.fetc
 
 export function* fetchPartnerDetailSaga(action: ActionType<typeof actions.fetchPartnerDetailAsync.request>) {
     try {
-        const data = yield call(request.getPartnerDetail, action.payload.username, action.payload.idx)
+        const data = yield call(request.getPartnerDetail, action.payload.adminId, action.payload.idx)
         yield put(actions.fetchPartnerDetailAsync.success(data))
     } catch (e) {
         yield put(actions.fetchPartnerDetailAsync.failure())
     }
 }
 
+export function* fetchPartnerDetailForCompletedSaga(action: ActionType<typeof actions.fetchPartnerDetailCompAsync.request>) {
+    try {
+        const data = yield call(request.getPartnerDetailForCompleted, action.payload.adminId)
+        yield put(actions.fetchPartnerDetailCompAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchPartnerDetailCompAsync.failure())
+    }
+}
+
 export function* fetchReviewListSaga(action: ActionType<typeof actions.fetchReviewListAsync.request>) {
     try {
-        const data = yield call(request.getReviewList, action.payload.username, action.payload.page, action.payload.size)
+        const data = yield call(request.getReviewList, action.payload.adminId, action.payload.page, action.payload.size)
         yield put(actions.fetchReviewListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchReviewListAsync.failure())
     }
 }
 
+
 export function* fetchReviewMoreListSaga(action: ActionType<typeof actions.fetchReviewMoreListAsync.request>) {
     try {
-        const data = yield call(request.getReviewList, action.payload.username, action.payload.page, action.payload.size)
+        const data = yield call(request.getReviewList, action.payload.adminId, action.payload.page, action.payload.size)
         yield put(actions.fetchReviewMoreListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchReviewMoreListAsync.failure())
     }
 }
+
 
 export function* fetchRecommendedPartnerListSaga(action: ActionType<typeof actions.fetchCartListAsync.request>) {
     try {
@@ -83,6 +94,7 @@ export default function* () {
         takeEvery(actions.fetchReviewListAsync.request, fetchReviewListSaga),
         takeEvery(actions.fetchReviewMoreListAsync.request, fetchReviewMoreListSaga),
         takeEvery(actions.fetchCartListAsync.request, fetchRecommendedPartnerListSaga),
-        takeEvery(actions.fetchMatchingAsync.request, fetchMatchingPartnerSaga)
+        takeEvery(actions.fetchMatchingAsync.request, fetchMatchingPartnerSaga),
+        takeEvery(actions.fetchPartnerDetailCompAsync.request, fetchPartnerDetailForCompletedSaga),
     ])
 }

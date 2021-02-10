@@ -1,4 +1,4 @@
-export type Level = 'S' | 'A' | 'B' | 'C' | 'NEW';
+export type Level = 'S' | 'A' | 'B' | 'C' | 'NEW' ;
 export type Grade = 'verygood' | 'good' | 'normal' | 'bad' | 'verybad';
 
 export type IPartnerList = {
@@ -35,6 +35,23 @@ export type IPartnerDetail = {
     adminname: string;
     addition?: string;
     adminid?: string;
+}
+
+export type IPartnerDetailForCompleted = {
+    adminname: string;
+    adminid: string
+    experience: number;
+    pick_cnt: number;
+    feedback_cnt: number;
+    level: Level;
+    level_text: string;
+    meta: boolean;
+    id: number | null;
+    title: string;
+    description: string;
+    addition?: string;
+    profile_img: string;
+    keywords: string[];
 }
 
 export type IReview = {

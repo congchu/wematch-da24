@@ -22,6 +22,19 @@ const S = {
 			padding-left:272px;
 		}
 	`,
+	CenterContainer: styled.div`
+
+		&:nth-child(1) {
+       * {
+        		border: none;
+        }
+    }
+		@media screen and (min-width:1200px) {
+			width:720px;
+			margin:0 auto;
+			padding-left:0px;
+		}
+	`,
 	Wrap: styled.div`
 		margin:0 24px 24px;
 		border-top:1px solid #d7dbe2;
@@ -181,7 +194,7 @@ interface Props {
 	star: number;
 }
 
-const  Review = ({ id, created_at, memo, reply, professional, kind, price, star }: Props) => {
+const Review = ({ id, created_at, memo, reply, professional, kind, price, star }: Props) => {
 	const isDesktop = useMedia({
 		minWidth: 1200,
 	})
@@ -226,57 +239,56 @@ const  Review = ({ id, created_at, memo, reply, professional, kind, price, star 
 		setMore(!more)
 	}
 
+
 	return (
-		<S.Container>
-			<S.Wrap>
-				<S.UserInfo>
-					<strong>고객번호 {id}</strong>
-					<span>{getCreatedAt(created_at)}</span>
-				</S.UserInfo>
-				 <S.Grade>
-					<S.StarFill star={star}>
-						<span className="fill"></span>
-					</S.StarFill>
-					<S.Emotion>
-						<ul>
-							<li>
-								전문성 <span>{handleLevelText(professional)}</span>
-							</li>
-							<li>
-								친절도 <span>{handleLevelText(kind)}</span>
-							</li>
-							<li>
-								가격도 <span>{handleLevelText(price)}</span>
-							</li>
-						</ul>
-					</S.Emotion>
-				</S.Grade>
-				<S.Review>
-						<S.ReviewText>{memoText(memo)}</S.ReviewText>
-						{(memo.length >= 45 || isMobile) && (
-							<>
-								{more ? (
-									<S.MoreReview onClick={handleMore}>
-										접기
-										<UpArrow width={16} height={16} />
-									</S.MoreReview>
-								) : (
-									<S.MoreReview onClick={handleMore}>
-										더보기
-										<DownArrow width={16} height={16} />
-									</S.MoreReview>
-								)}
-							</>
+		<S.Wrap>
+			<S.UserInfo>
+				<strong>고객번호 {id}</strong>
+				<span>{getCreatedAt(created_at)}</span>
+			</S.UserInfo>
+			<S.Grade>
+				<S.StarFill star={star}>
+					<span className="fill"></span>
+				</S.StarFill>
+				<S.Emotion>
+					<ul>
+						<li>
+							전문성 <span>{handleLevelText(professional)}</span>
+						</li>
+						<li>
+							친절도 <span>{handleLevelText(kind)}</span>
+						</li>
+						<li>
+							가격도 <span>{handleLevelText(price)}</span>
+						</li>
+					</ul>
+				</S.Emotion>
+			</S.Grade>
+			<S.Review>
+				<S.ReviewText>{memoText(memo)}</S.ReviewText>
+				{(memo.length >= 45 || isMobile) && (
+					<>
+						{more ? (
+							<S.MoreReview onClick={handleMore}>
+								접기
+								<UpArrow width={16} height={16} />
+							</S.MoreReview>
+						) : (
+							<S.MoreReview onClick={handleMore}>
+								더보기
+								<DownArrow width={16} height={16} />
+							</S.MoreReview>
 						)}
-				</S.Review>
-				{reply && (
-					<S.Answer>
-						<strong>이사업체 답변</strong>
-						<p>{reply}</p>
-					</S.Answer>
+					</>
 				)}
-			</S.Wrap>
-		</S.Container>
+			</S.Review>
+			{reply && (
+				<S.Answer>
+					<strong>이사업체 답변</strong>
+					<p>{reply}</p>
+				</S.Answer>
+			)}
+		</S.Wrap>
 	)
 }
 

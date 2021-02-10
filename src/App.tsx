@@ -22,10 +22,10 @@ import Customer from 'pages/banner/Customer'
 import Grade from 'pages/banner/Grade'
 import UnSupported from 'pages/unsupported'
 import Terms from 'pages/terms'
-import CompletedPage from 'pages/requests/completed'
-import NoServicePage from 'pages/requests/noService'
-import NoPartnerPage from 'pages/requests/noPartner'
-import CompanyDetail from 'pages/company/Detail/index'
+import CompletedPage from 'pages/requests/Completed'
+import NoServicePage from 'pages/requests/NoService'
+import NoPartnerPage from 'pages/requests/NoPartner'
+import RequestPartnerDetail from 'pages/requests/Detail/index'
 import NotFound from 'pages/notFound'
 import ErrorService from 'pages/errorService'
 
@@ -112,7 +112,7 @@ function AppRoute() {
                 <Route exact path="/requests/completed" component={CompletedPage}/>
                 <Route exact path="/requests/nopartner" component={NoPartnerPage}/>
                 <Route exact path="/requests/noservice" component={NoServicePage}/>
-                <Route exact path="/requests/completed/:adminId" component={CompanyDetail}/>
+                <Route exact path="/requests/completed/:adminId" component={RequestPartnerDetail}/>
                 <Route exact path="/error" component={ErrorService}/>
                 <Route component={NotFound}/>
 
