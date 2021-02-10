@@ -602,6 +602,7 @@ const Guide = styled.div`
         a{
           color: #333;
           text-decoration: none;
+          display: none;
 
           @media screen and (min-width: 768px){
             display: block;
