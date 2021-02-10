@@ -949,7 +949,7 @@ const Funnel = [
 *   - 유입경로 : 기타(직접입력) 선택시, 하단에 직접입력 input 추가 필요 (주석)
 *   - 체크박스 : onChange/checked 추가
 * - 위매치 다이사 소개서 : 아이콘 변경 필요 (임시: SvgSearch -> *다운로드 아이콘*)
-* - 링크 복사하기 버튼
+* - 링크 복사하기 버튼 : 주소 변경 필요 copyToClipboard
 *
 * Check : font-weight 500 없어서 600으로 대체
 * */
@@ -980,6 +980,19 @@ function PartnerRegisterPage() {
     const selectSido = (data: string) => {
         setSido(data)
     }
+
+
+    const copyToClipboard = () => {
+        const textarea = document.createElement('textarea');
+        document.body.appendChild(textarea);
+        /***** 새로운 주소로 변경 필요 ****/
+        textarea.value = 'https://wematch.com/partnernew.asp';
+        textarea.select();
+        textarea.setSelectionRange(0, 99999);
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('복사되었습니다.')
+    };
 
     return (
         <Layout title='파트너 등록문의' subTitle={<>좋은 서비스를 제공할 수 있는<br/>이사/청소업체 사장님을 모십니다</>}>
@@ -1203,8 +1216,8 @@ function PartnerRegisterPage() {
                         <p>위매치다이사를 <span>다른 사장님들께도 </span>알려주세요!</p>
                         <ul>
                             <li>
-                                {/*링크복사 나중에 새로운 주소로 넣어주어야함! => 리액트 방식으로 변경 필요 */}
-                                <a href="javascript:void(0);" data-clipboard-text="https://wematch.com/partnernew.asp">
+                                {/***** 링크복사 나중에 새로운 주소로 넣어주세요 *****/}
+                                <a onClick={()=> copyToClipboard()}>
                                     <img
                                         src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/sns_link.png"
                                         alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,링크복사"/><span>링크복사<span
