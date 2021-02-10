@@ -14,7 +14,6 @@ import * as colors from 'styles/colors'
 import {gray33, gray66, pointBlue} from 'styles/colors';
 
 
-
 const CustomSwiper = styled(Swiper)`
   .swiper-pagination-bullets {
     display: block;
@@ -598,6 +597,38 @@ const Guide = styled.div`
           line-height: 16px;
           letter-spacing: -1px;
         }
+        
+        
+        a{
+          color: #333;
+          text-decoration: none;
+
+          @media screen and (min-width: 768px){
+            display: block;
+            margin-top: 20px;
+            padding: 5px;
+            font-size: 15px;
+            //font-weight: 500; 
+            font-weight: 600;
+            line-height: normal;
+            letter-spacing: -1px;
+          }
+
+          @media screen and (min-width: 1200px){
+            display: block !important;
+          }
+          svg {
+            width: 24px;
+            height: 24px;
+            background-position: -376px -16px;
+            @media screen and (min-width: 768px){
+              margin-top: -4px;
+              margin-left: 10px;
+              vertical-align: middle;
+            }
+          }
+          
+        }
 
       }
 
@@ -912,9 +943,14 @@ const Funnel = [
 
 /*
 * FEB 2020
+* 추후 아래 작업 필요
+* - Form : 스토어 이용하여 작업 처리
+*   - 유입경로 : 기타(직접입력) 선택시, 하단에 직접입력 input 추가 필요 (주석)
+*   - 체크박스 : onChange/checked 추가
+* - 위매치 다이사 소개서 : 아이콘 변경 필요 (임시: SvgSearch -> *다운로드 아이콘*)
+* - 링크 복사하기 버튼
 *
-*
-*
+* Check : font-weight 500 없어서 600으로 대체
 * */
 function PartnerRegisterPage() {
 
@@ -1057,16 +1093,16 @@ function PartnerRegisterPage() {
                             <li>
                                 <strong>이사업체</strong>
                                 <p>사업자등록증, 견적서 양식, 명함</p>
-                                <a href="pdf/da24_application_form_20190102a.pdf"
-                                   download=""
-                                   title="신규등록서">신규업체 등록신청서<span></span></a>
+                                <a href="/pdf/da24_application_form_20190102a.pdf"
+                                   download
+                                   title="신규등록서">신규업체 등록신청서<SvgSearch/></a>
                             </li>
                             <li>
                                 <strong>청소업체</strong>
                                 <p>사업자등록증, 명함</p>
-                                <a href="pdf/clean_application_form_20190102a.pdf"
-                                   download=""
-                                   title="신규등록서">신규업체 등록신청서<span></span></a>
+                                <a href="/pdf/clean_application_form_20190102a.pdf"
+                                   download
+                                   title="신규등록서">신규업체 등록신청서<SvgSearch/></a>
                             </li>
                         </ul>
                     </div>
@@ -1118,7 +1154,10 @@ function PartnerRegisterPage() {
                                     }}/>
                     </S.TextContainer>
                     <Terms.NewLink>
-                        <Checkbox label="이용약관 및 개인정보처리방침 동의"/>
+                        <Checkbox label="이용약관 및 개인정보처리방침 동의"
+                                  // checked={}
+                                  // onChange={}
+                        />
                         <a onClick={() => setVisibleTerms(true)}>보기</a>
                     </Terms.NewLink>
                     <S.Button theme={"primary"}>확인</S.Button>
