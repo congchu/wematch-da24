@@ -395,6 +395,8 @@ export default function CompletedPage() {
             ReactPixel.fbq('track', 'Purchase')
 
             TenpingScript.SendConversion()
+
+            gtag('event', 'conversion', {'send_to': 'AW-862163644/CmzdCIej6G0QvKWOmwM'})
         }
     }, [getSubmittedForm])
 
