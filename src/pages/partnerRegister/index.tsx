@@ -703,6 +703,7 @@ const Contact = styled.div`
         width: 608px;
         margin: 62px auto 52px;
         padding: 62px 0 52px;
+        
       }
 
 
@@ -851,10 +852,6 @@ const Share = styled.div`
   }
 `
 
-
-
-
-/* Terms */
 const Terms = {
     NewLink: styled.div`
       margin-top: 20px;
@@ -881,7 +878,8 @@ const Terms = {
 /* Modal Selection */
 const Category = [
     {key: '이사', value: '이사'},
-    {key: '청소/인테리어', value: '청소/인테리어'},
+    {key: '청소', value: '청소'},
+    {key: '이사+청소', value: '이사+청소'},
 ]
 const Sido = [
     {key: '전국', value: '전국'},
@@ -912,7 +910,12 @@ const Funnel = [
     {key: '기타(직접입력)', value: '기타(직접입력)'}
 ]
 
-
+/*
+* FEB 2020
+*
+*
+*
+* */
 function PartnerRegisterPage() {
 
     const autoPlayOptions = {
