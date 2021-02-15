@@ -7,11 +7,12 @@ import Layout from 'components/base/Layout'
 import Input from 'components/common/Input'
 import Select from 'components/common/Select'
 import TermsModal from 'components/common/Modal/TermsModal'
-import SvgSearch from 'components/wematch-ui/Icon/generated/Search'
 import {Checkbox} from 'components/wematch-ui'
+import {Download} from 'components/Icon'
 
 import * as colors from 'styles/colors'
 import {gray33, gray66, pointBlue} from 'styles/colors';
+
 
 
 const CustomSwiper = styled(Swiper)`
@@ -604,19 +605,16 @@ const Guide = styled.div`
           text-decoration: none;
           display: none;
 
-          @media screen and (min-width: 768px){
-            display: block;
-            margin-top: 20px;
-            padding: 5px;
-            font-size: 15px;
-            //font-weight: 500; 
-            font-weight: 600;
-            line-height: normal;
-            letter-spacing: -1px;
-          }
-
           @media screen and (min-width: 1200px){
             display: block !important;
+              margin-top: 20px;
+              padding: 5px;
+              font-size: 15px;
+              //font-weight: 500; 
+              font-weight: 600;
+              line-height: normal;
+              letter-spacing: -1px;
+            
           }
           svg {
             width: 24px;
@@ -948,7 +946,6 @@ const Funnel = [
 * - Form : 스토어 이용하여 작업 처리
 *   - 유입경로 : 기타(직접입력) 선택시, 하단에 직접입력 input 추가 필요 (주석)
 *   - 체크박스 : onChange/checked 추가
-* - 위매치 다이사 소개서 : 아이콘 변경 필요 (임시: SvgSearch -> *다운로드 아이콘*)
 * - 링크 복사하기 버튼 : 주소 변경 필요 copyToClipboard
 *
 * Check : font-weight 500 없어서 600으로 대체
@@ -1109,14 +1106,14 @@ function PartnerRegisterPage() {
                                 <p>사업자등록증, 견적서 양식, 명함</p>
                                 <a href="/pdf/da24_application_form_20190102a.pdf"
                                    download
-                                   title="신규등록서">신규업체 등록신청서<SvgSearch/></a>
+                                   title="신규등록서">신규업체 등록신청서<Download/></a>
                             </li>
                             <li>
                                 <strong>청소업체</strong>
                                 <p>사업자등록증, 명함</p>
                                 <a href="/pdf/clean_application_form_20190102a.pdf"
                                    download
-                                   title="신규등록서">신규업체 등록신청서<SvgSearch/></a>
+                                   title="신규등록서">신규업체 등록신청서<Download/></a>
                             </li>
                         </ul>
                     </div>
@@ -1183,13 +1180,13 @@ function PartnerRegisterPage() {
                         <li>
                             <a href="https://da24.wematch.com/pdf/da24_introduction.pdf" target="_blank"
                                title="위매치다이사 이사 소개서">
-                                위매치다이사 이사 소개서<SvgSearch/>
+                                위매치다이사 이사 소개서<Download/>
                             </a>
                         </li>
                         <li>
                             <a href="https://da24.wematch.com/pdf/clean_introduction.pdf" target="_blank"
                                title="위매치다이사 청소 소개서">
-                                위매치다이사 청소 소개서<SvgSearch/>
+                                위매치다이사 청소 소개서<Download/>
                             </a>
                         </li>
                     </ul>
