@@ -1,4 +1,4 @@
- import React, { memo, useCallback } from 'react'
+import React, { memo, useCallback } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useCountUp } from 'react-countup'
 
