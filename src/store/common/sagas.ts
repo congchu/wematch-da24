@@ -5,7 +5,7 @@ import * as requests from './requests'
 
 export function* fetchAddressListSaga(action: ActionType<typeof actions.fetchAddressListAsync.request>) {
     try {
-        const data = yield call(requests.getAddress, action.payload.dong)
+        const {data} = yield call(requests.getAddress, action.payload.dong)
         yield put(actions.fetchAddressListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchAddressListAsync.failure())

@@ -4,10 +4,7 @@ import * as types from './types'
 import {API_MIDDLEWARE_URL,API_MESSAGE_URL} from "constants/env";
 
 export const getAddress = async (dong: string) => {
-    const { data } = await api.request<types.RequestAddressProps[]>({
-        method: 'get',
-        url: `/async/address?district=${dong}`
-    })
+    const { data } = await axios.get(`${API_MIDDLEWARE_URL}/address?district=${dong}`)
 
     return data
 }
