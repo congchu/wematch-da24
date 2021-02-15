@@ -3,8 +3,8 @@ import styled, { css } from 'styled-components'
 import Layout from 'components/base/Layout'
 
 // 아이콘 수정 필요
+import {Download} from 'components/Icon'
 import {CheckCircleOff, CheckCircleOn} from 'components/wematch-ui/Icon'
-import SvgSearch from 'components/wematch-ui/Icon/generated/Search'
 import {useRouter} from "../../hooks/useRouter";
 
 const S = {
@@ -133,7 +133,7 @@ const S = {
 
 /*
 * FEB 2020
-* 그래프 라인 위에 도트 아이콘 , 다운로드 아이콘 나오면 svg(span) 및 스타일 속성 수정 필요
+* 그래프 라인 위에 도트 아이콘 수정필요
 * */
 
 function ChecklistPage() {
@@ -158,20 +158,20 @@ function ChecklistPage() {
                             <strong>이사 1달 전</strong>
                             <p>이사/청소업체를 알아볼 시기입니다.<br/>업체평가등급을 확인하고 방문견적까지 꼼꼼하게 받아보세요.</p>
                             <p>견적상담 시 체크리스트를 확인해 보세요.</p>
-                            <a onClick={()=> {router.history.push('/checklist/moveestimation')}}><SvgSearch/>이사 견적 시</a>
-                            <a onClick={()=> {router.history.push('/checklist/cleanestimation')}}><SvgSearch/>청소 견적 시</a>
+                            <a onClick={()=> {router.history.push('/checklist/moveestimation')}}><Download/>이사 견적 시</a>
+                            <a onClick={()=> {router.history.push('/checklist/cleanestimation')}}><Download/>청소 견적 시</a>
                         </li>
                         <li>
                             <span><CheckCircleOff/></span>
                             <strong>이사 1주 전</strong>
                             <p>가져갈 짐/버릴 짐 구분, 가스차단, 공과금 납부 등 놓치기 쉬운 사소한 일들을 잘 체크해주세요.</p>
-                            <a onClick={()=> {router.history.push('/checklist/moveprep')}}><SvgSearch/>이사준비 체크리스트</a>
+                            <a onClick={()=> {router.history.push('/checklist/moveprep')}}><Download/>이사준비 체크리스트</a>
                         </li>
                         <li>
                             <span><CheckCircleOff/></span>
                             <strong>청소 당일</strong>
                             <p>청소 마무리 후 점검사항을 꼼꼼히 검수하세요.</p>
-                            <a onClick={()=> {router.history.push('/checklist/cleancheck')}}><SvgSearch/>점검사항</a>
+                            <a onClick={()=> {router.history.push('/checklist/cleancheck')}}><Download/>점검사항</a>
                         </li>
                         <li>
                             <span><CheckCircleOff/></span>
