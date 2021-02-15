@@ -281,39 +281,6 @@ const MoveInput: React.FC<Props> = (props) => {
                         }
                     }} />
                 )}
-                {/* TODO: 회원가입 로직 추가로 인해 로직 변경 예정 */}
-                {/* 
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                    <Input theme="default" border placeholder="이름" rootStyle={{ width: "49%", marginRight: "2%" }}
-                        maxLength={20} onChange={(e) => dispatch(formActions.setName(e.target.value))} value={getName}
-                        style={{ backgroundColor: "transparent" }} onBlur={(e) => {
-                            if (getName.length > 2) {
-                                dataLayer({
-                                    event: 'input_info',
-                                    category: '다이사_메인_입력창_1',
-                                    label: '고객명',
-                                    action: '이름',
-                                    CD6: getMoveTypeText()
-                                })
-                            }
-                        }}
-                    />
-                    <Input theme="default" type="tel" pattern="[0-9]*" inputMode="numeric"
-                        placeholder="연락처(-없이 입력)" border rootStyle={{ width: "49%" }} maxLength={13} value={getPhone} onChange={handlePhone}
-                        style={{ backgroundColor: "transparent" }} onBlur={(e) => {
-                            if (getPhone.length > 2) {
-                                dataLayer({
-                                    event: 'input_info',
-                                    category: '다이사_메인_입력창_1',
-                                    label: '전화번호',
-                                    action: '연락처',
-                                    CD6: getMoveTypeText()
-                                })
-                            }
-                        }}
-                    />
-                </div>
-                */}
                 {getMoveAddress?.end && (
                     <S.TextContainer>
                         <S.Textarea placeholder="업체 전달할 내용(선택)" onChange={(e) => {

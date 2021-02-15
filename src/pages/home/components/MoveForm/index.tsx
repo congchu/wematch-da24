@@ -289,7 +289,6 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
         user ? handleSubmit(submitType) : setVisibleLogin(true);
     }
 
-    //TODO: 회원가입 로직 변경에 따른 submit 시점 변경
     const handleSubmit = (submitType: 'curation' | 'select') => {
 
         let result = false
