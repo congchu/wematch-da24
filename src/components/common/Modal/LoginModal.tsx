@@ -16,6 +16,8 @@ import TermsModal from './TermsModal';
 import NewModal from 'components/NewModalTemplate';
 import getMobileOS from 'lib/getMobileOS';
 import { EInitService } from 'types/auth';
+import { dataLayer } from 'lib/dataLayerUtil';
+
 
 interface Props {
     visible: boolean;
@@ -85,6 +87,26 @@ const LoginModal: React.FC<Props> = (props) => {
         }))
     }
 
+    const handleLoginCancel = () => {
+        dataLayer({
+            event: 'login',
+            category: '로그인취소_팝업',
+            action: '로그인취소',
+            label: '취소'
+        })
+        handleModalClose();
+    }
+
+    const handleLoginConfirm = () => {
+        dataLayer({
+            event: 'login',
+            category: '로그인취소_팝업',
+            action: '계속진행',
+            label: '계속진행하기'
+        })
+        setVisibleCancel(!visibleCancel);
+    }
+
     useEffect(() => {
         const handleResize = () => {
             if (mobileOS === 'Android') {
@@ -129,10 +151,10 @@ const LoginModal: React.FC<Props> = (props) => {
 
     return createPortal((
         <PopupTemplate visible={visible} onClose={() => setVisibleCancel(true)} pcHeight={640}>
-            <LoginModalWrapper>
+            <LoginModalWrapper id={'dsl_login_popup'}>
                 <div style={{ width: '100%' }}>
                     <TextWrppaer>
-                        <strong>로그인/가입</strong>
+                        <strong>번호인증</strong>
                         <p>
                             업체와의 <span>견적상담신청/내신청내역 확인</span>을 위해<br />
                             <span>번호인증</span>이 필요해요. (최초 1회만 인증)
@@ -142,11 +164,31 @@ const LoginModal: React.FC<Props> = (props) => {
                         <Input theme="default" border placeholder="이름" maxLength={20}
                             onChange={(e) => setName(e.target.value)} value={name}
                             style={{ backgroundColor: isVerified ? '' : "transparent" }}
+                            onBlur={(e) => {
+                                if(e.target.value.length >= 2) {
+                                    dataLayer({
+                                        event: 'login',
+                                        category: '로그인_팝업',
+                                        action: '이름',
+                                        label: '회원명'
+                                    })
+                                }
+                            }}
                         />
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Input theme="default" border placeholder="휴대폰 번호(-없이)" pattern="[0-9]*" inputMode="numeric"
                                 value={phone} onChange={handlePhone} style={{ backgroundColor: isVerified ? '' : "transparent" }} rootStyle={{ flex: 1 }} maxLength={11}
                                 disabled={!!isVerified}
+                                onBlur={(e) => {
+                                    if(e.target.value.length >= 2) {
+                                        dataLayer({
+                                            event: 'login',
+                                            category: '로그인_팝업',
+                                            action: '휴대폰번호',
+                                            label: '회원연락처'
+                                        })
+                                    }
+                                }}
                             />
                             <Button theme="primary" disabled={isAuth} style={{ width: "90px", marginLeft: '7px', borderRadius: '4px' }}
                                 onClick={handleSubmit} bold={true}>
@@ -160,6 +202,16 @@ const LoginModal: React.FC<Props> = (props) => {
                                     onChange={(e) => { setCode(e.target.value) }}
                                     style={{ backgroundColor: !isSendMessage || isVerified ? '' : "transparent", borderColor: isVerified === false ? '#EC485C' : '' }} inputRef={verifyRef}
                                     disabled={!isSendMessage || !!isVerified}
+                                    onBlur={(e) => {
+                                        if(e.target.value.length >= 2) {
+                                            dataLayer({
+                                                event: 'login',
+                                                category: '로그인_팝업',
+                                                action: '인증번호',
+                                                label: '인증번호입력'
+                                            })
+                                        }
+                                    }}
                                 />
                                 <CounterWrapper>
                                     <span>{isSendMessage && displayCount(counter)}</span>
@@ -190,7 +242,9 @@ const LoginModal: React.FC<Props> = (props) => {
             {/*인증번호 초과 모달*/}
             <NewModal visible={visibleTimeout} title={"인증번호 입력시간 초과"} content={"인증번호 입력가능시간이 초과 되었습니다. 인증번호를 다시 받아주세요!"} confirmText={"확인"} confirmClick={() => { setVisibleTimeout(!visibleTimeout); setIsTimeout(true) }} />
             {/*로그인/가입 취소 모달*/}
-            <NewModal visible={visibleCancel} title={"번호인증 취소"} content={`번호인증을 취소하시면 견적상담신청 및 내신청내역을 확인할 수 없습니다.\n취소하시겠어요?`} confirmText={"인증 진행하기"} cancelText={"취소"} cancelClick={() => handleModalClose()} confirmClick={() => setVisibleCancel(!visibleCancel)} />
+            <NewModal visible={visibleCancel} title={"번호인증 취소"} content={`번호인증을 취소하시면 견적상담신청 및 내신청내역을 확인할 수 없습니다.\n취소하시겠어요?`} confirmText={"인증 진행하기"} cancelText={"취소"} cancelClick={handleLoginCancel} confirmClick={handleLoginConfirm} 
+            tags={{cancel: 'dsl_logincancel_cancel', success: 'dsl_logincancel_continue'}}
+            />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
         </PopupTemplate>
     ),

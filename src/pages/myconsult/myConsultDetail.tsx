@@ -13,6 +13,8 @@ import MainHeader from 'components/common/MainHeader'
 import { useMedia } from 'react-use-media';
 import { useHistory } from 'react-router-dom';
 import ToastPopup from 'components/wematch-ui/ToastPopup';
+import { dataLayer } from 'lib/dataLayerUtil';
+import { IPartnerDetail } from 'types/partner';
 
 
 const S = {
@@ -315,7 +317,7 @@ const MyConsultDetail = () => {
                             이용 고객이 평가한 내용으로 산출한 빅 데이터 등급입니다.
                         </S.LevelInfoBox>
         <S.CompanyList>
-          {selectedOrder?.partners.map((list, index) => (
+          {selectedOrder?.partners.map((list: IPartnerDetail, index:number, arr: IPartnerDetail[]) => (
             <li key={index}>
               <S.ListBox>
                 {list.level === 'NEW' && <LevelN />}
@@ -329,7 +331,18 @@ const MyConsultDetail = () => {
                 </S.CompanyTitle>
               </S.ListBox>
               <S.LinkCompany onClick={() => {
-                window.location.href = `${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`
+                new Promise(() => {
+                  dataLayer({
+                    event: 'complete',
+                    category: '내신청내역_상세',
+                    action: '고객평가_확인',
+                    label: `${arr.length}_${index}`,
+                    CD6: selectedOrder.type,
+                    CD8: `${list.level}등급`
+                  })
+                }).then(() => {
+                  window.location.href = `${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`
+                })
               }}>
                 <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
                                     </S.LinkCompany>

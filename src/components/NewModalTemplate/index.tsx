@@ -114,9 +114,13 @@ interface Props {
   confirmText?: string;
   cancelText?: string;
   cancelClick?: () => void;
+  tags?: {
+    cancel?: string;
+    success?: string;
+  }
 }
 const NewModal: React.FC<Props> = (props) => {
-  const { visible, children, title, content, confirmText, cancelText, confirmClick, cancelClick } = props
+  const { visible, children, title, content, confirmText, cancelText, confirmClick, cancelClick, tags } = props
 
   useEffect(() => {
     if (visible) {
@@ -144,6 +148,7 @@ const NewModal: React.FC<Props> = (props) => {
                       cancelClick()
                     }
                   }}
+                  id={tags?.cancel}
                 >{cancelText}</Button>
               )}
               {confirmText && (
@@ -154,7 +159,9 @@ const NewModal: React.FC<Props> = (props) => {
                       confirmClick()
                     }
                   }
-                  }>
+                  }
+                  id={tags?.success}
+                  >
                   {confirmText}</Button>
               )}
             </Footer>

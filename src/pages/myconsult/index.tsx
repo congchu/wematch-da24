@@ -14,10 +14,13 @@ import { IOrder } from 'store/user/types';
 import Button from 'components/common/Button';
 import LoginModal from 'components/common/Modal/LoginModal';
 import { deleteCookie } from 'lib/cookie';
+import { useCookies } from 'react-cookie';
+import { get } from 'lodash';
 
 const MyConsult = () => {
     const history = useHistory();
     const dispatch = useDispatch();
+    const [cookies] = useCookies(['x-wematch-token']);
     const isDesktop = useMedia({
         minWidth: 1200,
     })
@@ -29,8 +32,9 @@ const MyConsult = () => {
         history.replace('/');
     }
 
-    const { data: { name, phone, clean_orders, move_orders, past_orders }, loading } = useSelector(userSelector.getConsult);
+    const { data: { clean_orders, move_orders }, loading } = useSelector(userSelector.getConsult);
     const { user, token } = useSelector(userSelector.getUser);
+    const wematchToken = get(cookies, 'x-wematch-token');
 
     useEffect(() => {
         if(token && user) {
@@ -49,7 +53,7 @@ const MyConsult = () => {
       return <Container>로딩중입니다...</Container>
     }
 
-    if(!user) {
+    if(!user && wematchToken === undefined) {
         return (
             <Container>
                 {isDesktop && <MainHeader isFixed={true} border={true}/>}
@@ -58,7 +62,7 @@ const MyConsult = () => {
                         <strong>쉽고, 빠르게 로그인/가입하기</strong>
                         <p>로그인 또는 가입을 하시면 무료 견적상담 및 <br/> 내 신청내역 기능을 자유롭게 이용하실 수 있어요!</p>
                     </LoginWrapper>
-                    <Button theme="primary" border={true} bold={true} onClick={() => setVisibleLoginModal(true)}>로그인/가입</Button>               
+                    <Button theme="primary" border={true} bold={true} onClick={() => setVisibleLoginModal(true)} id={'dsl_myrequests_gate_button'}>로그인/가입</Button>               
                 </LoginContent>
                 <BottomNav />
                 <LoginModal visible={visibleLoginModal} onClose={() => setVisibleLoginModal(!visibleLoginModal)} onSuccess={() => setVisibleLoginModal(!visibleLoginModal)}/>
@@ -71,12 +75,12 @@ const MyConsult = () => {
             {isDesktop && <MainHeader isFixed={true} />}
             <Header>
                 <div>
-                    <span className="title">{name}</span>
-                    <span className="phone">{`${phone.slice(0, 3)}-****-${phone.slice(7)}`}</span>
+                    <span className="title">{user?.name}</span>
+                    <span className="phone">{`${user?.tel.slice(0, 3)}-****-${user?.tel.slice(7)}`}</span>
                 </div>
             </Header>
             <Content>
-                <Wrapper>
+                <Wrapper id={'dsl_myrequests_list'}>
                     <ContentTitle>내 신청내역</ContentTitle>
                     <Separator />
                     <ContentSection style={{ marginBottom: '16px' }}>
@@ -91,7 +95,7 @@ const MyConsult = () => {
                             }
                         </ContentList>
                     </ContentSection>
-                    <ContentSection>
+                    <ContentSection style={{paddingBottom: 40}}>
                         <ContentSubTitle>
                             <span className="bold">STEP &nbsp; 2</span>
                             <span>&nbsp; &#124; &nbsp;이사</span>
@@ -103,24 +107,6 @@ const MyConsult = () => {
                             }
                         </ContentList>
                     </ContentSection>
-                </Wrapper>
-                <Wrapper>
-                    <ContentTitle>지난 신청내역</ContentTitle>
-                    <Separator />
-                    {
-                        past_orders.length === 0 ? (
-                            <NoContent>
-                                지난 신청내역이 없습니다.
-                            </NoContent>
-                        ) : (
-                                <ContentList style={{ paddingTop: 24, paddingBottom: 40 }}>
-                                    {
-                                        past_orders.map((order: IOrder) => <ConsultCard key={order.idx} link={'/myconsult/detail'} category={order.type.includes('이사') ? 'clean' : 'move'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} handleSelectConsult={() => handleSelectConsult(order)} />)
-                                    }
-                                </ContentList>
-                            )
-                    }
-
                     <Separator />
                     <LogoutWrapper>
                         <button onClick={handleLogout}>로그아웃</button>
