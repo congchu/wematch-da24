@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import Layout from 'components/base/Layout'
 import ReviewItem from './ReviewItem/reviewItem'
-import {Grade} from "../../types/partner";
 
 const S = {
     Container: styled.div`

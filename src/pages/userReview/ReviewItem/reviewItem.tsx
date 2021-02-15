@@ -278,7 +278,7 @@ export default function ReviewItem({ adminid,partnerName, userId, created_at, st
                         </S.StarFill>
                     </S.StarContainer>
                 </S.StarDiv>
-                <S.Reviewer>{userId}님 | {created_at}</S.Reviewer>
+                <S.Reviewer><p>{userId}님 | {created_at}</p></S.Reviewer>
             </S.Grade>
             <S.Review>{reviewContents}</S.Review>
             <S.Reply>
