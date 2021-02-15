@@ -26,6 +26,7 @@ import CompletedPage from 'pages/requests/completed'
 import NoServicePage from 'pages/requests/noService'
 import NoPartnerPage from 'pages/requests/noPartner'
 import CompanyDetail from 'pages/company/Detail/index'
+import UserReviewPage from 'pages/userReview'
 import NotFound from 'pages/notFound'
 import ErrorService from 'pages/errorService'
 
@@ -109,7 +110,8 @@ function AppRoute() {
                 <Route exact path="/requests/completed" component={CompletedPage}/>
                 <Route exact path="/requests/nopartner" component={NoPartnerPage}/>
                 <Route exact path="/requests/noservice" component={NoServicePage}/>
-                <Route exact path="/requests/completed/:adminId" component={CompanyDetail}/>
+                <Route exact path={["/requests/completed/:adminId", "/comment/:adminId"]} component={CompanyDetail}/>
+                <Route exact path="/comment" component={UserReviewPage}/>
                 <Route exact path="/error" component={ErrorService}/>
                 <Route component={NotFound}/>
 
