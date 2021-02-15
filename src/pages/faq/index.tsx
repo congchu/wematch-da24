@@ -2,8 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import Layout from 'components/base/Layout'
-import Collaspe from 'components/common/Collapse'
-import AccordionCollapse from "../../components/common/AccordionCollapse";
+import AccordionCollapse from 'components/common/AccordionCollapse'
 
 export type faqCategory = '공통' | '이사' | '청';
 
