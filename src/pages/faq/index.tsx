@@ -29,7 +29,7 @@ export default function FaqPage() {
                     <br/>
                     소비자평가등급에 대해 보다 자세한 내용은 아래 링크에서 확인해주세요.<br/>
                     <br/>
-                    <a href="https://da24.wematch.com/da24.asp">바로가기 >></a>
+                    <a href="https://wematch.com/banner/grade">바로가기 >></a>
                 </AccordionCollapse>
             </S.TopCollapsedWrap>
 
