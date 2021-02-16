@@ -75,7 +75,7 @@ const S = {
           line-height: 24px;
         }
         .wrap_agree {
-          padding: 55px 24px 60px;
+          padding: 16px 24px 30px;
           font-size: 14px;
           line-height: 22px;
           color: $gray66;
