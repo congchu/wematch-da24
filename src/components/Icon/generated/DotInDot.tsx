@@ -11,16 +11,19 @@ interface IconProps {
 export default class SvgDotInDot extends React.PureComponent<IconProps> {
     public static defaultProps: IconProps = {
         color: '#1672F7',
-        width: 18,
-        height: 18
+        width: 25,
+        height: 25
     };
 
     public render() {
-        return <svg width={this.props.width} height={this.props.height} style={this.props.style} className={this.props.className}
-                    viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill={this.props.color} fill-rule="evenodd" clip-rule="evenodd"
-                  d="M11.3 22.7C17.3751 22.7 22.3 17.7751 22.3 11.7C22.3 5.62487 17.3751 0.7 11.3 0.7C5.22487 0.7 0.3 5.62487 0.3 11.7C0.3 17.7751 5.22487 22.7 11.3 22.7ZM11.25 14.5C12.7688 14.5 14 13.2688 14 11.75C14 10.2312 12.7688 9 11.25 9C9.73122 9 8.5 10.2312 8.5 11.75C8.5 13.2688 9.73122 14.5 11.25 14.5Z"/></svg>;
+        return <svg width={this.props.width} height={this.props.height} style={this.props.style}
+                    className={this.props.className}
+                    viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill={this.props.color} fill-rule="evenodd" clip-rule="evenodd"
+                      d="M12.3 24.7C18.9274 24.7 24.3 19.3274 24.3 12.7C24.3 6.07258 18.9274 0.7 12.3 0.7C5.67258 0.7 0.3 6.07258 0.3 12.7C0.3 19.3274 5.67258 24.7 12.3 24.7ZM12.2455 15.7545C13.9023 15.7545 15.2455 14.4114 15.2455 12.7545C15.2455 11.0977 13.9023 9.75455 12.2455 9.75455C10.5886 9.75455 9.24546 11.0977 9.24546 12.7545C9.24546 14.4114 10.5886 15.7545 12.2455 15.7545Z"/>
+                </svg>;
     }
+
 
 
 }

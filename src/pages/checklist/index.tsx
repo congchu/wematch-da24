@@ -149,7 +149,7 @@ function ChecklistPage() {
                 </S.MobileTitle>
                 <S.ListContainer>
                         <li>
-                            <span><SvgDotInDot/></span>
+                            <span><SvgDotInDot width={17} height={17}/></span>
                             <strong>이사 확정 시</strong>
                             <p>이사가신다고요? 날짜까지 확정하셨나요?</p>
                         </li>
@@ -179,7 +179,7 @@ function ChecklistPage() {
                             <p>포장이사는 업체에 맡기시고 이사준비 체크리스트를 잊지 말고 한 번 더 확인하세요.</p>
                         </li>
                         <li>
-                            <span><SvgDotInDot/></span>
+                            <span><SvgDotInDot width={17} height={17}/></span>
                             <strong>이사한 후</strong>
                             <p>
                                 이사/청소는 잘 하셨나요?<br/>
