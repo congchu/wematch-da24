@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Layout from 'components/base/Layout'
 import AccordionCollapse from 'components/common/AccordionCollapse'
 
-export type faqCategory = '공통' | '이사' | '청';
+export type faqCategory = '공통' | '이사' | '청소';
 
 const S = {
     CollapsedWrap: styled.div `
