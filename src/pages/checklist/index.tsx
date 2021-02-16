@@ -1,11 +1,15 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import Layout from 'components/base/Layout'
+import {useRouter} from 'hooks/useRouter'
 
-// 아이콘 수정 필요
+
+import Layout from 'components/base/Layout'
 import {Download} from 'components/Icon'
-import {CheckCircleOff, CheckCircleOn} from 'components/wematch-ui/Icon'
-import {useRouter} from "../../hooks/useRouter";
+import {CheckCircleOff} from 'components/wematch-ui/Icon'
+import SvgDotInDot from 'components/Icon/generated/DotInDot'
+
+import * as colors from 'styles/colors'
+
 
 const S = {
     Container: styled.div`
@@ -131,10 +135,6 @@ const S = {
     `
 }
 
-/*
-* FEB 2020
-* 그래프 라인 위에 도트 아이콘 수정필요
-* */
 
 function ChecklistPage() {
     const router = useRouter()
@@ -149,12 +149,12 @@ function ChecklistPage() {
                 </S.MobileTitle>
                 <S.ListContainer>
                         <li>
-                            <span><CheckCircleOn/></span>
+                            <span><SvgDotInDot/></span>
                             <strong>이사 확정 시</strong>
                             <p>이사가신다고요? 날짜까지 확정하셨나요?</p>
                         </li>
                         <li>
-                            <span ><CheckCircleOff/></span>
+                            <span ><CheckCircleOff color={colors.pointBlue}/></span>
                             <strong>이사 1달 전</strong>
                             <p>이사/청소업체를 알아볼 시기입니다.<br/>업체평가등급을 확인하고 방문견적까지 꼼꼼하게 받아보세요.</p>
                             <p>견적상담 시 체크리스트를 확인해 보세요.</p>
@@ -162,24 +162,24 @@ function ChecklistPage() {
                             <a onClick={()=> {router.history.push('/checklist/cleanestimation')}}><Download/>청소 견적 시</a>
                         </li>
                         <li>
-                            <span><CheckCircleOff/></span>
+                            <span><CheckCircleOff color={colors.pointBlue}/></span>
                             <strong>이사 1주 전</strong>
                             <p>가져갈 짐/버릴 짐 구분, 가스차단, 공과금 납부 등 놓치기 쉬운 사소한 일들을 잘 체크해주세요.</p>
                             <a onClick={()=> {router.history.push('/checklist/moveprep')}}><Download/>이사준비 체크리스트</a>
                         </li>
                         <li>
-                            <span><CheckCircleOff/></span>
+                            <span><CheckCircleOff color={colors.pointBlue}/></span>
                             <strong>청소 당일</strong>
                             <p>청소 마무리 후 점검사항을 꼼꼼히 검수하세요.</p>
                             <a onClick={()=> {router.history.push('/checklist/cleancheck')}}><Download/>점검사항</a>
                         </li>
                         <li>
-                            <span><CheckCircleOff/></span>
+                            <span><CheckCircleOff color={colors.pointBlue}/></span>
                             <strong>이사 당일</strong>
                             <p>포장이사는 업체에 맡기시고 이사준비 체크리스트를 잊지 말고 한 번 더 확인하세요.</p>
                         </li>
                         <li>
-                            <span><CheckCircleOn/></span>
+                            <span><SvgDotInDot/></span>
                             <strong>이사한 후</strong>
                             <p>
                                 이사/청소는 잘 하셨나요?<br/>
