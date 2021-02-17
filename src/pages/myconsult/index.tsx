@@ -48,9 +48,9 @@ const MyConsult = () => {
     }
 
 
-    // TODO: 로딩 디자인 필요
+    // TODO: Skeleton UI 적용 필요. 현재 임시로 작업
     if(loading) {
-      return <Container>로딩중입니다...</Container>
+      return <LoadingContainter>내 신청내역 불러오는 중...</LoadingContainter>
     }
 
     if(!user && wematchToken === undefined) {
@@ -293,5 +293,21 @@ const LogoutWrapper = styled.div`
         font-size: 16px;
         color: ${colors.gray33};
         line-height: 24px;
+    }
+`;
+
+const LoadingContainter = styled.div`
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    span {
+        font-size: 16px;
+        color: ${colors.gray66};
     }
 `;
