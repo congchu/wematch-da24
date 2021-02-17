@@ -62,12 +62,10 @@ export function* fetchSignUpSaga(action: ActionType<typeof actions.fetchSignUpAs
             marketing: true
         }))
 
-        const response = yield call(requests.postSignUp, action.payload)
-        setCookie('x-wematch-token', response, { secure: true, 'max-age': 60*60*24*60})
-        // document.cookie=`x-wematch-token=${response}; max-age=${60*60*24*60}`
-        console.log('token', response);
-        const { data } = yield call(requests.getUser, response);
-        yield put(actions.fetchSignUpAsync.success({token: response, user: { ...data.user}}))
+        const {token, data} = yield call(requests.postSignUp, action.payload)
+        setCookie('x-wematch-token', token, { secure: true, 'max-age': 60*60*24*60})
+
+        yield put(actions.fetchSignUpAsync.success({token, user: { ...data }}))
     } catch(e) {
         console.dir(e);
         if(e.response.status === 409) {
@@ -80,10 +78,9 @@ export function* fetchSignUpSaga(action: ActionType<typeof actions.fetchSignUpAs
 export function* fetchSignInSaga(action: ActionType<typeof actions.fetchSignInAsync.request>) {
     try {
         const { phone, code } = action.payload;
-        const response = yield call(requests.getSignIn, phone, code)
-        setCookie('x-wematch-token', response, { 'max-age': 60*60*24*60, expires: new Date(dayjs().add(60, 'day').format()) })
-        const { data } = yield call(requests.getUser, response);
-        yield put(actions.fetchSignInAsync.success({token: response, user: { ...data.user}}));
+        const {token, data} = yield call(requests.getSignIn, phone, code)
+        setCookie('x-wematch-token', token, { 'max-age': 60*60*24*60, expires: new Date(dayjs().add(60, 'day').format()) })
+        yield put(actions.fetchSignInAsync.success({token, user: { ...data }}));
     } catch(e) {
         yield put(actions.fetchSignInAsync.failure())
     }
@@ -92,8 +89,8 @@ export function* fetchSignInSaga(action: ActionType<typeof actions.fetchSignInAs
 export function* fetchGetUserSaga(action: ActionType<typeof actions.fetchGetUserAsync.request>) {
     try {
         const {token} = action.payload;
-        const { data: { user } } = yield call(requests.getUser, token);
-        yield put(actions.fetchGetUserAsync.success({token, user}));
+        const {data} = yield call(requests.getUser, token);
+        yield put(actions.fetchGetUserAsync.success({token, user: {...data}}));
     } catch(e) {
         deleteCookie('x-wematch-token');
         yield put(actions.fetchGetUserAsync.failure())

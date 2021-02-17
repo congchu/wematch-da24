@@ -18,7 +18,7 @@ export const getUserConsult = async (name:string, phone: string[]) => {
 export const postSignUp = async (formData: types.RequestSignUpProps) => {
     const response = await axios.post(`https://www.devops.wematch.com/auth/signup`, {...formData})
     
-    return response.headers['x-wematch-token'];
+    return {token: response.headers['x-wematch-token'], data: response.data.data};
 }
 
 export const getSignIn = async (phone: string, code: string) => {
@@ -26,7 +26,7 @@ export const getSignIn = async (phone: string, code: string) => {
         method: 'get',
         url: `https://www.devops.wematch.com/auth/signin?tel=${phone}&code=${code}`
     })  
-    return response.headers['x-wematch-token'];
+    return {token: response.headers['x-wematch-token'], data: response.data.data};
 }
 
 export const getUser = async (token: string) => {
