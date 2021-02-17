@@ -8,13 +8,13 @@ const S = {
 }
 
 interface Props {
-	level: Level
+	level?: Level
 }
 
 const LevelIcon = ({ level }: Props) => {
 	return (
 		<S.Container>
-			<img src={require(`../../assets/images/level_${level}.svg`)} alt={level} />
+			<img src={require(`../../assets/images/level_${level}.svg`)} />
 		</S.Container>
 	)
 }

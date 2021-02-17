@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import Styled from 'styled-components'
 
 import { ProfileDefault } from 'components/Icon'
 import * as colors from 'styles/colors'
+import {Skeleton} from "../../../../../components/SkeletonEl";
 
 const S = {
 	WrapImg: Styled.div`
@@ -102,29 +103,42 @@ const S = {
 }
 
 interface Props {
-	profile_img: string;
-	status: 'selected' | 'available' | 'unavailable';
+	profile_img?: string;
+	status?: 'selected' | 'available' | 'unavailable';
+	isLoading?: boolean;
+	children?: ReactNode;
 }
 
-const UserImage = ({ profile_img, status }: Props) => {
+const UserImage = ({ profile_img, status, isLoading }: Props) => {
 	return (
 		<S.WrapImg>
-			<S.Title>
-				<h3>업체<br />직접선택</h3>
-			</S.Title>
-			{profile_img ? (
-				<>
-				<S.ProfileImg profile_img={profile_img}>
-					<span />
-				</S.ProfileImg>
-				</>
-			) : (
-				<S.DefaultProfileImg>
-					{status === "unavailable" && (<S.Opacity />)}
-					<ProfileDefault width={60} height={60} color={colors.white} />
-					{status === "unavailable" && (<span>오늘 마감</span>)}
-				</S.DefaultProfileImg>
-			)}
+			{isLoading
+				? (
+					<S.DefaultProfileImg>
+						<Skeleton width={'100%'}/>
+					</S.DefaultProfileImg>
+					)
+				: (
+					<>
+						<S.Title>
+							<h3>업체<br />직접선택</h3>
+						</S.Title>
+						{profile_img ? (
+							<>
+								<S.ProfileImg profile_img={profile_img}>
+									<span />
+								</S.ProfileImg>
+							</>
+						) : (
+							<S.DefaultProfileImg>
+								{status === "unavailable" && (<S.Opacity />)}
+								<ProfileDefault width={60} height={60} color={colors.white} />
+								{status === "unavailable" && (<span>오늘 마감</span>)}
+							</S.DefaultProfileImg>
+						)}
+					</>
+				)
+			}
 		</S.WrapImg>
 	)
 }

@@ -11,8 +11,9 @@ import LevelModal from 'components/Modal/LevelModal'
 import LevelIcon from 'components/LevelIcon'
 import NewPartner from 'components/common/NewPartner'
 import { Question } from 'components/Icon'
-import { Level, LevelText } from 'types/partner'
+import { Level, LevelText, IPartnerDetail } from 'types/partner'
 import UserImage from "./userImage";
+import {Skeleton} from "../../../../../components/SkeletonEl";
 
 const S = {
 	Container: styled.div`
@@ -59,7 +60,7 @@ const S = {
     overflow:hidden;
     width:100%;
     margin-top:10px;
-		font-size:24px;
+	font-size:24px;
     font-weight:700;
     line-height:30px;
     text-overflow:ellipsis;
@@ -87,7 +88,7 @@ const S = {
 		height:100%;
 		margin-right:2%;
 		border-radius:8px;
-  	box-shadow:0 3px 20px 0 rgba(220, 220, 220, 0.7);
+  		box-shadow:0 3px 20px 0 rgba(220, 220, 220, 0.7);
  	 	background-color:${colors.white};
 		text-align:center;
 		span{
@@ -163,20 +164,12 @@ const S = {
 }
 
 interface Props {
-	title: string;
-	level: Level
-	pick_cnt: number;
-	experience: number;
-	description: string;
-	keywords: string[];
-	adminname: string;
-	addition?: string;
-	profile_img: string;
-	status: 'selected' | 'available' | 'unavailable';
+	list?: IPartnerDetail;
 }
 
-const Index = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition='', status, profile_img }: Props) => {
-	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
+const PartnerInfo: React.FC<Props> = ({ list={} }) => {
+	const [visibleLevelModal, setVisibleLevelModal] = useState(false);
+	const {profile_img, level='C', title=values.DEFAULT_TEXT, pick_cnt, experience, status, adminname, description='', keywords=[], addition=''} = list;
 	const isMobile = useMedia({
 		maxWidth: 767,
 	})
@@ -184,6 +177,40 @@ const Index = ({ title, level, pick_cnt, experience, description='', keywords, a
 	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
 
 
+	if (Object.keys(list).length === 0) {
+		return (
+			<>
+				<UserImage isLoading={true}/>
+				<S.Container>
+					<S.Wrap>
+						<S.LevelDescription><Skeleton width={'20%'}/></S.LevelDescription>
+						<S.Level><Skeleton width={'20%'} height={'24px'}/></S.Level>
+						<S.PartnerWord><Skeleton width={'40%'} height={'24px'}/></S.PartnerWord>
+						<S.PartnerWord><Skeleton width={'40%'} height={'24px'}/></S.PartnerWord>
+						<S.Info>
+							<S.Card><Skeleton width={'100%'}/></S.Card>
+							<S.Card><Skeleton width={'100%'}/></S.Card>
+							<S.Card><Skeleton width={'100%'}/></S.Card>
+						</S.Info>
+						<S.Description>
+							<S.Option>
+								<strong><Skeleton width={'20%'} height={'24px'}/></strong>
+								<p><Skeleton width={'50%'}/></p>
+							</S.Option>
+							<S.Option>
+								<strong><Skeleton width={'20%'} height={'24px'}/></strong>
+								<p><Skeleton width={'50%'}/></p>
+							</S.Option>
+							<S.Option>
+								<strong><Skeleton width={'20%'} height={'24px'}/></strong>
+								<p><Skeleton width={'50%'}/></p>
+							</S.Option>
+						</S.Description>
+					</S.Wrap>
+				</S.Container>
+			</>
+		)
+	}
 	return (
 		<>
 			<UserImage profile_img={profile_img} status={status} />
@@ -241,4 +268,4 @@ const Index = ({ title, level, pick_cnt, experience, description='', keywords, a
 	)
 }
 
-export default Index
+export default PartnerInfo

@@ -23,6 +23,7 @@ import { useRouter } from 'hooks/useRouter'
 import ToastPopup from "components/wematch-ui/ToastPopup";
 import {dataLayer} from "lib/dataLayerUtil";
 import SetType from "components/SetType";
+import {render} from "react-dom";
 
 const S = {
     Container: styled.div``,
@@ -216,11 +217,11 @@ const PartnerDetail = () => {
     }, [])
 
     useEffect(() => {
-        if(getMoveIdxData.idx) {
             dispatch(partnerActions.fetchPartnerDetailAsync.request({
                 username: params.username,
-                idx: getMoveIdxData.idx
+                idx: "gAAAAABfj9pFJzSIt_WAEPuvO9vSh5QNVwJiTtK8yMQB9cZqnr37Fmm7gJYy0Grtd6fFBlCGijdTOd9YQc2sr4IQkaVHnPFmMw=="
             }))
+        if(getMoveIdxData.idx) {
         }
 
         dispatch(partnerActions.fetchReviewListAsync.request({
@@ -243,10 +244,6 @@ const PartnerDetail = () => {
         }
     }, [checkScrollTop])
 
-    if (getPartnerDetail.loading) {
-        return <Loading />
-    }
-
     const handleMoreReview = () => {
         nextPage.current += 1;
         dispatch(partnerActions.fetchReviewMoreListAsync.request({
@@ -256,44 +253,54 @@ const PartnerDetail = () => {
         }))
     }
 
+    const renderList = () => {
+        if (true) {
+            return <PartnerInfo/>
+        }
+
+        /*if (getPartnerDetail.data) {
+          return (
+            <>
+              <PartnerInfo list={getPartnerDetail.data}/>
+              {/!*Review Container*!/}
+              <ReviewContainer />
+              <S.BottomContainer>
+                {getReviewList.moreLoading && (
+                  <S.ReviewMoreLoading>
+                    로딩중..
+                  </S.ReviewMoreLoading>
+                )}
+                {getReviewList.hasMore && (
+                  <S.MoreList onClick={handleMoreReview}>후기 더보기 <DownArrow width={16} height={16} /></S.MoreList>
+                )}
+                {showScrollView && (
+                  <S.ScrollView>
+                    <S.BtnSelect onClick={handleSelected} isSelected={isActive()} status={getPartnerDetail.data.status} id="dsl_booking_detail_cta">{buttonText(getPartnerDetail.data.status)}</S.BtnSelect>
+                    <S.TopBtn onClick={handleScrollTop}>
+                      <UpArrow color={colors.pointBlue} width={16} height={16} />
+                    </S.TopBtn>
+                  </S.ScrollView>
+                )}
+              </S.BottomContainer>
+            </>
+          )
+        }*/
+    }
+
     return (
         <S.Container>
-            {getPartnerDetail.data && (
-                <>
-                    {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true}/>}
-                    <SetType count={getPartnerPick.data.length} formData={getFormData}/>
-                    <PartnerInfo title={getPartnerDetail.data.title ? getPartnerDetail.data.title : values.DEFAULT_TEXT} profile_img={getPartnerDetail.data.profile_img } status={getPartnerDetail.data.status}
-                           level={getPartnerDetail.data.level} pick_cnt={getPartnerDetail.data.pick_cnt} experience={getPartnerDetail.data.experience}
-                           description={getPartnerDetail.data.description} keywords={getPartnerDetail.data.keywords} adminname={getPartnerDetail.data.adminname} addition={getPartnerDetail.data.addition}/>
-                    {/*Review Container*/}
-                    <ReviewContainer />
-                    <S.BottomContainer>
-                        {getReviewList.moreLoading && (
-                          <S.ReviewMoreLoading>
-                              로딩중..
-                          </S.ReviewMoreLoading>
-                        )}
-                        {getReviewList.hasMore && (
-                            <S.MoreList onClick={handleMoreReview}>후기 더보기 <DownArrow width={16} height={16} /></S.MoreList>
-                        )}
-                        {showScrollView && (
-                            <S.ScrollView>
-                                <S.BtnSelect onClick={handleSelected} isSelected={isActive()} status={getPartnerDetail.data.status} id="dsl_booking_detail_cta">{buttonText(getPartnerDetail.data.status)}</S.BtnSelect>
-                                <S.TopBtn onClick={handleScrollTop}>
-                                    <UpArrow color={colors.pointBlue} width={16} height={16} />
-                                </S.TopBtn>
-                            </S.ScrollView>
-                        )}
-                    </S.BottomContainer>
-              </>
-            )}
-            <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
+          <>
+            {isDesktop ? <MainHeader /> : <TopGnb title="이사업체 상세 정보" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true}/>}
+            <SetType count={getPartnerPick.data.length} formData={getFormData}/>
+            {renderList()}
+          </>
+            {/*<ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
                 <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
             </ToastPopup>
             <ToastPopup visible={unavailableCheck} showHeaderCancelButton={false} confirmClick={() => setUnavailableCheck(!unavailableCheck)} confirmText={"확인"}>
                 <p>오늘 마감된 업체</p>
                 <span>해당 업체는 오늘 예약 및 상담 접수가 마감됐어요. 내일 오전에 다시 조회해보세요!</span>
-            </ToastPopup>
+            </ToastPopup>*/}
         </S.Container>
     )
 }

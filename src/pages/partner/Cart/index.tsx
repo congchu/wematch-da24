@@ -24,6 +24,7 @@ import * as partnerActions from "store/partner/actions";
 import * as commonSelector from "store/common/selectors";
 import * as constants from 'constants/env'
 import CheckAlertPopup from "./component/CheckAlertPopup";
+import {Skeleton} from "../../../components/SkeletonEl";
 
 interface IList {
     id: number;
@@ -55,6 +56,28 @@ const S = {
         min-height: calc(100% - 134px);
       }
     `,
+    CardContainer: styled.div`
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 104px;
+      margin-bottom: 8px;
+      box-sizing: border-box;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.07);
+      border: solid 1px #d7dbe2;
+      
+      &:last-child {
+        margin: 0;
+      }
+      @media screen and (min-width:768px) {
+        height: 112px;
+        margin-bottom: 12px;
+      };
+      @media screen and (min-width:1200px) {
+        width: 720px;
+      };
+    `,
     TitleWrapper: styled.div`
       background-color: white;
       border-bottom: 1px solid ${colors.lineDefault};
@@ -65,6 +88,7 @@ const S = {
       font-size: 16px;
       letter-spacing: -1px;
       width: 100%;
+      min-height: 41px;
       padding-left: 24px;
       box-sizing: border-box;
       p {
@@ -126,6 +150,10 @@ const S = {
       margin-top: 6px;
       
       cursor: pointer;
+      
+      div {
+        float: right;
+      }
     `,
     CurationTitle: styled.div`
       font-size: 16px;
@@ -237,10 +265,10 @@ const PartnerCart = () => {
     })
 
     useEffect(() => {
+                dispatch(partnerActions.fetchCartListAsync.request({idx: "gAAAAABfj9pFJzSIt_WAEPuvO9vSh5QNVwJiTtK8yMQB9cZqnr37Fmm7gJYy0Grtd6fFBlCGijdTOd9YQc2sr4IQkaVHnPFmMw==", admin_id: ['a7323','psh7327']}))
         if (!isEmpty(getPartnerPickList) && getMoveIdxData.idx) {
             const selectedId = getPartnerPickList.data.map(list => list.adminid)
             if(!isEmpty(selectedId)) {
-                dispatch(partnerActions.fetchCartListAsync.request({idx: getMoveIdxData.idx, admin_id: selectedId}))
             }
         }
 
@@ -292,10 +320,11 @@ const PartnerCart = () => {
             setSelectList(b)
             setCheckedList(checkedList)
     };
+
     const handleSubmit = () => {
         dispatch(partnerActions.fetchMatchingAsync.request({idx:getMoveIdxData.idx, partners:checkedList}))
         dataLayer({event: 'request_approve'})
-    }
+    };
 
     const handleOrderBtn = () => {
         const selectPartners = checkedList.filter((id:string) => {
@@ -332,21 +361,44 @@ const PartnerCart = () => {
         }
     };
 
-    if (getCartPartnerList.loading || getMatchingData.loading) {
+    if (getMatchingData.loading) {
         return <Loading text={'견적요청 페이지로 이동 중입니다.'}/>
     }
 
-    return (
-        <>
-        <S.CartWrapper>
-            {isDesktop ? <MainHeader/> : <TopGnb title="방문견적 요청" count={0} onPrevious={() => history.goBack()} showTruck={false}/>}
-                <S.TitleWrapper>
-                    <S.Title>
-                        <p>내가 선택한 업체</p>
-                    </S.Title>
-                </S.TitleWrapper>
-            <S.CartContainer isEmpty={isEmpty(getCartPartnerList.selectedList)}>
-                {isEmpty(getCartPartnerList.selectedList)
+    const renderList = () => {
+        if (true) {
+            return (
+              <>
+                  <S.TitleWrapper>
+                      <S.Title/>
+                  </S.TitleWrapper>
+                  <S.CartContainer isEmpty={false}>
+                      <S.Wrapper marginBottom={isEmpty(recommendedList) ? recommendCart.current?.offsetHeight : null}>
+                          <S.CardWrapper>
+                              <S.CardContainer><Skeleton width={'100%'}/></S.CardContainer>
+                              <S.PartnerMoreBtn onClick={() => router.push('/partner/list')} id="dsl_booking_cart_more"><Skeleton width={'15%'}/></S.PartnerMoreBtn>
+                          </S.CardWrapper>
+                          <S.CardWrapper>
+                              <S.CurationSubTitle><Skeleton width={'30%'} height={'20px'}/></S.CurationSubTitle>
+                              <S.CurationSubTitle><Skeleton width={'50%'}/></S.CurationSubTitle>
+                              <S.CardContainer><Skeleton width={'100%'}/></S.CardContainer>
+                              <S.CardContainer><Skeleton width={'100%'}/></S.CardContainer>
+                          </S.CardWrapper>
+                      </S.Wrapper>
+                  </S.CartContainer>
+              </>
+            )
+        }
+
+        return (
+          <>
+              <S.TitleWrapper>
+                  <S.Title>
+                      <p>내가 선택한 업체</p>
+                  </S.Title>
+              </S.TitleWrapper>
+              <S.CartContainer isEmpty={isEmpty(getCartPartnerList.selectedList)}>
+                  {isEmpty(getCartPartnerList.selectedList)
                     ? <EmptyPage />
                     :
                     <>
@@ -361,15 +413,15 @@ const PartnerCart = () => {
                         {!isEmpty(recommendedList) && <S.HorizontalLine/>}
                         {
                             !isEmpty(recommendedList) && (
-                                <S.Wrapper marginBottom={recommendCart.current?.offsetHeight}>
-                                    <S.CardWrapper>
-                                        <S.CurationTitle>이런 업체는 어떠세요?</S.CurationTitle>
-                                        <S.CurationSubTitle>고객의 가성비, 평가 키워드, 선택률 데이터 기준으로 추천드려요.</S.CurationSubTitle>
-                                        {recommendedList.map((list:IList, index:number) => {
-                                            return <Card key={list.id}  type={'recommended'} index={index} listLength={recommendedList.length} list={list} onSelect={handleCheck}/>
-                                        })}
-                                    </S.CardWrapper>
-                                </S.Wrapper>
+                              <S.Wrapper marginBottom={recommendCart.current?.offsetHeight}>
+                                  <S.CardWrapper>
+                                      <S.CurationTitle>이런 업체는 어떠세요?</S.CurationTitle>
+                                      <S.CurationSubTitle>고객의 가성비, 평가 키워드, 선택률 데이터 기준으로 추천드려요.</S.CurationSubTitle>
+                                      {recommendedList.map((list:IList, index:number) => {
+                                          return <Card key={list.id}  type={'recommended'} index={index} listLength={recommendedList.length} list={list} onSelect={handleCheck}/>
+                                      })}
+                                  </S.CardWrapper>
+                              </S.Wrapper>
                             )
                         }
                         <S.OrderBtnWrapper ref={recommendCart} id="dsl_booking_cart_buttons">
@@ -379,14 +431,23 @@ const PartnerCart = () => {
                             </S.GuideBtn>
                             <S.OrderBtn onClick={() => handleOrderBtn()} id="dsl_booking_cart_cta" disabled={checkedList.length === 0}>
                                 {checkedList.length > 0 && (
-                                    <div>{checkedList.length}</div>
+                                  <div>{checkedList.length}</div>
                                 )}
                                 <span>{checkedList.length === 0 ? '업체를 선택해주세요' : '방문견적(무료) 요청보내기'}</span>
                             </S.OrderBtn>
                         </S.OrderBtnWrapper>
                     </>
-                }
-            </S.CartContainer>
+                  }
+              </S.CartContainer>
+          </>
+        )
+    }
+
+    return (
+        <>
+        <S.CartWrapper>
+            {isDesktop ? <MainHeader/> : <TopGnb title="방문견적 요청" count={0} onPrevious={() => history.goBack()} showTruck={false}/>}
+            {renderList()}
         </S.CartWrapper>
         <GuidePopup visible={guideVisible} onClose={() => setGuideVisible(!guideVisible)}/>
         <CheckAlertPopup visible={alertVisible} showHeaderCancelButton={true} cancelClick={() => setAlertVisible(!alertVisible)}/>
@@ -395,9 +456,9 @@ const PartnerCart = () => {
             setOrderConfirmVisible(false);
             }} orderCount={checkedList.length}
         />
-        <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
+        {/*<ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
             <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
-        </ToastPopup>
+        </ToastPopup>*/}
         </>
     )
 };
