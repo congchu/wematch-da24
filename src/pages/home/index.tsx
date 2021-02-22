@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
 import {useCookies} from 'react-cookie'
 import queryString from 'query-string'
@@ -45,6 +45,7 @@ const Home: React.FC<RouteComponentProps> = ({location}) => {
     const [cookies, setCookie, removeCookie] = useCookies(['0dj38gepoekf98234aplyadmin'])
     const HomeRef = useRef<HTMLDivElement>(null)
     const [isFixed, setIsFixed] = useScrollDirection()
+    const [loading, setLoading] = useState(false)
 
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
 
@@ -60,7 +61,13 @@ const Home: React.FC<RouteComponentProps> = ({location}) => {
     }, [getSubmittedForm.loading])
 
 
-    if (getSubmittedForm.loading) {
+    // memory leak 경고 메시지 해결을 위해 한번 감싸는 용도
+    useEffect(() => {
+        setLoading(getSubmittedForm.loading)
+        return () => setLoading(false)
+    }, [getSubmittedForm.loading])
+
+    if (loading) {
         return <ResponsiveSkeleton />
     }
 

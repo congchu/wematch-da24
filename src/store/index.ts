@@ -8,12 +8,10 @@ import PartnerService, { PartnerState } from './partner/reducers'
 import CommonService, { CommonState } from './common/reducers'
 import FormService, { FormState } from './form/reducers'
 import UserService, { UserState } from './user/reducers'
-import CompanyService, { CompanyState } from './company/reducers'
 import PartnerSaga from './partner/sagas'
 import CommonSaga from './common/sagas'
-import UserSaga from './user/sagas'
+import UserSaga from 'store/user/sagas'
 import FormSaga from './form/sagas'
-import CompanySaga from './company/sagas'
 
 export interface RootState {
     router: RouterState;
@@ -21,7 +19,6 @@ export interface RootState {
     commonState: CommonState;
     formState: FormState;
     userState: UserState;
-    companyState: CompanyState;
 }
 
 const rootReducer = combineReducers({
@@ -30,7 +27,6 @@ const rootReducer = combineReducers({
     commonState: CommonService,
     formState: FormService,
     userState: UserService,
-    companyState: CompanyService
 })
 
 const sagaMiddleware = createSagaMiddleware()
@@ -57,7 +53,6 @@ function* rootSaga() {
         PartnerSaga(),
         CommonSaga(),
         FormSaga(),
-        CompanySaga()
     ])
 }
 sagaMiddleware.run(rootSaga)
