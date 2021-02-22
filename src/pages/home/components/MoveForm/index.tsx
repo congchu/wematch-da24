@@ -34,6 +34,7 @@ import {MOVE_URL, ONEROOM_URL} from 'constants/env'
 import useHashToggle from 'hooks/useHashToggle'
 import LoginModal from 'components/common/Modal/LoginModal'
 import {events} from 'lib/appsflyer'
+import { useHistory } from 'react-router-dom'
 
 const Visual = {
     Section: styled.section`
@@ -215,24 +216,17 @@ interface Props {
 
 const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
     const dispatch = useDispatch()
-
     const getMoveType = useSelector(formSelector.getType)
     const getMoveDate = useSelector(formSelector.getDate)
     const getAddress = useSelector(formSelector.getAddress)
     const getFloor = useSelector(formSelector.getFloor)
-    const getName = useSelector(formSelector.getName)
-    const getPhone = useSelector(formSelector.getPhone)
     const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
-    const getAgree = useSelector(formSelector.getAgree)
-    const getFormData = useSelector(formSelector.getFormData)
-    const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
-    const {token, user, loading} = useSelector(userSelector.getUser);
-    
+    const {user} = useSelector(userSelector.getUser);
+    const history = useHistory();
     const [visibleTerms, setVisibleTerms] = useHashToggle('#terms')
     const [visibleOneroom, setVisibleOneroom] = useState(false)
     const [visibleLogin, setVisibleLogin] = useState(false)
     const [isVerifySuccess, setIsVerifySuccess] = useState(false)
-    const [distance, setDistance] = useState<string | null>(null)
     const selectedSubmitType = useRef<'curation' | 'select' | null>(null)
     const [cookies, setCookies, removeCookies] = useCookies(['0dj38gepoekf98234aplyadmin'])
     const router = useRouter();
@@ -281,7 +275,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
         selectedSubmitType.current = submitType;
         dispatch(formActions.setSubmitType(submitType));
 
-        user ? dispatch(formActions.fetchMoveData()) : setVisibleLogin(true);
+        user ? dispatch(formActions.fetchMoveData()) : history.push('/login');
     }
 
     useEffect(() => {
@@ -295,28 +289,6 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
             dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp))
         }
     }, [dispatch])
-
-    // useEffect(() => {
-    //     if (selectedSubmitType.current === 'curation') {
-    //       /* AUTO MATCH */
-    //       dispatch(formActions.submitFormAsync.request({formData: {...getFormData}}));
-
-    //     }
-    //     if (selectedSubmitType.current === 'select') {
-    //         dispatch(commonActions.fetchMoveIdx.request(getFormData))
-    //     }
-
-    // }, [getFormData])
-
-
-    // useEffect(() => {
-    //     if (getMoveIdxData.idx && selectedSubmitType.current === 'curation' && !getMoveIdxData.loading) {
-    //         document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
-    //     }
-    //     if (getMoveIdxData.idx && selectedSubmitType.current === 'select' && !getMoveIdxData.loading) {
-    //         router.history.push(`/partner/list`)
-    //     }
-    // }, [getMoveIdxData])
 
     return (
         <Visual.Section>
@@ -374,33 +346,6 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
                     </div>
                 </Terms.SubmitContainer>
             </>
-
-            {/*본인인증*/}
-            {/* <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone}
-                              onClose={() => setVisibleVerifyPhone(!visibleVerifyPhone)} tags={{
-                authBtn: "dsl_move_button_verify_1",
-                closeBtn: "dsl_move_button_verify_X_1"
-            }} onDataLayerAuth={() => {
-                return dataLayer({
-                    event: 'request_popup',
-                    category: '다이사_메인_번호인증_1',
-                    action: '인증하기',
-                    label: '인증팝업',
-                    CD6: getMoveTypeText(),
-                    CD10: getIsMoveStore ? 'Y' : 'N',
-                    CD12: submitType === "curation" ? '바로매칭' : "직접고르기"
-                })
-            }} onDataLayerClose={() => {
-                return dataLayer({
-                    event: 'request_popup',
-                    category: '다이사_메인_번호인증_1',
-                    action: '닫기',
-                    label: '인증팝업',
-                    CD6: getMoveTypeText(),
-                    CD10: getIsMoveStore ? 'Y' : 'N',
-                    CD12: submitType === "curation" ? '바로매칭' : "직접고르기"
-                })
-            }} /> */}
             <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
             <OneroomNoticePopup visible={visibleOneroom} footerButton border onClose={() => setVisibleOneroom(!visibleOneroom)} />

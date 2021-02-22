@@ -42,6 +42,7 @@ import { dataLayer } from 'lib/dataLayerUtil'
 import MyConsult from 'pages/myconsult'
 import MyConsultDetail from 'pages/myconsult/myConsultDetail'
 import { get } from 'lodash'
+import Login from 'pages/login'
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -131,6 +132,7 @@ function AppRoute() {
                 <Route exact path="/requests/noservice" component={NoServicePage}/>
                 <Route exact path="/requests/completed/:adminId" component={RequestPartnerDetail}/>
                 <Route exact path="/error" component={ErrorService}/>
+                <Route exact path="/login" component={Login} />
                 <Route component={NotFound}/>
             </Switch>
         )
