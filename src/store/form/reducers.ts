@@ -28,7 +28,7 @@ export interface FormState {
     }
 
     formData: types.RequestUserInfoInsert
-
+    selectedSubmitType?: 'curation' | 'select' | null
     /* submittedForm */
     submittedForm: {
         data: SubmittedForm | undefined;
@@ -81,7 +81,7 @@ const initialState: FormState = {
         mkt_agree: false,
         agent_id: '',
     },
-
+    selectedSubmitType: null,
     /* submittedForm */
     submittedForm: {
         data: undefined,
@@ -117,6 +117,10 @@ export default createReducer<FormState, Actions>(initialState)
             agree: {terms, privacy, marketing}
         }
     })
+    .handleAction(actions.setSubmitType, (state, action) => ({
+        ...state,
+        selectedSubmitType: action.payload
+    }))
     // .handleAction(actions.submitFormAsync.request, (state) => ({ ...state, submittedForm: { data: undefined, loading: true, report: true } }))
     // .handleAction(actions.submitFormAsync.success, (state, action) => ({ ...state, submittedForm: { data: action.payload, loading: false, report: true } }))
     // .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state,  submittedForm: { ...state.submittedForm, loading: false, report: false } }))

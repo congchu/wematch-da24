@@ -22,6 +22,7 @@ import * as commonActions from 'store/common/actions'
 import * as commonTypes from 'store/common/types'
 import * as formSelector from 'store/form/selectors'
 import * as formActions from 'store/form/actions'
+import * as userActions from 'store/user/actions';
 import * as userSelector from 'store/user/selectors';
 
 import * as colors from 'styles/colors'
@@ -268,17 +269,9 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
         return true
     }
 
-    const getMoveTypeText = useCallback(() => {
-        if (getMoveType === 'house') {
-            return '가정'
-        } else if (getMoveType === 'office') {
-            return '사무실'
-        }
-    }, [getMoveType])
-
     const handleLoginSuccess = (submitType: 'curation' | 'select' | null) => {
       if( submitType !== null) {
-        handleSubmit(submitType);
+        dispatch(formActions.fetchMoveData());
       }
       setVisibleLogin(false)
     }
@@ -286,112 +279,44 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
     const handleRequestClick = (submitType: 'curation' | 'select') => {
         if (!validateHouseOrOfficeForm()) return;
         selectedSubmitType.current = submitType;
-        user ? handleSubmit(submitType) : setVisibleLogin(true);
-    }
+        dispatch(formActions.setSubmitType(submitType));
 
-    const handleSubmit = (submitType: 'curation' | 'select') => {
-
-        let result = false
-        
-        if (getMoveType === 'house' || getMoveType === 'office') {
-            result = validateHouseOrOfficeForm()
-        }
-
-        if (result && user) {
-            calcRouteByDirectionService({
-                start: getAddress.start,
-                end: getAddress.end
-            }, (distance) => {
-
-                if (distance) {
-                    setDistance(distance)
-                } else {
-                    calcRouteByGeoCoder([getAddress.start, getAddress.end], (coords) => {
-                        if (coords) {
-                            setDistance(String(google.maps.geometry.spherical.computeDistanceBetween(coords[0], coords[1]) / 1000))
-                        }
-                    })
-                }
-
-                const { phone1, phone2, phone3 } = phoneSplit(user.tel);
-
-                const formData: commonTypes.RequestUserInfoInsert = {
-                    moving_type: translateMovingType(getMoveType),
-                    moving_date: getMoveDate[0],
-                    floor: `${getFloor.start}`,
-                    detail_addr: getAddress.detailStart,
-                    sido: addressSplit(getAddress.start).sido,
-                    gugun: addressSplit(getAddress.start).gugun,
-                    dong: addressSplit(getAddress.start).dong,
-                    sido2: addressSplit(getAddress.end).sido,
-                    gugun2: addressSplit(getAddress.end).gugun,
-                    dong2: addressSplit(getAddress.end).dong,
-                    floor2: `${getFloor.end}`,
-                    detail_addr2: getAddress.detailEnd,
-                    name: user.name,
-                    phone1: phone1,
-                    phone2: phone2,
-                    phone3: phone3,
-                    keep_move: getIsMoveStore,
-                    mkt_agree: getAgree.marketing,
-                    distance: Number(distance) || 1,
-                    agent_id: queryString.parse(get(cookies, '0dj38gepoekf98234aplyadmin')).agentid,
-                }
-
-                dispatch(formActions.setFormData(formData))
-
-                if (get(cookies, 'form') !== undefined) {
-                    removeCookies('formData')
-                }
-                setCookies('formData', { ...formData, ...getAgree }, { expires: new Date(dayjs().add(2, 'day').format()) })
-
-                dataLayer({
-                    event: 'request',
-                    category: '다이사_메인_신청_1',
-                    label: '매칭신청',
-                    action: submitType === 'curation' ? '업체_바로매칭' : '업체_직접고르기',
-                    CD6: getMoveTypeText(),
-                    CD10: getIsMoveStore ? 'Y' : 'N'
-                })
-
-            })
-
-        }
+        user ? dispatch(formActions.fetchMoveData()) : setVisibleLogin(true);
     }
 
     useEffect(() => {
         const {type} = router.query
         if (cookies.formData) {
+            console.dir(cookies.formData);
             dispatch(formActions.setInitialFormData(cookies.formData))
         }
 
         if (type === 'house') {
             dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp))
         }
+    }, [dispatch])
 
-    }, [])
+    // useEffect(() => {
+    //     if (selectedSubmitType.current === 'curation') {
+    //       /* AUTO MATCH */
+    //       dispatch(formActions.submitFormAsync.request({formData: {...getFormData}}));
 
-    useEffect(() => {
-        if (selectedSubmitType.current === 'curation') {
-          /* AUTO MATCH */
-          dispatch(formActions.submitFormAsync.request({formData: {...getFormData}}));
+    //     }
+    //     if (selectedSubmitType.current === 'select') {
+    //         dispatch(commonActions.fetchMoveIdx.request(getFormData))
+    //     }
 
-        }
-        if (selectedSubmitType.current === 'select') {
-            dispatch(commonActions.fetchMoveIdx.request(getFormData))
-        }
-
-    }, [getFormData])
+    // }, [getFormData])
 
 
-    useEffect(() => {
-        if (getMoveIdxData.idx && selectedSubmitType.current === 'curation' && !getMoveIdxData.loading) {
-            document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
-        }
-        if (getMoveIdxData.idx && selectedSubmitType.current === 'select' && !getMoveIdxData.loading) {
-            router.history.push(`/partner/list`)
-        }
-    }, [getMoveIdxData])
+    // useEffect(() => {
+    //     if (getMoveIdxData.idx && selectedSubmitType.current === 'curation' && !getMoveIdxData.loading) {
+    //         document.location.href = `${MOVE_URL}/default_legacy.asp?move_idx=${getMoveIdxData.idx}`
+    //     }
+    //     if (getMoveIdxData.idx && selectedSubmitType.current === 'select' && !getMoveIdxData.loading) {
+    //         router.history.push(`/partner/list`)
+    //     }
+    // }, [getMoveIdxData])
 
     return (
         <Visual.Section>

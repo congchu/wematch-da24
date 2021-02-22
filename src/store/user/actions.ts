@@ -43,3 +43,5 @@ export const selectOrder = createAction('SELECT_ORDER')<{order: types.IOrder}>()
 export const resetOrder = createAction('RESET_ORDER')();
 
 export const signOut = createAction("SIGN_OUT")();
+
+export const signIn = createAction('SIGN_IN')();

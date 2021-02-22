@@ -1,11 +1,20 @@
+import { push } from "connected-react-router";
 import dayjs from "dayjs";
-import { deleteCookie, setCookie } from "lib/cookie";
-import { all, call, put, takeEvery } from "redux-saga/effects";
+import { deleteCookie, getCookie, setCookie } from "lib/cookie";
+import { all, call, put, select, takeEvery } from "redux-saga/effects";
 import { setAgree } from "store/form/actions";
 import { ActionType } from "typesafe-actions";
 import * as actions from './actions';
 import * as requests from './requests';
 import { IOrder } from "./types";
+import * as commonTypes from 'store/common/types'
+import * as formActions from 'store/form/actions'
+import * as userSelector from './selectors';
+import queryString from 'query-string'
+import { calcRouteByDirectionService, calcRouteByGeoCoder } from "lib/distanceUtil";
+import { addressSplit, phoneSplit, translateMovingType } from "components/wematch-ui/utils/form";
+import { get } from "lodash";
+
 
 export function* fetchUserConsultSaga(action: ActionType<typeof actions.fetchUserConsultAsync.request>) {
     try {
@@ -97,6 +106,17 @@ export function* fetchGetUserSaga(action: ActionType<typeof actions.fetchGetUser
     }
 }
 
+
+export function* signInFlowSaga() {
+    const { user } = yield select(userSelector.getUser)
+    if(!user) {
+        yield put(push('/login'))
+    } else {
+        // yield put(formActions.requestSetFormData()) 
+
+    }
+}
+
 export default function* () {
     yield all([
         takeEvery(actions.fetchUserConsultAsync.request, fetchUserConsultSaga),
@@ -104,7 +124,8 @@ export default function* () {
         takeEvery(actions.fetchVerifyCodeAsync.request, fetchVerifyCodeSaga),
         takeEvery(actions.fetchSignUpAsync.request, fetchSignUpSaga),
         takeEvery(actions.fetchSignInAsync.request, fetchSignInSaga),
-        takeEvery(actions.fetchGetUserAsync.request, fetchGetUserSaga)
+        takeEvery(actions.fetchGetUserAsync.request, fetchGetUserSaga),
+        takeEvery(actions.signIn, signInFlowSaga),
     ])
 }
 
