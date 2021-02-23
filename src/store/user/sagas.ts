@@ -1,4 +1,4 @@
-import { push } from "connected-react-router";
+import { push, goBack } from "connected-react-router";
 import dayjs from "dayjs";
 import { deleteCookie, getCookie, setCookie } from "lib/cookie";
 import { all, call, put, select, takeEvery } from "redux-saga/effects";
@@ -6,14 +6,10 @@ import { setAgree } from "store/form/actions";
 import { ActionType } from "typesafe-actions";
 import * as actions from './actions';
 import * as requests from './requests';
-import { IOrder } from "./types";
+import { ESignInCase, IOrder } from "./types";
 import * as commonTypes from 'store/common/types'
 import * as formActions from 'store/form/actions'
 import * as userSelector from './selectors';
-import queryString from 'query-string'
-import { calcRouteByDirectionService, calcRouteByGeoCoder } from "lib/distanceUtil";
-import { addressSplit, phoneSplit, translateMovingType } from "components/wematch-ui/utils/form";
-import { get } from "lodash";
 
 
 export function* fetchUserConsultSaga(action: ActionType<typeof actions.fetchUserConsultAsync.request>) {
@@ -75,6 +71,8 @@ export function* fetchSignUpSaga(action: ActionType<typeof actions.fetchSignUpAs
         setCookie('x-wematch-token', token, { secure: true, 'max-age': 60*60*24*60})
 
         yield put(actions.fetchSignUpAsync.success({token, user: { ...data }}))
+
+        yield call(signInAfterFlowSaga)
     } catch(e) {
         console.dir(e);
         if(e.response.status === 409) {
@@ -90,6 +88,8 @@ export function* fetchSignInSaga(action: ActionType<typeof actions.fetchSignInAs
         const {token, data} = yield call(requests.getSignIn, phone, code)
         setCookie('x-wematch-token', token, { 'max-age': 60*60*24*60, expires: new Date(dayjs().add(60, 'day').format()) })
         yield put(actions.fetchSignInAsync.success({token, user: { ...data }}));
+        
+        yield call(signInAfterFlowSaga)
     } catch(e) {
         yield put(actions.fetchSignInAsync.failure())
     }
@@ -107,13 +107,14 @@ export function* fetchGetUserSaga(action: ActionType<typeof actions.fetchGetUser
 }
 
 
-export function* signInFlowSaga() {
-    const { user } = yield select(userSelector.getUser)
-    if(!user) {
-        yield put(push('/login'))
-    } else {
-        // yield put(formActions.requestSetFormData()) 
-
+export function* signInAfterFlowSaga() {
+    const { prevPage } = yield select(userSelector.getUser)
+    switch(prevPage) {
+        case ESignInCase.FORM: 
+            yield put(formActions.fetchMoveData()) 
+            break;
+        default:
+            yield put(goBack())
     }
 }
 
@@ -124,8 +125,7 @@ export default function* () {
         takeEvery(actions.fetchVerifyCodeAsync.request, fetchVerifyCodeSaga),
         takeEvery(actions.fetchSignUpAsync.request, fetchSignUpSaga),
         takeEvery(actions.fetchSignInAsync.request, fetchSignInSaga),
-        takeEvery(actions.fetchGetUserAsync.request, fetchGetUserSaga),
-        takeEvery(actions.signIn, signInFlowSaga),
+        takeEvery(actions.fetchGetUserAsync.request, fetchGetUserSaga)
     ])
 }
 

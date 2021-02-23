@@ -65,3 +65,8 @@ export interface RequestVerifyCodeProps {
 export interface ResponseVerifyCodeProps {
     isVerified: boolean | null;
 }
+
+export enum ESignInCase {
+    FORM = 'form',
+    NONE = ''
+}

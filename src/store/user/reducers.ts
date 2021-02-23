@@ -1,5 +1,5 @@
 import { ActionType, createReducer } from "typesafe-actions";
-import { IOrder } from "./types";
+import { ESignInCase, IOrder } from "./types";
 import * as actions from './actions';
 import { IUser } from "types/auth";
 
@@ -12,6 +12,7 @@ export interface UserState {
         token: string | null;
         loading: boolean; 
         user: IUser | null;
+        prevPage: ESignInCase;
     };
     phoneVerify: {
         isVerified: boolean | null;
@@ -38,6 +39,7 @@ const initialState: UserState = {
         token: null,
         user: null,
         loading: false,
+        prevPage: ESignInCase.NONE,
     },
     phoneVerify: {
         isVerified: null,
@@ -67,9 +69,10 @@ export default createReducer<UserState, Actions>(initialState)
     .handleAction(actions.fetchVerifyCodeAsync.success, (state, action) => ({ ...state, phoneVerify: { isVerified: action.payload.isVerified, isSendMessage: !action.payload.isVerified, loading: false }}))
     .handleAction(actions.fetchVerifyCodeAsync.failure, (state) => ({ ...state, phoneVerify: { ...state.phoneVerify, isVerified: false, loading: false}}))
     .handleAction([actions.fetchSignUpAsync.request, actions.fetchSignInAsync.request], (state) => ({ ...state, auth: { ...state.auth, loading: true}}))
-    .handleAction([actions.fetchSignInAsync.success, actions.fetchSignUpAsync.success], (state, action) => ({ ...state, auth: { token: action.payload.token, user: action.payload.user, loading: false }}))
+    .handleAction([actions.fetchSignInAsync.success, actions.fetchSignUpAsync.success], (state, action) => ({ ...state, auth: { ...state.auth, token: action.payload.token, user: action.payload.user, loading: false,  }}))
     .handleAction([actions.fetchSignInAsync.failure, actions.fetchSignUpAsync.failure], (state) => ({...state, auth: { ...state.auth, loading: false}}))
     .handleAction(actions.fetchGetUserAsync.success, (state, action) => ({...state, auth: { ...state.auth, token: action.payload.token, user: action.payload.user }}))
     .handleAction(actions.selectOrder, (state, action) => ({...state, consult: {...state.consult, selected: {...action.payload.order}}}))
     .handleAction(actions.resetOrder, (state) => ({...state, consult: {...state.consult, selected: null}}))
-    .handleAction(actions.signOut, (state) => ({...state, auth: {user: null, token: null, loading: false}}))
+    .handleAction(actions.signIn, (state, action) => ({...state, auth: {...state.auth, prevPage: action.payload.prevPage}}))
+    .handleAction(actions.signOut, (state) => ({...state, auth: {user: null, token: null, loading: false, prevPage: ESignInCase.NONE}}))

@@ -72,7 +72,7 @@ const LoginPage = () => {
     const handleModalClose = () => {
         if (visibleCancel) {
             setVisibleCancel(!visibleCancel)
-            // onClose()
+            history.goBack();
         }
     }
 
@@ -142,13 +142,12 @@ const LoginPage = () => {
 
     useEffect(() => {
         if (token) {
-            // onSuccess();
+            history.replace('/');
         }
     }, [token])
 
 
     return (
-        // <PopupTemplate visible={visible} onClose={() => setVisibleCancel(true)} pcHeight={640}>
         <Container>
             {isDesktop ? <MainHeader isFixed={true}/> : <TopGnb title="번호인증" count={0} onPrevious={() => history.goBack()} showTruck={false} />}
             <LoginModalWrapper id={'dsl_login_popup'}>

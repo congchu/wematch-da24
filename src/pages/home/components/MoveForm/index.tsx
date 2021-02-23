@@ -35,6 +35,7 @@ import useHashToggle from 'hooks/useHashToggle'
 import LoginModal from 'components/common/Modal/LoginModal'
 import {events} from 'lib/appsflyer'
 import { useHistory } from 'react-router-dom'
+import { ESignInCase } from 'store/user/types'
 
 const Visual = {
     Section: styled.section`
@@ -225,7 +226,6 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
     const history = useHistory();
     const [visibleTerms, setVisibleTerms] = useHashToggle('#terms')
     const [visibleOneroom, setVisibleOneroom] = useState(false)
-    const [visibleLogin, setVisibleLogin] = useState(false)
     const [isVerifySuccess, setIsVerifySuccess] = useState(false)
     const selectedSubmitType = useRef<'curation' | 'select' | null>(null)
     const [cookies, setCookies, removeCookies] = useCookies(['0dj38gepoekf98234aplyadmin'])
@@ -267,7 +267,6 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
       if( submitType !== null) {
         dispatch(formActions.fetchMoveData());
       }
-      setVisibleLogin(false)
     }
 
     const handleRequestClick = (submitType: 'curation' | 'select') => {
@@ -275,7 +274,12 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
         selectedSubmitType.current = submitType;
         dispatch(formActions.setSubmitType(submitType));
 
-        user ? dispatch(formActions.fetchMoveData()) : history.push('/login');
+        if(!user) {
+          dispatch(userActions.signIn({prevPage: ESignInCase.FORM}))
+          history.push('/login')
+        } else {
+          dispatch(formActions.fetchMoveData())
+        }
     }
 
     useEffect(() => {
@@ -349,7 +353,6 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
             <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
             <OneroomNoticePopup visible={visibleOneroom} footerButton border onClose={() => setVisibleOneroom(!visibleOneroom)} />
-            <LoginModal visible={visibleLogin} onClose={() => setVisibleLogin(!visibleLogin)} onSuccess={() => handleLoginSuccess(selectedSubmitType.current)} />
         </Visual.Section>
     )
 }

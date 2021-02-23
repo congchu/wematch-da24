@@ -44,4 +44,4 @@ export const resetOrder = createAction('RESET_ORDER')();
 
 export const signOut = createAction("SIGN_OUT")();
 
-export const signIn = createAction('SIGN_IN')();
+export const signIn = createAction('SIGN_IN')<{prevPage: types.ESignInCase}>();
