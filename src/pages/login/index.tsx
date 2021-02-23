@@ -72,10 +72,7 @@ const LoginPage = () => {
     const handleModalClose = () => {
         if (visibleCancel) {
             setVisibleCancel(!visibleCancel)
-            setTimeout(() => {
-                console.log('fire')
-                history.goBack()
-            }, 1000);
+            history.goBack()
         }
     }
 
@@ -95,7 +92,6 @@ const LoginPage = () => {
             action: '로그인취소',
             label: '취소'
         })
-        console.log('cancel')
         handleModalClose();
     }
 
@@ -154,7 +150,7 @@ const LoginPage = () => {
     return (
         <Container>
             {isDesktop ? <MainHeader isFixed={true}/> : <TopGnb title="번호인증" count={0} onPrevious={() => history.goBack()} showTruck={false} />}
-            <LoginModalWrapper id={'dsl_login_popup'}>
+            <LoginWrapper id={'dsl_login_popup'}>
                 <div style={{ width: '100%' }}>
                     <TextWrppaer>
                         <strong>번호인증</strong>
@@ -246,7 +242,7 @@ const LoginPage = () => {
                         )
                     }
                 </FooterWrappe>
-            </LoginModalWrapper>
+            </LoginWrapper>
             {/*인증번호 초과 모달*/}
             <NewModal visible={visibleTimeout} title={"인증번호 입력시간 초과"} content={"인증번호 입력가능시간이 초과 되었습니다. 인증번호를 다시 받아주세요!"} confirmText={"확인"} confirmClick={() => { setVisibleTimeout(!visibleTimeout); setIsTimeout(true) }} />
             {/*로그인/가입 취소 모달*/}
@@ -277,7 +273,7 @@ const Container = styled.div`
     }
 `;
 
-const LoginModalWrapper = styled.div`
+const LoginWrapper = styled.div`
     width: 100%;
     flex: 1;
     box-sizing: border-box;
