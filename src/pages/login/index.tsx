@@ -72,7 +72,10 @@ const LoginPage = () => {
     const handleModalClose = () => {
         if (visibleCancel) {
             setVisibleCancel(!visibleCancel)
-            history.goBack();
+            setTimeout(() => {
+                console.log('fire')
+                history.goBack()
+            }, 1000);
         }
     }
 
@@ -92,6 +95,7 @@ const LoginPage = () => {
             action: '로그인취소',
             label: '취소'
         })
+        console.log('cancel')
         handleModalClose();
     }
 
@@ -238,7 +242,7 @@ const LoginPage = () => {
                     </Button>
                     {
                         isDesktop && (
-                            <Button theme="default" border={true} style={{border: '1px solid #D7DBE2', marginTop: 10}} onClick={() => history.goBack()}>이전</Button>
+                            <Button theme="default" border={true} style={{border: '1px solid #D7DBE2', marginTop: 10}} onClick={() => setVisibleCancel(true)}>이전</Button>
                         )
                     }
                 </FooterWrappe>
@@ -263,11 +267,14 @@ const Container = styled.div`
     height: -webkit-fill-available;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     overflow-y: auto;
     background-color: white;
     box-sizing: border-box;
-    align-items: center;
+
+    @media screen and (min-width: 768px) {
+        justify-content: center;
+        align-items: center;
+    }
 `;
 
 const LoginModalWrapper = styled.div`
