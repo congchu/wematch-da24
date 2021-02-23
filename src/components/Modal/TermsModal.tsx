@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import ModalTemplate from './ModalTemplate'
+import PopupTemplate from "components/wematch-ui/PopupTemplate";
 
 import * as colors from 'styles/colors'
 
@@ -10,8 +10,6 @@ interface Props {
     visible: boolean;
     /** 닫기 버튼 이벤트 정의 */
     onClose?: () => void;
-    /** 오버레이 클릭 시 이벤트 정의 */
-    onOverlayClose?: () => void;
 }
 
 const S = {
@@ -114,10 +112,9 @@ const TermsModal:React.FC<Props> = (props) => {
     const {
         visible,
         onClose,
-        onOverlayClose
     } = props
     return (
-        <ModalTemplate visible={visible} title="이용약관" onClose={onClose} onOverlayClose={onOverlayClose}>
+        <PopupTemplate visible={visible} onClose={onClose}>
             <S.Container>
                 <S.Wrapper>
                     <S.ContentWrapper>
@@ -750,7 +747,7 @@ const TermsModal:React.FC<Props> = (props) => {
                     </S.ContentWrapper>
                 </S.Wrapper>
             </S.Container>
-        </ModalTemplate>
+        </PopupTemplate>
     )
 }
 

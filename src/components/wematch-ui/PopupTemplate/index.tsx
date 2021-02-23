@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react'
+import {createPortal} from "react-dom";
 import styled from 'styled-components'
 import * as colors from "../../../styles/colors";
 import {Icon} from "../index";
 
 interface Props {
     visible: boolean;
-    onClose: () => void;
+    onClose?: () => void;
 }
 
 const PopupTemplate:React.FC<Props> = (props) => {
@@ -20,18 +21,18 @@ const PopupTemplate:React.FC<Props> = (props) => {
 
     if (!visible) return null
 
-    return (
-        <PopupOverlay>
-            <PopupWrapper>
-                <PopupHeader>
-                    <div onClick={onClose}>
-                        <Icon.Close size={20} color={'#121212'} />
-                    </div>
-                </PopupHeader>
-                {children}
-            </PopupWrapper>
-        </PopupOverlay>
-    )
+    return createPortal((
+      <PopupOverlay>
+          <PopupWrapper>
+              <PopupHeader>
+                  <div onClick={onClose}>
+                      <Icon.Close size={20} color={'#121212'} />
+                  </div>
+              </PopupHeader>
+              {children}
+          </PopupWrapper>
+      </PopupOverlay>
+    ), document.body)
 }
 
 export default  PopupTemplate
@@ -42,7 +43,7 @@ const PopupOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: 100;
   
   background-color: white;
   
@@ -54,8 +55,11 @@ const PopupOverlay = styled.div`
 const PopupWrapper = styled.div`
   position: relative;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: hidden;
   background-color: white;
+  
+  box-sizing: border-box;
+  padding-bottom: 20px;
   
   @media screen and (min-width: 768px) {
     width: 360px;
