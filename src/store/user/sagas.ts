@@ -34,7 +34,6 @@ export function* fetchUserConsultSaga(action: ActionType<typeof actions.fetchUse
 
         yield put(actions.fetchUserConsultAsync.success({name, phone, move_orders, clean_orders, past_orders: orders.pastOrders}))
     } catch(e) {
-        console.log('wqwqeqweqw')
         yield put(actions.fetchUserConsultAsync.failure())
     }
 }
@@ -51,7 +50,6 @@ export function* fetchVerifySendMessageSaga(action: ActionType<typeof actions.fe
 export function* fetchVerifyCodeSaga(action: ActionType<typeof actions.fetchVerifyCodeAsync.request>) {
     try {
         const {data: {isVerified}} = yield call(requests.verifyAuthCode, action.payload.phone, action.payload.code)
-        console.log(isVerified);
         yield put(actions.fetchVerifyCodeAsync.success({isVerified: isVerified}))
     } catch (e) {
         yield put(actions.fetchVerifyCodeAsync.failure())
@@ -74,7 +72,6 @@ export function* fetchSignUpSaga(action: ActionType<typeof actions.fetchSignUpAs
 
         yield call(signInAfterFlowSaga)
     } catch(e) {
-        console.dir(e);
         if(e.response.status === 409) {
             yield put(actions.fetchSignInAsync.request({phone: tel, code }))
         }
@@ -112,6 +109,9 @@ export function* signInAfterFlowSaga() {
     switch(prevPage) {
         case ESignInCase.FORM: 
             yield put(formActions.fetchMoveData()) 
+            break;
+        case ESignInCase.ERROR:
+            yield put(push('/myconsult'))
             break;
         default:
             yield put(goBack())

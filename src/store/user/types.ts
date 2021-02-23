@@ -68,5 +68,6 @@ export interface ResponseVerifyCodeProps {
 
 export enum ESignInCase {
     FORM = 'form',
+    ERROR = 'error',
     NONE = ''
 }

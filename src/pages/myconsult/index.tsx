@@ -24,7 +24,6 @@ const MyConsult = () => {
     const isDesktop = useMedia({
         minWidth: 1200,
     })
-    const [visibleLoginModal, setVisibleLoginModal] = useState(false);
 
     const handleLogout = () => {
         dispatch(userActions.signOut());
@@ -62,10 +61,9 @@ const MyConsult = () => {
                         <strong>쉽고, 빠르게 로그인/가입하기</strong>
                         <p>로그인 또는 가입을 하시면 무료 견적상담 및 <br/> 내 신청내역 기능을 자유롭게 이용하실 수 있어요!</p>
                     </LoginWrapper>
-                    <Button theme="primary" border={true} bold={true} onClick={() => setVisibleLoginModal(true)} id={'dsl_myrequests_gate_button'}>로그인/가입</Button>               
+                    <Button theme="primary" border={true} bold={true} onClick={() => history.push('/login')} id={'dsl_myrequests_gate_button'}>로그인/가입</Button>               
                 </LoginContent>
                 <BottomNav />
-                <LoginModal visible={visibleLoginModal} onClose={() => setVisibleLoginModal(!visibleLoginModal)} onSuccess={() => setVisibleLoginModal(!visibleLoginModal)}/>
             </Container>
         )
     }

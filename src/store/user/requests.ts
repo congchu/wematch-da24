@@ -30,7 +30,6 @@ export const getSignIn = async (phone: string, code: string) => {
 }
 
 export const getUser = async (token: string) => {
-    console.log('token: ', token)
     const {data} = await axios({
         method: 'get',
         url: 'https://www.devops.wematch.com/auth/user',

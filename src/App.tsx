@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Switch,
     Route,
     Redirect,
     useLocation
 } from 'react-router-dom'
-import { Provider, useDispatch } from 'react-redux'
-import {ConnectedRouter} from 'connected-react-router'
+import { Provider, useDispatch, useSelector } from 'react-redux'
+import { ConnectedRouter } from 'connected-react-router'
 import ReactPixel from 'react-facebook-pixel'
 
 import store from 'store/index'
@@ -29,20 +29,21 @@ import NoPartnerPage from 'pages/requests/NoPartner'
 import RequestPartnerDetail from 'pages/requests/Detail/index'
 import NotFound from 'pages/notFound'
 import ErrorService from 'pages/errorService'
-
+import * as userSelector from 'store/user/selectors'
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
 import { useCookies } from 'react-cookie'
-
-//swiper lib
-import SwiperCore, {Pagination, Autoplay} from 'swiper'
-import 'swiper/swiper.scss'
-import 'swiper/components/pagination/pagination.scss'
 import { dataLayer } from 'lib/dataLayerUtil'
 import MyConsult from 'pages/myconsult'
 import MyConsultDetail from 'pages/myconsult/myConsultDetail'
 import { get } from 'lodash'
 import Login from 'pages/login'
+
+//swiper lib
+import SwiperCore, { Pagination, Autoplay } from 'swiper'
+import 'swiper/swiper.scss'
+import 'swiper/components/pagination/pagination.scss'
+import { ESignInCase } from 'store/user/types'
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -62,6 +63,8 @@ function AppRoute() {
     const customScript = useScript(script)
     const { isIE } = useUserAgent()
     const [cookies] = useCookies(['x-wematch-token'])
+    const { token } = useSelector(userSelector.getUser);
+    const wematchToken = get(cookies, 'x-wematch-token');
 
     const getPathname = () => {
         let pathname = 5
@@ -79,9 +82,9 @@ function AppRoute() {
     useEffect(() => {
         const wematchToken = get(cookies, 'x-wematch-token');
         if (wematchToken !== undefined) {
-            dispatch(userActions.fetchGetUserAsync.request({token: wematchToken}))
+            dispatch(userActions.fetchGetUserAsync.request({ token: wematchToken }))
         }
-    }, [cookies, dispatch])
+    }, [])
 
 
     useEffect(() => {
@@ -96,7 +99,7 @@ function AppRoute() {
             setScript(script)
         }
 
-        dataLayer({event: 'pageview'})
+        dataLayer({ event: 'pageview' })
         ReactPixel.pageView()
     }, [location.pathname])
 
@@ -110,30 +113,30 @@ function AppRoute() {
     if (isIE) {
         return (
             <Switch>
-                <Route exact path="/unsupported" component={UnSupported}/>
-                <Redirect path="/" to="/unsupported"/>
+                <Route exact path="/unsupported" component={UnSupported} />
+                <Redirect path="/" to="/unsupported" />
             </Switch>
         )
     } else {
         return (
             <Switch>
-                <Route exact path="/" component={Home}/>
-                <Route exact path="/partner/list" component={PartnerList}/>
-                <Route exact path="/partner/detail/:adminId" component={PartnerDetail}/>
-                <Route exact path="/partner/cart" component={PartnerCart}/>
-                <Route exact path="/banner/intro" component={Intro}/>
-                <Route exact path="/banner/customer" component={Customer}/>
-                <Route exact path="/banner/grade" component={Grade}/>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/partner/list" component={PartnerList} />
+                <Route exact path="/partner/detail/:adminId" component={PartnerDetail} />
+                <Route exact path="/partner/cart" component={PartnerCart} />
+                <Route exact path="/banner/intro" component={Intro} />
+                <Route exact path="/banner/customer" component={Customer} />
+                <Route exact path="/banner/grade" component={Grade} />
                 <Route exact path="/myconsult" component={MyConsult} />
                 <Route exact path="/myconsult/detail" component={MyConsultDetail} />
-                <Route exact path="/terms" component={Terms}/>
-                <Route exact path="/requests/completed" component={CompletedPage}/>
-                <Route exact path="/requests/nopartner" component={NoPartnerPage}/>
-                <Route exact path="/requests/noservice" component={NoServicePage}/>
-                <Route exact path="/requests/completed/:adminId" component={RequestPartnerDetail}/>
-                <Route exact path="/error" component={ErrorService}/>
-                <Route exact path="/login" component={Login} />
-                <Route component={NotFound}/>
+                <Route exact path="/terms" component={Terms} />
+                <Route exact path="/requests/completed" component={CompletedPage} />
+                <Route exact path="/requests/nopartner" component={NoPartnerPage} />
+                <Route exact path="/requests/noservice" component={NoServicePage} />
+                <Route exact path="/requests/completed/:adminId" component={RequestPartnerDetail} />
+                <Route exact path="/error" component={ErrorService} />
+                <Route exact path="/login" render={props => wematchToken ? <Redirect to={{ pathname: "/"}} /> : <Login />} />
+                <Route component={NotFound} />
             </Switch>
         )
     }
@@ -142,14 +145,39 @@ function AppRoute() {
 function App() {
     return (
         <>
-            <GlobalStyled/>
+            <GlobalStyled />
             <Provider store={store}>
                 <ConnectedRouter history={browserHistory}>
-                    <AppRoute/>
+                    <AppRoute />
                 </ConnectedRouter>
             </Provider>
         </>
     );
 }
 
+
+interface IAuthRoute {
+    exact: boolean
+    path: string
+    component: any
+}
+
+// 인증 라우터
+// const AuthRoute: React.FC<IAuthRoute> = ({ component: Component, ...rest }) => {
+//     const { token } = useSelector(userSelector.getUser);
+//     const location = useLocation();
+//     const dispatch = useDispatch();
+
+//     return <Route {...rest} render={props => {
+//         if (!token) {
+//             dispatch(userActions.signIn({ prevPage: ESignInCase.ERROR }))
+//             return <Redirect to={{ pathname: "/", state: { from: location.pathname, } }} />
+//         } else {
+//             return <Component {...props} />
+//         }
+//     }} />
+// }
+
 export default App;
+
+

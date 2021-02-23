@@ -20,18 +20,20 @@ import TermsModal from 'components/common/Modal/TermsModal';
 import MainHeader from 'components/common/MainHeader';
 import TopGnb from 'components/TopGnb';
 import { useMedia } from 'react-use-media';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { get } from 'lodash';
 
 
 
-const LoginPage = () => {
+function LoginPage() {
     const mobileOS = getMobileOS();
 
     const dispatch = useDispatch();
     const getMoveType = useSelector(formSelector.getType)
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
-    const { token } = useSelector(userSelector.getUser);
+    const [ cookies ] = useCookies(['x-wematch-token']);
     const {  isVerified, isSendMessage, loading } = useSelector(userSelector.getPhoneVerified)
     const { counter, handleCounterStart, handleCounterStop } = useTimer(180);
     const [code, setCode] = useState<string>('')
@@ -42,6 +44,7 @@ const LoginPage = () => {
     const verifyRef = useRef<HTMLInputElement | null>(null);
     const [isMobileKeyboard, setIsMobileKeyboard] = useState(false);
     const history = useHistory();
+    const location = useLocation();
     const isDesktop = useMedia({
         minWidth: 1200,
       })
@@ -139,13 +142,6 @@ const LoginPage = () => {
             handleCounterStop()
         }
     }, [isVerified, handleCounterStop])
-
-    useEffect(() => {
-        if (token) {
-            history.replace('/');
-        }
-    }, [token])
-
 
     return (
         <Container>

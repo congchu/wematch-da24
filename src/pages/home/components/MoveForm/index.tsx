@@ -263,12 +263,6 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
         return true
     }
 
-    const handleLoginSuccess = (submitType: 'curation' | 'select' | null) => {
-      if( submitType !== null) {
-        dispatch(formActions.fetchMoveData());
-      }
-    }
-
     const handleRequestClick = (submitType: 'curation' | 'select') => {
         if (!validateHouseOrOfficeForm()) return;
         selectedSubmitType.current = submitType;
@@ -285,7 +279,6 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
     useEffect(() => {
         const {type} = router.query
         if (cookies.formData) {
-            console.dir(cookies.formData);
             dispatch(formActions.setInitialFormData(cookies.formData))
         }
 
