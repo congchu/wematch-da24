@@ -58,10 +58,10 @@ const MyConsult = () => {
                 {isDesktop && <MainHeader isFixed={true} border={true}/>}
                 <LoginContent>
                     <LoginWrapper>
-                        <strong>쉽고, 빠르게 로그인/가입하기</strong>
-                        <p>로그인 또는 가입을 하시면 무료 견적상담 및 <br/> 내 신청내역 기능을 자유롭게 이용하실 수 있어요!</p>
+                        <strong>쉽고, 빠르게 이용하기</strong>
+                        <p>최초 1회만 번호인증을 하시면 무료 견적상담 및 내 신청내역 기능을 자유롭게 이용하실 수 있어요!</p>
                     </LoginWrapper>
-                    <Button theme="primary" border={true} bold={true} onClick={() => history.push('/login')} id={'dsl_myrequests_gate_button'}>로그인/가입</Button>               
+                    <Button theme="primary" border={true} bold={true} onClick={() => history.push('/login')} id={'dsl_myrequests_gate_button'}>인증하기</Button>               
                 </LoginContent>
                 <BottomNav />
             </Container>

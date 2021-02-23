@@ -52,7 +52,7 @@ const ConsultCard: React.FC<IConsultCard> = ({
         <TextWrapper style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', flex: 1}}>
             <div>
                 <p style={{color: colors.gray33}}><span>{categoryTitle}</span> 신청내역</p>
-                접수일 {dateOfReceipt}<br/>
+                신청일 {dateOfReceipt}<br/>
                 서비스일 {dateOfService}
             </div>
             <IconWrapper>
