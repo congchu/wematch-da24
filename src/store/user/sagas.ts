@@ -111,7 +111,7 @@ export function* signInAfterFlowSaga() {
             yield put(formActions.fetchMoveData()) 
             break;
         case ESignInCase.ERROR:
-            yield put(push('/myconsult'))
+            yield put(push('/myrequest'))
             break;
         default:
             yield put(goBack())

@@ -29,8 +29,8 @@ const MainHeader = ({ isFixed = false, border = false }: Props) => {
                             {/* 2020.11.23 삭제 요쳥 (kaya) */}
                             {/*<a href="https://wematch.com/inquiry">내 신청내역 확인</a>*/}
                         </S.QuickGnb>
-                        <S.Partner isActive={location.pathname.includes('myconsult')}>
-                            <Link to={'/myconsult'}>내 신청내역</Link>
+                        <S.Partner isActive={location.pathname.includes('myrequest')}>
+                            <Link to={'/myrequest'}>내 신청내역</Link>
                             {/* <a href={constants.MOVE_URL + "/myconsult.asp"}>내 신청내역</a> */}
                         </S.Partner>
                     </S.Lnb>

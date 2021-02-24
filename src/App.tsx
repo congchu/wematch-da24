@@ -127,8 +127,8 @@ function AppRoute() {
                 <Route exact path="/banner/intro" component={Intro} />
                 <Route exact path="/banner/customer" component={Customer} />
                 <Route exact path="/banner/grade" component={Grade} />
-                <Route exact path="/myconsult" component={MyConsult} />
-                <Route exact path="/myconsult/detail" component={MyConsultDetail} />
+                <Route exact path="/myrequest" component={MyConsult} />
+                <Route exact path="/myrequest/detail" component={MyConsultDetail} />
                 <Route exact path="/terms" component={Terms} />
                 <Route exact path="/requests/completed" component={CompletedPage} />
                 <Route exact path="/requests/nopartner" component={NoPartnerPage} />

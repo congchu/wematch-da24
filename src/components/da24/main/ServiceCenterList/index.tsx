@@ -101,7 +101,7 @@ const ServiceCenterList:React.FC<Props> = (props) => {
                 <S.Li><a href={constants.MOVE_URL + "/faq.asp"}>자주 묻는 질문<Next size={16}/></a></S.Li>
                 <S.Li><a href={constants.MOVE_URL + "/suggest.asp"}>문의하기<Next size={16}/></a></S.Li>
                 <S.Li><a href={constants.MOVE_URL + "/notice.asp"}>공지사항<Next size={16}/></a></S.Li>
-                <S.Li><a href={constants.MOVE_URL + "/myconsult.asp"}>내 신청내역 확인<Next size={16}/></a></S.Li>
+                <S.Li><a href={constants.MOVE_URL + "/myrequest"}>내 신청내역 확인<Next size={16}/></a></S.Li>
             </S.Ul>
         </S.Container>
     )

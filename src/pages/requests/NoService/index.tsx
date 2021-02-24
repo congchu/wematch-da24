@@ -19,6 +19,7 @@ import {FormState} from 'store/form/reducers'
 import {MOVE_URL} from 'constants/env'
 import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
+import { useHistory } from 'react-router-dom'
 
 const S = {
     Container: styled.div``,
@@ -86,7 +87,7 @@ export default function NoService() {
     const dispatch = useDispatch()
     const [cookies, setCookie] = useCookies(['report'])
     const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
-
+    const history = useHistory();
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
     const getMoveType = useSelector(formSelector.getType)
     const getMoveDate = useSelector(formSelector.getDate)
@@ -145,7 +146,7 @@ export default function NoService() {
             dispatch(formActions.submitFormAsync.success(cookies.report))
         }
         if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
-            window.location.href = `${MOVE_URL}/myconsult.asp`
+            history.push('/myrequest')
         }
 
     }, [getSubmittedForm])

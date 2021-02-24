@@ -2,6 +2,7 @@ import React from 'react'
 import * as constants from 'constants/env'
 
 import "./style.css"
+import { Link } from 'react-router-dom'
 
 interface Props {}
 
@@ -20,7 +21,7 @@ const MainHeaderForDetail = ({}: Props) => {
                     </div>
                     <div id="wmLnb">
                         <div className="head_info">
-                            <a href={constants.MOVE_URL + "/myconsult.asp"} className="link_request">내 신청내역</a>
+                            <Link to="/myrequest" className={"link_request"}>내 신청내역</Link>
                         </div>
                     </div>
                 </div>
