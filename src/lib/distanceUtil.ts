@@ -28,11 +28,12 @@ export const calcRouteByDirectionService = (
     return;
   }
 
-  if (address.start.indexOf("세종특별자치시") >= 0) {
-    address.start = "세종특별자치시";
+  if (address.start.indexOf("세종특별자치시 세종시") >= 0) {
+    address.start = "충청남도" + address.start.split("세종특별자치시 세종시").join("");
   }
-  if (address.end.indexOf("세종") >= 0) {
-    address.end = "세종특별자치시";
+
+  if (address.end.indexOf("세종특별자치시 세종시") >= 0) {
+    address.end = "충청남도" + address.end.split("세종특별자치시 세종시").join("");
   }
 
   const request = {
