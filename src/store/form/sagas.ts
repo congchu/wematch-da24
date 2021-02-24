@@ -121,7 +121,6 @@ export function* fetchMoveFormSaga() {
         yield put(actions.submitFormAsync.request({formData: {...formData}}));   
     } else if(selectedSubmitType === 'select') {
         yield put(commonActions.fetchMoveIdx.request(formData));
-        yield put(push('/partner/list'));
     }
 }
 

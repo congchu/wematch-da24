@@ -1,3 +1,4 @@
+import { push } from 'connected-react-router'
 import { call, put, all, takeEvery, select } from 'redux-saga/effects'
 import { ActionType } from 'typesafe-actions'
 import * as actions from './actions'
@@ -16,6 +17,7 @@ export function* fetchMoveIdxSaga(action: ActionType<typeof actions.fetchMoveIdx
     try {
         const data = yield call(requests.getMoveIdx, action.payload)
         yield put(actions.fetchMoveIdx.success(data.data.data))
+        yield put(push('/partner/list'));
     } catch (e) {
         yield put(actions.fetchMoveIdx.failure())
     }

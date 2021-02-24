@@ -1,10 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import PopupTemplate from 'components/wematch-ui/PopupTemplate'
-import { createPortal } from "react-dom";
 import * as colors from 'styles/colors';
 import * as userActions from 'store/user/actions';
-import * as formActions from 'store/form/actions';
 import * as formSelector from 'store/form/selectors';
 import * as userSelector from 'store/user/selectors';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,10 +17,7 @@ import TermsModal from 'components/common/Modal/TermsModal';
 import MainHeader from 'components/common/MainHeader';
 import TopGnb from 'components/TopGnb';
 import { useMedia } from 'react-use-media';
-import { useHistory, useLocation } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
-import { get } from 'lodash';
-
+import { useHistory } from 'react-router-dom';
 
 
 function LoginPage() {
@@ -33,7 +27,6 @@ function LoginPage() {
     const getMoveType = useSelector(formSelector.getType)
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
-    const [ cookies ] = useCookies(['x-wematch-token']);
     const {  isVerified, isSendMessage, loading } = useSelector(userSelector.getPhoneVerified)
     const { counter, handleCounterStart, handleCounterStop } = useTimer(180);
     const [code, setCode] = useState<string>('')
@@ -44,7 +37,6 @@ function LoginPage() {
     const verifyRef = useRef<HTMLInputElement | null>(null);
     const [isMobileKeyboard, setIsMobileKeyboard] = useState(false);
     const history = useHistory();
-    const location = useLocation();
     const isDesktop = useMedia({
         minWidth: 1200,
       })
@@ -145,14 +137,14 @@ function LoginPage() {
 
     return (
         <Container>
-            {isDesktop ? <MainHeader isFixed={true}/> : <TopGnb title="번호인증" count={0} onPrevious={() => history.goBack()} showTruck={false} />}
+            {isDesktop ? <MainHeader isFixed={true}/> : <TopGnb title="번호인증" count={0} onPrevious={() => setVisibleCancel(true)} showTruck={false} />}
             <LoginWrapper id={'dsl_login_popup'}>
                 <div style={{ width: '100%' }}>
                     <TextWrppaer>
                         <strong>번호인증</strong>
                         <p>
-                            업체와의 <span>견적상담신청/내신청내역 확인</span>을 위해<br />
-                            <span>번호인증</span>이 필요해요. (최초 1회만 인증)
+                            업체와의 <span>견적상담신청/내신청내역 확인</span>을 위해
+                            <span> 번호인증</span>이 필요해요. (최초 1회만 인증)
                         </p>
                     </TextWrppaer>
                     <FormWrapper>
@@ -255,6 +247,7 @@ export default LoginPage
 
 const Container = styled.div`
     position: relative;
+    min-width: 360px;
     height: 100vh;
     height: -webkit-fill-available;
     display: flex;
@@ -262,7 +255,6 @@ const Container = styled.div`
     overflow-y: auto;
     background-color: white;
     box-sizing: border-box;
-
     @media screen and (min-width: 768px) {
         justify-content: center;
         align-items: center;
@@ -314,6 +306,7 @@ const TextWrppaer = styled.div`
     }
     
     p {
+    letter-spacing: 0.03px;
       margin-bottom: 28px;
     }
   
@@ -339,10 +332,12 @@ const FormWrapper = styled.div`
 `
 
 const FooterWrappe = styled.div<{ isIOS: boolean }>`
+    width: 100%;
     p {
         color: ${colors.gray66};
         padding-bottom: 16px;
         padding: 0 16px 16px 16px;
+        
         span {
             text-decoration: underline;
         }
