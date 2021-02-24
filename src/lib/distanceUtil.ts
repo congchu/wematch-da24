@@ -34,7 +34,7 @@ export const calcRouteByDirectionService = (
   }
 
   if (address.end.indexOf("세종특별자치시 세종시") >= 0) {
-    address.end = "충청남도" + address.start.split("세종특별자치시 세종시").join("");
+    address.end = "충청남도" + address.end.split("세종특별자치시 세종시").join("");
   }
 
   const request = {
