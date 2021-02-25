@@ -6,6 +6,7 @@ import PrevIcon from 'components/wematch-ui/Icon/generated/Previous'
 
 import {Grade} from 'types/partner'
 import * as colors from 'styles/colors'
+import Enter from "../../../components/Icon/generated/Enter";
 
 const S = {
     Container: styled.div`
@@ -173,19 +174,9 @@ const S = {
         display: block;
         font-size: 15px;
         line-height: 26px;
-        .ico_reply {
+        svg {
           margin-left: -4px;
           margin-right: 4px;
-          width: 24px;
-          height: 24px;
-          background-position: -253px -180px;
-        }
-        .ico_comm {
-          background-image: url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/common/ico_comm_200114.png);
-          -webkit-background-size: 400px 300px;
-          background-size: 400px 300px;
-        }
-        .ico_comm {
           display: inline-block;
           overflow: hidden;
           font-size: 1px;
@@ -202,15 +193,15 @@ const S = {
 }
 
 interface Props {
-    adminid: string;
-    partnerName: string;
+    adminid: string; //partner 업체 id
+    partnerName: string; //
     userId: string;
     created_at: string;
     star: number; // 종합평
     price: Grade;
     kind: Grade;
     professional: Grade;
-    reviewContents: string;
+    reviewContents: string | React.ReactNode;
     reply: string | React.ReactNode | null;
 }
 
@@ -283,7 +274,7 @@ export default function ReviewItem({ adminid,partnerName, userId, created_at, st
             </S.Grade>
             <S.Review>{reviewContents}</S.Review>
             <S.Reply>
-                <strong><span className="ico_comm ico_reply"></span>이사업체 답변</strong>
+                <strong><Enter width={16}/>이사업체 답변</strong>
                 {reply}
             </S.Reply>
         </S.Container>
