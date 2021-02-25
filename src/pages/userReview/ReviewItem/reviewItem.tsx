@@ -78,6 +78,7 @@ const S = {
         top: 2px;
         right: 0;
         font-size: 14px;
+        color: #666;
         @media screen and (min-width: 768px){
           top: 14px
         }
