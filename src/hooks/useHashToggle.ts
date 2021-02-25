@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 const useHashToggle = (hash: string): [boolean, React.Dispatch<boolean>] =>  {
     const [isToggle, setIsToggle] = useState<boolean>(false);
     const history = useHistory()
+    const location = useLocation();
 
     const toggleOpenModal = useCallback((isToggle: boolean) => {
         if (isToggle) {
             history.push(hash)
         } else {
-            window.history.replaceState(null, '', ' ')
+            if(location.hash) {
+                history.goBack();
+            }
         }
     }, [isToggle])
 

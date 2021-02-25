@@ -8,9 +8,8 @@ interface AddressProps {
 }
 
 export const calcRouteByDirectionService = (
-  address: AddressProps,
-  callback: (distance: string | null) => void
-) => {
+  address: AddressProps
+) => new Promise(res => {
   let distance = "";
   let final_distance = "";
 
@@ -56,34 +55,33 @@ export const calcRouteByDirectionService = (
         }
 
         final_distance = distance.replace(" km", "").replace(" m", "");
-        callback(final_distance);
+        res(final_distance);
       } else {
-        callback(null);
+        res(null);
       }
     }
   );
-};
+});
 
 export const calcRouteByGeoCoder = (
-  addresses: string[],
-  callback: (coords?: google.maps.LatLng[] | null) => void
-) => {
+  addresses: string[]
+) => new Promise(res => {
   const coords: google.maps.LatLng[] = [];
-
+  let result;
   for (let i = 0; i < addresses.length; i++) {
     let currAddress = addresses[i];
     const geoCoder = new window.google.maps.Geocoder();
     if (geoCoder) {
+      // eslint-disable-next-line no-loop-func
       geoCoder.geocode({ address: currAddress }, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK) {
           coords.push(results[0].geometry.location);
           if (coords.length === addresses.length) {
-            callback(coords);
+            result = String(google.maps.geometry.spherical.computeDistanceBetween(coords[0], coords[1]) / 1000)
           }
-        } else {
-          callback(null);
         }
       });
     }
   }
-};
+  res(result);
+});

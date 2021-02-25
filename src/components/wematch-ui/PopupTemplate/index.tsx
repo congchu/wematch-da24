@@ -1,65 +1,79 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
+import ScrollLock, { TouchScrollable } from 'react-scrolllock';
 import styled from 'styled-components'
 import * as colors from "../../../styles/colors";
-import {Icon} from "../index";
+import { Icon } from "../index";
 
 interface Props {
-    visible: boolean;
-    onClose: () => void;
+  visible: boolean;
+  onClose: () => void;
+  pcHeight?: number;
 }
 
-const PopupTemplate:React.FC<Props> = (props) => {
-    const { visible, children, onClose } = props;
-    useEffect(() => {
-        if (visible) {
-            document.body.style.overflow = 'hidden'
-        }
+const PopupTemplate: React.FC<Props> = (props) => {
+  const { visible, children, onClose, pcHeight } = props;
+  const scrollPosition = window.pageYOffset;
 
-        return () => document.body.removeAttribute('style')
-    })
+  useEffect(() => {
+    if (visible) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollPosition}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+    }
 
-    if (!visible) return null
+    return () => {
+      document.body.removeAttribute('style');
+      window.scrollTo(0, scrollPosition);
+    }
+  }, [visible])
 
-    return (
-        <PopupOverlay>
-            <PopupWrapper>
-                <PopupHeader>
-                    <div onClick={onClose}>
-                        <Icon.Close size={20} color={'#121212'} />
-                    </div>
-                </PopupHeader>
-                {children}
-            </PopupWrapper>
-        </PopupOverlay>
-    )
+  if (!visible) return null
+
+  return (
+    <PopupOverlay>
+      <PopupWrapper pcHeight={pcHeight}>
+        <PopupHeader>
+          <div onClick={onClose}>
+            <Icon.Close size={20} color={'#121212'} />
+          </div>
+        </PopupHeader>
+        {children}
+      </PopupWrapper>
+    </PopupOverlay>
+  )
 }
 
-export default  PopupTemplate
+export default PopupTemplate
 
 const PopupOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+  bottom: 0;
+  right: 0;
   width: 100%;
-  height: 100%;
-  z-index: 10;
-  
+  z-index: 200;
   background-color: white;
-  
   @media screen and (min-width: 768px) {
     background-color: rgba(18, 18, 18, 0.6);;
   }
 `;
 
-const PopupWrapper = styled.div`
+const PopupWrapper = styled.div<{ pcHeight?: number }>`
   position: relative;
-  height: 100%;
+  height: 100vh;
+  height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   background-color: white;
-  
+  box-sizing: border-box;
+
   @media screen and (min-width: 768px) {
     width: 360px;
-    height: 480px;
+    height: ${({ pcHeight }) => !pcHeight ? '480px' : `${pcHeight}px`};
     border-radius: 16px;
     top: 50%;
     left: 50%;
@@ -68,12 +82,13 @@ const PopupWrapper = styled.div`
 `;
 
 const PopupHeader = styled.div`
+  width:100%;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   background-color: white;
-  height: 56px;
-  
+  z-index: 210;
   svg {
     margin-right: 20px;
   }
