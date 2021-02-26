@@ -76,6 +76,8 @@ const S = {
 
         &:disabled {
             background-color: ${colors.grayBg};
+            cursor: not-allowed;
+            color: ${colors.gray88};
         }
     `,
 }
