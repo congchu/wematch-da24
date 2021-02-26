@@ -6,7 +6,7 @@ export const fetchUserConsultAsync = createAsyncAction(
     "FETCH_USER_CONSULT_REQUEST",
     "FETCH_USER_CONSULT_SUCCESS",
     "FETCH_USER_CONSULT_FAILURE",
-)<{name: string, phone: string}, {name: string; phone: string; clean_orders: types.IOrder[]; move_orders: types.IOrder[]; past_orders: types.IOrder[];}, undefined>()
+)<{name: string, phone: string}, {name: string; phone: string; clean_orders: types.IOrder[]; move_orders: types.IOrder[]; }, undefined>()
 
 export const fetchSignInAsync = createAsyncAction(
     'FETCH_SIGN_IN_REQUEST',
