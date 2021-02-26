@@ -45,3 +45,5 @@ export const resetOrder = createAction('RESET_ORDER')();
 export const signOut = createAction("SIGN_OUT")();
 
 export const signIn = createAction('SIGN_IN')<{prevPage: types.ESignInCase}>();
+
+export const phoneVerifyCancel = createAction('PHONE_VERIFY_CANCEL')();

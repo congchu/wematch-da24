@@ -65,8 +65,9 @@ function LoginPage() {
 
     const displayCount = (count: number) => `${Math.floor(count / 60)}:${count % 60 < 10 ? `0${count % 60}` : count % 60}`
 
-    const handleModalClose = () => {
+    const handleLoginClose = () => {
         if (visibleCancel) {
+            dispatch(userActions.phoneVerifyCancel())
             setVisibleCancel(!visibleCancel)
             history.goBack()
         }
@@ -88,7 +89,7 @@ function LoginPage() {
             action: '로그인취소',
             label: '취소'
         })
-        handleModalClose();
+        handleLoginClose();
     }
 
     const handleLoginConfirm = () => {
@@ -212,7 +213,7 @@ function LoginPage() {
                                     <span>{isSendMessage && displayCount(counter)}</span>
                                 </CounterWrapper>
                             </div>
-                            <Button theme="primary" disabled={!isSendMessage || isVerified || isTimeout} onClick={handleVerify} bold={true}
+                            <Button theme="primary" disabled={!isSendMessage || isVerified || isTimeout || code.length < 6} onClick={handleVerify} bold={true}
                                 style={{ width: "90px", marginLeft: '7px', borderRadius: '4px' }} >
                                 확인
                             </Button>
