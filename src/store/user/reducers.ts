@@ -63,7 +63,7 @@ const initialState: UserState = {
 export default createReducer<UserState, Actions>(initialState)
     .handleAction(actions.fetchUserConsultAsync.request, (state) => ({...state, consult: {...state.consult, loading: true}}))
     .handleAction(actions.fetchUserConsultAsync.success, (state, action) => ({...state, consult: { data: {...action.payload}, loading: false, selected: null}}))
-    .handleAction(actions.fetchVerifySendMessageAsync.request, (state) => ({ ...state, phoneVerify: {...state.phoneVerify, loading: true}}))
+    .handleAction(actions.fetchVerifySendMessageAsync.request, (state) => ({ ...state, phoneVerify: {...state.phoneVerify, isSendMessage: false, loading: true}}))
     .handleAction(actions.fetchVerifySendMessageAsync.success, (state) => ({ ...state, phoneVerify: {...state.phoneVerify, isSendMessage: true, loading: false}}))
     .handleAction(actions.fetchVerifyCodeAsync.request, (state) => ({...state, phoneVerify: { ...state.phoneVerify, loading: true }}))
     .handleAction(actions.fetchVerifyCodeAsync.success, (state, action) => ({ ...state, phoneVerify: { isVerified: action.payload.isVerified, isSendMessage: !action.payload.isVerified, loading: false }}))

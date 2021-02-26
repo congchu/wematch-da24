@@ -34,6 +34,7 @@ function LoginPage() {
     const [visibleTimeout, setVisibleTimeout] = useHashToggle('#timeout');
     const [visibleCancel, setVisibleCancel] = useHashToggle('#verifyCancel');
     const [isTimeout, setIsTimeout] = useState(false);
+    const nameInputRef = useRef<HTMLInputElement | null>(null);
     const verifyRef = useRef<HTMLInputElement | null>(null);
     const [isMobileKeyboard, setIsMobileKeyboard] = useState(false);
     const history = useHistory();
@@ -101,6 +102,12 @@ function LoginPage() {
     }
 
     useEffect(() => {
+        if(nameInputRef.current) {
+            nameInputRef.current.focus();
+        }
+    }, [])
+
+    useEffect(() => {
         const handleResize = () => {
             if (mobileOS === 'Android') {
                 if (window.innerHeight < 500) {
@@ -149,8 +156,9 @@ function LoginPage() {
                     </TextWrppaer>
                     <FormWrapper>
                         <Input theme="default" border placeholder="이름" maxLength={20}
-                            onChange={(e) => setName(e.target.value)} value={name}
+                            onChange={(e) => setName(e.target.value)} value={name} inputRef={nameInputRef}
                             style={{ backgroundColor: isVerified ? '' : "transparent" }}
+                            disabled={!!isVerified}
                             onBlur={(e) => {
                                 if(e.target.value.length >= 2) {
                                     dataLayer({
@@ -220,7 +228,7 @@ function LoginPage() {
                     <p>
                         <span onClick={() => setVisibleTerms(true)}>이용약관 및 개인정보처리방침 동의</span>, 견적상담을 위한 개인 정보 제3자 제공 및 마케팅 정보수신 동의 필요
                     </p>
-                    <Button theme="primary" disabled={!isVerified} style={{ fontSize: '18px' }}
+                    <Button theme="primary" disabled={!isVerified || !name} style={{ fontSize: '18px' }}
                         bold={true} onClick={handleSignUp}>
                         동의하고 진행하기
                     </Button>
