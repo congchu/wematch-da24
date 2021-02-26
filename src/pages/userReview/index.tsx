@@ -86,11 +86,6 @@ export default function UserReviewPage() {
         }
     }
 
-    // if (getCommentList.loading) {
-    //     return(
-    //         <ReviewSkeleton/>
-    //     )
-    // }
 
     return (
         <>

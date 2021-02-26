@@ -1,8 +1,7 @@
-import styled from "styled-components";
-import {useMedia} from "react-use-media";
-import React, {useEffect} from "react";
-import MainHeader from "../MainHeader";
-import Skeleton from "./skeleton";
+import styled from 'styled-components'
+import {useMedia} from 'react-use-media'
+import React, {useEffect} from 'react'
+import Skeleton from './skeleton'
 
 
 const Desk = {
@@ -77,10 +76,9 @@ const Mob = {
       align-items: center;
       flex-direction: column;
       margin: 0 auto;
-      //width: 100%;
     `,
     InnerContainer: styled.div`
-      width: 100%;
+      width: 97%;
       display: block;
       float: left;
       margin-left: 20px;
