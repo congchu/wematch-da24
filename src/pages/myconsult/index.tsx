@@ -74,7 +74,7 @@ const MyConsult = () => {
             <Header>
                 <div>
                     <span className="title">{user?.name}</span>
-                    <span className="phone">{`${user?.tel.slice(0, 3)}-****-${user?.tel.slice(7)}`}</span>
+                    <span className="phone">{`${user?.tel.slice(0, 3)}-${user?.tel.slice(3, 7)}-${user?.tel.slice(7)}`}</span>
                 </div>
             </Header>
             <Content>

@@ -1,7 +1,7 @@
 import { push, goBack } from "connected-react-router";
 import dayjs from "dayjs";
 import { deleteCookie, getCookie, setCookie } from "lib/cookie";
-import { all, call, put, select, takeEvery } from "redux-saga/effects";
+import { all, call, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 import { setAgree } from "store/form/actions";
 import { ActionType } from "typesafe-actions";
 import * as actions from './actions';
@@ -30,9 +30,9 @@ export function* fetchUserConsultSaga(action: ActionType<typeof actions.fetchUse
         }, {pastOrders: [], currentOrders: []})
 
         const clean_orders = orders.currentOrders.filter((order: IOrder) => order.type === '입주청소' || order.type === "거주청소")
-        const move_orders = orders.currentOrders.filter((order:IOrder) => order.type === '원룸이사' || order.type === '가정이사')
+        const move_orders = orders.currentOrders.filter((order:IOrder) => order.type === '원룸이사' || order.type === '가정이사' || order.type === '사무실이사')
 
-        yield put(actions.fetchUserConsultAsync.success({name, phone, move_orders, clean_orders, past_orders: orders.pastOrders}))
+        yield put(actions.fetchUserConsultAsync.success({name, phone, move_orders, clean_orders }))
     } catch(e) {
         yield put(actions.fetchUserConsultAsync.failure())
     }
@@ -121,9 +121,9 @@ export function* signInAfterFlowSaga() {
 export default function* () {
     yield all([
         takeEvery(actions.fetchUserConsultAsync.request, fetchUserConsultSaga),
-        takeEvery(actions.fetchVerifySendMessageAsync.request, fetchVerifySendMessageSaga),
-        takeEvery(actions.fetchVerifyCodeAsync.request, fetchVerifyCodeSaga),
-        takeEvery(actions.fetchSignUpAsync.request, fetchSignUpSaga),
+        takeLatest(actions.fetchVerifySendMessageAsync.request, fetchVerifySendMessageSaga),
+        takeLatest(actions.fetchVerifyCodeAsync.request, fetchVerifyCodeSaga),
+        takeLatest(actions.fetchSignUpAsync.request, fetchSignUpSaga),
         takeEvery(actions.fetchSignInAsync.request, fetchSignInSaga),
         takeEvery(actions.fetchGetUserAsync.request, fetchGetUserSaga)
     ])

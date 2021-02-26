@@ -25,7 +25,6 @@ export interface UserState {
             phone: string;
             clean_orders: IOrder[];
             move_orders: IOrder[];
-            past_orders: IOrder[];
         },
         selected: IOrder | null;
         loading: boolean;
@@ -52,7 +51,6 @@ const initialState: UserState = {
             phone: '',
             clean_orders: [],
             move_orders: [],
-            past_orders: [],
         },
         selected: null,
         loading: false
