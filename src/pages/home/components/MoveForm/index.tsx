@@ -12,7 +12,7 @@ import Button from 'components/common/Button'
 // import PhoneVerifyPopup from 'components/common/Popup/PhoneVerifyPopup'
 import NoticePopup from 'components/common/Popup/NoticePopup'
 import OneroomNoticePopup from 'components/common/Popup/OneroomNoticePopup'
-import TermsModal from 'components/common/Modal/TermsModal'
+import TermsModal from 'components/Modal/TermsModal'
 
 import ButtonGroup from 'components/common/ButtonGroup'
 import MoveInput from 'pages/home/components/MoveInput'
