@@ -374,7 +374,7 @@ export default function Completed() {
             dispatch(formActions.submitFormAsync.success(cookies.report))
         }
         if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
-            window.location.href = `${MOVE_URL}/myconsult.asp`
+            history.push('/myrequest')
         }
     }, [])
 

@@ -1,3 +1,4 @@
+import { IUser } from "types/auth";
 
 export interface RequestAddressProps {
     dong: string;
@@ -28,11 +29,10 @@ export interface RequestVerifyCodeProps {
 }
 
 export interface ResponseVerifyCodeProps {
-    "is_verified": boolean | undefined;
+    isVerified: boolean | undefined;
 }
-
 export interface RequestUserInfoInsert {
-    moving_type: '가정' | '원룸' | '사무실' | undefined
+    moving_type: '가정' | '원룸' | '사무실' | undefined;
     moving_date: string;
     sido: string;
     gugun: string;
