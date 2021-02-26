@@ -34,6 +34,7 @@ function LoginPage() {
     const [visibleTimeout, setVisibleTimeout] = useHashToggle('#timeout');
     const [visibleCancel, setVisibleCancel] = useHashToggle('#verifyCancel');
     const [isTimeout, setIsTimeout] = useState(false);
+    const nameInputRef = useRef<HTMLInputElement | null>(null);
     const verifyRef = useRef<HTMLInputElement | null>(null);
     const [isMobileKeyboard, setIsMobileKeyboard] = useState(false);
     const history = useHistory();
@@ -64,8 +65,9 @@ function LoginPage() {
 
     const displayCount = (count: number) => `${Math.floor(count / 60)}:${count % 60 < 10 ? `0${count % 60}` : count % 60}`
 
-    const handleModalClose = () => {
+    const handleLoginClose = () => {
         if (visibleCancel) {
+            dispatch(userActions.phoneVerifyCancel())
             setVisibleCancel(!visibleCancel)
             history.goBack()
         }
@@ -76,7 +78,8 @@ function LoginPage() {
             tel: phone,
             name: name,
             init_service: getMoveType === 'house' ? EInitService.MOVE_HOUSE : EInitService.MOVE_OFFICE,
-            code
+            code,
+            user_agent: navigator.userAgent
         }))
     }
 
@@ -87,7 +90,7 @@ function LoginPage() {
             action: '로그인취소',
             label: '취소'
         })
-        handleModalClose();
+        handleLoginClose();
     }
 
     const handleLoginConfirm = () => {
@@ -99,6 +102,12 @@ function LoginPage() {
         })
         setVisibleCancel(!visibleCancel);
     }
+
+    useEffect(() => {
+        if(nameInputRef.current) {
+            nameInputRef.current.focus();
+        }
+    }, [])
 
     useEffect(() => {
         const handleResize = () => {
@@ -148,9 +157,10 @@ function LoginPage() {
                         </p>
                     </TextWrppaer>
                     <FormWrapper>
-                        <Input theme="default" border placeholder="이름" maxLength={20}
-                            onChange={(e) => setName(e.target.value)} value={name}
+                        <Input theme="default" border placeholder="이름" maxLength={8}
+                            onChange={(e) => setName(e.target.value)} value={name} inputRef={nameInputRef}
                             style={{ backgroundColor: isVerified ? '' : "transparent" }}
+                            disabled={!!isVerified}
                             onBlur={(e) => {
                                 if(e.target.value.length >= 2) {
                                     dataLayer({
@@ -204,7 +214,7 @@ function LoginPage() {
                                     <span>{isSendMessage && displayCount(counter)}</span>
                                 </CounterWrapper>
                             </div>
-                            <Button theme="primary" disabled={!isSendMessage || isVerified || isTimeout} onClick={handleVerify} bold={true}
+                            <Button theme="primary" disabled={!isSendMessage || isVerified || isTimeout || code.length < 6} onClick={handleVerify} bold={true}
                                 style={{ width: "90px", marginLeft: '7px', borderRadius: '4px' }} >
                                 확인
                             </Button>
@@ -220,7 +230,7 @@ function LoginPage() {
                     <p>
                         <span onClick={() => setVisibleTerms(true)}>이용약관 및 개인정보처리방침 동의</span>, 견적상담을 위한 개인 정보 제3자 제공 및 마케팅 정보수신 동의 필요
                     </p>
-                    <Button theme="primary" disabled={!isVerified} style={{ fontSize: '18px' }}
+                    <Button theme="primary" disabled={!isVerified || !name} style={{ fontSize: '18px' }}
                         bold={true} onClick={handleSignUp}>
                         동의하고 진행하기
                     </Button>

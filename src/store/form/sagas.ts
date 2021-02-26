@@ -118,6 +118,7 @@ export function* fetchMoveFormSaga() {
     })
 
     if(selectedSubmitType === 'curation') {
+        yield put(push('/'));
         yield put(actions.submitFormAsync.request({formData: {...formData}}));   
     } else if(selectedSubmitType === 'select') {
         yield put(commonActions.fetchMoveIdx.request(formData));
