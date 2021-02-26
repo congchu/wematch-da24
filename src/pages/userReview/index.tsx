@@ -3,13 +3,12 @@ import styled from 'styled-components'
 
 import Layout from 'components/base/Layout'
 import ReviewItem from './ReviewItem/reviewItem'
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from 'react-redux'
 
 import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
-import * as values from "../../constants/values";
-import Review from "../../components/da24/Review";
-import ReviewSkeleton from "../../components/common/Skeleton/reviewSkeleton";
+import * as values from 'constants/values'
+import ReviewSkeleton from 'components/common/Skeleton/reviewSkeleton'
 
 const S = {
     Container: styled.div`
@@ -50,14 +49,22 @@ export default function UserReviewPage() {
     const dispatch = useDispatch()
     const getCommentList = useSelector(partnerSelector.getCommentList)
 
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
 
     useEffect(() => {
         dispatch(partnerActions.fetchCommentListAsync.request({
             page: 1,
             size: values.DEFAULT_COMMENT_LIST_SIZE
         }))
-        window.addEventListener("scroll", infiniteScroll)
     }, [])
+
+    useEffect(() => {
+        window.addEventListener('scroll', infiniteScroll);
+        return () => window.removeEventListener('scroll', infiniteScroll);
+    }, []);
 
     /* more comments */
     useEffect( () => {
@@ -79,23 +86,33 @@ export default function UserReviewPage() {
         }
     }
 
+    // if (getCommentList.loading) {
+    //     return(
+    //         <ReviewSkeleton/>
+    //     )
+    // }
 
     return (
-        <Layout title='이용자 평가 현황' subTitle={<>실제 이용한 고객의<br/>업체평가입니다</>}>
-            <S.Container>
-                <S.Title><em>실제 이용한 고객</em>의<br/>업체평가입니다</S.Title>
-                <div>
-                    {getCommentList.data.map((comment, index) => {
-                        return (
-                            <ReviewItem adminid={comment.partner} partnerName={comment.area + " " + comment.level  + "등급 업체"}
-                                        userId={comment.id*7} created_at={comment.created_at}
-                                        star={comment.star} price={comment.price} kind={comment.kind} professional={comment.professional}
-                                        reviewContents={comment.memo} reply={comment.reply}/>
-                        )
-                    })}
-                </div>
-            </S.Container>
-        </Layout>
+        <>
+            <Layout title='이용자 평가 현황' subTitle={<>실제 이용한 고객의<br/>업체평가입니다</>}>
+                <S.Container>
+                    <S.Title><em>실제 이용한 고객</em>의<br/>업체평가입니다</S.Title>
+                    <div>
+                        {getCommentList.loading ? <ReviewSkeleton/> : (
+                            getCommentList.data.map((comment, index) => {
+                                return (
+                                    <ReviewItem adminid={comment.partner} partnerName={comment.area + " " + comment.level  + "등급 업체"}
+                                                userId={comment.id*7} created_at={comment.created_at}
+                                                star={comment.star} price={comment.price} kind={comment.kind} professional={comment.professional}
+                                                reviewContents={comment.memo} reply={comment.reply}/>
+                                )
+                            })
+                        )}
+                    </div>
+                </S.Container>
+            </Layout>
+        </>
+
     )
 
 }

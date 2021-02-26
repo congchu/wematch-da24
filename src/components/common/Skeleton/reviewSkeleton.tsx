@@ -42,12 +42,16 @@ const Tab = {
       align-items: center;
       flex-direction: column;
       margin: 0 auto;
-      width: 768px;
+      width: 608px;
+      @media screen and (min-width: 1200px){
+        margin-top: -30px;
+      }
     `,
     InnerContainer: styled.div`
       display: block;
       float: left;
-      margin-left: 20px;
+      width: 608px;
+      //margin-left: 20px;
     `,
     Header: styled.div`
       width: 100%;
@@ -136,8 +140,8 @@ function SkeletonType2Tab() {
             </div>
             <div/>
             <div style={{ float: 'left', justifyContent: 'space-between'}} >
-                <Skeleton style={{ width: 720, height: 14, marginTop: 20.28 }} animated />
-                <Skeleton style={{ width: 720, height: 14, marginTop: 12 }} animated />
+                <Skeleton style={{ width: 608, height: 14, marginTop: 20.28 }} animated />
+                <Skeleton style={{ width: 608, height: 14, marginTop: 12 }} animated />
             </div>
         </Tab.InnerContainer>
     )
@@ -166,10 +170,12 @@ function SkeletonType2Mob() {
     )
 }
 
+interface Props {
+    header?: boolean;
+}
 
 
-
-export default function ReviewSkeleton() {
+export default function ReviewSkeleton( ) {
 
     const isDesktop = useMedia({
         minWidth: 1200,
@@ -186,16 +192,8 @@ export default function ReviewSkeleton() {
     if (isDesktop) {
         return (
             <>
-                <MainHeader/>
+
                 <Desk.Container>
-                    <Desk.Header>
-                        <div>
-                            <Skeleton style={{width: 140, height: 19.49, marginTop: 24, marginLeft: 20}} animated/>
-                        </div>
-                        <div >
-                            <Skeleton style={{width: 140, height: 11.37, marginTop: 11.37, marginLeft: 20, marginBottom: 10}} animated/>
-                        </div>
-                    </Desk.Header>
                     <SkeletonType2Desktop/>
                     <Desk.Line style={{marginTop: 18}}/>
                     <SkeletonType2Desktop/>
@@ -215,14 +213,6 @@ export default function ReviewSkeleton() {
     if (isTablet) {
         return (
             <Tab.Container>
-                <Tab.Header>
-                    <div>
-                        <Skeleton style={{width: 140, height: 19.49, marginTop: 24, marginLeft: 20}} animated/>
-                    </div>
-                    <div >
-                        <Skeleton style={{width: 140, height: 11.37, marginTop: 11.37, marginLeft: 20, marginBottom: 10}} animated/>
-                    </div>
-                </Tab.Header>
                 <SkeletonType2Tab/>
                 <Tab.Line style={{marginTop: 18}}/>
                 <SkeletonType2Tab/>
@@ -240,14 +230,6 @@ export default function ReviewSkeleton() {
     /* MOBILE */
     return (
         <Mob.Container>
-            <Mob.Header>
-                <div>
-                    <Skeleton style={{width: 140, height: 19.49, marginTop: 24}} animated/>
-                </div>
-                <div >
-                    <Skeleton style={{width: 140, height: 11.37, marginTop: 11.37, marginBottom: 10}} animated/>
-                </div>
-            </Mob.Header>
             <SkeletonType2Mob/>
             <Mob.Line style={{marginTop: 18}}/>
             <SkeletonType2Mob/>
