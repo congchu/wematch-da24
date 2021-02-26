@@ -5,7 +5,7 @@ import {
     IPartnerDetail,
     IReview,
     IRecommendedList,
-    IPartnerDetailForCompleted
+    IPartnerDetailForCompleted, IComment
 } from 'types/partner'
 import {API_MIDDLEWARE_URL} from 'constants/env'
 
@@ -58,8 +58,8 @@ export const getMatchingIdx = async (idx:string, partners:string[]) => {
     return await axios.post(`${API_MIDDLEWARE_URL}/match`, body)
 }
 
-export const getCommentList = async (adminId:string, page: number, size: number) => {
-    const { data } = await bookingApi.request<ApiResponse<IReview[]>>({
+export const getCommentList = async (page: number, size: number) => {
+    const { data } = await bookingApi.request<ApiResponse<IComment[]>>({
         method: 'get',
         url: `/reviews?page=${page}&size=${size}`
     })

@@ -89,7 +89,7 @@ export function* fetchMatchingPartnerSaga(action: ActionType<typeof actions.fetc
 
 export function* fetchCommentListSaga(action: ActionType<typeof actions.fetchCommentListAsync.request>) {
     try {
-        const data = yield call(request.getCommentList, action.payload.adminId, action.payload.page, action.payload.size)
+        const data = yield call(request.getCommentList, action.payload.page, action.payload.size)
         yield put(actions.fetchCommentListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchCommentMoreListAsync.failure())
@@ -99,7 +99,7 @@ export function* fetchCommentListSaga(action: ActionType<typeof actions.fetchCom
 
 export function* fetchCommentMoreListSaga(action: ActionType<typeof actions.fetchCommentMoreListAsync.request>) {
     try {
-        const data = yield call(request.getCommentList, action.payload.adminId, action.payload.page, action.payload.size)
+        const data = yield call(request.getCommentList, action.payload.page, action.payload.size)
         yield put(actions.fetchCommentMoreListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchCommentMoreListAsync.failure())

@@ -195,13 +195,13 @@ const S = {
 interface Props {
     adminid: string; //partner 업체 id
     partnerName: string; //
-    userId: string;
+    userId: number;
     created_at: string;
     star: number; // 종합평
     price: Grade;
     kind: Grade;
     professional: Grade;
-    reviewContents: string | React.ReactNode;
+    reviewContents: string | React.ReactNode | null;
     reply: string | React.ReactNode | null;
 }
 
@@ -241,6 +241,12 @@ export default function ReviewItem({ adminid,partnerName, userId, created_at, st
         else return 0
     }
 
+    const dateCutter = ( longDate: string) => {
+        let onlyDate = longDate.split('T')
+        let dateArr = onlyDate[0].split('-')
+        let year =  dateArr[0].substring(2,4)
+        return year + '.' + dateArr[1] + '.' + dateArr[2]
+    }
 
     return (
         <S.Container>
@@ -270,14 +276,15 @@ export default function ReviewItem({ adminid,partnerName, userId, created_at, st
                         </S.StarFill>
                     </S.StarContainer>
                 </S.StarDiv>
-                <S.Reviewer><p>{userId}님 | {created_at}</p></S.Reviewer>
+                <S.Reviewer><p>{userId}님 | {dateCutter(created_at)}</p></S.Reviewer>
             </S.Grade>
             <S.Review>{reviewContents}</S.Review>
-            <S.Reply>
-                <strong><Enter width={16}/>이사업체 답변</strong>
-                {/*이스케이프 문자 주의*/}
-                {reply}
-            </S.Reply>
+            {reply && (
+                <S.Reply>
+                    <strong><Enter width={16}/>이사업체 답변</strong>
+                    {reply}
+                </S.Reply>
+            )}
         </S.Container>
     )
 

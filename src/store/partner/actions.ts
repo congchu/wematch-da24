@@ -57,13 +57,13 @@ export const fetchCommentListAsync = createAsyncAction(
     "FETCH_COMMENT_LIST_REQUEST",
     "FETCH_COMMENT_LIST_RESPONSE",
     "FETCH_COMMENT_LIST_FAILURE"
-)<{adminId: string; page: number; size: number}, CommentType, undefined>();
+)<{page: number; size: number}, CommentType, undefined>();
 
 export const fetchCommentMoreListAsync = createAsyncAction(
     "FETCH_COMMENT_MORE_LIST_REQUEST",
     "FETCH_COMMENT_MORE_LIST_RESPONSE",
     "FETCH_COMMENT_MORE_LIST_FAILURE"
-)<{adminId: string; page: number; size: number}, CommentType, undefined>();
+)<{page: number; size: number}, CommentType, undefined>();
 
 
 export const setPartnerPick = createAction("SET_PARTNER_PICK")<
