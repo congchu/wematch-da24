@@ -1,7 +1,7 @@
 import { createReducer, ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
-import {IPartnerDetail, IReview, IPartnerDetailForCompleted, Level} from 'types/partner'
+import {IPartnerDetail, IReview, IPartnerDetailForCompleted, Level, IComment} from 'types/partner'
 
 
 export type Actions = ActionType<typeof actions>
@@ -34,7 +34,13 @@ export interface PartnerState {
     matching: {
         idx: string;
         loading: boolean;
-    }
+    },
+    comment: {
+        data: IComment[];
+        loading: boolean;
+        moreLoading?: boolean;
+        hasMore: boolean;
+    },
 }
 
 const initialState: PartnerState = {
@@ -68,7 +74,13 @@ const initialState: PartnerState = {
     matching: {
         idx: '',
         loading: false
-    }
+    },
+    comment: {
+        data: [],
+        loading: false,
+        moreLoading: false,
+        hasMore: false
+    },
 }
 
 export default createReducer<PartnerState, Actions>(initialState)
@@ -92,3 +104,7 @@ export default createReducer<PartnerState, Actions>(initialState)
     .handleAction(actions.fetchPartnerDetailCompAsync.request, (state) => ({ ...state, detailForCompleted: { ...state.detailForCompleted, loading: true }, reviewForCompleted: {data: [], loading: false, moreLoading: false, hasMore: false}}))
     .handleAction(actions.fetchPartnerDetailCompAsync.success, (state, action) => ({ ...state, detailForCompleted: { data: action.payload, loading: false }}))
     .handleAction(actions.detailReset, (state) => ({...state, detailForCompleted: {...initialState.detailForCompleted}}))
+    .handleAction(actions.fetchCommentListAsync.request, (state) => ({ ...state, comment: { ...state.comment, loading: true }}))
+    .handleAction(actions.fetchCommentListAsync.success, (state, action) => ({ ...state, comment: { data: action.payload.data, loading: false, hasMore: action.payload.has_more }}))
+    .handleAction(actions.fetchCommentMoreListAsync.request, (state) => ({ ...state, comment: { ...state.comment, loading: false, moreLoading: true }}))
+    .handleAction(actions.fetchCommentMoreListAsync.success, (state, action) => ({ ...state, comment: { data: [...state.comment.data, ...action.payload.data], loading: false, moreLoading: false, hasMore: action.payload.has_more}}))
