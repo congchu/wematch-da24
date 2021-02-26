@@ -9,6 +9,7 @@ import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
 import * as values from "../../constants/values";
 import Review from "../../components/da24/Review";
+import ReviewSkeleton from "../../components/common/Skeleton/reviewSkeleton";
 
 const S = {
     Container: styled.div`

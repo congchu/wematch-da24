@@ -9,7 +9,7 @@ import {IPartnerList, Level, LevelText} from 'types/partner'
 import * as colors from 'styles/colors'
 import * as partnerSelector from "store/partner/selectors";
 import * as values from "constants/values";
-import {Skeleton, SkeletonAnimation} from "components/SkeletonEl";
+import {Skeleton, SkeletonAnimation} from "components/SkeletonUl";
 
 const S = {
 	Box: styled.a<{isSelected?: boolean, isFull?:boolean}>`
