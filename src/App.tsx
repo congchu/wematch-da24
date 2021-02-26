@@ -44,6 +44,7 @@ import SwiperCore, { Pagination, Autoplay } from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
 import { ESignInCase } from 'store/user/types'
+import UserReviewPage from "./pages/userReview";
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -133,7 +134,8 @@ function AppRoute() {
                 <Route exact path="/requests/completed" component={CompletedPage} />
                 <Route exact path="/requests/nopartner" component={NoPartnerPage} />
                 <Route exact path="/requests/noservice" component={NoServicePage} />
-                <Route exact path="/requests/completed/:adminId" component={RequestPartnerDetail} />
+                <Route exact path={["/requests/completed/:adminId", "/comment/:adminId"]} component={RequestPartnerDetail} />
+                <Route exact path="/comment" component={UserReviewPage} />
                 <Route exact path="/error" component={ErrorService} />
                 <Route exact path="/login" render={props => wematchToken ? <Redirect to={{ pathname: "/"}} /> : <Login />} />
                 <Route component={NotFound} />

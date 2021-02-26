@@ -57,3 +57,12 @@ export const getMatchingIdx = async (idx:string, partners:string[]) => {
     const body = {idx: idx, partners: partners}
     return await axios.post(`${API_MIDDLEWARE_URL}/match`, body)
 }
+
+export const getCommentList = async (adminId:string, page: number, size: number) => {
+    const { data } = await bookingApi.request<ApiResponse<IReview[]>>({
+        method: 'get',
+        url: `/reviews?page=${page}&size=${size}`
+    })
+
+    return data.data
+}
