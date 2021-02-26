@@ -3,10 +3,10 @@ import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 
 import PrevIcon from 'components/wematch-ui/Icon/generated/Previous'
+import Enter from 'components/Icon/generated/Enter'
 
 import {Grade} from 'types/partner'
 import * as colors from 'styles/colors'
-import Enter from "../../../components/Icon/generated/Enter";
 
 const S = {
     Container: styled.div`
@@ -169,7 +169,7 @@ const S = {
       padding-top: 10px;
       padding-left: 10px;
       font-size: 14px;
-      line-height: 26px;
+      line-height: 16px;
       strong {
         display: block;
         font-size: 15px;
@@ -275,6 +275,7 @@ export default function ReviewItem({ adminid,partnerName, userId, created_at, st
             <S.Review>{reviewContents}</S.Review>
             <S.Reply>
                 <strong><Enter width={16}/>이사업체 답변</strong>
+                {/*이스케이프 문자 주의*/}
                 {reply}
             </S.Reply>
         </S.Container>
