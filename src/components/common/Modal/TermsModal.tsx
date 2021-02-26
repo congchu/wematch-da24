@@ -1,7 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import ModalTemplate from './ModalTemplate'
+import PopupTemplate from "components/wematch-ui/PopupTemplate"
 
 import * as colors from 'styles/colors'
 
@@ -18,8 +18,7 @@ const S = {
         overflow-y: auto;
     `,
     TermsWrap: Styled.div`
-        padding-top: 40px;
-        position: absolute;
+        padding-top: 10px;
         top: 0;
         left: 24px;
         right: 24px;
@@ -40,6 +39,13 @@ const S = {
             color: ${colors.gray33};
         }
     `,
+    Title: Styled.h1`
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 35px;
+        color: ${colors.gray33};
+        margin-bottom: 25px;
+    `,
     Agree: Styled.div`
         padding-top: 10px;
     `,
@@ -52,9 +58,10 @@ const TermsModal:React.FC<Props> = (props) => {
     } = props
 
     return (
-        <ModalTemplate visible={visible} title="이용약관 및 개인정보처리방침" onClose={onClose} footer={false}>
+        <PopupTemplate visible={visible} onClose={onClose}>
             <S.Container>
                 <S.TermsWrap>
+                    <S.Title>이용약관 및 <br/>개인정보처리방침</S.Title>
                     <p>(주)다이사(이하 “회사”)는 서비스 제공을 위해 필요한 최소한의 정보를 아래와 같이 수집합니다. 정보주체인 이용자는 본 개인정보의 수집 및 이용에 관한 동의를 거부하실
                         권리가 있으나, 해당 정보는 서비스 제공에 필요한 최소한의 개인정보이므로 동의를 해주셔야 서비스를 이용하실 수 있습니다. </p>
                     <S.Agree>
@@ -124,7 +131,7 @@ const TermsModal:React.FC<Props> = (props) => {
                     </S.Agree>
                 </S.TermsWrap>
             </S.Container>
-        </ModalTemplate>
+        </PopupTemplate>
     )
 }
 

@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react'
-import ScrollLock, { TouchScrollable } from 'react-scrolllock';
+import React, {useEffect} from 'react'
+import {createPortal} from "react-dom";
 import styled from 'styled-components'
 import * as colors from "../../../styles/colors";
 import { Icon } from "../index";
 
 interface Props {
   visible: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   pcHeight?: number;
 }
 
@@ -29,20 +29,20 @@ const PopupTemplate: React.FC<Props> = (props) => {
     }
   }, [visible])
 
-  if (!visible) return null
+    if (!visible) return null
 
-  return (
-    <PopupOverlay>
-      <PopupWrapper pcHeight={pcHeight}>
-        <PopupHeader>
-          <div onClick={onClose}>
-            <Icon.Close size={20} color={'#121212'} />
-          </div>
-        </PopupHeader>
-        {children}
-      </PopupWrapper>
-    </PopupOverlay>
-  )
+    return createPortal((
+      <PopupOverlay>
+          <PopupWrapper>
+              <PopupHeader>
+                  <div onClick={onClose}>
+                      <Icon.Close size={20} color={'#121212'} />
+                  </div>
+              </PopupHeader>
+              {children}
+          </PopupWrapper>
+      </PopupOverlay>
+    ), document.body)
 }
 
 export default PopupTemplate
@@ -54,7 +54,9 @@ const PopupOverlay = styled.div`
   bottom: 0;
   right: 0;
   width: 100%;
+  height: 100%;
   z-index: 200;
+  
   background-color: white;
   @media screen and (min-width: 768px) {
     background-color: rgba(18, 18, 18, 0.6);;
@@ -63,13 +65,15 @@ const PopupOverlay = styled.div`
 
 const PopupWrapper = styled.div<{ pcHeight?: number }>`
   position: relative;
-  height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
+  background-color: white;
+  
+  box-sizing: border-box;
+  padding-bottom: 20px;
   height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  background-color: white;
-  box-sizing: border-box;
 
   @media screen and (min-width: 768px) {
     width: 360px;
