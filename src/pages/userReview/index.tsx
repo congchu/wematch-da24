@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
 
 import Layout from 'components/base/Layout'
@@ -41,26 +41,43 @@ const S = {
     `,
 }
 
-/*
-* FEB 2020
-* api 생성이후 다음내용 적용필요
-*   1. infinite scroll 적용
-*   2. props 확인/수정 및 ReviewItem 반영
-* */
-
 export default function UserReviewPage() {
 
     const nextPage = useRef(1)
-    const dispatch = useDispatch()
+    const [endOfScroll, setEndOfScroll] = useState(false)
 
+    const dispatch = useDispatch()
     const getCommentList = useSelector(partnerSelector.getCommentList)
+
 
     useEffect(() => {
         dispatch(partnerActions.fetchCommentListAsync.request({
             page: 1,
-            size: values.DEFAULT_REVIEW_LIST_SIZE
+            size: values.DEFAULT_COMMENT_LIST_SIZE
         }))
-    }, [dispatch])
+        window.addEventListener("scroll", infiniteScroll)
+    }, [])
+
+    /* more comments */
+    useEffect( () => {
+        nextPage.current += 1;
+        dispatch(partnerActions.fetchCommentMoreListAsync.request({
+            page: nextPage.current,
+            size: values.DEFAULT_COMMENT_LIST_SIZE
+        }))
+        setEndOfScroll(false)
+    }, [endOfScroll])
+
+    const infiniteScroll = () => {
+        const { documentElement, body } = document;
+        const scrollHeight = Math.max(documentElement.scrollHeight, body.scrollHeight);
+        const scrollTop = Math.max(documentElement.scrollTop, body.scrollTop);
+        const clientHeight = documentElement.clientHeight;
+        if (scrollTop + clientHeight >= scrollHeight) {
+            setEndOfScroll(true)
+        }
+    }
+
 
     return (
         <Layout title='이용자 평가 현황' subTitle={<>실제 이용한 고객의<br/>업체평가입니다</>}>

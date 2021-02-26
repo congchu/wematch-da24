@@ -202,7 +202,7 @@ interface Props {
     kind: Grade;
     professional: Grade;
     reviewContents: string | React.ReactNode | null;
-    reply: string | React.ReactNode | null;
+    reply?: string | React.ReactNode | null;
 }
 
 
