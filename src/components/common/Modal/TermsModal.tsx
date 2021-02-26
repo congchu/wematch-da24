@@ -1,7 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import ModalTemplate from './ModalTemplate'
+import PopupTemplate from './ModalTemplate'
 
 import * as colors from 'styles/colors'
 
@@ -52,7 +52,7 @@ const TermsModal:React.FC<Props> = (props) => {
     } = props
 
     return (
-        <ModalTemplate visible={visible} title="이용약관 및 개인정보처리방침" onClose={onClose} footer={false}>
+        <PopupTemplate visible={visible} title="이용약관 및 개인정보처리방침" onClose={onClose} footer={false}>
             <S.Container>
                 <S.TermsWrap>
                     <p>(주)다이사(이하 “회사”)는 서비스 제공을 위해 필요한 최소한의 정보를 아래와 같이 수집합니다. 정보주체인 이용자는 본 개인정보의 수집 및 이용에 관한 동의를 거부하실
@@ -124,7 +124,7 @@ const TermsModal:React.FC<Props> = (props) => {
                     </S.Agree>
                 </S.TermsWrap>
             </S.Container>
-        </ModalTemplate>
+        </PopupTemplate>
     )
 }
 
