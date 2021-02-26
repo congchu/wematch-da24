@@ -4,7 +4,7 @@ import Styled from 'styled-components'
 import Button from "components/common/Button"
 import Popup from './PopupTemplate'
 import PopupTemplate from './PopupTemplate'
-import PhoneVerifyPopup from './PhoneVerifyPopup'
+// import PhoneVerifyPopup from './PhoneVerifyPopup'
 import NoticePopup from './NoticePopup';
 
 import { withKnobs } from '@storybook/addon-knobs'
@@ -46,7 +46,7 @@ const PhoneVerifyPopupSample = () => {
     return (
         <>
             <Button theme="primary" onClick={toggle} style={{ margin: '5px' }}>핸드폰 인증 팝업창 오픈</Button>
-            <PhoneVerifyPopup visible={visible} phone="01012341234" onClose={toggle} />
+            {/* <PhoneVerifyPopup visible={visible} phone="01012341234" onClose={toggle} /> */}
         </>
     )
 }

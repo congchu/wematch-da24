@@ -1,9 +1,8 @@
 import { createReducer, ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
-import { IPartnerList, IPartnerDetail, IReview } from 'types/partner'
+import {IPartnerDetail, IReview, IPartnerDetailForCompleted, Level} from 'types/partner'
 
-import { DEFAULT_REVIEW_LIST_SIZE } from 'constants/values'
 
 export type Actions = ActionType<typeof actions>
 
@@ -19,6 +18,10 @@ export interface PartnerState {
     }
     detail: {
         data: IPartnerDetail | undefined;
+        loading: boolean;
+    },
+    detailForCompleted: {
+        data: IPartnerDetailForCompleted | undefined;
         loading: boolean;
     },
     review: {
@@ -44,6 +47,10 @@ const initialState: PartnerState = {
         hasMore: false
     },
     detail: {
+        data: undefined,
+        loading: false
+    },
+    detailForCompleted: {
         data: undefined,
         loading: false
     },
@@ -82,3 +89,6 @@ export default createReducer<PartnerState, Actions>(initialState)
     .handleAction(actions.fetchMatchingAsync.success, (state,action) => ({...state, matching: {idx: action.payload.data.data.idx, loading: false}}))
     .handleAction(actions.cartReset, (state) => ({...state, cart: {recommendedList: [], selectedList: [], loading: false}, pick: {data: []}}))
     .handleAction(actions.partnerListReset, (state) => ({...state, list: {...state.list, data: []}}))
+    .handleAction(actions.fetchPartnerDetailCompAsync.request, (state) => ({ ...state, detailForCompleted: { ...state.detailForCompleted, loading: true }, reviewForCompleted: {data: [], loading: false, moreLoading: false, hasMore: false}}))
+    .handleAction(actions.fetchPartnerDetailCompAsync.success, (state, action) => ({ ...state, detailForCompleted: { data: action.payload, loading: false }}))
+    .handleAction(actions.detailReset, (state) => ({...state, detailForCompleted: {...initialState.detailForCompleted}}))

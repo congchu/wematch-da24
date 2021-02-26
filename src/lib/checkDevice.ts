@@ -24,11 +24,5 @@ export const checkMobile = () => {
 }
 
 export const checkApp = () => {
-    let isApp = false
-    const platform = navigator.platform
-    if (platform === 'iPad' || platform === 'iPhone' || platform === 'iPod' || platform === 'Android') {
-        isApp = true
-    }
-
-    return isApp
+    return navigator.userAgent.indexOf('WmClientApp') > 0
 }
