@@ -78,7 +78,8 @@ function LoginPage() {
             tel: phone,
             name: name,
             init_service: getMoveType === 'house' ? EInitService.MOVE_HOUSE : EInitService.MOVE_OFFICE,
-            code
+            code,
+            user_agent: navigator.userAgent
         }))
     }
 
@@ -156,7 +157,7 @@ function LoginPage() {
                         </p>
                     </TextWrppaer>
                     <FormWrapper>
-                        <Input theme="default" border placeholder="이름" maxLength={20}
+                        <Input theme="default" border placeholder="이름" maxLength={8}
                             onChange={(e) => setName(e.target.value)} value={name} inputRef={nameInputRef}
                             style={{ backgroundColor: isVerified ? '' : "transparent" }}
                             disabled={!!isVerified}
