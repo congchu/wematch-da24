@@ -16,6 +16,7 @@ import LoginModal from 'components/common/Modal/LoginModal';
 import { deleteCookie } from 'lib/cookie';
 import { useCookies } from 'react-cookie';
 import { get } from 'lodash';
+import { onMessageHandler } from 'lib/MessageUtil';
 
 const MyConsult = () => {
     const history = useHistory();
@@ -28,6 +29,9 @@ const MyConsult = () => {
     const handleLogout = () => {
         dispatch(userActions.signOut());
         deleteCookie('x-wematch-token');
+        onMessageHandler({
+            action: 'clearData'
+        })
         history.replace('/');
     }
 
