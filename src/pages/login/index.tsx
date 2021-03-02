@@ -140,10 +140,11 @@ function LoginPage() {
     }, [isSendMessage, handleCounterStart])
 
     useEffect(() => {
-        if (isVerified) {
-            handleCounterStop()
+        if(isVerified !== null && code.length === 0) {
+            dispatch(userActions.phoneVerifyReset())
         }
-    }, [isVerified, handleCounterStop])
+    }, [dispatch, code, isVerified])
+
 
     return (
         <Container>

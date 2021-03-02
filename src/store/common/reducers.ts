@@ -1,4 +1,3 @@
-import { IUser } from 'types/auth';
 import { createReducer, ActionType } from 'typesafe-actions'
 import * as actions from './actions'
 import * as types from './types';
@@ -13,7 +12,8 @@ export interface CommonState {
     moveIdxData: {
         idx: string | null;
         loading: boolean
-    }
+    },
+    deviceId: string;
 }
 
 const initialState: CommonState = {
@@ -25,6 +25,7 @@ const initialState: CommonState = {
         idx: null,
         loading: false
     },
+    deviceId: '',
 }
 
 export default createReducer<CommonState, Actions>(initialState)
@@ -33,3 +34,4 @@ export default createReducer<CommonState, Actions>(initialState)
     .handleAction(actions.fetchMoveIdx.request, (state) => ({ ...state, moveIdxData: { ...state.moveIdxData, loading: true }}))
     .handleAction(actions.fetchMoveIdx.success, ((state, action) => ({ ...state, moveIdxData: {idx: action.payload.idx, loading: false}})))
     .handleAction(actions.resetAll, (state) => ({ ...state, ...initialState }))
+    .handleAction(actions.setDeviceId, (state, action) => ({...state, deviceId: action.payload.deviceId}))

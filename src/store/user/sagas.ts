@@ -1,7 +1,7 @@
 import { push, goBack } from "connected-react-router";
 import dayjs from "dayjs";
 import { deleteCookie, getCookie, setCookie } from "lib/cookie";
-import { all, call, put, select, takeEvery, takeLatest } from "redux-saga/effects";
+import { all, call, put, select, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
 import { setAgree } from "store/form/actions";
 import { ActionType } from "typesafe-actions";
 import * as actions from './actions';
@@ -121,9 +121,9 @@ export function* signInAfterFlowSaga() {
 export default function* () {
     yield all([
         takeEvery(actions.fetchUserConsultAsync.request, fetchUserConsultSaga),
-        takeLatest(actions.fetchVerifySendMessageAsync.request, fetchVerifySendMessageSaga),
-        takeLatest(actions.fetchVerifyCodeAsync.request, fetchVerifyCodeSaga),
-        takeLatest(actions.fetchSignUpAsync.request, fetchSignUpSaga),
+        takeLeading(actions.fetchVerifySendMessageAsync.request, fetchVerifySendMessageSaga),
+        takeLeading(actions.fetchVerifyCodeAsync.request, fetchVerifyCodeSaga),
+        takeLeading(actions.fetchSignUpAsync.request, fetchSignUpSaga),
         takeEvery(actions.fetchSignInAsync.request, fetchSignInSaga),
         takeEvery(actions.fetchGetUserAsync.request, fetchGetUserSaga)
     ])

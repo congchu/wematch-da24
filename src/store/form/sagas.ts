@@ -1,6 +1,6 @@
-import { put, all, takeEvery, call, select } from 'redux-saga/effects'
+import { put, all, takeEvery, call, select, takeLatest, takeLeading } from 'redux-saga/effects'
 import { ActionType } from 'typesafe-actions'
-import { push } from 'connected-react-router'
+import { push, replace } from 'connected-react-router'
 import * as userSelector from 'store/user/selectors';
 import * as commonTypes from 'store/common/types'
 import * as commonActions from 'store/common/actions';
@@ -118,9 +118,10 @@ export function* fetchMoveFormSaga() {
     })
 
     if(selectedSubmitType === 'curation') {
-        yield put(push('/'));
+        yield put(replace('/'));
         yield put(actions.submitFormAsync.request({formData: {...formData}}));   
     } else if(selectedSubmitType === 'select') {
+        yield put(replace('/'));
         yield put(commonActions.fetchMoveIdx.request(formData));
     }
 }
@@ -128,6 +129,6 @@ export function* fetchMoveFormSaga() {
 export default function* () {
     yield all([
         takeEvery(actions.submitFormAsync.request, submitFormSaga),
-        takeEvery(actions.fetchMoveData, fetchMoveFormSaga),
+        takeLeading(actions.fetchMoveData, fetchMoveFormSaga),
     ])
 }

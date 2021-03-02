@@ -29,6 +29,7 @@ import NoPartnerPage from 'pages/requests/NoPartner'
 import RequestPartnerDetail from 'pages/requests/Detail/index'
 import NotFound from 'pages/notFound'
 import ErrorService from 'pages/errorService'
+import * as commonActions from 'store/common/actions'
 import * as userSelector from 'store/user/selectors'
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
@@ -44,6 +45,7 @@ import SwiperCore, { Pagination, Autoplay } from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
 import { ESignInCase } from 'store/user/types'
+import useReceiveMessage from 'hooks/useReceiveMessage'
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -63,6 +65,7 @@ function AppRoute() {
     const customScript = useScript(script)
     const { isIE } = useUserAgent()
     const [cookies] = useCookies(['x-wematch-token'])
+    const getDeviceId = useReceiveMessage();
     const { token } = useSelector(userSelector.getUser);
     const wematchToken = get(cookies, 'x-wematch-token');
 
@@ -86,6 +89,12 @@ function AppRoute() {
         }
     }, [])
 
+
+    useEffect(() => {
+        if(getDeviceId) {
+            dispatch(commonActions.setDeviceId({deviceId: getDeviceId}))
+        }
+    }, [dispatch, getDeviceId])
 
     useEffect(() => {
         if (location.pathname !== '/') {
