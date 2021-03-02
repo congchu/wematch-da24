@@ -9,7 +9,7 @@ import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
 import * as values from 'constants/values'
 import ReviewSkeleton from 'components/common/Skeleton/reviewSkeleton'
-import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import useInfiniteScroll from 'hooks/useInfiniteScroll'
 
 const S = {
     Container: styled.div`
@@ -45,6 +45,7 @@ const S = {
 export default function UserReviewPage() {
 
     const moreComments = () => {
+        nextPage.current += 1
         dispatch(partnerActions.fetchCommentMoreListAsync.request({
             page: nextPage.current,
             size: values.DEFAULT_COMMENT_LIST_SIZE
