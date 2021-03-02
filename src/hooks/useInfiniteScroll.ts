@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const useInfiniteScroll = (callback: () => void) => {
+// const useInfiniteScroll = (callback: () => void) => {
+const useInfiniteScroll = (callback: () => void): [boolean, React.Dispatch<boolean>] => {
     const [isFetching, setIsFetching] = useState<boolean>(false);
 
     useEffect(() => {

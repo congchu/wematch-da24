@@ -9,6 +9,7 @@ import * as partnerActions from 'store/partner/actions'
 import * as partnerSelector from 'store/partner/selectors'
 import * as values from 'constants/values'
 import ReviewSkeleton from 'components/common/Skeleton/reviewSkeleton'
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 const S = {
     Container: styled.div`
@@ -43,16 +44,23 @@ const S = {
 
 export default function UserReviewPage() {
 
+    const moreComments = () => {
+        dispatch(partnerActions.fetchCommentMoreListAsync.request({
+            page: nextPage.current,
+            size: values.DEFAULT_COMMENT_LIST_SIZE
+        }))
+        setIsFetching(false)
+    }
+
     const nextPage = useRef(1)
-    const [endOfScroll, setEndOfScroll] = useState(false)
+    const [isFetching, setIsFetching] = useInfiniteScroll(moreComments)
 
     const dispatch = useDispatch()
     const getCommentList = useSelector(partnerSelector.getCommentList)
 
-    useEffect(() => {
+    useEffect(()=>{
         window.scrollTo(0, 0)
-    }, [])
-
+    },[])
 
     useEffect(() => {
         dispatch(partnerActions.fetchCommentListAsync.request({
@@ -60,32 +68,6 @@ export default function UserReviewPage() {
             size: values.DEFAULT_COMMENT_LIST_SIZE
         }))
     }, [])
-
-    useEffect(() => {
-        window.addEventListener('scroll', infiniteScroll);
-        return () => window.removeEventListener('scroll', infiniteScroll);
-    }, []);
-
-    /* more comments */
-    useEffect( () => {
-        nextPage.current += 1;
-        dispatch(partnerActions.fetchCommentMoreListAsync.request({
-            page: nextPage.current,
-            size: values.DEFAULT_COMMENT_LIST_SIZE
-        }))
-        setEndOfScroll(false)
-    }, [endOfScroll])
-
-    const infiniteScroll = () => {
-        const { documentElement, body } = document;
-        const scrollHeight = Math.max(documentElement.scrollHeight, body.scrollHeight);
-        const scrollTop = Math.max(documentElement.scrollTop, body.scrollTop);
-        const clientHeight = documentElement.clientHeight;
-        if (scrollTop + clientHeight >= scrollHeight) {
-            setEndOfScroll(true)
-        }
-    }
-
 
     return (
         <>
