@@ -5,12 +5,12 @@ import * as colors from 'styles/colors';
 
 interface IFindCardProps {
     title: string
-    link: string
+    link?: string
 }
 
 const FindCard: React.FC<IFindCardProps> = ({
     title,
-    link
+    link = '/'
 }) => (
     <FindCardContainer href={link}>
         <PlusIconWrapper>

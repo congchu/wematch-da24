@@ -17,6 +17,7 @@ import { deleteCookie } from 'lib/cookie';
 import { useCookies } from 'react-cookie';
 import { get } from 'lodash';
 import { onMessageHandler } from 'lib/MessageUtil';
+import { CLEAN_URL, MOVE_URL } from 'constants/env';
 
 const MyConsult = () => {
     const history = useHistory();
@@ -92,7 +93,7 @@ const MyConsult = () => {
                         </ContentSubTitle>
                         <ContentList>
                             {
-                                clean_orders.length === 0 ? <FindCard title="입주/이사청소" link="https://wematch.com/clean_step_01.asp" /> :
+                                clean_orders.length === 0 ? <FindCard title="입주/이사청소" link={CLEAN_URL} /> :
                                     clean_orders.map((order: IOrder) => <ConsultCard handleSelectConsult={() => handleSelectConsult(order)} key={order.idx} category={'clean'} link={'/myrequest/detail'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
                             }
                         </ContentList>
@@ -104,7 +105,7 @@ const MyConsult = () => {
                         </ContentSubTitle>
                         <ContentList>
                             {
-                                move_orders.length === 0 ? <FindCard title="이사" link="/" /> :
+                                move_orders.length === 0 ? <FindCard title="이사" link={MOVE_URL} /> :
                                     move_orders.map((order: IOrder) => <ConsultCard handleSelectConsult={() => handleSelectConsult(order)} key={order.idx} category={'move'} link={'/myrequest/detail'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
                             }
                         </ContentList>
