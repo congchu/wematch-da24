@@ -66,7 +66,7 @@ export function* fetchSignUpSaga(action: ActionType<typeof actions.fetchSignUpAs
         }))
 
         const {token, data} = yield call(requests.postSignUp, action.payload)
-        setCookie('x-wematch-token', token, { secure: true, 'max-age': 60*60*24*60})
+        setCookie('x-wematch-token', token, { 'max-age': 60*60*24*60, expires: new Date(dayjs().add(60, 'day').format()), domain: '.wematch.com' })
 
         yield put(actions.fetchSignUpAsync.success({token, user: { ...data }}))
 
@@ -83,7 +83,7 @@ export function* fetchSignInSaga(action: ActionType<typeof actions.fetchSignInAs
     try {
         const { phone, code } = action.payload;
         const {token, data} = yield call(requests.getSignIn, phone, code)
-        setCookie('x-wematch-token', token, { 'max-age': 60*60*24*60, expires: new Date(dayjs().add(60, 'day').format()) })
+        setCookie('x-wematch-token', token, { 'max-age': 60*60*24*60, expires: new Date(dayjs().add(60, 'day').format()), domain: '.wematch.com' })
         yield put(actions.fetchSignInAsync.success({token, user: { ...data }}));
         
         yield call(signInAfterFlowSaga)
