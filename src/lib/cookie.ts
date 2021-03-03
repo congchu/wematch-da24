@@ -32,7 +32,8 @@ export function setCookie(name: string, value: string, options:any = {}) {
 
 export function deleteCookie(name: string) {
     setCookie(name, "", {
-      'max-age': -1
+      'max-age': -1,
+      'domain': '.wematch.com'
     })
 }
   
