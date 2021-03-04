@@ -1,8 +1,15 @@
-import React from 'react'
+import React, {useEffect, useRef} from 'react'
 import styled from 'styled-components'
 
 import Layout from 'components/base/Layout'
 import AccordionCollapse from 'components/common/AccordionCollapse'
+
+import * as backofficeActions from 'store/backoffice/actions'
+import * as backofficeSelector from 'store/backoffice/selectors'
+import * as values from 'constants/values'
+import useInfiniteScroll from 'hooks/useInfiniteScroll'
+import {useDispatch, useSelector} from "react-redux";
+
 
 export type faqCategory = '공통' | '이사' | '청소';
 
@@ -10,39 +17,72 @@ const S = {
     CollapsedWrap: styled.div `
       padding-top: 18px;
       border-bottom: 1px solid #d7dbe2;
+      
+      .first1 {
+        padding-top: 0px;
+        border-bottom: 1px solid #d7dbe2;
+      }
+      
     `,
-    TopCollapsedWrap: styled.div`
-      padding-top: 0px;
-      border-bottom: 1px solid #d7dbe2;
-    `
+    // TopCollapsedWrap: styled.div`
+    //   padding-top: 0px;
+    //   border-bottom: 1px solid #d7dbe2;
+    // `
 }
 
 export default function NoticePage() {
 
+    const moreNotice = () => {
+        nextPage.current += 1
+        dispatch(backofficeActions.fetchNoticeMoreListAsync.request({
+            page: nextPage.current,
+            size: values.DEFAULT_NOTICE_LIST_SIZE
+        }))
+        setIsFetching(false)
+    }
+
+    const nextPage = useRef(1)
+    const [isFetching, setIsFetching] = useInfiniteScroll(moreNotice)
+
+    const dispatch = useDispatch()
+    const getNoticeList = useSelector(backofficeSelector.getNoticeList)
+
+    useEffect(()=>{
+        window.scrollTo(0, 0)
+    },[])
+
+
+    useEffect(() => {
+        dispatch(backofficeActions.fetchNoticeListAsync.request({
+            page: 1,
+            size: values.DEFAULT_NOTICE_LIST_SIZE
+        }))
+    }, [])
+
+    //
+    // useEffect(() => {
+    //     if(getNoticeList.hasMore) {
+    //         dispatch(backofficeActions.fetchNoticeMoreListAsync.request({
+    //             page: nextPage.current,
+    //             size: values.DEFAULT_NOTICE_LIST_SIZE
+    //         }))
+    //     }
+    // }, [getNoticeList.hasMore])
+
+
     return(
         <Layout title="공지사항">
-            {/* Notice : TopCollaseWrap is seperated for proper padding */}
-            <S.TopCollapsedWrap>
-                <AccordionCollapse title='[공지사항]공지사항' date='YYYY.MM.DD' postNum='NNN' defaultExpand={true} >
-                    공지사항 내용
-                </AccordionCollapse>
-            </S.TopCollapsedWrap>
-            <S.CollapsedWrap>
-                <AccordionCollapse title='[공지사항]공지사항' date='YYYY.MM.DD' postNum='NNN' defaultExpand={false} >
-                    공지사항 내용
-                </AccordionCollapse>
-            </S.CollapsedWrap>
-            <S.CollapsedWrap>
-                <AccordionCollapse title='[공지사항]공지사항' date='YYYY.MM.DD' postNum='NNN' defaultExpand={false} >
-                    공지사항 내용
-                </AccordionCollapse>
-            </S.CollapsedWrap>
-            <S.CollapsedWrap>
-                <AccordionCollapse title='[공지사항]공지사항' date='YYYY.MM.DD' postNum='NNN' defaultExpand={false} >
-                    공지사항 내용
-                </AccordionCollapse>
-            </S.CollapsedWrap>
-
+            <div>
+                {getNoticeList.data.map((notice, index) => {
+                    return (
+                        <S.CollapsedWrap className={'first'+index}>
+                            <AccordionCollapse title={notice.title} date={notice.created_at} postNum={notice.id} defaultExpand={index===1}>
+                                {notice.contents}
+                            </AccordionCollapse>
+                        </S.CollapsedWrap>
+                    )
+                })}
+            </div>
         </Layout>
     )
 

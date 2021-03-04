@@ -9,7 +9,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement>  {
     category?: faqCategory;
     title: string;
     date?:string;
-    postNum?:string;
+    postNum?:number;
     defaultExpand: boolean;
 }
 
