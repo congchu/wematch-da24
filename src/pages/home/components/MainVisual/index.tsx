@@ -183,7 +183,7 @@ function MainVisual() {
                     <div className="wrapper">
                         <span>놓칠 수 없는 혜택!</span>
                         <p>
-                            이사 견적서 올리면, <br /><strong>매트리스 소독권</strong> 또는 <strong>편의점 상품권!</strong>
+                            이사 견적서 올리면, <br /><strong>무료 매트리스 소독권 증정!</strong>
                         </p>
                         <a>자세히</a>
                     </div>

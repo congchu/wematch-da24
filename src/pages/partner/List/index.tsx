@@ -9,7 +9,6 @@ import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import MainHeader from 'components/common/MainHeader'
 import TopGnb from 'components/TopGnb'
 import EmptyPage from 'components/EmptyPage'
-import Loading from 'components/Loading'
 import { KakaoIcon, ChatArrow } from 'components/Icon'
 import ToastPopup from "components/wematch-ui/ToastPopup";
 
@@ -24,6 +23,8 @@ import * as partnerSelector from 'store/partner/selectors'
 import * as formSelector from "store/form/selectors";
 import * as commonSelector from "store/common/selectors";
 import { dataLayer } from "lib/dataLayerUtil";
+import { IPartnerList } from "types/partner";
+
 const S = {
     Container: styled.div`
         height:100%;
@@ -187,45 +188,58 @@ const PartnerList = () => {
         }
     }, [dispatch])
 
-    if (getPartnerList.loading) {
-        return <Loading text={'조건에 맞는 업체 찾는 중..'} />
+    const renderList = () => {
+        if (getPartnerList.loading) {
+            let arr = new Array(10).fill(undefined).map((val,idx) => idx);
+            return (
+                <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
+                    {arr.map((index: number) => {
+                        return (
+                            <PartnerItem key={index} />
+                        )
+                    })}
+                </S.PartnerItemContainer>
+            )
+        }
+
+        if (isEmpty(getPartnerList.data)) {
+            return <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다." />
+        }
+
+        return (
+            <>
+                <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
+                    {getPartnerList.data.map((list: IPartnerList, index: number) => {
+                        return (
+                            <PartnerItem list={list} onClick={() => {
+                                history.push(`/partner/detail/${list.adminid}`)
+                                dataLayer({ event: 'partner_select', label: `${getPartnerList.data.length}_${index + 1}`, CD7: `${list.level}등급`, CD8: `${list.title}` })
+                            }}
+                            />
+                        )
+                    })}
+                </S.PartnerItemContainer>
+                <S.ChatText onClick={handleLinkKakao} id="dsl_booking_list_katalk2">
+                    {getPartnerList.data[0].status === 'unavailable' ? "가능업체를 찾아드릴까요?" : "도움이 필요하세요?"}
+                    <ChatArrow width={20} height={12} />
+                </S.ChatText>
+                <S.BtnKakao onClick={handleLinkKakao} id="dsl_booking_list_katalk">
+                    <KakaoIcon width={35} height={34} />
+                </S.BtnKakao>
+            </>
+        )
     }
 
     return (
         <S.Container>
-            {isDesktop ? <MainHeader isFixed={true}/> : <TopGnb title="이사업체 목록" count={getPartnerPick.data.length} onPrevious={handlePrevious} showTruck={true} />}
+            {isDesktop ? <MainHeader /> : <TopGnb title="업체 직접 선택" count={getPartnerPick.data.length} onPrevious={() => history.goBack()} showTruck={true} />}
             <SetType count={getPartnerPick.data.length} formData={getFormData} />
-            {isEmpty(getPartnerList.data)
-                ? <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다." />
-                :
-                <>
-                    <S.WrapItem id="dsl_booking_list_partner">
-                        <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
-                            {getPartnerList.data.map((list: any, index: number) => {
-                                return (
-                                    <PartnerItem key={list.adminid} profile_img={list.profile_img}
-                                        level={list.level} title={list.title ? list.title : values.DEFAULT_TEXT}
-                                        pick_cnt={list.pick_cnt} feedback_cnt={list.feedback_cnt} experience={list.experience} status={list.status}
-                                        adminid={list.adminid}
-                                        onClick={() => {
-                                            history.push(`/partner/detail/${list.adminid}`)
-                                            dataLayer({ event: 'partner_select', label: `${getPartnerList.data.length}_${index + 1}`, CD7: `${list.level}등급`, CD8: `${list.title}` })
-                                        }}
-                                    />
-                                )
-                            })}
-                        </S.PartnerItemContainer>
-                        <S.ChatText onClick={handleLinkKakao} id="dsl_booking_list_katalk2">
-                            {getPartnerList.data[0].status === 'unavailable' ? "가능업체를 찾아드릴까요?" : "도움이 필요하세요?"}
-                            <ChatArrow width={20} height={12} />
-                        </S.ChatText>
-                        <S.BtnKakao onClick={handleLinkKakao} id="dsl_booking_list_katalk">
-                            <KakaoIcon width={35} height={34} />
-                        </S.BtnKakao>
-                    </S.WrapItem>
-                    {(isFetching && getPartnerList.hasMore) && <MoreLoading />}
-                </>
-            }
+            <>
+                <S.WrapItem id="dsl_booking_list_partner">
+                    {renderList()}
+                </S.WrapItem>
+                {(isFetching && getPartnerList.hasMore) && <MoreLoading />}
+            </>
             <ToastPopup visible={visible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
                 <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
             </ToastPopup>
