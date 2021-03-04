@@ -1,5 +1,5 @@
 import {createAction, createAsyncAction} from "typesafe-actions";
-import {IPartnerList, IPartnerDetail, IReview} from "types/partner";
+import {IPartnerList, IPartnerDetail, IReview, IPartnerDetailForCompleted} from "types/partner";
 import {Pagination} from "types/pagination";
 
 interface ListType {
@@ -11,6 +11,7 @@ interface ReviewType {
   data: IReview[];
   has_more: boolean;
 }
+
 export const fetchPartnerListAsync = createAsyncAction(
   "FETCH_PARTNER_LIST_REQUEST",
   "FETCH_PARTNER_LIST_RESPONSE",
@@ -27,19 +28,26 @@ export const fetchPartnerDetailAsync = createAsyncAction(
   "FETCH_PARTNER_DETAIL_REQUEST",
   "FETCH_PARTNER_DETAIL_RESPONSE",
   "FETCH_PARTNER_DETAIL_FAILURE"
-)<{username: string; idx: string}, IPartnerDetail, undefined>();
+)<{adminId: string; idx: string}, IPartnerDetail, undefined>();
+
+export const fetchPartnerDetailCompAsync = createAsyncAction(
+    "FETCH_PARTNER_DETAIL_COMP_REQUEST",
+    "FETCH_PARTNER_DETAIL_COMP_RESPONSE",
+    "FETCH_PARTNER_DETAIL_COMP_FAILURE"
+)<{adminId: string}, IPartnerDetailForCompleted, undefined>();
 
 export const fetchReviewListAsync = createAsyncAction(
   "FETCH_REVIEW_LIST_REQUEST",
   "FETCH_REVIEW_LIST_RESPONSE",
   "FETCH_REVIEW_LIST_FAILURE"
-)<{username: string; page: number; size: number}, ReviewType, undefined>();
+)<{adminId: string; page: number; size: number}, ReviewType, undefined>();
 
 export const fetchReviewMoreListAsync = createAsyncAction(
   "FETCH_REVIEW_MORE_LIST_REQUEST",
   "FETCH_REVIEW_MORE_LIST_RESPONSE",
   "FETCH_REVIEW_MORE_LIST_FAILURE"
-)<{username: string; page: number; size: number}, ReviewType, undefined>();
+)<{adminId: string; page: number; size: number}, ReviewType, undefined>();
+
 
 export const setPartnerPick = createAction("SET_PARTNER_PICK")<
   IPartnerDetail[]
@@ -59,3 +67,4 @@ export const fetchMatchingAsync = createAsyncAction(
 
 export const cartReset = createAction("CART_RESET")();
 export const partnerListReset = createAction("PARTNER_LIST_RESET")();
+export const detailReset = createAction("DETAIL_RESET")();

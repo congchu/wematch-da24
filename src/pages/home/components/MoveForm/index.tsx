@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {useCookies} from 'react-cookie'
 import {useRouter} from 'hooks/useRouter'
@@ -6,15 +6,13 @@ import queryString from 'query-string'
 import styled, {css} from 'styled-components'
 import {debounce, get, isEmpty} from 'lodash'
 import dayjs from 'dayjs'
-
-import {Icon} from 'components/wematch-ui'
 import {Checkbox} from 'components/wematch-ui/Checkbox'
 
 import Button from 'components/common/Button'
-import PhoneVerifyPopup from 'components/common/Popup/PhoneVerifyPopup'
+// import PhoneVerifyPopup from 'components/common/Popup/PhoneVerifyPopup'
 import NoticePopup from 'components/common/Popup/NoticePopup'
 import OneroomNoticePopup from 'components/common/Popup/OneroomNoticePopup'
-import TermsModal from 'components/common/Modal/TermsModal'
+import TermsModal from 'components/Modal/TermsModal'
 
 import ButtonGroup from 'components/common/ButtonGroup'
 import MoveInput from 'pages/home/components/MoveInput'
@@ -24,15 +22,20 @@ import * as commonActions from 'store/common/actions'
 import * as commonTypes from 'store/common/types'
 import * as formSelector from 'store/form/selectors'
 import * as formActions from 'store/form/actions'
+import * as userActions from 'store/user/actions';
+import * as userSelector from 'store/user/selectors';
 
 import * as colors from 'styles/colors'
 import {addressSplit, phoneSplit, translateMovingType} from 'components/wematch-ui/utils/form'
 
 import {calcRouteByDirectionService, calcRouteByGeoCoder} from 'lib/distanceUtil'
 import {dataLayer} from 'lib/dataLayerUtil'
-import {ONEROOM_URL} from 'constants/env'
+import {MOVE_URL, ONEROOM_URL} from 'constants/env'
 import useHashToggle from 'hooks/useHashToggle'
+import LoginModal from 'components/common/Modal/LoginModal'
 import {events} from 'lib/appsflyer'
+import { useHistory } from 'react-router-dom'
+import { ESignInCase } from 'store/user/types'
 
 const Visual = {
     Section: styled.section`
@@ -214,29 +217,17 @@ interface Props {
 
 const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
     const dispatch = useDispatch()
-
     const getMoveType = useSelector(formSelector.getType)
     const getMoveDate = useSelector(formSelector.getDate)
     const getAddress = useSelector(formSelector.getAddress)
     const getFloor = useSelector(formSelector.getFloor)
-    const getName = useSelector(formSelector.getName)
-    const getPhone = useSelector(formSelector.getPhone)
     const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
-    const getAgree = useSelector(formSelector.getAgree)
-    const getFormData = useSelector(formSelector.getFormData)
-
-    const getPhoneVerified = useSelector(commonSelector.getPhoneVerified)
-    const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
-
-    const [collapse, setCollapse] = useState<boolean>(false)
-    // const [visibleTerms, setVisibleTerms] = useState<boolean>(false)
+    const {user} = useSelector(userSelector.getUser);
+    const history = useHistory();
     const [visibleTerms, setVisibleTerms] = useHashToggle('#terms')
-    const [visibleVerifyPhone, setVisibleVerifyPhone] = useState(false)
     const [visibleOneroom, setVisibleOneroom] = useState(false)
     const [isVerifySuccess, setIsVerifySuccess] = useState(false)
-    const [distance, setDistance] = useState<string | null>(null)
-    const [submitType, setSubmitType] = useState<'curation' | 'select' | null>(null)
-
+    const selectedSubmitType = useRef<'curation' | 'select' | null>(null)
     const [cookies, setCookies, removeCookies] = useCookies(['0dj38gepoekf98234aplyadmin'])
     const router = useRouter();
 
@@ -269,99 +260,21 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
             alert('도착지 상세주소를 입력해 주세요.')
             return false;
         }
-        if (isEmpty(getName)) {
-            alert('이름을 입력해 주세요.')
-            return false;
-        }
-        const validatePhoneResult = phoneSplit(getPhone)
-        if (isEmpty(getPhone) || !validatePhoneResult.phone1 || !validatePhoneResult.phone2 || !validatePhoneResult.phone3) {
-            alert('휴대폰 번호를 정확히 입력해 주세요.')
-            return false;
-        }
-
-        if (!getAgree.terms || !getAgree.privacy) {
-            alert('이용약관 및 개인정보처리방침에 동의해 주세요.')
-            return false;
-        }
-
         return true
     }
 
-    const getMoveTypeText = useCallback(() => {
-        if (getMoveType === 'house') {
-            return '가정'
-        } else if (getMoveType === 'office') {
-            return '사무실'
+    const handleRequestClick = (submitType: 'curation' | 'select') => {
+        if (!validateHouseOrOfficeForm()) return;
+        selectedSubmitType.current = submitType;
+        dispatch(formActions.setSubmitType(submitType));
+
+        if(!user) {
+          dispatch(userActions.signIn({prevPage: ESignInCase.FORM}))
+          history.push('/login')
+        } else {
+          dispatch(formActions.fetchMoveData())
         }
-    }, [getMoveType])
-
-    const handleSubmit = debounce((submitType: 'curation' | 'select') => {
-
-        let result = false
-        if (getMoveType === 'house' || getMoveType === 'office') {
-            result = validateHouseOrOfficeForm()
-        }
-
-
-        if (result) {
-            calcRouteByDirectionService({
-                start: getAddress.start,
-                end: getAddress.end
-            }, (distance) => {
-
-                if (distance) {
-                    setDistance(distance)
-                } else {
-                    calcRouteByGeoCoder([getAddress.start, getAddress.end], (coords) => {
-                        if (coords) {
-                            setDistance(String(google.maps.geometry.spherical.computeDistanceBetween(coords[0], coords[1]) / 1000))
-                        }
-                    })
-                }
-
-                const formData: commonTypes.RequestUserInfoInsert = {
-                    moving_type: translateMovingType(getMoveType),
-                    moving_date: getMoveDate[0],
-                    floor: `${getFloor.start}`,
-                    detail_addr: getAddress.detailStart,
-                    sido: addressSplit(getAddress.start).sido,
-                    gugun: addressSplit(getAddress.start).gugun,
-                    dong: addressSplit(getAddress.start).dong,
-                    sido2: addressSplit(getAddress.end).sido,
-                    gugun2: addressSplit(getAddress.end).gugun,
-                    dong2: addressSplit(getAddress.end).dong,
-                    floor2: `${getFloor.end}`,
-                    detail_addr2: getAddress.detailEnd,
-                    name: getName,
-                    phone1: phoneSplit(getPhone).phone1,
-                    phone2: phoneSplit(getPhone).phone2,
-                    phone3: phoneSplit(getPhone).phone3,
-                    keep_move: getIsMoveStore,
-                    mkt_agree: getAgree.marketing,
-                    distance: Number(distance) || 1,
-                    agent_id: queryString.parse(get(cookies, '0dj38gepoekf98234aplyadmin')).agentid,
-                }
-
-                dispatch(formActions.setFormData(formData))
-
-                if (get(cookies, 'form') !== undefined) {
-                    removeCookies('formData')
-                }
-                setCookies('formData', {...formData, ...getAgree}, {expires: new Date(dayjs().add(2, 'day').format())})
-
-                dataLayer({
-                    event: 'request',
-                    category: '다이사_메인_신청_1',
-                    label: '매칭신청',
-                    action: submitType === 'curation' ? '업체_바로매칭' : '업체_직접고르기',
-                    CD6: getMoveTypeText(),
-                    CD10: getIsMoveStore ? 'Y' : 'N'
-                })
-
-            })
-
-        }
-    }, 500)
+    }
 
     useEffect(() => {
         const {type} = router.query
@@ -372,35 +285,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
         if (type === 'house') {
             dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp))
         }
-
-    }, [])
-
-    useEffect(() => {
-        if (getPhoneVerified.data.is_verified && visibleVerifyPhone) {
-            setVisibleVerifyPhone(false)
-            if (submitType === 'curation') {
-                /* AUTO MATCH */
-                dispatch(formActions.submitFormAsync.request({formData: {...getFormData, legacy: true}}));
-            }
-            if (submitType === 'select') {
-                dispatch(commonActions.fetchMoveIdx.request(getFormData))
-            }
-        }
-
-    }, [getPhoneVerified.data])
-
-    useEffect(() => {
-        if (getFormData && submitType) {
-            setVisibleVerifyPhone(true)
-        }
-    }, [getFormData])
-
-
-    useEffect(() => {
-        if (getMoveIdxData.idx && submitType === 'select' && !getMoveIdxData.loading) {
-            router.history.push(`/partner/list`)
-        }
-    }, [getMoveIdxData])
+    }, [dispatch])
 
     return (
         <Visual.Section>
@@ -432,57 +317,14 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
                 <HouseTitle selectMoveType={getMoveType}>
                     <strong>거주자 2명이상, 투룸 이상의 짐량</strong>
                 </HouseTitle>
-                <Description.InfoType style={{marginBottom: 0}} selectMoveType={getMoveType}>
+                <Description.InfoType style={{ marginBottom: 0 }} selectMoveType={getMoveType}>
                     <p>빌딩, 공장, 상가 등 짐량 1톤 트럭 초과</p>
                 </Description.InfoType>
-                <MoveInput type={getMoveType} style={{marginTop: 30}}/>
+                <MoveInput type={getMoveType} style={{ marginTop: 30 }} />
             </Visual.ButtonGroupContainer>
             <>
                 <Terms.Container selectMoveType={getMoveType !== undefined}>
-                    <Checkbox label="보관이사 필요" checked={getIsMoveStore}
-                              onChange={() => dispatch(formActions.setIsMoveStore(!getIsMoveStore))}/>
-                    <Terms.CheckWrapper>
-                        <Checkbox label="전체동의 필요" checked={getAgree.terms && getAgree.privacy && getAgree.marketing}
-                                  onChange={() => {
-                                      if (getAgree.terms && getAgree.privacy && getAgree.marketing) {
-                                          dispatch(formActions.setAgree({
-                                              terms: false,
-                                              privacy: false,
-                                              marketing: false
-                                          }))
-                                      } else {
-                                          dispatch(formActions.setAgree({
-                                              terms: true,
-                                              privacy: true,
-                                              marketing: true
-                                          }))
-                                      }
-                                  }}/>
-                        <Terms.View onClick={() => setCollapse(!collapse)}>
-                            {collapse ? <Icon.Up size={15} color={colors.gray33}/> :
-                                <Icon.Down size={15} color={colors.gray33}/>}
-                        </Terms.View>
-                    </Terms.CheckWrapper>
-                    <Terms.Collapse isShow={collapse}>
-                        <Terms.NewLink>
-                            <Checkbox label="이용약관 및 개인정보처리방침 동의" checked={getAgree.terms}
-                                      onChange={() => dispatch(formActions.setAgree({
-                                          ...getAgree,
-                                          terms: !getAgree.terms
-                                      }))}/>
-                            <a onClick={() => setVisibleTerms(true)}>보기</a>
-                        </Terms.NewLink>
-                        <Checkbox label="견적요청을 위해 이사업체에 개인정보제3자 제공동의" checked={getAgree.privacy}
-                                  onChange={() => dispatch(formActions.setAgree({
-                                      ...getAgree,
-                                      privacy: !getAgree.privacy
-                                  }))}/>
-                        <Checkbox label="마케팅 정보수신 동의(선택)" checked={getAgree.marketing}
-                                  onChange={() => dispatch(formActions.setAgree({
-                                      ...getAgree,
-                                      marketing: !getAgree.marketing
-                                  }))}/>
-                    </Terms.Collapse>
+                    <Checkbox label="보관이사 필요" checked={getIsMoveStore} onChange={() => dispatch(formActions.setIsMoveStore(!getIsMoveStore))} />
                 </Terms.Container>
                 <Terms.SubmitContainer selectMoveType={getMoveType !== undefined}>
                     <div className="text">
@@ -494,51 +336,16 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
                     <div id="dsl_move_button_requests_1">
 
                         {/******* AUTO MATCH *******/}
-                        <Button theme="primary" bold border onClick={() => {
-                            handleSubmit('curation')
-                            setSubmitType('curation')
-                        }}>추천업체 바로 신청하기</Button>
+                        <Button theme="primary" bold border onClick={() => handleRequestClick('curation')}>추천업체 바로 신청하기</Button>
                         {getMoveType !== 'oneroom' && (
-                          <Button theme="default" onClick={() => {
-                              handleSubmit('select')
-                              setSubmitType('select')
-                          }}>업체 직접고르기</Button>
+                          <Button theme="default" onClick={() => handleRequestClick('select')}>업체 직접고르기</Button>
                         )}
                     </div>
                 </Terms.SubmitContainer>
             </>
-
-            {/*본인인증*/}
-            <PhoneVerifyPopup visible={visibleVerifyPhone} phone={getPhone}
-                              onClose={() => setVisibleVerifyPhone(!visibleVerifyPhone)} tags={{
-                authBtn: "dsl_move_button_verify_1",
-                closeBtn: "dsl_move_button_verify_X_1"
-            }} onDataLayerAuth={() => {
-                return dataLayer({
-                    event: 'request_popup',
-                    category: '다이사_메인_번호인증_1',
-                    action: '인증하기',
-                    label: '인증팝업',
-                    CD6: getMoveTypeText(),
-                    CD10: getIsMoveStore ? 'Y' : 'N',
-                    CD12: submitType === "curation" ? '바로매칭' : "직접고르기"
-                })
-            }} onDataLayerClose={() => {
-                return dataLayer({
-                    event: 'request_popup',
-                    category: '다이사_메인_번호인증_1',
-                    action: '닫기',
-                    label: '인증팝업',
-                    CD6: getMoveTypeText(),
-                    CD10: getIsMoveStore ? 'Y' : 'N',
-                    CD12: submitType === "curation" ? '바로매칭' : "직접고르기"
-                })
-            }}/>
-            <NoticePopup visible={isVerifySuccess} footerButton border
-                         onClose={() => setIsVerifySuccess(!isVerifySuccess)}/>
-            <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)}/>
-            <OneroomNoticePopup visible={visibleOneroom} footerButton border
-                                onClose={() => setVisibleOneroom(!visibleOneroom)}/>
+            <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
+            <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
+            <OneroomNoticePopup visible={visibleOneroom} footerButton border onClose={() => setVisibleOneroom(!visibleOneroom)} />
         </Visual.Section>
     )
 }
