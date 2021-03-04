@@ -365,13 +365,13 @@ const MyConsultDetail = () => {
             </li>
             <li>
               <S.MoveText>출발지</S.MoveText>
-              <S.MoveSubtext>{selectedOrder?.start_address}</S.MoveSubtext>
+              <S.MoveSubtext>{selectedOrder?.start_address}{selectedOrder?.type !== '원룸이사' && '층'}</S.MoveSubtext>
             </li>
             {
               !selectedOrder?.type.includes('청소') && (
                 <li>
                   <S.MoveText>도착지</S.MoveText>
-                  <S.MoveSubtext>{selectedOrder?.end_address}</S.MoveSubtext>
+                  <S.MoveSubtext>{selectedOrder?.end_address}{selectedOrder?.type !== '원룸이사' && '층'}</S.MoveSubtext>
                 </li>
               )
             }
