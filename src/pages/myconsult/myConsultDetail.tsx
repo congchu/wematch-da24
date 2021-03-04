@@ -333,7 +333,7 @@ const MyConsultDetail = () => {
               <S.LinkCompany onClick={() => {
                 new Promise(() => {
                   dataLayer({
-                    event: 'complete',
+                    event: 'myrequest_detail',
                     category: '내신청내역_상세',
                     action: '고객평가_확인',
                     label: `${arr.length}_${index}`,
