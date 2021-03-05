@@ -57,11 +57,7 @@ const S = {
             margin-top:10px;
         };
         @media screen and (min-width:768px) {
-            right:10%;
-            bottom:48px;
-        };
-        @media screen and (min-width:1200px) {
-            bottom:72px;
+            display: none;
         };
     
         p {
