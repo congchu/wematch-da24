@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled, {css} from 'styled-components'
 import useHashToggle from 'hooks/useHashToggle'
 
@@ -7,6 +7,10 @@ import Input from 'components/common/Input'
 import Select from 'components/common/Select'
 
 import * as colors from 'styles/colors'
+import {useDispatch} from "react-redux";
+import * as backofficeActions from 'store/backoffice/actions'
+import * as backofficeSelectors from 'store/backoffice/selectors'
+import {ContactFormData} from 'store/common/types'
 
 
 const S = {
@@ -102,58 +106,114 @@ const Type = [
 
 function ContactPage() {
 
+    const dispatch = useDispatch()
+    const contactForm = backofficeSelectors.getContactForm
+
     const [visibleCategoryModal, setVisibleCategoryModal] = useHashToggle('#category')
     const [visibleTypeModal, setVisibleTypeModal] = useHashToggle('#type')
     const toggleCategory = () => setVisibleCategoryModal(!visibleCategoryModal)
     const toggleType = () => setVisibleTypeModal(!visibleTypeModal)
 
     /* 나중에 스토어 관련 작업으로 대체 권장 */
-    const [category, setCategory] = useState('');
-    const [type, setType] = useState('');
-    const selectCategory = (data: string) => {
-        setCategory(data)
+    const [name, setName] = useState('');
+    const [tel, setTel] = useState('');
+    const [contents, setContents] = useState('');
+    const [ip, setIp] = useState('');
+    const [contactType, setContactType] = useState<string>('');
+    const [serviceType, setServiceType] = useState<string>('');
+    const [completed, setCompleted] = useState<boolean>(false);
+
+
+    const selectContactType = (data: string ) => {
+        setContactType(data)
     }
-    const selectType = (data: string) => {
-        setType(data)
+    const selectServiceType = (data:string) => {
+        setServiceType(data)
     }
+
+    const isCompletedForm = () => {
+        if (name !== '' && contactType !== '' && tel !== '' && contents !== '' && ip !== '' && serviceType !== '') {
+            setCompleted(true)
+        }else {
+            setCompleted(false)
+        }
+    }
+
+    useEffect(()=>{
+        isCompletedForm()
+    },[name, contactType, tel, contents, ip, serviceType])
+
+
+    const contactSubmitHandler = () => {
+        const formData : ContactFormData = {
+            contact_type: contactType,
+            name: name,
+            tel: tel,
+            contents: contents,
+            ip_address: ip,
+            service_type: serviceType
+        }
+        dispatch(backofficeActions.setFormData(formData))
+        dispatch(backofficeActions.submitContactFormAsync.request({formData: formData}))
+
+    }
+
+    /* get ip-addr : will be replaced */
+    useEffect(()=>{
+        fetch('https://api.ipify.org?format=jsonp?callback=?', {
+            method: 'GET',
+            headers: {},
+        })
+            .then(res => {
+                return res.text()
+            }).then(ip => {
+            setIp(ip)
+        })
+    },[])
 
 
     return(
         <Layout title='문의하기'>
             <S.Form>
-                <Input theme="default" border placeholder="이름" rootStyle={{}} maxLength={20}
-                       style={{ fontSize: "18px", color: colors.black}}
-                       onBlur={(e) => {}}
+                <Input theme = "default" border placeholder="이름" rootStyle={{}} maxLength={20}
+                       style = {{ fontSize: "18px", color: colors.black}}
+                       onBlur = {(e) => {}}
+                       value = { name }
+                       onChange = {(e)=> {setName(e.target.value)}}
                 />
-                <Input theme="default" type="tel" pattern="[0-9]*" inputMode="numeric"
-                       placeholder="휴대전화번호 입력 ('-'없이)" border rootStyle={{}} maxLength={13}
-                       style={{ fontSize: "18px", color: colors.black}}
-                       onBlur={(e) => {}}
+                <Input theme = "default" type="tel" pattern="[0-9]*" inputMode="numeric"
+                       placeholder = "휴대전화번호 입력 ('-'없이)" border rootStyle={{}} maxLength={13}
+                       style = {{ fontSize: "18px", color: colors.black}}
+                       onBlur = {(e) => {}}
+                       value = { tel }
+                       onChange = {(e)=> {setTel(e.target.value)}}
                 />
-                <Input theme="default" border readOnly icon="down"
-                       placeholder="공통" rootStyle={{}}
-                       style={{ fontSize: "18px", color: colors.black}}
-                       onClick={toggleCategory}
-                       value={ category }
+                <Input theme = "default" border readOnly icon="down"
+                       placeholder = "공통" rootStyle={{}}
+                       style = {{ fontSize: "18px", color: colors.black}}
+                       onClick = {toggleCategory}
+                       value = { contactType }
                 />
-                <Input theme="default"
-                       border readOnly icon="down"
-                       placeholder="문의형태" rootStyle={{}}
-                       style={{ fontSize: "18px", color: colors.black}}
-                       onClick={toggleType}
-                       value = {type}
+                <Input theme = "default"
+                       border readOnly icon = "down"
+                       placeholder = "문의형태" rootStyle={{}}
+                       style = {{ fontSize: "18px", color: colors.black}}
+                       onClick = { toggleType }
+                       value = { serviceType }
                 />
                 <S.TextContainer>
                     <S.Textarea placeholder="문의내용"
                                 style={{ fontSize: "18px"}}
-                                onChange={(e) => {}}/>
+                                value={contents}
+                                onChange={(e)=> {setContents(e.target.value)}}
+                    />
                 </S.TextContainer>
 
             </S.Form>
 
-            <Select visible={visibleCategoryModal} items={Category} onOverlayClose={toggleCategory} onClose={toggleCategory} onSelect={selectCategory}/>
-            <Select visible={visibleTypeModal} items={Type} onOverlayClose={toggleType} onClose={toggleType} onSelect={selectType} />
-            <S.Button theme={"primary"}>확인</S.Button>
+            <Select visible={visibleCategoryModal} items={Category} onOverlayClose={toggleCategory} onClose={toggleCategory} onSelect={selectContactType}/>
+            <Select visible={visibleTypeModal} items={Type} onOverlayClose={toggleType} onClose={toggleType} onSelect={selectServiceType} />
+            <S.Button theme={"primary"} disabled={!completed} onClick={() => contactSubmitHandler() }>확인</S.Button>
 
         </Layout>
 

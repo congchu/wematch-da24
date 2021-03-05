@@ -63,3 +63,14 @@ export enum MovingType {
     oneroom = '원룸',
     office = '사무실'
 }
+
+
+
+export interface ContactFormData {
+    contact_type: string;
+    name: string;
+    tel: string;
+    contents: string;
+    ip_address: string;
+    service_type: string;
+}
