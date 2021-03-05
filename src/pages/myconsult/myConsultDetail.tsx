@@ -333,7 +333,7 @@ const MyConsultDetail = () => {
               <S.LinkCompany onClick={() => {
                 new Promise(() => {
                   dataLayer({
-                    event: 'complete',
+                    event: 'myrequest_detail',
                     category: '내신청내역_상세',
                     action: '고객평가_확인',
                     label: `${arr.length}_${index}`,
@@ -365,13 +365,13 @@ const MyConsultDetail = () => {
             </li>
             <li>
               <S.MoveText>출발지</S.MoveText>
-              <S.MoveSubtext>{selectedOrder?.start_address}</S.MoveSubtext>
+              <S.MoveSubtext>{selectedOrder?.start_address}{selectedOrder?.type !== '원룸이사' && '층'}</S.MoveSubtext>
             </li>
             {
               !selectedOrder?.type.includes('청소') && (
                 <li>
                   <S.MoveText>도착지</S.MoveText>
-                  <S.MoveSubtext>{selectedOrder?.end_address}</S.MoveSubtext>
+                  <S.MoveSubtext>{selectedOrder?.end_address}{selectedOrder?.type !== '원룸이사' && '층'}</S.MoveSubtext>
                 </li>
               )
             }

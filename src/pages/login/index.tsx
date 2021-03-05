@@ -90,7 +90,9 @@ function LoginPage() {
             action: '로그인취소',
             label: '취소'
         })
-        handleLoginClose();
+        setTimeout(() => {
+            handleLoginClose();
+        }, 300)
     }
 
     const handleLoginConfirm = () => {
