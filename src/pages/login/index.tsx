@@ -86,7 +86,7 @@ function LoginPage() {
             code,
             user_agent: navigator.userAgent,
             agreed_marketing: new Date().toISOString(),
-            agent: agentId ? agentId.split('=')[1] : ''
+            agent: agentId ? agentId.split('=')[1] : null
         }))
     }
 
