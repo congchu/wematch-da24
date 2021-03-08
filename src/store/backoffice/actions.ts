@@ -1,5 +1,5 @@
 import {createAction, createAsyncAction} from "typesafe-actions";
-import {INotice} from 'types/notice'
+import {INotice} from 'types/backoffice'
 
 interface NoticeType {
   notices: INotice[];
