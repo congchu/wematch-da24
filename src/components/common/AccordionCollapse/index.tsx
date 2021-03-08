@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import {Minus, Plus} from 'components/wematch-ui/Icon'
 import * as colors from 'styles/colors'
+import {useEffect} from "react";
 
 export type faqCategory = '공통' | '이사' | '청소'
 
@@ -9,8 +10,8 @@ interface Props extends React.HTMLAttributes<HTMLDivElement>  {
     category?: faqCategory;
     title: string;
     date?:string;
-    postNum?:string;
-    defaultExpand: boolean;
+    postNum?:number;
+    defaultExpand?: boolean;
 }
 
 
@@ -41,6 +42,13 @@ const S = {
         em {
           color: #1672f7;
         }
+        h6{
+          font-weight: normal;
+          display: block;
+          font-size: 15px;
+          line-height: 16px;
+          color: #888;
+        }
       }
 
       span {
@@ -54,13 +62,7 @@ const S = {
         float: right;
       }
 
-      h6{
-        font-weight: normal;
-        display: block;
-        font-size: 15px;
-        line-height: 16px;
-        color: #888;
-      }
+      
 
       @media screen and (min-width: 768px) {
         //padding-top: 52px;
@@ -74,6 +76,7 @@ const S = {
       position: absolute;
     `,
     ContentsWrapper : styled.div`
+      
       height: 0;
       width: inherit;
       //padding: 0 8px;
@@ -87,6 +90,11 @@ const S = {
       letter-spacing: -1px;
       padding: 0 24px;
       margin: 5px 0 14px 0;
+      
+      .contentStyle {
+        padding-top: 16px;
+      }
+      
     `,
     Contents : styled.div`
       padding-top: 16px;
@@ -100,11 +108,12 @@ const S = {
 * FAQ : category, title, defaultExpand
 * 공지사항 : title, date, postNum
 * */
-function AccordionCollapse({ category ,title, children, defaultExpand, date, postNum } : Props) {
+function AccordionCollapse({ category ,title, children, defaultExpand=false, date, postNum } : Props) {
 
+    const wholeRef = React.useRef<HTMLDivElement>(null)
     const parentRef = React.useRef<HTMLDivElement>(null)
     const childRef = React.useRef<HTMLDivElement>(null)
-    const [isCollapse, setIsCollapse] = React.useState(false)
+    const [isCollapse, setIsCollapse] = React.useState(defaultExpand)
 
     const handleButtonClick = React.useCallback(
         (event) => {
@@ -122,15 +131,16 @@ function AccordionCollapse({ category ,title, children, defaultExpand, date, pos
         [isCollapse]
     );
 
-    const parentRefHeight = parentRef.current?.style.height ?? "0px";
-    const icon = parentRefHeight === "0px" ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
 
 
+    // const parentRefHeight = parentRef.current?.style.height ?? "0px";
+    // const icon = parentRefHeight === "0px" ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
+    const icon = !isCollapse ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
 
 
     return(
         <S.Container>
-            <S.Header onClick={handleButtonClick}>
+            <S.Header onClick={handleButtonClick} ref={wholeRef}>
                 <div className='textWrapper'>
                     {category? <em>Q {category}<br/></em> : <></>}
                     {title}
