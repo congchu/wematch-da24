@@ -10,7 +10,7 @@ export function* fetchNoticeListSaga(action: ActionType<typeof actions.fetchNoti
         const data = yield call(request.getNoticeList, action.payload.page, action.payload.size)
         yield put(actions.fetchNoticeListAsync.success(data))
     } catch (e) {
-        yield put(actions.fetchNoticeMoreListAsync.failure())
+        yield put(actions.fetchNoticeListAsync.failure())
         console.log('실패')
     }
 }
