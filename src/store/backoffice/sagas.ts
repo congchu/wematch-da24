@@ -24,10 +24,31 @@ export function* fetchNoticeMoreListSaga(action: ActionType<typeof actions.fetch
     }
 }
 
+export function* fetchFaqListSaga(action: ActionType<typeof actions.fetchFaqListAsync.request>) {
+    try {
+        const data = yield call(request.getFaqList, action.payload.page, action.payload.size)
+        yield put(actions.fetchFaqListAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchFaqListAsync.failure())
+        console.log('실패')
+    }
+}
+
+export function* fetchFaqMoreListSaga(action: ActionType<typeof actions.fetchFaqMoreListAsync.request>) {
+    try {
+        const data = yield call(request.getFaqList, action.payload.page, action.payload.size)
+        yield put(actions.fetchFaqMoreListAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchFaqMoreListAsync.failure())
+    }
+}
+
 export default function* () {
     yield all([
         takeEvery(actions.fetchNoticeListAsync.request, fetchNoticeListSaga),
         takeEvery(actions.fetchNoticeMoreListAsync.request, fetchNoticeMoreListSaga),
+        takeEvery(actions.fetchFaqListAsync.request, fetchFaqListSaga),
+        takeEvery(actions.fetchFaqMoreListAsync.request, fetchFaqMoreListSaga),
 
     ])
 }

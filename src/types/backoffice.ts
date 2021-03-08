@@ -11,3 +11,5 @@ export interface INotice{
     count: number;
 
 }
+
+export interface IFaq extends INotice {}
