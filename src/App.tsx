@@ -1,17 +1,18 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Switch,
     Route,
     Redirect,
     useLocation
 } from 'react-router-dom'
-import {Provider} from 'react-redux'
-import {ConnectedRouter} from 'connected-react-router'
+import { Provider, useDispatch, useSelector } from 'react-redux'
+import { ConnectedRouter } from 'connected-react-router'
 import ReactPixel from 'react-facebook-pixel'
 
 import store from 'store/index'
 import browserHistory from 'lib/history'
 import GlobalStyled from 'styles/global'
+import * as userActions from 'store/user/actions';
 
 import Home from 'pages/home'
 import PartnerList from 'pages/partner/List/index'
@@ -22,21 +23,29 @@ import Customer from 'pages/banner/Customer'
 import Grade from 'pages/banner/Grade'
 import UnSupported from 'pages/unsupported'
 import Terms from 'pages/terms'
-import CompletedPage from 'pages/requests/completed'
-import NoServicePage from 'pages/requests/noService'
-import NoPartnerPage from 'pages/requests/noPartner'
-import CompanyDetail from 'pages/company/Detail/index'
+import CompletedPage from 'pages/requests/Completed'
+import NoServicePage from 'pages/requests/NoService'
+import NoPartnerPage from 'pages/requests/NoPartner'
+import RequestPartnerDetail from 'pages/requests/Detail/index'
 import NotFound from 'pages/notFound'
 import ErrorService from 'pages/errorService'
-
+import * as commonActions from 'store/common/actions'
+import * as userSelector from 'store/user/selectors'
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
+import { useCookies } from 'react-cookie'
+import { dataLayer } from 'lib/dataLayerUtil'
+import MyConsult from 'pages/myconsult'
+import MyConsultDetail from 'pages/myconsult/myConsultDetail'
+import { get } from 'lodash'
+import Login from 'pages/login'
 
 //swiper lib
-import SwiperCore, {Pagination, Autoplay} from 'swiper'
+import SwiperCore, { Pagination, Autoplay } from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
-import {dataLayer} from 'lib/dataLayerUtil'
+import { ESignInCase } from 'store/user/types'
+import useReceiveMessage from 'hooks/useReceiveMessage'
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -50,10 +59,15 @@ declare global {
 }
 
 function AppRoute() {
+    const dispatch = useDispatch();
     const [script, setScript] = useState('');
     const location = useLocation()
     const customScript = useScript(script)
-    const {isIE} = useUserAgent()
+    const { isIE } = useUserAgent()
+    const [cookies] = useCookies(['x-wematch-token'])
+    const getDeviceId = useReceiveMessage();
+    const { token } = useSelector(userSelector.getUser);
+    const wematchToken = get(cookies, 'x-wematch-token');
 
     const getPathname = () => {
         let pathname = 5
@@ -69,6 +83,20 @@ function AppRoute() {
     }
 
     useEffect(() => {
+        const wematchToken = get(cookies, 'x-wematch-token');
+        if (wematchToken !== undefined) {
+            dispatch(userActions.fetchGetUserAsync.request({ token: wematchToken }))
+        }
+    }, [])
+
+
+    useEffect(() => {
+        if(getDeviceId) {
+            dispatch(commonActions.setDeviceId({deviceId: getDeviceId}))
+        }
+    }, [dispatch, getDeviceId])
+
+    useEffect(() => {
         if (location.pathname !== '/') {
             const script = `
                 if(!wcs.add) var wcs_add = {};
@@ -80,7 +108,7 @@ function AppRoute() {
             setScript(script)
         }
 
-        dataLayer({event: 'pageview'})
+        dataLayer({ event: 'pageview' })
         ReactPixel.pageView()
     }, [location.pathname])
 
@@ -94,28 +122,30 @@ function AppRoute() {
     if (isIE) {
         return (
             <Switch>
-                <Route exact path="/unsupported" component={UnSupported}/>
-                <Redirect path="/" to="/unsupported"/>
+                <Route exact path="/unsupported" component={UnSupported} />
+                <Redirect path="/" to="/unsupported" />
             </Switch>
         )
     } else {
         return (
             <Switch>
-                <Route exact path="/" component={Home}/>
-                <Route exact path="/partner/list" component={PartnerList}/>
-                <Route exact path="/partner/detail/:adminId" component={PartnerDetail}/>
-                <Route exact path="/partner/cart" component={PartnerCart}/>
-                <Route exact path="/banner/intro" component={Intro}/>
-                <Route exact path="/banner/customer" component={Customer}/>
-                <Route exact path="/banner/grade" component={Grade}/>
-                <Route exact path="/terms" component={Terms}/>
-                <Route exact path="/requests/completed" component={CompletedPage}/>
-                <Route exact path="/requests/nopartner" component={NoPartnerPage}/>
-                <Route exact path="/requests/noservice" component={NoServicePage}/>
-                <Route exact path="/requests/completed/:adminId" component={CompanyDetail}/>
-                <Route exact path="/error" component={ErrorService}/>
-                <Route component={NotFound}/>
-
+                <Route exact path="/" component={Home} />
+                <Route exact path="/partner/list" component={PartnerList} />
+                <Route exact path="/partner/detail/:adminId" component={PartnerDetail} />
+                <Route exact path="/partner/cart" component={PartnerCart} />
+                <Route exact path="/banner/intro" component={Intro} />
+                <Route exact path="/banner/customer" component={Customer} />
+                <Route exact path="/banner/grade" component={Grade} />
+                <Route exact path="/myrequest" component={MyConsult} />
+                <Route exact path="/myrequest/detail" component={MyConsultDetail} />
+                <Route exact path="/terms" component={Terms} />
+                <Route exact path="/requests/completed" component={CompletedPage} />
+                <Route exact path="/requests/nopartner" component={NoPartnerPage} />
+                <Route exact path="/requests/noservice" component={NoServicePage} />
+                <Route exact path="/requests/completed/:adminId" component={RequestPartnerDetail} />
+                <Route exact path="/error" component={ErrorService} />
+                <Route exact path="/login" render={props => wematchToken ? <Redirect to={{ pathname: "/"}} /> : <Login />} />
+                <Route component={NotFound} />
             </Switch>
         )
     }
@@ -124,14 +154,39 @@ function AppRoute() {
 function App() {
     return (
         <>
-            <GlobalStyled/>
+            <GlobalStyled />
             <Provider store={store}>
                 <ConnectedRouter history={browserHistory}>
-                    <AppRoute/>
+                    <AppRoute />
                 </ConnectedRouter>
             </Provider>
         </>
     );
 }
 
+
+interface IAuthRoute {
+    exact: boolean
+    path: string
+    component: any
+}
+
+// 인증 라우터
+// const AuthRoute: React.FC<IAuthRoute> = ({ component: Component, ...rest }) => {
+//     const { token } = useSelector(userSelector.getUser);
+//     const location = useLocation();
+//     const dispatch = useDispatch();
+
+//     return <Route {...rest} render={props => {
+//         if (!token) {
+//             dispatch(userActions.signIn({ prevPage: ESignInCase.ERROR }))
+//             return <Redirect to={{ pathname: "/", state: { from: location.pathname, } }} />
+//         } else {
+//             return <Component {...props} />
+//         }
+//     }} />
+// }
+
 export default App;
+
+

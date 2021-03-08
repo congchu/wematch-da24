@@ -15,7 +15,6 @@ import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton'
 import MainVisual from 'pages/home/components/MainVisual'
 import Review from 'pages/home/components/Review'
 import PartnerBanner from 'pages/home/components/PartnerBanner'
-
 import * as colors from 'styles/colors'
 import * as formSelectors from 'store/form/selectors';
 
