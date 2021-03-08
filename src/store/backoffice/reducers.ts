@@ -1,7 +1,7 @@
 import { createReducer, ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
-import {INotice} from 'types/notice'
+import {INotice} from 'types/backoffice'
 
 
 export type Actions = ActionType<typeof actions>

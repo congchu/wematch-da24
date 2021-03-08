@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {api, ApiResponse} from 'lib/api'
-import {INotice} from 'types/notice'
+import {INotice} from 'types/backoffice'
 
 export const getNoticeList = async (page: number, size: number) => {
 
