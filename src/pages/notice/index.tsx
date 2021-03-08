@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import styled from 'styled-components'
 
 import Layout from 'components/base/Layout'
@@ -7,18 +8,13 @@ import AccordionCollapse from 'components/common/AccordionCollapse'
 import * as backofficeActions from 'store/backoffice/actions'
 import * as backofficeSelector from 'store/backoffice/selectors'
 import * as values from 'constants/values'
-import useInfiniteScroll from 'hooks/useInfiniteScroll'
-import {useDispatch, useSelector} from "react-redux";
 
 
 export type faqCategory = '공통' | '이사' | '청소';
 
-const styleHTML = {
-    width: '100%'
-}
 
 const S = {
-    CollapsedWrap: styled.div `
+    CollapsedWrap: styled.div<{key: number}> `
       padding-top: 18px;
       border-bottom: 1px solid #d7dbe2;
       
@@ -26,6 +22,18 @@ const S = {
         padding-top: 0px;
         border-bottom: 1px solid #d7dbe2;
       }
+      
+      pre{
+        white-space: pre-wrap;
+        img{
+          max-width: 100%;
+          height: auto;
+        }
+        p{
+          width: 100%;
+        }
+      }
+      
       
     `,
     // TopCollapsedWrap: styled.div`
@@ -86,7 +94,7 @@ export default function NoticePage() {
                         <S.CollapsedWrap key={index}>
                             <AccordionCollapse key={index} title={notice.title} date={notice.created_at} postNum={notice.id}>
                                 {/*{notice.contents}*/}
-                                <pre dangerouslySetInnerHTML={{__html: notice.contents}} style={styleHTML}/>
+                                <pre dangerouslySetInnerHTML={{__html: notice.contents}} />
                             </AccordionCollapse>
                         </S.CollapsedWrap>
                     )
