@@ -11,6 +11,7 @@ export function* fetchNoticeListSaga(action: ActionType<typeof actions.fetchNoti
         yield put(actions.fetchNoticeListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchNoticeMoreListAsync.failure())
+        console.log('실패')
     }
 }
 

@@ -3,7 +3,7 @@ import * as React from 'react'
 export interface INotice{
     id: number;
     title: string;
-    contents: React.ReactNode;
+    contents: string;
     created_at: string;
     has_previous: boolean;
     has_next: boolean;
