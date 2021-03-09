@@ -4,7 +4,6 @@ import { ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
 import * as request from './requests'
-import * as backofficeSelector from './selectors'
 
 
 export function* fetchNoticeListSaga(action: ActionType<typeof actions.fetchNoticeListAsync.request>) {
@@ -28,12 +27,10 @@ export function* fetchNoticeMoreListSaga(action: ActionType<typeof actions.fetch
 
 export function* submitContactFormSaga(action: ActionType<typeof actions.submitContactFormAsync.request>) {
     try {
-        // const data = yield call(request.submitContactForm, action.payload.formData)
-        const data = yield select(backofficeSelector.getContactForm)
+        const data = yield call(request.submitContactForm, action.payload.formData)
         yield put(actions.submitContactFormAsync.success(data))
         /* TODO: 멘트가 이상합니다. */
         alert('접수되었습니다. 고객님의 쓴소리 귀 기울여 듣도록 하겠습니다. 감사합니다.')
-        yield put(push('/contact'))
     } catch (e) {
         yield put(actions.submitContactFormAsync.failure())
         alert('에러가 발생했습니다.')

@@ -1,8 +1,8 @@
 import { createReducer, ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
-import {INotice} from 'types/notice'
-import * as types from '../common/types'
+import {INotice} from 'types/backoffice'
+import {ContactFormData} from 'types/backoffice'
 
 
 
@@ -15,11 +15,10 @@ export interface BackofficeState {
         moreLoading?: boolean;
         hasMore: boolean;
     },
-    contactForm: types.ContactFormData,
-    formData: {
-        data: types.ContactFormData,
+    contactForm: {
+        data: ContactFormData,
         loading: boolean;
-    };
+    },
 }
 
 const initialState: BackofficeState  = {
@@ -29,28 +28,19 @@ const initialState: BackofficeState  = {
         moreLoading: false,
         hasMore: false
     },
-    // service_type: '',
-    // contact_type: '',
-    // name: '',
-    // tel: '',
-    // ip_address: '',
-    // contents: '',
     contactForm: {
-        contact_type: '',
-        name: '',
-        tel: '',
-        contents:'',
-        ip_address: '',
-        service_type: ''
-    },
-    formData: {
         data: {
             contact_type: '',
             name: '',
+            company_name: '',
             tel: '',
-            contents:'',
+            contents: '',
             ip_address: '',
-            service_type: ''
+            created_at: '',
+            is_partner: false,
+            refer_form: '',
+            service_type: '',
+            area: ''
         },
         loading: false
     },
@@ -62,6 +52,8 @@ export default createReducer <BackofficeState, Actions>(initialState)
     .handleAction(actions.fetchNoticeListAsync.success, (state, action) => ({ ...state, notice: { data: action.payload.notices, loading: false, hasMore: action.payload.has_more }}))
     .handleAction(actions.fetchNoticeMoreListAsync.request, (state) => ({ ...state, notice: { ...state.notice, moreLoading: true }}))
     .handleAction(actions.fetchNoticeMoreListAsync.success, (state, action) => ({ ...state, notice: { data: [...state.notice.data, ...action.payload.notices], loading: false, moreLoading: false, hasMore: action.payload.has_more}}))
-    .handleAction(actions.submitContactFormAsync.request, (state) => ({...state, formData: { ...state.formData, loading: true}}))
-    .handleAction(actions.submitContactFormAsync.success, (state, action) => ({...state, formData: { ...state.formData, data: action.payload ,loading: false}}))
-    .handleAction(actions.setFormData, (state, action) => ({...state, contactForm: action.payload}))
+    .handleAction(actions.submitContactFormAsync.request, (state) => ({...state, contactForm: { ...state.contactForm, loading: true}}))
+    .handleAction(actions.submitContactFormAsync.success, (state, action) => ({...state,
+        contactForm: { ...state.contactForm, data: action.payload ,loading: false}
+    }))
+    // .handleAction(actions.setFormData, (state, action) => ({...state, contactForm: {data: action.payload, loading: false}}))

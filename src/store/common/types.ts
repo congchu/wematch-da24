@@ -65,12 +65,3 @@ export enum MovingType {
 }
 
 
-
-export interface ContactFormData {
-    contact_type: string;
-    name: string;
-    tel: string;
-    contents: string;
-    ip_address: string;
-    service_type: string;
-}

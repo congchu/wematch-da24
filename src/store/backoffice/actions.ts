@@ -1,7 +1,7 @@
 import {createAction, createAsyncAction} from "typesafe-actions";
-import {INotice} from 'types/notice'
+import {INotice} from 'types/backoffice'
 import * as types from "../common/types";
-import {ContactFormData} from "../common/types";
+import {ContactFormData} from 'types/backoffice'
 
 interface NoticeType {
   notices: INotice[];
@@ -24,10 +24,8 @@ export const fetchNoticeMoreListAsync = createAsyncAction(
 )< {page: number; size: number} , NoticeType, undefined>();
 
 
-export const setFormData = createAction('SET_FORM_DATA')<types.ContactFormData>()
-
 export const submitContactFormAsync = createAsyncAction(
     'FETCH_SUBMIT_CONTACT_FORM_REQUEST',
     'FETCH_SUBMIT_CONTACT_FORM_SUCCESS',
     'FETCH_SUBMIT_CONTACT_FORM_FAILURE'
-)<{ formData : types.ContactFormData } , types.ContactFormData , undefined>()
+)<{ formData : ContactFormData } , ContactFormData , undefined>()

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {api, ApiResponse, middlewareApi} from 'lib/api'
-import {INotice} from 'types/notice'
-import {ContactFormData} from '../common/types'
+import {INotice} from 'types/backoffice'
+import {ContactFormData} from 'types/backoffice'
 
 export const getNoticeList = async (page: number, size: number) => {
     const { data } = await api.request<ApiResponse<INotice[]>>({

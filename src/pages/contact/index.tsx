@@ -7,11 +7,10 @@ import Input from 'components/common/Input'
 import Select from 'components/common/Select'
 
 import * as colors from 'styles/colors'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import * as backofficeActions from 'store/backoffice/actions'
 import * as backofficeSelectors from 'store/backoffice/selectors'
-import {ContactFormData} from 'store/common/types'
-
+import {ContactFormData} from 'types/backoffice'
 
 const S = {
     Container: styled.div``,
@@ -107,7 +106,7 @@ const Type = [
 function ContactPage() {
 
     const dispatch = useDispatch()
-    const contactForm = backofficeSelectors.getContactForm
+    const getContactForm = useSelector(backofficeSelectors.getContactForm)
 
     const [visibleCategoryModal, setVisibleCategoryModal] = useHashToggle('#category')
     const [visibleTypeModal, setVisibleTypeModal] = useHashToggle('#type')
@@ -151,11 +150,9 @@ function ContactPage() {
             tel: tel,
             contents: contents,
             ip_address: ip,
-            service_type: serviceType
+            service_type: serviceType,
         }
-        dispatch(backofficeActions.setFormData(formData))
         dispatch(backofficeActions.submitContactFormAsync.request({formData: formData}))
-
     }
 
     /* get ip-addr : will be replaced */
@@ -192,14 +189,14 @@ function ContactPage() {
                        placeholder = "공통" rootStyle={{}}
                        style = {{ fontSize: "18px", color: colors.black}}
                        onClick = {toggleCategory}
-                       value = { contactType }
+                       value = { serviceType }
                 />
                 <Input theme = "default"
                        border readOnly icon = "down"
                        placeholder = "문의형태" rootStyle={{}}
                        style = {{ fontSize: "18px", color: colors.black}}
                        onClick = { toggleType }
-                       value = { serviceType }
+                       value = { contactType }
                 />
                 <S.TextContainer>
                     <S.Textarea placeholder="문의내용"
@@ -208,13 +205,10 @@ function ContactPage() {
                                 onChange={(e)=> {setContents(e.target.value)}}
                     />
                 </S.TextContainer>
-
             </S.Form>
-
-            <Select visible={visibleCategoryModal} items={Category} onOverlayClose={toggleCategory} onClose={toggleCategory} onSelect={selectContactType}/>
-            <Select visible={visibleTypeModal} items={Type} onOverlayClose={toggleType} onClose={toggleType} onSelect={selectServiceType} />
+            <Select visible={visibleCategoryModal} items={Category} onOverlayClose={toggleCategory} onClose={toggleCategory} onSelect={selectServiceType}/>
+            <Select visible={visibleTypeModal} items={Type} onOverlayClose={toggleType} onClose={toggleType} onSelect={selectContactType} />
             <S.Button theme={"primary"} disabled={!completed} onClick={() => contactSubmitHandler() }>확인</S.Button>
-
         </Layout>
 
     )
