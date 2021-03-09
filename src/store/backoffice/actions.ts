@@ -1,6 +1,5 @@
 import {createAction, createAsyncAction} from "typesafe-actions";
 import {INotice} from 'types/backoffice'
-import * as types from "../common/types";
 import {ContactFormData} from 'types/backoffice'
 
 interface NoticeType {

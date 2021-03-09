@@ -12,7 +12,9 @@ import {Download} from 'components/Icon'
 
 import * as colors from 'styles/colors'
 import {gray33, gray66, pointBlue} from 'styles/colors';
-
+import {ContactFormData} from "../../types/backoffice";
+import * as backofficeActions from "../../store/backoffice/actions";
+import {useDispatch} from "react-redux";
 
 
 const CustomSwiper = styled(Swiper)`
@@ -203,7 +205,7 @@ const S = {
 
       @media screen and (min-width: 768px) {
         width: 100%;
-        padding: 0 0 12px 0;
+        padding: 0;
         h3 {
           text-align: center;
           padding-bottom: 26px;
@@ -216,7 +218,7 @@ const S = {
       
       @media screen and (min-width: 1200px) {
         width: 100%;
-        padding: 40px 0 82px 0;
+        padding: 40px 0 0px 0;
       }
 
       h3 {
@@ -259,6 +261,7 @@ const S = {
 
     `,
     Button: styled.button`
+      margin-top: 0;
       display: block;
       width: 100%;
       height: 56px;
@@ -952,6 +955,8 @@ const Funnel = [
 * */
 function PartnerRegisterPage() {
 
+    const dispatch = useDispatch()
+
     const autoPlayOptions = {
         delay: 4000
     }
@@ -965,9 +970,16 @@ function PartnerRegisterPage() {
     const toggleSido = () => setVisibleSidoModal(!visibleSidoModal)
 
     /***** 나중에 스토어 관련 작업으로 대체 필요 *****/
-    const [category, setCategory] = useState('');
-    const [funnel, setFunnel] = useState('');
-    const [sido, setSido] = useState('');
+    const [ip, setIp] = useState('')
+    const [partnerName, setPartnerName] = useState('')
+    const [category, setCategory] = useState('')
+    const [sido, setSido] = useState('')
+    const [funnel, setFunnel] = useState('')
+    const [tel, setTel] = useState('')
+    const [content, setContent] = useState('')
+    const [checked, setChecked] = useState<boolean>(false)
+    const [completed, setCompleted] = useState(false)
+
     const selectCategory = (data: string) => {
         setCategory(data)
     }
@@ -978,18 +990,63 @@ function PartnerRegisterPage() {
         setSido(data)
     }
 
+    const checkHandler = () => {
+        setChecked(!checked)
+    }
 
     const copyToClipboard = () => {
-        const textarea = document.createElement('textarea');
-        document.body.appendChild(textarea);
+        const textarea = document.createElement('textarea')
+        document.body.appendChild(textarea)
         /***** 새로운 주소로 변경 필요 ****/
-        textarea.value = 'https://wematch.com/partnernew.asp';
-        textarea.select();
-        textarea.setSelectionRange(0, 99999);
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
+        textarea.value = 'https://wematch.com/partnernew.asp'
+        textarea.select()
+        textarea.setSelectionRange(0, 99999)
+        document.execCommand('copy')
+        document.body.removeChild(textarea)
         alert('복사되었습니다.')
-    };
+    }
+
+    const isCompletedForm = () => {
+        if (category !== '' && partnerName !== '' && tel !== '' && content !== '' && sido !== '' && funnel !== '' && checked) {
+            setCompleted(true)
+        }else {
+            setCompleted(false)
+        }
+    }
+
+    useEffect(()=>{
+        isCompletedForm()
+    },[partnerName, category, sido, funnel,  tel, content, checked ])
+
+    const contactSubmitHandler = () => {
+        const formData : ContactFormData = {
+            is_partner: true,
+            service_type: category,
+            company_name: partnerName,
+            area: sido,
+            refer_form: funnel,
+            tel: tel,
+            contents: content,
+            ip_address: ip,
+            term_agreement: checked
+        }
+        // console.log(formData)
+        dispatch(backofficeActions.submitContactFormAsync.request({formData: formData}))
+    }
+
+    /* get ip-addr : will be replaced */
+    useEffect(()=>{
+        fetch('https://api.ipify.org?format=jsonp?callback=?', {
+            method: 'GET',
+            headers: {},
+        })
+            .then(res => {
+                return res.text()
+            }).then(ip => {
+            setIp(ip)
+        })
+    },[])
+
 
     return (
         <Layout title='파트너 등록문의' subTitle={<>좋은 서비스를 제공할 수 있는<br/>이사/청소업체 사장님을 모십니다</>}>
@@ -1128,8 +1185,8 @@ function PartnerRegisterPage() {
                     />
                     <Input theme="default" border placeholder="업체명을 입력해주세요" rootStyle={{}} maxLength={20}
                            style={{fontSize: "18px", color: colors.black}}
-                           onBlur={(e) => {
-                           }}
+                           value={partnerName}
+                           onChange={(e)=>{setPartnerName(e.target.value)}}
                     />
                     <Input theme="default"
                            border readOnly icon="down"
@@ -1145,34 +1202,27 @@ function PartnerRegisterPage() {
                            onClick={toggleFunnel}
                            value={funnel}
                     />
-
-                    {/**** 나중에 스토어 작업으로 get해서 직접입력 input보이기 설정 *****/}
-                    {/*<Input theme="default" border placeholder="직접 입력해주세요" rootStyle={{}} maxLength={20}*/}
-                    {/*       style={{fontSize: "18px", color: colors.black}}*/}
-                    {/*       onBlur={(e) => {*/}
-                    {/*       }}/>*/}
                     <Input theme="default" type="tel" pattern="[0-9]*" inputMode="numeric"
                            placeholder="휴대전화번호 입력 ('-'없이)" border rootStyle={{}} maxLength={13}
                            style={{fontSize: "18px", color: colors.black}}
-                           onBlur={(e) => {
-                           }}
+                           value={tel}
+                           onChange={(e)=>{setTel(e.target.value)}}
                     />
-
                     <S.TextContainer>
                         <S.Textarea placeholder="문의내용"
                                     style={{fontSize: "18px"}}
-                                    onChange={(e) => {
-                                    }}/>
+                                    value={content}
+                                    onChange={(e) => {setContent(e.target.value)}}/>
                     </S.TextContainer>
                     <Terms.NewLink>
                         <Checkbox label="이용약관 및 개인정보처리방침 동의"
-                                  // checked={}
-                                  // onChange={}
+                                  checked={checked}
+                                  onChange={checkHandler}
                         />
                         <a onClick={() => setVisibleTerms(true)}>보기</a>
                     </Terms.NewLink>
-                    <S.Button theme={"primary"}>확인</S.Button>
                 </S.Form>
+                <S.Button theme={"primary"} disabled={!completed} onClick={() => contactSubmitHandler() }>확인</S.Button>
                 <Intro>
                     <h3>위매치다이사 소개서</h3>
                     <p>위매치다이사 이사/청소 서비스에 대해 <span className="br_m">더 알고싶다면 소개서를 다운로드하세요!</span></p>

@@ -106,7 +106,6 @@ const Type = [
 function ContactPage() {
 
     const dispatch = useDispatch()
-    const getContactForm = useSelector(backofficeSelectors.getContactForm)
 
     const [visibleCategoryModal, setVisibleCategoryModal] = useHashToggle('#category')
     const [visibleTypeModal, setVisibleTypeModal] = useHashToggle('#type')

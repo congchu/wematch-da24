@@ -12,18 +12,21 @@ export interface INotice{
 
 }
 
+/* 이게 맞는 버전 */
 export interface ContactFormData {
     // 문의하기
-    contact_type: string;
-    name: string;
-    tel: string;
-    contents: string;
-    ip_address: string;
-    service_type: string;
+    contact_type?: string;
+    name?: string;
+    tel?: string;
+    contents?: string;
+    ip_address?: string;
+    service_type?: string; // 이사, 청소, 이사+청소
     // + 파트너
     company_name?: string;
-    created_at?: string;
     is_partner?: boolean;
     refer_form?: string;
     area?: string;
+    created_at?: string;
+    // 아마 필요한거
+    term_agreement?: boolean
 }
