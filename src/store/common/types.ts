@@ -1,3 +1,4 @@
+import { IUser } from "types/auth";
 
 export interface RequestAddressProps {
     dong: string;
@@ -28,11 +29,10 @@ export interface RequestVerifyCodeProps {
 }
 
 export interface ResponseVerifyCodeProps {
-    "is_verified": boolean | undefined;
+    isVerified: boolean | undefined;
 }
-
 export interface RequestUserInfoInsert {
-    moving_type: '가정' | '원룸' | '사무실' | undefined
+    moving_type: '가정' | '원룸' | '사무실' | undefined;
     moving_date: string;
     sido: string;
     gugun: string;
@@ -52,7 +52,6 @@ export interface RequestUserInfoInsert {
     keep_move: boolean;
     mkt_agree: boolean;
     agent_id: string | string[] | null | undefined;
-    legacy?: boolean;
 }
 
 export interface RequestUserInfoInsertProps {
@@ -64,3 +63,5 @@ export enum MovingType {
     oneroom = '원룸',
     office = '사무실'
 }
+
+

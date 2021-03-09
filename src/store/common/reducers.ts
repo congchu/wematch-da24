@@ -9,14 +9,11 @@ export interface CommonState {
         data: types.ResponseAddressProps[] | undefined;
         loading: boolean;
     };
-    phoneVerify: {
-        data: types.ResponseVerifyCodeProps;
-        loading: boolean;
-    };
     moveIdxData: {
         idx: string | null;
         loading: boolean
-    }
+    },
+    deviceId: string;
 }
 
 const initialState: CommonState = {
@@ -24,23 +21,17 @@ const initialState: CommonState = {
         data: undefined,
         loading: false
     },
-    phoneVerify: {
-        data: {
-            "is_verified": undefined
-        },
-        loading: false
-    },
     moveIdxData: {
         idx: null,
         loading: false
-    }
+    },
+    deviceId: '',
 }
 
 export default createReducer<CommonState, Actions>(initialState)
     .handleAction(actions.fetchAddressListAsync.request, (state) => ({ ...state, addressList: { ...state.addressList, loading: true }}))
     .handleAction(actions.fetchAddressListAsync.success, (state, action) => ({ ...state,  addressList: { data: action.payload, loading: false } }))
-    .handleAction(actions.fetchVerifyCodeAsync.request, (state) => ({...state, phoneVerify: { ...state.phoneVerify, loading: true }}))
-    .handleAction(actions.fetchVerifyCodeAsync.success, (state, action) => ({ ...state, phoneVerify: { data: action.payload, loading: false }}))
     .handleAction(actions.fetchMoveIdx.request, (state) => ({ ...state, moveIdxData: { ...state.moveIdxData, loading: true }}))
     .handleAction(actions.fetchMoveIdx.success, ((state, action) => ({ ...state, moveIdxData: {idx: action.payload.idx, loading: false}})))
     .handleAction(actions.resetAll, (state) => ({ ...state, ...initialState }))
+    .handleAction(actions.setDeviceId, (state, action) => ({...state, deviceId: action.payload.deviceId}))

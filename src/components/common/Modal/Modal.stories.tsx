@@ -6,7 +6,7 @@ import Button from 'components/common/Button';
 import Modal from './ModalTemplate'
 import CalendarModal from './CalendarModal';
 import AddressModal from './AddressModal';
-import PhoneVerifyPopup from '../Popup/PhoneVerifyPopup'
+// import PhoneVerifyPopup from '../Popup/PhoneVerifyPopup'
 import BasePopupTemplate from '../Popup/PopupTemplate'
 import TermsModal from './TermsModal'
 
@@ -57,7 +57,7 @@ const PhoneModalSample = () => {
     return (
         <>
             <Button theme="primary" onClick={toggle}>핸드폰 인증 모달 오픈</Button>
-                <PhoneVerifyPopup visible={visible} phone="01012341234" onClose={toggle} />
+                {/* <PhoneVerifyPopup visible={visible} phone="01012341234" onClose={toggle} /> */}
         </>
     )
 }
