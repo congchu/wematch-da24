@@ -331,7 +331,7 @@ const MyConsultDetail = () => {
                 </S.CompanyTitle>
               </S.ListBox>
               <S.LinkCompany onClick={() => {
-                new Promise(() => {
+                new Promise((resolve) => {
                   dataLayer({
                     event: 'myrequest_detail',
                     category: '내신청내역_상세',
@@ -340,6 +340,7 @@ const MyConsultDetail = () => {
                     CD6: selectedOrder.type,
                     CD8: `${list.level}등급`
                   })
+                  resolve(null)
                 }).then(() => {
                   window.location.href = `${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`
                 })
