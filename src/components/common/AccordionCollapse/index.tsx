@@ -2,11 +2,11 @@ import * as React from 'react'
 import styled from 'styled-components'
 import {Minus, Plus} from 'components/wematch-ui/Icon'
 import * as colors from 'styles/colors'
-import {useEffect} from "react";
 
-export type faqCategory = '공통' | '이사' | '청소'
+export type faqCategory = '공통' | '이사' | '청소' | null
 
 interface Props extends React.HTMLAttributes<HTMLDivElement>  {
+    isFaq?: boolean;
     category?: faqCategory;
     title: string;
     date?:string;
@@ -108,7 +108,7 @@ const S = {
 * FAQ : category, title, defaultExpand
 * 공지사항 : title, date, postNum
 * */
-function AccordionCollapse({ category ,title, children, defaultExpand=false, date, postNum } : Props) {
+function AccordionCollapse({ isFaq, category='공통' ,title, children, defaultExpand=false, date, postNum } : Props) {
 
     const wholeRef = React.useRef<HTMLDivElement>(null)
     const parentRef = React.useRef<HTMLDivElement>(null)
@@ -142,7 +142,7 @@ function AccordionCollapse({ category ,title, children, defaultExpand=false, dat
         <S.Container>
             <S.Header onClick={handleButtonClick} ref={wholeRef}>
                 <div className='textWrapper'>
-                    {category? <em>Q {category}<br/></em> : <></>}
+                    {isFaq? <em>Q {category ? category : '공통'}<br/></em> : <></>}
                     {title}
                     <h6>{ (date && postNum) && <>{date}..{postNum}</>}</h6>
                 </div>

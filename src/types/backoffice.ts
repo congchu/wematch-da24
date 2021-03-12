@@ -1,4 +1,5 @@
 import * as React from 'react'
+import {faqCategory} from 'pages/faq'
 
 export interface INotice{
     id: number;
@@ -12,7 +13,9 @@ export interface INotice{
 
 }
 
-export interface IFaq extends INotice {}
+export interface IFaq extends INotice {
+    service_type: faqCategory;
+}
 
 
 export interface ContactFormData {
