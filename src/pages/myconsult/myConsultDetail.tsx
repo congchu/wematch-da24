@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import { Previous } from 'components/wematch-ui/Icon'
 import MainHeader from 'components/common/MainHeader'
 import { useMedia } from 'react-use-media';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import ToastPopup from 'components/wematch-ui/ToastPopup';
 import { dataLayer } from 'lib/dataLayerUtil';
 import { IPartnerDetail } from 'types/partner';
@@ -182,7 +182,7 @@ const S = {
         font-size: 15px;
       }
     `,
-  LinkCompany: styled.a`
+  LinkCompany: styled(Link)`
       display: block;
       margin-top: 20px;
       padding: 12px 0;
@@ -286,7 +286,7 @@ const MyConsultDetail = () => {
   })
 
   useEffect(() => {
-    if(!selectedOrder) {
+    if (!selectedOrder) {
       setSessionVisible(true);
     }
   }, [selectedOrder]);
@@ -317,7 +317,7 @@ const MyConsultDetail = () => {
                             이용 고객이 평가한 내용으로 산출한 빅 데이터 등급입니다.
                         </S.LevelInfoBox>
         <S.CompanyList>
-          {selectedOrder?.partners.map((list: IPartnerDetail, index:number, arr: IPartnerDetail[]) => (
+          {selectedOrder?.partners.map((list: IPartnerDetail, index: number, arr: IPartnerDetail[]) => (
             <li key={index}>
               <S.ListBox>
                 {list.level === 'NEW' && <LevelN />}
@@ -330,22 +330,18 @@ const MyConsultDetail = () => {
                   <span>{list.level_text}</span>
                 </S.CompanyTitle>
               </S.ListBox>
-              <S.LinkCompany onClick={() => {
-                new Promise(() => {
-                  dataLayer({
-                    event: 'complete',
-                    category: '내신청내역_상세',
-                    action: '고객평가_확인',
-                    label: `${arr.length}_${index}`,
-                    CD6: selectedOrder.type,
-                    CD8: `${list.level}등급`
-                  })
-                }).then(() => {
-                  window.location.href = `${MOVE_URL}/com_compdetail.asp?adminid=${list.adminid}`
+              <S.LinkCompany to={`/requests/completed/${list.adminid}`} onClick={() => {
+                dataLayer({
+                  event: 'myrequest_detail',
+                  category: '내신청내역_상세',
+                  action: '고객평가_확인',
+                  label: `${arr.length}_${index}`,
+                  CD6: selectedOrder.type,
+                  CD8: `${list.level}등급`
                 })
               }}>
                 <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
-                                    </S.LinkCompany>
+              </S.LinkCompany>
             </li>
           ))}
         </S.CompanyList>
@@ -365,13 +361,13 @@ const MyConsultDetail = () => {
             </li>
             <li>
               <S.MoveText>출발지</S.MoveText>
-              <S.MoveSubtext>{selectedOrder?.start_address}</S.MoveSubtext>
+              <S.MoveSubtext>{selectedOrder?.start_address}{selectedOrder?.type !== '원룸이사' && '층'}</S.MoveSubtext>
             </li>
             {
               !selectedOrder?.type.includes('청소') && (
                 <li>
                   <S.MoveText>도착지</S.MoveText>
-                  <S.MoveSubtext>{selectedOrder?.end_address}</S.MoveSubtext>
+                  <S.MoveSubtext>{selectedOrder?.end_address}{selectedOrder?.type !== '원룸이사' && '층'}</S.MoveSubtext>
                 </li>
               )
             }

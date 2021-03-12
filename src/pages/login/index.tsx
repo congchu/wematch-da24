@@ -18,11 +18,13 @@ import MainHeader from 'components/common/MainHeader';
 import TopGnb from 'components/TopGnb';
 import { useMedia } from 'react-use-media';
 import { useHistory } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { get } from 'lodash';
 
 
 function LoginPage() {
     const mobileOS = getMobileOS();
-
+    const [cookies, setCookie, removeCookie] = useCookies()
     const dispatch = useDispatch();
     const getMoveType = useSelector(formSelector.getType)
     const [name, setName] = useState('');
@@ -74,12 +76,17 @@ function LoginPage() {
     }
 
     const handleSignUp = () => {
+
+        const agentId = get(cookies, '0dj38gepoekf98234aplyadmin')
+        
         dispatch(userActions.fetchSignUpAsync.request({
             tel: phone,
             name: name,
             init_service: getMoveType === 'house' ? EInitService.MOVE_HOUSE : EInitService.MOVE_OFFICE,
             code,
-            user_agent: navigator.userAgent
+            user_agent: navigator.userAgent,
+            agreed_marketing: new Date().toISOString(),
+            agent: agentId ? agentId.split('=')[1] : null
         }))
     }
 
@@ -90,7 +97,9 @@ function LoginPage() {
             action: '로그인취소',
             label: '취소'
         })
-        handleLoginClose();
+        setTimeout(() => {
+            handleLoginClose();
+        }, 300)
     }
 
     const handleLoginConfirm = () => {

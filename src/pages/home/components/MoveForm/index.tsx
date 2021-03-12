@@ -337,9 +337,9 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
 
                         {/******* AUTO MATCH *******/}
                         <Button theme="primary" bold border onClick={() => handleRequestClick('curation')}>추천업체 바로 신청하기</Button>
-                        {getMoveType !== 'oneroom' && (
+                        {/* {getMoveType !== 'oneroom' && (
                           <Button theme="default" onClick={() => handleRequestClick('select')}>업체 직접고르기</Button>
-                        )}
+                        )} */}
                     </div>
                 </Terms.SubmitContainer>
             </>

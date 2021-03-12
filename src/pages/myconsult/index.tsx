@@ -83,12 +83,12 @@ const MyConsult = () => {
                 </div>
             </Header>
             <Content>
-                <Wrapper id={'dsl_myrequests_list'}>
+                <Wrapper>
                     <ContentTitle>내 신청내역</ContentTitle>
                     <Separator />
-                    <ContentSection style={{ marginBottom: '16px' }}>
+                    <ContentSection style={{ marginBottom: '16px' }} id={'dsl_myrequests_step1'}>
                         <ContentSubTitle>
-                            <span className="bold">STEP &nbsp; 1</span>
+                            <span className="bold">STEP 1</span>
                             <span>&nbsp; &#124; &nbsp;입주/이사청소</span>
                         </ContentSubTitle>
                         <ContentList>
@@ -98,9 +98,9 @@ const MyConsult = () => {
                             }
                         </ContentList>
                     </ContentSection>
-                    <ContentSection style={{paddingBottom: 40}}>
+                    <ContentSection style={{paddingBottom: 40}} id={'dsl_myrequests_step2'}>
                         <ContentSubTitle>
-                            <span className="bold">STEP &nbsp; 2</span>
+                            <span className="bold">STEP 2</span>
                             <span>&nbsp; &#124; &nbsp;이사</span>
                         </ContentSubTitle>
                         <ContentList>
@@ -111,7 +111,7 @@ const MyConsult = () => {
                         </ContentList>
                     </ContentSection>
                     <Separator />
-                    <LogoutWrapper>
+                    <LogoutWrapper id={'dsl_myrequests_logout'}>
                         <button onClick={handleLogout}>로그아웃</button>
                     </LogoutWrapper>
                 </Wrapper>

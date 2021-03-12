@@ -432,7 +432,7 @@ export default function Completed() {
 
         contact: '(' + getName + ') ' + validatePhone(getPhone, true),
         movingDate: !getMoveDate[0]? getMoveDate[0]:formatDateDash2Dot(getMoveDate[0]) + ' ' + whatDay(getMoveDate[0]),
-        movingType: (getMoveType === 'house' ? '가정이사' : '') + ' (' + (getIsMoveStore ? '보관이사 해당 있음' : '보관이사 해당 없음') + ')',
+        movingType: (getMoveType === 'house' ? '가정이사' : '사무실이사') + ' (' + (getIsMoveStore ? '보관이사 해당 있음' : '보관이사 해당 없음') + ')',
         startAddr: start + ' ' + detailStart + ' ' + startFloor + '층',
         endAddr: end + ' ' + detailEnd + ' ' + endFloor + '층',
         memo: getContents|| ''
