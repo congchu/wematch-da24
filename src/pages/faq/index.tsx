@@ -1,12 +1,13 @@
 import React, {useEffect, useRef} from 'react'
+import {useDispatch, useSelector} from "react-redux"
 import styled from 'styled-components'
 
 import Layout from 'components/base/Layout'
 import AccordionCollapse from 'components/common/AccordionCollapse'
-import {useDispatch, useSelector} from "react-redux";
-import * as backofficeSelector from "../../store/backoffice/selectors";
-import * as backofficeActions from "../../store/backoffice/actions";
-import * as values from "../../constants/values";
+
+import * as backofficeSelector from 'store/backoffice/selectors'
+import * as backofficeActions from 'store/backoffice/actions'
+import * as values from 'constants/values'
 
 export type faqCategory = '공통' | '이사' | '청소';
 
@@ -78,7 +79,6 @@ export default function FaqPage() {
                     {getFaqList.faq?.map((faq, index) => {
                         return (
                             <S.CollapsedWrap key={index}>
-                                {/* TODO : category api 다시 나오면 수정필요 */}
                                 <AccordionCollapse key={index} category={'공통'} title={faq.title} postNum={faq.id}>
                                     {/*{notice.contents}*/}
                                     <pre dangerouslySetInnerHTML={{__html: faq.contents}} />

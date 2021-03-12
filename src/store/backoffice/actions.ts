@@ -1,5 +1,5 @@
 import {createAction, createAsyncAction} from "typesafe-actions";
-import {INotice} from 'types/notice'
+import {INotice, IFaq, ContactFormData, PartnerFormData} from 'types/backoffice'
 
 interface NoticeType {
   notices: INotice[];
@@ -10,7 +10,6 @@ interface FaqType {
   notices: IFaq[];
   has_more: boolean;
 }
-
 
 export const fetchNoticeListAsync = createAsyncAction(
   "FETCH_NOTICE_LIST_REQUEST",
@@ -37,3 +36,14 @@ export const fetchFaqMoreListAsync = createAsyncAction(
 )< {page: number; size: number} , FaqType, undefined>();
 
 
+export const submitContactFormAsync = createAsyncAction(
+    'FETCH_SUBMIT_CONTACT_FORM_REQUEST',
+    'FETCH_SUBMIT_CONTACT_FORM_SUCCESS',
+    'FETCH_SUBMIT_CONTACT_FORM_FAILURE'
+)<{ formData : ContactFormData } , ContactFormData , undefined>()
+
+export const submitPartnerFormAsync = createAsyncAction(
+    'FETCH_SUBMIT_PARTNER_FORM_REQUEST',
+    'FETCH_SUBMIT_PARTNER_FORM_SUCCESS',
+    'FETCH_SUBMIT_PARTNER_FORM_FAILURE'
+)<{ formData : PartnerFormData } , PartnerFormData , undefined>()

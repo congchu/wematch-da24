@@ -34,7 +34,6 @@ const S = {
         }
       }
       
-      
     `,
     // TopCollapsedWrap: styled.div`
     //   padding-top: 0px;
@@ -44,17 +43,7 @@ const S = {
 
 export default function NoticePage() {
 
-    // const moreNotice = () => {
-    //     nextPage.current += 1
-    //     dispatch(backofficeActions.fetchNoticeMoreListAsync.request({
-    //         page: nextPage.current,
-    //         size: values.DEFAULT_NOTICE_LIST_SIZE
-    //     }))
-    //     setIsFetching(false)
-    // }
-
     const nextPage = useRef(1)
-    // const [isFetching, setIsFetching] = useInfiniteScroll(moreNotice)
 
     const dispatch = useDispatch()
     const getNoticeList = useSelector(backofficeSelector.getNoticeList)

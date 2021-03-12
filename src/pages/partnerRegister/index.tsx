@@ -1286,7 +1286,7 @@ function PartnerRegisterPage() {
                         <p>위매치다이사를 <span>다른 사장님들께도 </span>알려주세요!</p>
                         <ul>
                             <li>
-                                {/***** 링크복사 나중에 새로운 주소로 넣어주세요 *****/}
+                                {/***** TODO : 링크복사 나중에 새로운 주소로 넣어주세요 *****/}
                                 <a onClick={()=> copyToClipboard()}>
                                     <img
                                         src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/sns_link.png"

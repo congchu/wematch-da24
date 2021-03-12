@@ -8,10 +8,10 @@ import Input from 'components/common/Input'
 import Select from 'components/common/Select'
 
 import * as colors from 'styles/colors'
-
-import * as backofficeActions from 'store/backoffice/actions'
 import {ContactFormData} from 'types/backoffice'
+import * as backofficeActions from 'store/backoffice/actions'
 import * as backofficeSelector from 'store/backoffice/selectors'
+
 
 const S = {
     Container: styled.div``,
