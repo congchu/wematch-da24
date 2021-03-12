@@ -31,6 +31,8 @@ export const submitContactForm = async (form: ContactFormData) => {
         data: form
     })
 
+    return data.data
+
 }
 
 export const submitPartnerForm = async (form: PartnerFormData) => {
