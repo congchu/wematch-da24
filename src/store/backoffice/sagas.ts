@@ -29,8 +29,7 @@ export function* submitContactFormSaga(action: ActionType<typeof actions.submitC
     try {
         const data = yield call(request.submitContactForm, action.payload.formData)
         yield put(actions.submitContactFormAsync.success(data))
-        /* TODO: 멘트가 이상합니다. */
-        alert('접수되었습니다. 고객님의 쓴소리 귀 기울여 듣도록 하겠습니다. 감사합니다.')
+        alert('접수되었습니다. 감사합니다.')
     } catch (e) {
         yield put(actions.submitContactFormAsync.failure())
         alert('에러가 발생했습니다.')

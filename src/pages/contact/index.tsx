@@ -172,34 +172,35 @@ function ContactPage() {
         <Layout title='문의하기'>
             <S.Form>
                 <Input theme = "default" border placeholder="이름" rootStyle={{}} maxLength={20}
-                       style = {{ fontSize: "18px", color: colors.black}}
+                       style = {{ fontSize: "16px", color: colors.black}}
                        onBlur = {(e) => {}}
                        value = { name }
                        onChange = {(e)=> {setName(e.target.value)}}
                 />
                 <Input theme = "default" type="tel" pattern="[0-9]*" inputMode="numeric"
                        placeholder = "휴대전화번호 입력 ('-'없이)" border rootStyle={{}} maxLength={13}
-                       style = {{ fontSize: "18px", color: colors.black}}
+                       style = {{ fontSize: "16px", color: colors.black}}
                        onBlur = {(e) => {}}
                        value = { tel }
                        onChange = {(e)=> {setTel(e.target.value)}}
                 />
                 <Input theme = "default" border readOnly icon="down"
                        placeholder = "공통" rootStyle={{}}
-                       style = {{ fontSize: "18px", color: colors.black}}
+                       style = {{ fontSize: "16px", color: colors.black,
+                       }}
                        onClick = {toggleCategory}
                        value = { serviceType }
                 />
                 <Input theme = "default"
                        border readOnly icon = "down"
                        placeholder = "문의형태" rootStyle={{}}
-                       style = {{ fontSize: "18px", color: colors.black}}
+                       style = {{ fontSize: "16px", color: colors.black}}
                        onClick = { toggleType }
                        value = { contactType }
                 />
                 <S.TextContainer>
                     <S.Textarea placeholder="문의내용"
-                                style={{ fontSize: "18px"}}
+                                style={{ fontSize: "16px"}}
                                 value={contents}
                                 onChange={(e)=> {setContents(e.target.value)}}
                     />

@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import styled, {css} from 'styled-components'
 import useHashToggle from 'hooks/useHashToggle'
 import {Swiper, SwiperSlide} from 'swiper/react'
@@ -11,10 +12,10 @@ import {Checkbox} from 'components/wematch-ui'
 import {Download} from 'components/Icon'
 
 import * as colors from 'styles/colors'
-import {gray33, gray66, pointBlue} from 'styles/colors';
-import {ContactFormData} from "../../types/backoffice";
-import * as backofficeActions from "../../store/backoffice/actions";
-import {useDispatch} from "react-redux";
+import {gray33, gray66, pointBlue} from 'styles/colors'
+import {ContactFormData} from 'types/backoffice'
+import * as backofficeActions from 'store/backoffice/actions'
+import * as backofficeSelector from 'store/backoffice/selectors'
 
 
 const CustomSwiper = styled(Swiper)`
@@ -956,6 +957,7 @@ const Funnel = [
 function PartnerRegisterPage() {
 
     const dispatch = useDispatch()
+    const getContactForm = useSelector(backofficeSelector.getContactForm)
 
     const autoPlayOptions = {
         delay: 4000
@@ -979,6 +981,8 @@ function PartnerRegisterPage() {
     const [content, setContent] = useState('')
     const [checked, setChecked] = useState<boolean>(false)
     const [completed, setCompleted] = useState(false)
+
+    const [otherFunnel, setOtherFunnel] = useState<string>('')
 
     const selectCategory = (data: string) => {
         setCategory(data)
@@ -1020,17 +1024,19 @@ function PartnerRegisterPage() {
 
     const contactSubmitHandler = () => {
         const formData : ContactFormData = {
-            is_partner: true,
+            contact_type: '공통',
             service_type: category,
             company_name: partnerName,
             area: sido,
-            refer_form: funnel,
+            refer_from: funnel !== '기타(직접입력)' ? funnel :otherFunnel,
             tel: tel,
             contents: content,
             ip_address: ip,
-            term_agreement: checked
+            name: '김이박'
         }
-        // console.log(formData)
+        console.log(formData)
+        console.log(funnel)
+        console.log(otherFunnel)
         dispatch(backofficeActions.submitContactFormAsync.request({formData: formData}))
     }
 
@@ -1046,6 +1052,21 @@ function PartnerRegisterPage() {
             setIp(ip)
         })
     },[])
+
+    /* 제출하고 form 비우기 */
+    useEffect(()=>{
+        setCategory('')
+        setPartnerName('')
+        setContent('')
+        setSido('')
+        setFunnel('')
+        setOtherFunnel('')
+        setContent('')
+        setTel('')
+        setChecked(false)
+    },[getContactForm.created_at])
+
+
 
 
     return (
@@ -1179,38 +1200,47 @@ function PartnerRegisterPage() {
                     <h3>등록문의</h3>
                     <Input theme="default" border readOnly icon="down"
                            placeholder="공통" rootStyle={{}}
-                           style={{fontSize: "18px", color: colors.black}}
+                           style={{fontSize: "16px", color: colors.black}}
                            onClick={toggleCategory}
                            value={category}
                     />
                     <Input theme="default" border placeholder="업체명을 입력해주세요" rootStyle={{}} maxLength={20}
-                           style={{fontSize: "18px", color: colors.black}}
+                           style={{fontSize: "16px", color: colors.black}}
                            value={partnerName}
                            onChange={(e)=>{setPartnerName(e.target.value)}}
                     />
                     <Input theme="default"
                            border readOnly icon="down"
                            placeholder="영업지역 선택" rootStyle={{}}
-                           style={{fontSize: "18px", color: colors.black}}
+                           style={{fontSize: "16px", color: colors.black}}
                            onClick={toggleSido}
                            value={sido}
                     />
                     <Input theme="default"
                            border readOnly icon="down"
                            placeholder="위매치다이사를 어떻게 알게 되셨나요?" rootStyle={{}}
-                           style={{fontSize: "18px", color: colors.black}}
+                           style={{fontSize: "16px", color: colors.black}}
                            onClick={toggleFunnel}
                            value={funnel}
                     />
+                    {
+                        funnel === '기타(직접입력)'&&
+                        <Input
+                            theme="default" border rootStyle={{}} maxLength={20}
+                            style={{fontSize: "16px", color: colors.black}}
+                            value={otherFunnel}
+                            onChange={(e)=>{setOtherFunnel(e.target.value)}}
+                        />
+                    }
                     <Input theme="default" type="tel" pattern="[0-9]*" inputMode="numeric"
                            placeholder="휴대전화번호 입력 ('-'없이)" border rootStyle={{}} maxLength={13}
-                           style={{fontSize: "18px", color: colors.black}}
+                           style={{fontSize: "16px", color: colors.black}}
                            value={tel}
                            onChange={(e)=>{setTel(e.target.value)}}
                     />
                     <S.TextContainer>
                         <S.Textarea placeholder="문의내용"
-                                    style={{fontSize: "18px"}}
+                                    style={{fontSize: "16px"}}
                                     value={content}
                                     onChange={(e) => {setContent(e.target.value)}}/>
                     </S.TextContainer>

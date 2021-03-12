@@ -38,7 +38,7 @@ const initialState: BackofficeState  = {
             ip_address: '',
             created_at: '',
             is_partner: false,
-            refer_form: '',
+            refer_from: '',
             service_type: '',
             area: ''
         },
