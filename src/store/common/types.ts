@@ -63,3 +63,5 @@ export enum MovingType {
     oneroom = '원룸',
     office = '사무실'
 }
+
+

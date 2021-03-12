@@ -48,6 +48,8 @@ import { ESignInCase } from 'store/user/types'
 import useReceiveMessage from 'hooks/useReceiveMessage'
 import NoticePage from "./pages/notice";
 import FaqPage from "./pages/faq";
+import ContactPage from "./pages/contact";
+import PartnerRegisterPage from "./pages/partnerRegister";
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -133,7 +135,9 @@ function AppRoute() {
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/faq" component={FaqPage} />
+                <Route exact path="/partnernew" component={PartnerRegisterPage} />
                 <Route exact path="/notice" component={NoticePage} />
+                <Route exact path="/contact" component={ContactPage} />
                 <Route exact path="/partner/list" component={PartnerList} />
                 <Route exact path="/partner/detail/:adminId" component={PartnerDetail} />
                 <Route exact path="/partner/cart" component={PartnerCart} />
