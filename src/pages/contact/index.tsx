@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import styled, {css} from 'styled-components'
+import {useDispatch, useSelector} from "react-redux"
 import useHashToggle from 'hooks/useHashToggle'
 
 import Layout from 'components/base/Layout'
@@ -7,10 +8,10 @@ import Input from 'components/common/Input'
 import Select from 'components/common/Select'
 
 import * as colors from 'styles/colors'
-import {useDispatch, useSelector} from "react-redux";
+
 import * as backofficeActions from 'store/backoffice/actions'
-import * as backofficeSelectors from 'store/backoffice/selectors'
 import {ContactFormData} from 'types/backoffice'
+import * as backofficeSelector from 'store/backoffice/selectors'
 
 const S = {
     Container: styled.div``,
@@ -106,6 +107,7 @@ const Type = [
 function ContactPage() {
 
     const dispatch = useDispatch()
+    const getContactForm = useSelector(backofficeSelector.getContactForm)
 
     const [visibleCategoryModal, setVisibleCategoryModal] = useHashToggle('#category')
     const [visibleTypeModal, setVisibleTypeModal] = useHashToggle('#type')
@@ -166,6 +168,14 @@ function ContactPage() {
             setIp(ip)
         })
     },[])
+
+    useEffect(()=>{
+        setContactType('')
+        setName('')
+        setTel('')
+        setContents('')
+        setServiceType('')
+    },[getContactForm.created_at])
 
 
     return(

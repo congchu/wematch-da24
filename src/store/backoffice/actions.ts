@@ -1,5 +1,5 @@
 import {createAction, createAsyncAction} from "typesafe-actions";
-import {INotice} from 'types/backoffice'
+import {INotice, PartnerFormData} from 'types/backoffice'
 import {ContactFormData} from 'types/backoffice'
 
 interface NoticeType {
@@ -22,9 +22,14 @@ export const fetchNoticeMoreListAsync = createAsyncAction(
     "FETCH_MATCHING_MORE_FAILURE"
 )< {page: number; size: number} , NoticeType, undefined>();
 
-
 export const submitContactFormAsync = createAsyncAction(
     'FETCH_SUBMIT_CONTACT_FORM_REQUEST',
     'FETCH_SUBMIT_CONTACT_FORM_SUCCESS',
     'FETCH_SUBMIT_CONTACT_FORM_FAILURE'
 )<{ formData : ContactFormData } , ContactFormData , undefined>()
+
+export const submitPartnerFormAsync = createAsyncAction(
+    'FETCH_SUBMIT_PARTNER_FORM_REQUEST',
+    'FETCH_SUBMIT_PARTNER_FORM_SUCCESS',
+    'FETCH_SUBMIT_PARTNER_FORM_FAILURE'
+)<{ formData : PartnerFormData } , PartnerFormData , undefined>()

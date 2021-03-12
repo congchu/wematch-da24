@@ -8,12 +8,12 @@ import Layout from 'components/base/Layout'
 import Input from 'components/common/Input'
 import Select from 'components/common/Select'
 import TermsModal from 'components/common/Modal/TermsModal'
-import {Checkbox} from 'components/wematch-ui'
-import {Download} from 'components/Icon'
+import { Checkbox } from 'components/wematch-ui'
+import { Download } from 'components/Icon'
 
 import * as colors from 'styles/colors'
-import {gray33, gray66, pointBlue} from 'styles/colors'
-import {ContactFormData} from 'types/backoffice'
+import { gray33, gray66, pointBlue } from 'styles/colors'
+import { PartnerFormData } from 'types/backoffice'
 import * as backofficeActions from 'store/backoffice/actions'
 import * as backofficeSelector from 'store/backoffice/selectors'
 
@@ -957,7 +957,7 @@ const Funnel = [
 function PartnerRegisterPage() {
 
     const dispatch = useDispatch()
-    const getContactForm = useSelector(backofficeSelector.getContactForm)
+    const getPartnerForm = useSelector(backofficeSelector.getPartnerForm)
 
     const autoPlayOptions = {
         delay: 4000
@@ -1020,24 +1020,19 @@ function PartnerRegisterPage() {
 
     useEffect(()=>{
         isCompletedForm()
-    },[partnerName, category, sido, funnel,  tel, content, checked ])
+    },[partnerName, category, sido, funnel, tel, content, checked, isCompletedForm])
 
     const contactSubmitHandler = () => {
-        const formData : ContactFormData = {
-            contact_type: '공통',
+        const formData : PartnerFormData = {
             service_type: category,
-            company_name: partnerName,
             area: sido,
-            refer_from: funnel !== '기타(직접입력)' ? funnel :otherFunnel,
+            company_name: partnerName,
+            reason: funnel !== '기타(직접입력)' ? funnel :otherFunnel,
             tel: tel,
             contents: content,
             ip_address: ip,
-            name: '김이박'
         }
-        console.log(formData)
-        console.log(funnel)
-        console.log(otherFunnel)
-        dispatch(backofficeActions.submitContactFormAsync.request({formData: formData}))
+        dispatch(backofficeActions.submitPartnerFormAsync.request({formData: formData}))
     }
 
     /* get ip-addr : will be replaced */
@@ -1064,9 +1059,7 @@ function PartnerRegisterPage() {
         setContent('')
         setTel('')
         setChecked(false)
-    },[getContactForm.created_at])
-
-
+    },[getPartnerForm.created_at])
 
 
     return (
