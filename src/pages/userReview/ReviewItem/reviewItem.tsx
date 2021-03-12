@@ -161,6 +161,9 @@ const S = {
       width: 100%;
       line-height: 20px;
       clear: both;
+      pre {
+        white-space: pre-wrap;
+      }
       
     `,
     Reply: styled.div`
@@ -187,7 +190,9 @@ const S = {
           color: transparent;
         }
       }
-        
+      pre {
+        white-space: pre-wrap;
+      }
       
     `
 }
@@ -278,11 +283,11 @@ export default function ReviewItem({ adminid,partnerName, userId, created_at, st
                 </S.StarDiv>
                 <S.Reviewer><p>{userId}님 | {dateCutter(created_at)}</p></S.Reviewer>
             </S.Grade>
-            <S.Review>{reviewContents}</S.Review>
+            <S.Review><pre>{reviewContents}</pre></S.Review>
             {reply && (
                 <S.Reply>
                     <strong><Enter width={16}/>이사업체 답변</strong>
-                    {reply}
+                    <pre>{reply}</pre>
                 </S.Reply>
             )}
         </S.Container>
