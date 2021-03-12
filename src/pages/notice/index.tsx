@@ -14,15 +14,10 @@ export type faqCategory = '공통' | '이사' | '청소';
 
 
 const S = {
-    CollapsedWrap: styled.div<{key: number}> `
-      padding-top: 18px;
+    CollapsedWrap: styled.div<{index?: number}> `
+      padding-top: ${props => props.index === 0 ? '0px' : '18px'};
       border-bottom: 1px solid #d7dbe2;
-      
-      .first1 {
-        padding-top: 0px;
-        border-bottom: 1px solid #d7dbe2;
-      }
-      
+
       pre{
         white-space: pre-wrap;
         img{
@@ -33,13 +28,7 @@ const S = {
           width: 100%;
         }
       }
-      
-      
     `,
-    // TopCollapsedWrap: styled.div`
-    //   padding-top: 0px;
-    //   border-bottom: 1px solid #d7dbe2;
-    // `
 }
 
 export default function NoticePage() {
@@ -91,7 +80,7 @@ export default function NoticePage() {
             <div>
                 {getNoticeList.notices?.map((notice, index) => {
                     return (
-                        <S.CollapsedWrap key={index}>
+                        <S.CollapsedWrap key={index} index={index}>
                             <AccordionCollapse key={index} title={notice.title} date={notice.created_at} postNum={notice.id}>
                                 {/*{notice.contents}*/}
                                 <pre dangerouslySetInnerHTML={{__html: notice.contents}} />
