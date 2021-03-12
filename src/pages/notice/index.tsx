@@ -14,15 +14,10 @@ export type faqCategory = '공통' | '이사' | '청소';
 
 
 const S = {
-    CollapsedWrap: styled.div<{key: number}> `
-      padding-top: 18px;
+    CollapsedWrap: styled.div<{index?: number}> `
+      padding-top: ${props => props.index === 0 ? '0px' : '18px'};
       border-bottom: 1px solid #d7dbe2;
-      
-      .first1 {
-        padding-top: 0px;
-        border-bottom: 1px solid #d7dbe2;
-      }
-      
+
       pre{
         white-space: pre-wrap;
         img{
@@ -43,7 +38,17 @@ const S = {
 
 export default function NoticePage() {
 
+    // const moreNotice = () => {
+    //     nextPage.current += 1
+    //     dispatch(backofficeActions.fetchNoticeMoreListAsync.request({
+    //         page: nextPage.current,
+    //         size: values.DEFAULT_NOTICE_LIST_SIZE
+    //     }))
+    //     setIsFetching(false)
+    // }
+
     const nextPage = useRef(1)
+    // const [isFetching, setIsFetching] = useInfiniteScroll(moreNotice)
 
     const dispatch = useDispatch()
     const getNoticeList = useSelector(backofficeSelector.getNoticeList)
