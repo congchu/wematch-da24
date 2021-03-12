@@ -296,9 +296,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
             <ButtonGroup headerRef={headerRef} isFixed={isFixed} setIsFixed={setIsFixed}
                          onClick={(type: 'house' | 'oneroom' | 'office' | undefined) => {
                              if (type === 'oneroom') {
-                              // 회원체계 실서버 배포 테스트를 위해 임시 block 
-                              alert('점검중입니다.')
-                                //  document.location.href = `${ONEROOM_URL}`
+                                 document.location.href = `${ONEROOM_URL}`
                                  return
                              }
                              dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))

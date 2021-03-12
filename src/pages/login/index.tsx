@@ -78,7 +78,7 @@ function LoginPage() {
     const handleSignUp = () => {
 
         const agentId = get(cookies, '0dj38gepoekf98234aplyadmin')
-
+        
         dispatch(userActions.fetchSignUpAsync.request({
             tel: phone,
             name: name,
@@ -86,7 +86,7 @@ function LoginPage() {
             code,
             user_agent: navigator.userAgent,
             agreed_marketing: new Date().toISOString(),
-            agent: agentId
+            agent: agentId ? agentId.split('=')[1] : null
         }))
     }
 
