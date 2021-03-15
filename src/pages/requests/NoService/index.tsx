@@ -84,15 +84,18 @@ const S = {
       line-height: 22px;
     `,
     LinkAlarm: styled.a`
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
+      display: block;
       height: 36px;
       padding-top: 20px;
       font-weight: 700;
       background: #FFE500;
       text-align: center;
+      border-radius: 6px;
+      margin-top: 40px;
+      margin-right: 24px;
+      margin-left: 24px;
+      font-size: 18px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 
       svg {
         margin-top: -2px;
