@@ -28,7 +28,9 @@ import {formatDateDash2Dot, whatDay} from 'lib/dateUtil'
 import validatePhone from 'lib/validatePhone'
 
 const S = {
-    Container: styled.div``,
+    Container: styled.div`
+      padding-bottom: 56px;
+    `,
     TopContents: styled.div`
       padding: 50px 0 8px;
       @media screen and (max-width: 320px) {
@@ -260,6 +262,8 @@ const S = {
       text-align: center;
     `,
     Button: styled.button`
+      position: fixed;
+      bottom: 0;
       display: block;
       width: 100%;
       height: 56px;
@@ -542,8 +546,8 @@ export default function Completed() {
                     closeClick={togglePopup}
                     confirmText="네, 찾아주세요"
                     confirmClick={() => window.location.href = `${CLEAN_URL}`}
-                    cancelText="다음에할게요"
-                    cancelClick={() => window.location.href = `${MOVE_URL}`}
+                    cancelText={`다음에 할게요`}
+                    cancelClick={() => history.push('/myrequest')}
                 >
                     입주청소도 필요하세요?
                 </ToastPopup>}
