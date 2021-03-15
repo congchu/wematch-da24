@@ -32,7 +32,7 @@ const S = {
         display: block;
         width: 87px;
         height: 16px;
-        padding: 16px 0 10px;
+        padding: 24px 0 10px;
         }
         
         span {
