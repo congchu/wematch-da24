@@ -92,7 +92,8 @@ function AppRoute() {
 
     useEffect(() => {
         if(getDeviceId) {
-            dispatch(commonActions.setDeviceId({deviceId: getDeviceId}))
+            alert(`value: (${getDeviceId})`)
+            dispatch(commonActions.setDeviceId(getDeviceId))
         }
     }, [dispatch, getDeviceId])
 
