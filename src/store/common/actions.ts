@@ -15,4 +15,4 @@ export const fetchMoveIdx = createAsyncAction(
     'FETCH_MOVE_IDX_FAILURE'
 )<types.RequestUserInfoInsert, types.RequestUserInfoInsertProps, undefined>()
 
-export const setDeviceId = createAction('SET_DEVICE_ID')<{deviceId: string}>();
+export const setDeviceId = createAction('SET_DEVICE_ID')<string>();

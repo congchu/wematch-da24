@@ -97,7 +97,6 @@ export function* fetchSignUpSaga(
   action: ActionType<typeof actions.fetchSignUpAsync.request>
 ) {
   const {tel, code} = action.payload;
-  const deviceId = yield select(commonSelector.getDeviceId);
   try {
     yield put(
       setAgree({
