@@ -9,3 +9,4 @@ export const getPartnerDetail = createSelector(getPartnerState, state => state.d
 export const getReviewList = createSelector(getPartnerState, state => state.review)
 export const getCartPartnerList = createSelector(getPartnerState, state => state.cart)
 export const getMatchingData = createSelector(getPartnerState, state => state.matching)
+export const getPartnerDetailCompleted = createSelector(getPartnerState, state => state.detailForCompleted)

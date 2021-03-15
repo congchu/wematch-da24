@@ -27,11 +27,11 @@ type MoveInputProps = {
 
 interface Props extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> {
     type: formActions.MoveTypeProp;
-    onChange? (estimate: MoveInputProps): void;
+    onChange?(estimate: MoveInputProps): void;
 }
 
 const S = {
-    Container: styled.div<{type: formActions.MoveTypeProp}>`
+    Container: styled.div<{ type: formActions.MoveTypeProp }>`
         display: ${props => props.type === 'house' || props.type === 'office' ? 'block' : 'none'}
     `,
     Title: styled.h3`
@@ -163,7 +163,7 @@ const MoveInput: React.FC<Props> = (props) => {
     }
 
     const onSelectDate = (date: CalendarDate) => {
-        if(isExceedDiffDay(date, CALENDAR_MAX_DAYS)) {
+        if (isExceedDiffDay(date, CALENDAR_MAX_DAYS)) {
             alert(`이사업체조회는 내일부터 최장${CALENDAR_MAX_DAYS}일까지만 비교가 가능합니다.`);
             return;
         }
@@ -244,88 +244,58 @@ const MoveInput: React.FC<Props> = (props) => {
                     <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "49%" }} onClick={toggleStartFloor} value={getMoveFloor.start ? getMoveFloor.start + '층' : getMoveFloor.start} style={{ backgroundColor: "transparent" }} />
                 </div>
                 {getMoveAddress?.start && (
-                  <Input theme="default" border placeholder="출발지 상세주소" value={getMoveAddress.detailStart} onChange={(e) => dispatch(formActions.setAddress({
-                      ...getMoveAddress,
-                      detailStart: e.target.value
-                  }))} style={{ backgroundColor: "transparent" }} onBlur={(e) => {
-                      if (e.target.value.length >= 2) {
-                          dataLayer({
-                              event: 'input_info',
-                              category: '다이사_메인_입력창_1',
-                              label: getMoveAddress.detailStart,
-                              action: '출발지_상세주소',
-                              CD6: getMoveTypeText()
-                          })
-                      }
-                  }} />
+                    <Input theme="default" border placeholder="출발지 상세주소" value={getMoveAddress.detailStart} onChange={(e) => dispatch(formActions.setAddress({
+                        ...getMoveAddress,
+                        detailStart: e.target.value
+                    }))} style={{ backgroundColor: "transparent" }} onBlur={(e) => {
+                        if (e.target.value.length >= 2) {
+                            dataLayer({
+                                event: 'input_info',
+                                category: '다이사_메인_입력창_1',
+                                label: getMoveAddress.detailStart,
+                                action: '출발지_상세주소',
+                                CD6: getMoveTypeText()
+                            })
+                        }
+                    }} />
                 )}
                 {getMoveAddress?.start && (
-                  <div style={{ display: "flex", flexDirection: "row" }}>
-                      <Input theme="default" border readOnly placeholder="도착지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleEndAddress} value={getMoveAddress.end} style={{ backgroundColor: "transparent" }} />
-                      <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "49%" }} onClick={toggleEndFloor} value={getMoveFloor.end ? getMoveFloor.end + '층' : getMoveFloor.end} style={{ backgroundColor: "transparent" }} />
-                  </div>
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                        <Input theme="default" border readOnly placeholder="도착지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleEndAddress} value={getMoveAddress.end} style={{ backgroundColor: "transparent" }} />
+                        <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "49%" }} onClick={toggleEndFloor} value={getMoveFloor.end ? getMoveFloor.end + '층' : getMoveFloor.end} style={{ backgroundColor: "transparent" }} />
+                    </div>
                 )}
                 {getMoveAddress?.end && (
-                  <Input theme="default" border placeholder="도착지 상세주소" value={getMoveAddress.detailEnd} onChange={(e) => dispatch(formActions.setAddress({
-                      ...getMoveAddress,
-                      detailEnd: e.target.value
-                  }))} style={{ backgroundColor: "transparent" }} onBlur={(e) => {
-                      if (e.target.value.length >= 2) {
-                          dataLayer({
-                              event: 'input_info',
-                              category: '다이사_메인_입력창_1',
-                              label: getMoveAddress.detailEnd,
-                              action: '도착지_상세주소',
-                              CD6: getMoveTypeText()
-                          })
-                      }
-                  }} />
-                )}
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                    <Input theme="default" border placeholder="이름" rootStyle={{ width: "49%", marginRight: "2%" }}
-                           maxLength={20} onChange={(e) => dispatch(formActions.setName(e.target.value))} value={getName}
-                           style={{ backgroundColor: "transparent" }} onBlur={(e) => {
-                        if (getName.length > 2) {
+                    <Input theme="default" border placeholder="도착지 상세주소" value={getMoveAddress.detailEnd} onChange={(e) => dispatch(formActions.setAddress({
+                        ...getMoveAddress,
+                        detailEnd: e.target.value
+                    }))} style={{ backgroundColor: "transparent" }} onBlur={(e) => {
+                        if (e.target.value.length >= 2) {
                             dataLayer({
                                 event: 'input_info',
                                 category: '다이사_메인_입력창_1',
-                                label: '고객명',
-                                action: '이름',
+                                label: getMoveAddress.detailEnd,
+                                action: '도착지_상세주소',
                                 CD6: getMoveTypeText()
                             })
                         }
-                    }}
-                    />
-                    <Input theme="default" type="tel" pattern="[0-9]*" inputMode="numeric"
-                           placeholder="연락처(-없이 입력)" border rootStyle={{ width: "49%" }} maxLength={13} value={getPhone} onChange={handlePhone}
-                           style={{ backgroundColor: "transparent" }} onBlur={(e) => {
-                        if (getPhone.length > 2) {
-                            dataLayer({
-                                event: 'input_info',
-                                category: '다이사_메인_입력창_1',
-                                label: '전화번호',
-                                action: '연락처',
-                                CD6: getMoveTypeText()
-                            })
-                        }
-                    }}
-                    />
-                </div>
+                    }} />
+                )}
                 {getMoveAddress?.end && (
-                  <S.TextContainer>
-                      <S.Textarea placeholder="업체 전달할 내용(선택)" onChange={(e) => {
-                          dispatch(formActions.setContents(e.target.value))
-                      }} />
-                  </S.TextContainer>
+                    <S.TextContainer>
+                        <S.Textarea placeholder="업체 전달할 내용(선택)" onChange={(e) => {
+                            dispatch(formActions.setContents(e.target.value))
+                        }} />
+                    </S.TextContainer>
                 )}
             </S.Form>
             <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?" onClose={toggleCalendarCancel}
-                           onConfirm={toggleCalendarConfirm} onSelect={onSelectDate} selected={getMoveDate}/>
+                onConfirm={toggleCalendarConfirm} onSelect={onSelectDate} selected={getMoveDate} />
             <AddressModal visible={visibleStartAddressModal} title="주소 검색" onClose={toggleStartAddress}
-                          onConfirm={toggleStartAddress} onClick={toggleStartAddress} onSelect={onSelectStartAddress} />
+                onConfirm={toggleStartAddress} onClick={toggleStartAddress} onSelect={onSelectStartAddress} />
             <Select visible={visibleStartFloorModal} items={floorItems} onOverlayClose={toggleStartFloor} onClose={toggleStartFloor} onSelect={onSelectStartFloorAddress} headerTitle="층수 선택" />
             <AddressModal visible={visibleEndAddressModal} title="주소 검색" onClose={toggleEndAddress}
-                          onConfirm={toggleEndAddress} onClick={toggleEndAddress} onSelect={onSelectEndAddress} />
+                onConfirm={toggleEndAddress} onClick={toggleEndAddress} onSelect={onSelectEndAddress} />
             <Select visible={visibleEndFloorModal} items={floorItems} onOverlayClose={toggleEndFloor} onClose={toggleEndFloor} onSelect={onSelectEndFloorAddress} headerTitle="층수 선택" />
         </S.Container>
     )
