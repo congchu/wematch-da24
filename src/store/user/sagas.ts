@@ -111,7 +111,7 @@ export function* fetchSignUpSaga(
       deviceId !== ""
         ? {
             ...action.payload,
-            deviceId,
+            device_Id: deviceId,
           }
         : action.payload;
 
