@@ -107,15 +107,15 @@ export function* fetchSignUpSaga(
       })
     );
 
-    let params =
-      deviceId !== ""
-        ? {
-            ...action.payload,
-            device_id: deviceId,
-          }
-        : action.payload;
+    // let params =
+    //   deviceId !== ""
+    //     ? {
+    //         ...action.payload,
+    //         device_id: deviceId,
+    //       }
+    //     : action.payload;
 
-    const {token, data} = yield call(requests.postSignUp, params);
+    const {token, data} = yield call(requests.postSignUp, action.payload);
     setCookie("x-wematch-token", token, {
       "max-age": 60 * 60 * 24 * 60,
       domain: ".wematch.com",
