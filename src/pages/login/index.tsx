@@ -4,6 +4,7 @@ import * as colors from 'styles/colors';
 import * as userActions from 'store/user/actions';
 import * as formSelector from 'store/form/selectors';
 import * as userSelector from 'store/user/selectors';
+import * as commonSelector from 'store/common/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import useTimer from 'hooks/useTimer';
 import useHashToggle from 'hooks/useHashToggle';
@@ -78,7 +79,6 @@ function LoginPage() {
     const handleSignUp = () => {
 
         const agentId = get(cookies, '0dj38gepoekf98234aplyadmin')
-        
         dispatch(userActions.fetchSignUpAsync.request({
             tel: phone,
             name: name,

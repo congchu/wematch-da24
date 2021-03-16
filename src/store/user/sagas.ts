@@ -97,7 +97,6 @@ export function* fetchSignUpSaga(
   action: ActionType<typeof actions.fetchSignUpAsync.request>
 ) {
   const {tel, code} = action.payload;
-  const deviceId = yield select(commonSelector.getDeviceId);
   try {
     yield put(
       setAgree({
@@ -107,15 +106,15 @@ export function* fetchSignUpSaga(
       })
     );
 
-    let params =
-      deviceId !== ""
-        ? {
-            ...action.payload,
-            device_id: deviceId,
-          }
-        : action.payload;
+    // let params =
+    //   deviceId !== ""
+    //     ? {
+    //         ...action.payload,
+    //         device_id: deviceId,
+    //       }
+    //     : action.payload;
 
-    const {token, data} = yield call(requests.postSignUp, params);
+    const {token, data} = yield call(requests.postSignUp, action.payload);
     setCookie("x-wematch-token", token, {
       "max-age": 60 * 60 * 24 * 60,
       domain: ".wematch.com",

@@ -53,9 +53,6 @@ declare global {
     interface Window {
         ReactNativeWebView: any; // eslint-disable-line
     }
-    interface TenpingScript {
-        SendConversion: () => void
-    }
 }
 
 function AppRoute() {
@@ -92,7 +89,8 @@ function AppRoute() {
 
     useEffect(() => {
         if(getDeviceId) {
-            dispatch(commonActions.setDeviceId({deviceId: getDeviceId}))
+            alert(`value: (${getDeviceId})`)
+            dispatch(commonActions.setDeviceId(getDeviceId))
         }
     }, [dispatch, getDeviceId])
 
