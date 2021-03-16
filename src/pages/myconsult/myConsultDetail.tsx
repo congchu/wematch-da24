@@ -360,8 +360,8 @@ const MyConsultDetail = () => {
               <S.MoveSubtext>{selectedOrder?.moving_date}</S.MoveSubtext>
             </li>
             <li>
-              <S.MoveText>출발지</S.MoveText>
-              <S.MoveSubtext>{selectedOrder?.start_address}{selectedOrder?.type !== '원룸이사' && '층'}</S.MoveSubtext>
+              <S.MoveText>{!selectedOrder?.type.includes('청소') ? `출발지` : `청소지`}</S.MoveText>
+              <S.MoveSubtext>{selectedOrder?.start_address}{selectedOrder?.type !== '원룸이사' && !selectedOrder?.type.includes('청소') && '층'}</S.MoveSubtext>
             </li>
             {
               !selectedOrder?.type.includes('청소') && (
