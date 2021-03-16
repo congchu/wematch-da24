@@ -19,6 +19,7 @@ import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton';
 import * as formActions from 'store/form/actions'
 import * as formSelectors from 'store/form/selectors'
 import * as formSelector from 'store/form/selectors'
+import * as userSelector from 'store/user/selectors'
 import {FormState} from 'store/form/reducers'
 
 import {CALENDAR_MAX_DAYS} from 'constants/values';
@@ -148,6 +149,7 @@ export default function NoPartner() {
     const getContents = useSelector(formSelector.getContents)
     const getFormData = useSelector(formSelector.getFormData)
     const getAgree = useSelector(formSelector.getAgree)
+    const { user } = useSelector(userSelector.getUser)
 
     const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar');
     const [cookies, setCookie] = useCookies(['report'])
@@ -163,8 +165,7 @@ export default function NoPartner() {
 
 
     const handleSubmit = () => {
-        dispatch(formActions.submitFormAsync.request({formData: getFormData}))
-    }
+        dispatch(formActions.submitFormAsync.request({formData: { uuid: user?.uuid, ...getFormData}})) }
 
     const toggleCalendarCancel = () => {
         dispatch(formActions.setMoveDate([]))
