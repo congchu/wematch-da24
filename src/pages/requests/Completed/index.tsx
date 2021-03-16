@@ -28,7 +28,12 @@ import { formatDateDash2Dot, whatDay } from 'lib/dateUtil'
 import validatePhone from 'lib/validatePhone'
 
 const S = {
-  Container: styled.div``,
+  Container: styled.div`
+    padding-bottom: 56px;
+    @media screen and (min-width: 1200px) {
+      padding-bottom: 106px;
+    }
+  `,
   TopContents: styled.div`
       padding: 50px 0 8px;
       @media screen and (max-width: 320px) {
@@ -260,6 +265,8 @@ const S = {
       text-align: center;
     `,
   Button: styled.button`
+      position: fixed;
+      bottom: 0;
       display: block;
       width: 100%;
       height: 56px;
@@ -267,8 +274,10 @@ const S = {
       background: #1672F7;
       color: #fff;
       @media screen and (min-width: 1200px) {
+        left:0;
+        right: 0;
         width: 720px;
-        margin: 0 auto 106px;
+        margin: 0 auto;
       }
     `,
   Box: styled.a`
