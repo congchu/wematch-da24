@@ -117,8 +117,6 @@ function AppRoute() {
         }
     }, [script])
 
-    console.log(LOCAL_ENV)
-
     // ie인 경우 무조건 unsupported로 보낸다.
     if (isIE) {
         return (
