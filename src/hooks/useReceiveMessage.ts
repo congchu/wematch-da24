@@ -4,8 +4,15 @@ import { checkApp, checkIos } from 'lib/checkDevice'
 export default function useReceiveMessage() {
     const [message, setMessage] = useState('')
 
-    const handleMessage = (event: any) => {
-        setMessage(event.data)
+    const handleMessage = (event: MessageEvent) => {
+        try {
+            const deviceInfo = JSON.parse(event.data)
+            if (deviceInfo.type === 'DEVICE_ID') {
+                setMessage(deviceInfo.data)
+            }
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     useEffect(() => {
@@ -17,6 +24,7 @@ export default function useReceiveMessage() {
                     window.removeEventListener('message', handleMessage)
                 }
             } else {
+                // @ts-ignore
                 document.addEventListener('message', handleMessage, false)
                 return () => {
                     window.removeEventListener('message', handleMessage)
