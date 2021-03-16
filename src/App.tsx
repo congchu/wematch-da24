@@ -46,6 +46,7 @@ import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
 import { ESignInCase } from 'store/user/types'
 import useReceiveMessage from 'hooks/useReceiveMessage'
+import { LOCAL_ENV } from 'constants/env'
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -115,6 +116,8 @@ function AppRoute() {
             return customScript
         }
     }, [script])
+
+    console.log(LOCAL_ENV)
 
     // ie인 경우 무조건 unsupported로 보낸다.
     if (isIE) {
