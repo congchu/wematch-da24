@@ -447,7 +447,7 @@ export default function Completed() {
             {isDesktop && <MainHeader/>}
             <S.TopContents>
                 <S.Icon><Check fill={'#fff'}/></S.Icon>
-                <S.TopTitle>.
+                <S.TopTitle>
                     <em>이사업체 매칭</em> 완료 <br/>
                     <span>업체에서 연락이 없다면 먼저 전화해주세요!<br/> 전화번호를 문자로 보내드립니다.</span>
                 </S.TopTitle>
