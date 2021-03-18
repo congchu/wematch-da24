@@ -46,15 +46,13 @@ import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
 import { ESignInCase } from 'store/user/types'
 import useReceiveMessage from 'hooks/useReceiveMessage'
+import { LOCAL_ENV } from 'constants/env'
 
 SwiperCore.use([Pagination, Autoplay])
 
 declare global {
     interface Window {
         ReactNativeWebView: any; // eslint-disable-line
-    }
-    interface TenpingScript {
-        SendConversion: () => void
     }
 }
 
@@ -91,8 +89,8 @@ function AppRoute() {
 
 
     useEffect(() => {
-        if(getDeviceId) {
-            dispatch(commonActions.setDeviceId({deviceId: getDeviceId}))
+        if (getDeviceId) {
+            dispatch(commonActions.setDeviceId(getDeviceId))
         }
     }, [dispatch, getDeviceId])
 
