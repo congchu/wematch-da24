@@ -59,7 +59,7 @@ const PopupOverlay = styled.div`
   
   background-color: white;
   @media screen and (min-width: 768px) {
-    background-color: rgba(18, 18, 18, 0.6);;
+    background-color: rgba(18, 18, 18, 0.6);
   }
 `;
 

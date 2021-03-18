@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react'
-import Styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import dayjs, { Dayjs } from 'dayjs'
+
 import Calendar from './Calendar'
-import { CalendarDate } from 'components/wematch-ui/utils/date'
+import {CalendarDate, getCurrentMonthDays} from 'components/wematch-ui/utils/date'
 import { Next } from 'components/wematch-ui/Icon'
 
 import * as colors from 'styles/colors'
@@ -14,20 +15,31 @@ import * as colors from 'styles/colors'
  * */
 
 const S = {
-    Container: Styled.div`
+    Container: styled.div`
+      position: relative;
+      overflow: scroll;
+      height: calc(${window.innerHeight}px - 56px - 100px);
+      
+      @media screen and (min-width: 768px) {
+        height: calc(480px - 56px - 100px);
+      }
     `,
-    CalendarHeaderWrapper: Styled.div`
+    Wrapper: styled.div`
+      margin-bottom: 20px;
+    `,
+    CalendarHeaderWrapper: styled.div`
         position: relative;
         padding: 21px 24px 21px;
     `,
-    CalendarHeader: Styled.header`
+    CalendarHeader: styled.header`
         position: relative;
-        text-align: center;
+        padding: 21px 24px;
         font-size: 16px;
         line-height: 16px;
         color: ${colors.gray33};
         letter-spacing: -1px;
-     
+        font-weight: bold;
+        text-align: left;
         span {
           user-select: none;
         }
@@ -46,9 +58,64 @@ const S = {
             }
         }
     `,
-    CurrentMonth: Styled.span``,
-    CalendarContainer: Styled.div``,
+    CurrentMonth: styled.span``,
+    CalendarContainer: styled.div``,
+    Info: styled.div`
+      padding: 16px;
+      margin: 30px 24px 78px 24px;
+      border: 1px solid #D7DBE2;
+      border-radius: 6px;
+      color: #333333;
+      
+      @media screen and (min-width: 768px) {
+        margin-bottom: 70px;
+      }
+      .title {
+        color: ${colors.gray33};
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+      
+      .content {
+        font-size: 14px;
+        line-height: 21px;
+        color: ${colors.gray66};
+        font-weight: normal;
+      } 
+    `,
+    Toast: styled.div`
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      box-sizing: border-box;
+      
+      div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 6px;
+        margin: 8px;
+        background-color: ${colors.gray33};
+        opacity: 0.96;
+        height: 56px;
+      
+      }
+      p {
+        font-size: 14px;
+        line-height: 21px;
+        color: ${colors.white};
+      }
+    `,
 }
+
+const Dot = styled.span`
+    width: 8px;
+    height: 8px;
+    background-color: #F78F16;
+    border-radius: 50%;
+    margin-right: 12px;
+`
 
 interface Props {
     currentDate?: Dayjs | Date;
@@ -79,48 +146,7 @@ const DatePicker: React.FC<Props> = (props) => {
     })()
 
     const [currentDateValue, setCurrentDateValue] = React.useState<Dayjs>(initialDate)
-
-    const rangeStartMonthDate = React.useMemo(() => {
-        if (rangeStartDate) {
-            return dayjs(rangeStartDate).startOf('month')
-        }
-        return null
-    }, [rangeStartDate])
-
-    const rangeEndMonthDate = React.useMemo(() => {
-        if (rangeEndDate) {
-            return dayjs(rangeEndDate).endOf('month')
-        }
-        return null
-    }, [rangeEndDate])
-
-    const prevMonthDate = React.useMemo(() => {
-        return dayjs(currentDateValue.month(currentDateValue.month() - 1))
-    }, [currentDateValue])
-
-    const nextMonthDate = React.useMemo(() => {
-        return dayjs(currentDateValue.month(currentDateValue.month() + 1))
-    }, [currentDateValue])
-
-    const isBeforeRangeStartMonthDate = React.useMemo(() => {
-        if (!rangeStartMonthDate) {
-            return false
-        }
-        return prevMonthDate.isBefore(rangeStartMonthDate)
-
-    }, [rangeStartMonthDate, prevMonthDate])
-
-    const isAfterRangeEndMonthDate = React.useMemo(() => {
-        if (!rangeEndMonthDate) {
-            return false
-        }
-        return nextMonthDate.isAfter(rangeEndMonthDate)
-
-    }, [rangeEndMonthDate, nextMonthDate])
-
-    const handlePrevClick = () => setCurrentDateValue(prevMonthDate)
-
-    const handleNextClick = () => setCurrentDateValue(nextMonthDate)
+    const maxDate = currentDateValue.add(55, 'day')
 
     const disabledDateWithRange = React.useCallback((date: Date) => {
         const isBeforeRangeStartDate = rangeStartDate ? date < rangeStartDate : false
@@ -130,24 +156,30 @@ const DatePicker: React.FC<Props> = (props) => {
         return isBeforeRangeStartDate || isAfterRangeEndDate || isDisabledDate
     }, [rangeStartDate, rangeEndDate, disabledDate])
 
+    const diffMonth = Math.ceil(maxDate.diff(currentDateValue, 'month', true)) + 1
+    let arr = new Array(diffMonth).fill(undefined).map((val,idx) => idx);
     return (
         <S.Container>
-            <S.CalendarHeaderWrapper>
-                <S.CalendarHeader>
-                    {!isBeforeRangeStartMonthDate &&
-                        <button onClick={handlePrevClick}>
-                            <Next size={16} style={{transform: 'scale(-1,1)'}}/>
-                            <div>이전</div>
-                        </button>}
-                    <S.CurrentMonth>{currentDateValue.month() + 1}월</S.CurrentMonth>
-                    {!isAfterRangeEndMonthDate &&
-                        <button onClick={handleNextClick}>
-                            <div>다음</div>
-                            <Next size={16}/>
-                        </button>}
-                </S.CalendarHeader>
-            </S.CalendarHeaderWrapper>
-            <Calendar currentDate={currentDateValue} onSelect={onSelect} disabledDate={disabledDateWithRange} selected={selected} />
+            <S.Wrapper>
+                {arr.map(index => {
+                    let date = dayjs(new Date()).add(index, "month");
+                    return (
+                      <>
+                          <S.CalendarHeader>{`${currentDateValue.year()}년 ${currentDateValue.month() + 1 + index}월`}</S.CalendarHeader>
+                          <Calendar currentDate={date} onSelect={onSelect} disabledDate={disabledDateWithRange} selected={selected} maxDate={maxDate}/>
+                      </>
+                    )
+                })}
+                <S.Info>
+                    <p className="title"><em>견적신청 가능 날짜</em></p>
+                    <p className="content">오늘부터 55일 이내 날짜에서만 이사업체 견적신청이 가능해요.</p>
+                </S.Info>
+                <S.Toast>
+                    <div>
+                        <Dot/><p>손 없는 날/금~토요일은 가격이 비쌀 수 있어요.</p>
+                    </div>
+                </S.Toast>
+            </S.Wrapper>
         </S.Container>
     )
 }
