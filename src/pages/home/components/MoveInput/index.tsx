@@ -168,6 +168,7 @@ const MoveInput: React.FC<Props> = (props) => {
             return;
         }
         dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
+        setVisibleCalendarModal(false)
     }
 
     const onSelectStartAddress = (data: string) => {

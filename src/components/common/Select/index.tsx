@@ -90,13 +90,11 @@ const S = {
         width: 100%;
         height: 100%;
         opacity: .88;
-        background: ${colors.pointVividBlue};
+        background-color: rgba(18, 18, 18, 0.6);
         position: fixed;
         top: 0;
         left: 0;
         z-index: 20;
-        background: linear-gradient(to bottom, ${colors.pointVividBlue} 0%, #2ccbcb 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=${colors.pointVividBlue}, endColorstr='#2ccbcb', GradientType=0);
         
         transition: all 0.25s ease-in-out;
         animation-duration: 0.25s;
@@ -150,18 +148,19 @@ const S = {
     `,
     Header: Styled.div`
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         width: 100%;
-        height: 40px;
+        height: 56px;
         border-top-right-radius: 16px;
         border-top-left-radius: 16px;
         background-color: ${colors.grayBg};
         text-align: right;
         strong {
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            font-size: 15px;
-            font-weight: 400;
+            padding-left: 24px;
+            font-size: 18px;
+            font-weight: bold;
             color: ${colors.gray33};
             line-height: 24px;
             letter-spacing: -1px;
