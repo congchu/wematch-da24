@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-
 import styled from 'styled-components'
+import { debounce } from 'lodash'
 
 import BaseModal from './ModalTemplate'
 import Input from 'components/common/Input'
@@ -133,11 +133,13 @@ const AddressModal: React.FC<Props> = (props) => {
         return () => setItems([])
     }, [visible])
 
-    const requestAddressList = (dong: string) => {
+    const requestAddressList = debounce((dong: string) => {
         dispatch(commonActions.fetchAddressListAsync.request({
             dong
         }))
-    }
+    }, 200);
+
+
 
     return (
         <PopupTemplate visible={visible} onClose={onClose}>
@@ -145,7 +147,7 @@ const AddressModal: React.FC<Props> = (props) => {
                 <S.Header>
                     <S.Title>주소검색</S.Title>
                     <S.InputContainer>
-                        <input placeholder="읍/면/동으로 검색"
+                        <input placeholder="읍/면/동(지번)으로 검색해주세요"
                                type="text"
                                onChange={(e) => setDong(e.target.value)}
                                onKeyPress={(e) => {
@@ -165,8 +167,6 @@ const AddressModal: React.FC<Props> = (props) => {
                 <S.Content>
                     {getAddressList.data?.length === 0 ? (
                       <S.Empty>
-                          {/*‘농ㅎ’에 대한 검색 결과가 없습니다.
-                          정확한 읍/면/동(지번)주소로 다시 검색해주세요.*/}
                           <p><em>'{dong}'</em>에 대한 검색 결과가 없습니다.
                               <br/>정확한 읍/면/동(지번)주소로 다시 검색해주세요.
                           </p>

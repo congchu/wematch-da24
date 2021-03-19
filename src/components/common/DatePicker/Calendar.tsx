@@ -25,7 +25,7 @@ interface DayProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const CalendarWrapper = styled.div`
-    padding: 0 15px 11px 15px
+    padding: 0 24px 11px 24px;
     `;
 const S = {
     Container: styled.table`
@@ -87,7 +87,6 @@ const DayCell = styled.div<DayProps>`
         color: ${colors.white};
         border-radius: 50%;
         font-weight: bold;
-        box-shadow: 0 4px 10px 4px rgba(45, 128, 247, 0.24);
     `};
     
     ${props => props.disabled && css`
