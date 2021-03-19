@@ -80,7 +80,7 @@ const DayCell = styled.div<DayProps>`
     padding: 12px 0;
     box-sizing: border-box;
     color: ${({ type }) => type !== 'current' ? colors.lineEnd : colors.gray33};
-    
+    -webkit-tap-highlight-color: transparent;
     
     ${props => props.isSelected && css`
         background-color: ${colors.pointBlue};
