@@ -25,12 +25,11 @@ interface DayProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const CalendarWrapper = styled.div`
-    padding: 0 15px;
+    padding: 0 15px 11px 15px
     `;
 const S = {
     Container: styled.table`
         width: 100%;
-        background-color: ${colors.white};
         border-collapse: collapse;
         border-spacing: 0;
     `,
@@ -187,7 +186,7 @@ export default function Calendar(props: Props) {
                                                 {isSelected(day)}
                                                 {day.date.date()}
                                             </Day>
-                                            {(isLuckyDay && day.type === 'current') && <Dot/>}
+                                            {(isLuckyDay && day.type === 'current' && disabledDate && !disabledDate(day.date.toDate())) && <Dot/>}
                                         </div>
                                     </td>
                                 )
