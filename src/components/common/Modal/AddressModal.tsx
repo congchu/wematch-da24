@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { debounce } from 'lodash'
 
@@ -93,10 +93,11 @@ const S = {
             }
         }
     `,
-// <{height: string}>
-    Content: styled.div`
+    Content: styled.div<{height: number | undefined}>`
         height: 100%;
+        min-height: ${props => props.height && `calc(${window.innerHeight}px - ${props.height}px - ${56}px)`};
         padding: 16px 24px;
+        background-color: #FAFAFA;
     `,
 }
 
@@ -112,6 +113,7 @@ const AddressModal: React.FC<Props> = (props) => {
     } = props
 
     const dispatch = useDispatch()
+    const headerRef = useRef<HTMLDivElement | null>(null)
     const getAddressList = useSelector(commonSelector.getAddressList)
     const [items, setItems] = useState<ItemsProps[]>([])
     const [dong, setDong] = useState<string>('')
@@ -141,10 +143,11 @@ const AddressModal: React.FC<Props> = (props) => {
 
 
 
+
     return (
         <PopupTemplate visible={visible} onClose={onClose}>
             <S.Container>
-                <S.Header>
+                <S.Header ref={headerRef}>
                     <S.Title>주소검색</S.Title>
                     <S.InputContainer>
                         <input placeholder="읍/면/동(지번)으로 검색해주세요"
@@ -164,7 +167,7 @@ const AddressModal: React.FC<Props> = (props) => {
                         <Icon.Search size={24} />
                     </S.InputContainer>
                 </S.Header>
-                <S.Content>
+                <S.Content height={headerRef?.current?.clientHeight}>
                     {getAddressList.data?.length === 0 ? (
                       <S.Empty>
                           <p><em>'{dong}'</em>에 대한 검색 결과가 없습니다.
