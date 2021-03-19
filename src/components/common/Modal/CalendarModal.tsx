@@ -43,7 +43,12 @@ const S = {
       line-height: 30px;
       padding-bottom: 16px;
     `,
-    Days: styled.div`
+    DaysContainer: styled.div`
+      width: 100%;
+      padding: 0 15px;
+    `,
+    Days: styled.table`
+        width: 100%;
         color: ${colors.gray66};
         font-size: 15px;
         font-weight: normal;
@@ -54,7 +59,8 @@ const S = {
           width: 100%;
           display: flex;
         }
-        th {
+        td {
+            text-align: center;
             height: 23px;
             font-size: 15px;
             color: ${colors.gray66};
@@ -95,17 +101,19 @@ const CalendarModal: React.FC<Props> = (props) => {
             <S.Container>
                 <S.Header>
                     <S.Title>이사 날짜를 선택해주세요.</S.Title>
-                    <S.Days>
-                        <tr>
-                            <th>월</th>
-                            <th>화</th>
-                            <th>수</th>
-                            <th>목</th>
-                            <th>금</th>
-                            <th>토</th>
-                            <th>일</th>
-                        </tr>
-                    </S.Days>
+                    <S.DaysContainer>
+                        <S.Days>
+                            <tr>
+                                <td>월</td>
+                                <td>화</td>
+                                <td>수</td>
+                                <td>목</td>
+                                <td>금</td>
+                                <td>토</td>
+                                <td>일</td>
+                            </tr>
+                        </S.Days>
+                    </S.DaysContainer>
                 </S.Header>
                 <DatePicker currentDate={new Date()} rangeStartDate={rangeStartDate} rangeEndDate={rangeEndDate}
                     onSelect={onSelect} selected={selected} disabledDate={disabledDate} />

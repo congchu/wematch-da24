@@ -19,6 +19,7 @@ const S = {
       position: relative;
       overflow: scroll;
       height: calc(${window.innerHeight}px - 56px - 100px);
+      background-color: #FAFAFA;
       
       @media screen and (min-width: 768px) {
         height: calc(480px - 56px - 100px);
@@ -66,6 +67,7 @@ const S = {
       border: 1px solid #D7DBE2;
       border-radius: 6px;
       color: #333333;
+      background-color: #F7F8FA;
       
       @media screen and (min-width: 768px) {
         margin-bottom: 70px;
@@ -73,7 +75,7 @@ const S = {
       .title {
         color: ${colors.gray33};
         font-size: 16px;
-        font-weight: 500;
+        font-weight: 600;
         margin-bottom: 4px;
       }
       
@@ -105,6 +107,7 @@ const S = {
         font-size: 14px;
         line-height: 21px;
         color: ${colors.white};
+        margin-right: 16px;
       }
     `,
 }
