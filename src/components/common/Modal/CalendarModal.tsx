@@ -31,11 +31,8 @@ const S = {
     `,
     Header: styled.header`
       border-bottom: 1px solid ${colors.lineDefault};
-      
-      div {
-        padding-left: 24px;
-        padding-right: 24px;
-      }
+      padding-right: 24px;
+      padding-left: 24px;
     `,
     Title: styled.div`
       font-weight: bold;
@@ -45,7 +42,6 @@ const S = {
     `,
     DaysContainer: styled.div`
       width: 100%;
-      padding: 0 15px;
     `,
     Days: styled.table`
         width: 100%;
@@ -60,11 +56,20 @@ const S = {
           display: flex;
         }
         td {
+            width: 100%;
             text-align: center;
             height: 23px;
             font-size: 15px;
             color: ${colors.gray66};
+            
+            div {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              position: relative;
+            }
         }
+       
     `,
 }
 
@@ -104,13 +109,13 @@ const CalendarModal: React.FC<Props> = (props) => {
                     <S.DaysContainer>
                         <S.Days>
                             <tr>
-                                <td>월</td>
-                                <td>화</td>
-                                <td>수</td>
-                                <td>목</td>
-                                <td>금</td>
-                                <td>토</td>
-                                <td>일</td>
+                                <td><div>일</div></td>
+                                <td><div>일</div></td>
+                                <td><div>일</div></td>
+                                <td><div>일</div></td>
+                                <td><div>일</div></td>
+                                <td><div>일</div></td>
+                                <td><div>일</div></td>
                             </tr>
                         </S.Days>
                     </S.DaysContainer>
