@@ -94,7 +94,7 @@ const S = {
       
       div {
         display: flex;
-        justify-content: center;
+        justify-content: left;
         align-items: center;
         border-radius: 6px;
         margin: 8px;
@@ -107,7 +107,6 @@ const S = {
         font-size: 14px;
         line-height: 21px;
         color: ${colors.white};
-        margin-right: 16px;
       }
     `,
 }
@@ -118,6 +117,7 @@ const Dot = styled.span`
     background-color: #F78F16;
     border-radius: 50%;
     margin-right: 12px;
+    margin-left: 16px;
 `
 
 interface Props {
