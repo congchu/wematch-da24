@@ -110,12 +110,12 @@ const CalendarModal: React.FC<Props> = (props) => {
                         <S.Days>
                             <tr>
                                 <td><div>일</div></td>
-                                <td><div>일</div></td>
-                                <td><div>일</div></td>
-                                <td><div>일</div></td>
-                                <td><div>일</div></td>
-                                <td><div>일</div></td>
-                                <td><div>일</div></td>
+                                <td><div>월</div></td>
+                                <td><div>화</div></td>
+                                <td><div>수</div></td>
+                                <td><div>목</div></td>
+                                <td><div>금</div></td>
+                                <td><div>토</div></td>
                             </tr>
                         </S.Days>
                     </S.DaysContainer>
