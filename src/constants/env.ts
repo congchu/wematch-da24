@@ -14,3 +14,5 @@ export const MAIN_URL = process.env.REACT_APP_MAIN_URL || 'https://wematch.com'
 
 export const WM_USER_AGENT = 'WmClientApp'
 
+export const SENTRY_DSN = process.env.REACT_APP_SENTRY_DSN
+
