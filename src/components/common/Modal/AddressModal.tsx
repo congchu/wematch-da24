@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 import { debounce } from 'lodash'
 
@@ -135,14 +135,18 @@ const AddressModal: React.FC<Props> = (props) => {
         return () => setItems([])
     }, [visible])
 
-    const requestAddressList = debounce((dong: string) => {
-        dispatch(commonActions.fetchAddressListAsync.request({
-            dong
-        }))
-    }, 200);
+    useEffect(() => {
+        if(dong.length > 1) {
+            dispatch(commonActions.fetchAddressListAsync.request({
+                dong
+            }))
+        }
+    }, [dispatch, dong]);
 
 
-
+    const handleOnChange = debounce((address: string) => {
+        setDong(address);
+    }, 300)
 
     return (
         <PopupTemplate visible={visible} onClose={onClose}>
@@ -150,17 +154,14 @@ const AddressModal: React.FC<Props> = (props) => {
                 <S.Header ref={headerRef}>
                     <S.Title>주소검색</S.Title>
                     <S.InputContainer>
-                        <input placeholder="읍/면/동(지번)으로 검색해주세요"
+                        <input placeholder="읍/면/동까지만 입력해주세요"
                                type="text"
-                               onChange={(e) => setDong(e.target.value)}
-                               onKeyPress={(e) => {
+                               onChange={(e) => handleOnChange(e.target.value)}
+                               onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
                                    if (e.key === 'Enter') {
-                                       requestAddressList(dong)
-                                   }
-                               }}
-                               onKeyUp={(e) => {
-                                   if (dong.length >= 2) {
-                                       requestAddressList(dong)
+                                        const ev = e.target as HTMLInputElement
+                                        handleOnChange.cancel();
+                                        setDong(ev.value);
                                    }
                                }}
                         />
