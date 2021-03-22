@@ -1,24 +1,17 @@
-import {push, goBack} from "connected-react-router";
+import {goBack, push} from "connected-react-router";
 import dayjs from "dayjs";
-import {deleteCookie, getCookie, setCookie} from "lib/cookie";
-import {
-  all,
-  call,
-  put,
-  select,
-  takeEvery,
-  takeLatest,
-  takeLeading,
-} from "redux-saga/effects";
+import {deleteCookie, setCookie} from "lib/cookie";
+import {all, call, put, select, takeEvery, takeLeading,} from "redux-saga/effects";
+import * as formActions from "store/form/actions";
 import {setAgree} from "store/form/actions";
 import {ActionType} from "typesafe-actions";
 import * as actions from "./actions";
 import * as requests from "./requests";
 import {ESignInCase, IOrder} from "./types";
-import * as commonTypes from "store/common/types";
-import * as formActions from "store/form/actions";
 import * as userSelector from "./selectors";
 import * as commonSelector from "store/common/selectors";
+import * as sentry from '@sentry/react'
+import {Severity} from '@sentry/react'
 
 export function* fetchUserConsultSaga(
   action: ActionType<typeof actions.fetchUserConsultAsync.request>
@@ -62,6 +55,9 @@ export function* fetchUserConsultSaga(
     );
   } catch (e) {
     yield put(actions.fetchUserConsultAsync.failure());
+    sentry.captureMessage('내 신청내역 조회 실패', {
+      level: Severity.Error
+    })
   }
 }
 
@@ -73,6 +69,9 @@ export function* fetchVerifySendMessageSaga(
     yield put(actions.fetchVerifySendMessageAsync.success(data));
   } catch (e) {
     yield put(actions.fetchVerifySendMessageAsync.failure());
+    sentry.captureMessage('인증 문자 메시지 보내기 실패', {
+      level: Severity.Error
+    })
   }
 }
 
@@ -90,6 +89,12 @@ export function* fetchVerifyCodeSaga(
     yield put(actions.fetchVerifyCodeAsync.success({isVerified: isVerified}));
   } catch (e) {
     yield put(actions.fetchVerifyCodeAsync.failure());
+    if (e.response.status === 500) {
+      sentry.captureMessage('인증코드 검증 실패', {
+        level: Severity.Error
+      })
+      sentry.captureException(e)
+    }
   }
 }
 
@@ -132,6 +137,16 @@ export function* fetchSignUpSaga(
   } catch (e) {
     if (e.response.status === 409) {
       yield put(actions.fetchSignInAsync.request({phone: tel, code}));
+      sentry.captureMessage('중복 가입 발생!!! 삐용 삐용!!', {
+        level: Severity.Error
+      })
+      sentry.captureException(e)
+    }
+    if (e.response.status === 500) {
+      sentry.captureMessage('회원가입 실패', {
+        level: Severity.Error
+      })
+      sentry.captureException(e)
     }
   }
 }
@@ -156,6 +171,8 @@ export function* fetchSignInSaga(
     yield call(signInAfterFlowSaga);
   } catch (e) {
     yield put(actions.fetchSignInAsync.failure());
+    sentry.captureMessage('로그인 실패' )
+    sentry.captureException(e)
   }
 }
 
@@ -169,6 +186,8 @@ export function* fetchGetUserSaga(
   } catch (e) {
     deleteCookie("x-wematch-token");
     yield put(actions.fetchGetUserAsync.failure());
+    sentry.captureMessage('사용자 프로필 조회 실패' )
+    sentry.captureException(e)
   }
 }
 

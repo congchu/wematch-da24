@@ -26,6 +26,8 @@ import {dataLayer} from 'lib/dataLayerUtil'
 import {events} from 'lib/appsflyer'
 import {formatDateDash2Dot, whatDay} from 'lib/dateUtil'
 import validatePhone from 'lib/validatePhone'
+import * as sentry from "@sentry/react";
+import {Severity} from "@sentry/react";
 
 const S = {
     Container: styled.div``,
