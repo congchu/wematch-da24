@@ -115,9 +115,6 @@ function LoginPage() {
 
     useEffect(() => {
         dispatch(userActions.phoneVerifyCancel());
-        if(nameInputRef.current) {
-            nameInputRef.current.focus();
-        }
     }, [])
 
     useEffect(() => {
