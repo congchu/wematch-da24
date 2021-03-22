@@ -58,6 +58,7 @@ export function* fetchUserConsultSaga(
     sentry.captureMessage('내 신청내역 조회 실패', {
       level: Severity.Error
     })
+    sentry.captureException(e)
   }
 }
 
@@ -72,6 +73,7 @@ export function* fetchVerifySendMessageSaga(
     sentry.captureMessage('인증 문자 메시지 보내기 실패', {
       level: Severity.Error
     })
+    sentry.captureException(e)
   }
 }
 
