@@ -12,20 +12,14 @@ interface Props {
 
 const PopupTemplate: React.FC<Props> = (props) => {
   const { visible, children, onClose, pcHeight } = props;
-  const scrollPosition = window.pageYOffset;
 
   useEffect(() => {
     if (visible) {
       document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollPosition}px`;
-      document.body.style.left = '0';
-      document.body.style.right = '0';
     }
 
     return () => {
       document.body.removeAttribute('style');
-      window.scrollTo(0, scrollPosition);
     }
   }, [visible])
 
@@ -67,10 +61,9 @@ const PopupWrapper = styled.div<{ pcHeight?: number }>`
   position: relative;
   height: 100%;
   overflow-y: hidden;
-  background-color: white;
+  background-color: #FAFAFA;
   
   box-sizing: border-box;
-  padding-bottom: 20px;
   height: -webkit-fill-available;
   display: flex;
   flex-direction: column;

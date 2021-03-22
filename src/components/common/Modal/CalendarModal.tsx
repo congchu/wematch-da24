@@ -22,7 +22,6 @@ interface Props {
 const S = {
     Container: styled.div`
         position: relative;
-        margin-top: 16px;
         height: 100%;
         @media (min-width: 1200px) {
             margin: 5px 0 10px 0;
@@ -33,6 +32,8 @@ const S = {
       border-bottom: 1px solid ${colors.lineDefault};
       padding-right: 24px;
       padding-left: 24px;
+      padding-top: 16px;
+      background: white;
     `,
     Title: styled.div`
       font-weight: bold;

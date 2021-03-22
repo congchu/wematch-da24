@@ -16,6 +16,7 @@ const S = {
     Container: styled.div`
         height: 100%;
         overflow-y: auto;
+        background: white;
     `,
     Wrapper: styled.div`
         height: 100%;

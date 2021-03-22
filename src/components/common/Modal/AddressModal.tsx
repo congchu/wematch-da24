@@ -41,6 +41,7 @@ const S = {
     Header: styled.div`
         padding: 16px 24px;
         border-bottom: 0.5px solid #D7DBE2;
+        background: white;
     `,
     Empty: styled.div`
         text-align: center;
@@ -74,7 +75,7 @@ const S = {
         input {
             width: 100%;
             height: 56px;
-            background: white;
+            //background: white;
             border-radius: 8px;
             margin-bottom: 8px;
             padding: 0 16px 0 16px;
@@ -95,9 +96,8 @@ const S = {
     `,
     Content: styled.div<{height: number | undefined}>`
         height: 100%;
-        min-height: ${props => props.height && `calc(${window.innerHeight}px - ${props.height}px - ${56}px)`};
-        padding: 16px 24px;
-        background-color: #FAFAFA;
+        padding: 0 24px;
+        background-color: white;
     `,
 }
 
@@ -164,17 +164,13 @@ const AddressModal: React.FC<Props> = (props) => {
                                    }
                                }}
                         />
-                        <Icon.Search size={24} />
+                        <div>
+                            <Icon.Search size={24}/>
+                        </div>
                     </S.InputContainer>
                 </S.Header>
                 <S.Content height={headerRef?.current?.clientHeight}>
-                    {getAddressList.data?.length === 0 ? (
-                      <S.Empty>
-                          <p><em>'{dong}'</em>에 대한 검색 결과가 없습니다.
-                              <br/>정확한 읍/면/동(지번)주소로 다시 검색해주세요.
-                          </p>
-                      </S.Empty>
-                    ) : (
+                    {getAddressList.data?.length !== 0 && (
                       <List type="address" direction="column" items={items} onClick={onClick} onSelect={onSelect}/>
                     )}
                 </S.Content>
