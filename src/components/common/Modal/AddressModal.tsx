@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 import { debounce } from 'lodash'
 
-import BaseModal from './ModalTemplate'
-import Input from 'components/common/Input'
 import List from 'components/common/List'
 
 import { ItemsProps } from 'components/common/List'
@@ -37,10 +35,12 @@ const S = {
         display: flex;
         justify-content: center;
         flex-direction: column;
+        padding-top: 56px;
     `,
     Header: styled.div`
         padding: 16px 24px;
         border-bottom: 0.5px solid #D7DBE2;
+        background: white;
     `,
     Empty: styled.div`
         text-align: center;
@@ -74,7 +74,7 @@ const S = {
         input {
             width: 100%;
             height: 56px;
-            background: white;
+            //background: white;
             border-radius: 8px;
             margin-bottom: 8px;
             padding: 0 16px 0 16px;
@@ -93,11 +93,13 @@ const S = {
             }
         }
     `,
-    Content: styled.div<{height: number | undefined}>`
-        height: 100%;
-        min-height: ${props => props.height && `calc(${window.innerHeight}px - ${props.height}px - ${56}px)`};
-        padding: 16px 24px;
-        background-color: #FAFAFA;
+    Content: styled.div`
+        padding: 0 24px;
+        min-height: calc(100% - 157px - 56px);
+        
+        @media screen and (min-width: 768px) {
+          min-height: calc(480px - 157px - 56px);
+        }
     `,
 }
 
@@ -133,6 +135,7 @@ const AddressModal: React.FC<Props> = (props) => {
 
     useEffect(() => {
         return () => setItems([])
+
     }, [visible])
 
     useEffect(() => {
@@ -157,6 +160,7 @@ const AddressModal: React.FC<Props> = (props) => {
                         <input placeholder="읍/면/동까지만 입력해주세요"
                                type="text"
                                onChange={(e) => handleOnChange(e.target.value)}
+                               autoFocus={true}
                                onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
                                    if (e.key === 'Enter') {
                                         const ev = e.target as HTMLInputElement
@@ -165,17 +169,13 @@ const AddressModal: React.FC<Props> = (props) => {
                                    }
                                }}
                         />
-                        <Icon.Search size={24} />
+                        <div>
+                            <Icon.Search size={24}/>
+                        </div>
                     </S.InputContainer>
                 </S.Header>
-                <S.Content height={headerRef?.current?.clientHeight}>
-                    {getAddressList.data?.length === 0 ? (
-                      <S.Empty>
-                          <p><em>'{dong}'</em>에 대한 검색 결과가 없습니다.
-                              <br/>정확한 읍/면/동(지번)주소로 다시 검색해주세요.
-                          </p>
-                      </S.Empty>
-                    ) : (
+                <S.Content>
+                    {getAddressList.data?.length !== 0 && (
                       <List type="address" direction="column" items={items} onClick={onClick} onSelect={onSelect}/>
                     )}
                 </S.Content>

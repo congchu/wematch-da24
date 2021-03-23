@@ -12,20 +12,14 @@ interface Props {
 
 const PopupTemplate: React.FC<Props> = (props) => {
   const { visible, children, onClose, pcHeight } = props;
-  const scrollPosition = window.pageYOffset;
 
   useEffect(() => {
     if (visible) {
       document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollPosition}px`;
-      document.body.style.left = '0';
-      document.body.style.right = '0';
     }
 
     return () => {
       document.body.removeAttribute('style');
-      window.scrollTo(0, scrollPosition);
     }
   }, [visible])
 
@@ -67,17 +61,20 @@ const PopupWrapper = styled.div<{ pcHeight?: number }>`
   position: relative;
   height: 100%;
   overflow-y: hidden;
-  background-color: white;
+  background-color: #FAFAFA;
   
   box-sizing: border-box;
-  padding-bottom: 20px;
   height: -webkit-fill-available;
+  -ms-overflow-style: none;
   display: flex;
   flex-direction: column;
-
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  
   @media screen and (min-width: 768px) {
     width: 360px;
-    height: ${({ pcHeight }) => !pcHeight ? '480px' : `${pcHeight}px`};
+    height: ${({ pcHeight }) => !pcHeight ? '580px' : `${pcHeight}px`};
     border-radius: 16px;
     top: 50%;
     left: 50%;
@@ -86,6 +83,7 @@ const PopupWrapper = styled.div<{ pcHeight?: number }>`
 `;
 
 const PopupHeader = styled.div`
+  position: fixed;
   width:100%;
   min-height: 56px;
   display: flex;
