@@ -149,7 +149,7 @@ const AddressModal: React.FC<Props> = (props) => {
 
     const handleOnChange = debounce((address: string) => {
         setDong(address);
-    }, 300)
+    }, 500)
 
     return (
         <PopupTemplate visible={visible} onClose={onClose}>
@@ -175,7 +175,13 @@ const AddressModal: React.FC<Props> = (props) => {
                     </S.InputContainer>
                 </S.Header>
                 <S.Content>
-                    {getAddressList.data?.length !== 0 && (
+                    {getAddressList.data?.length === 0 && dong.length > 0 && !getAddressList.loading ? (
+                      <S.Empty>
+                          <p><em>'{dong}'</em>에 대한 검색 결과가 없습니다.
+                              <br/>정확한 읍/면/동(지번)주소로 다시 검색해주세요.
+                          </p>
+                      </S.Empty>
+                    ) : (
                       <List type="address" direction="column" items={items} onClick={onClick} onSelect={onSelect}/>
                     )}
                 </S.Content>
