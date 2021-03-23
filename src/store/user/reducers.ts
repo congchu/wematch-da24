@@ -13,6 +13,7 @@ export interface UserState {
         loading: boolean; 
         user: IUser | null;
         prevPage: ESignInCase;
+        error: boolean;
     };
     phoneVerify: {
         isVerified: boolean | null;
@@ -39,6 +40,7 @@ const initialState: UserState = {
         user: null,
         loading: false,
         prevPage: ESignInCase.NONE,
+        error: false,
     },
     phoneVerify: {
         isVerified: null,
@@ -68,11 +70,12 @@ export default createReducer<UserState, Actions>(initialState)
     .handleAction(actions.fetchVerifyCodeAsync.failure, (state) => ({ ...state, phoneVerify: { ...state.phoneVerify, isVerified: false, loading: false}}))
     .handleAction([actions.fetchSignUpAsync.request, actions.fetchSignInAsync.request], (state) => ({ ...state, auth: { ...state.auth, loading: true}}))
     .handleAction([actions.fetchSignInAsync.success, actions.fetchSignUpAsync.success], (state, action) => ({ ...state, auth: { ...state.auth, token: action.payload.token, user: action.payload.user, loading: false,  }}))
-    .handleAction([actions.fetchSignInAsync.failure, actions.fetchSignUpAsync.failure], (state) => ({...state, auth: { ...state.auth, loading: false}}))
+    .handleAction([actions.fetchSignInAsync.failure, actions.fetchSignUpAsync.failure], (state) => ({...state, auth: { ...state.auth, loading: false, error: true }}))
     .handleAction(actions.fetchGetUserAsync.success, (state, action) => ({...state, auth: { ...state.auth, token: action.payload.token, user: action.payload.user }}))
     .handleAction(actions.selectOrder, (state, action) => ({...state, consult: {...state.consult, selected: {...action.payload.order}}}))
     .handleAction(actions.resetOrder, (state) => ({...state, consult: {...state.consult, selected: null}}))
     .handleAction(actions.signIn, (state, action) => ({...state, auth: {...state.auth, prevPage: action.payload.prevPage}}))
-    .handleAction(actions.signOut, (state) => ({...state, auth: {user: null, token: null, loading: false, prevPage: ESignInCase.NONE}, phoneVerify: { isVerified: null, isSendMessage: false, loading: false }}))
+    .handleAction(actions.signOut, (state) => ({...state, auth: {user: null, token: null, loading: false, prevPage: ESignInCase.NONE, error: false}, phoneVerify: { isVerified: null, isSendMessage: false, loading: false }}))
     .handleAction(actions.phoneVerifyCancel, (state) => ({...state, phoneVerify: { isVerified: null, isSendMessage: false, loading: false }}))
     .handleAction(actions.phoneVerifyReset, (state) => ({...state, phoneVerify: { ...state.phoneVerify, isVerified: null}}))
+    .handleAction(actions.errorModalOff, (state) => ({...state, auth: {...state.auth, error: false}}))
