@@ -65,12 +65,16 @@ const PopupWrapper = styled.div<{ pcHeight?: number }>`
   
   box-sizing: border-box;
   height: -webkit-fill-available;
+  -ms-overflow-style: none;
   display: flex;
   flex-direction: column;
-
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  
   @media screen and (min-width: 768px) {
     width: 360px;
-    height: ${({ pcHeight }) => !pcHeight ? '480px' : `${pcHeight}px`};
+    height: ${({ pcHeight }) => !pcHeight ? '580px' : `${pcHeight}px`};
     border-radius: 16px;
     top: 50%;
     left: 50%;
@@ -79,6 +83,7 @@ const PopupWrapper = styled.div<{ pcHeight?: number }>`
 `;
 
 const PopupHeader = styled.div`
+  position: fixed;
   width:100%;
   min-height: 56px;
   display: flex;

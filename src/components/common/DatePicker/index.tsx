@@ -22,7 +22,7 @@ const S = {
       background-color: #FAFAFA;
       
       @media screen and (min-width: 768px) {
-        height: calc(480px - 56px - 100px);
+        height: calc(580px - 56px - 100px);
       }
     `,
     Wrapper: styled.div`

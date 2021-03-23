@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { debounce } from 'lodash'
 
-import BaseModal from './ModalTemplate'
-import Input from 'components/common/Input'
 import List from 'components/common/List'
 
 import { ItemsProps } from 'components/common/List'
@@ -37,6 +35,7 @@ const S = {
         display: flex;
         justify-content: center;
         flex-direction: column;
+        padding-top: 56px;
     `,
     Header: styled.div`
         padding: 16px 24px;
@@ -94,10 +93,13 @@ const S = {
             }
         }
     `,
-    Content: styled.div<{height: number | undefined}>`
-        height: 100%;
+    Content: styled.div`
         padding: 0 24px;
-        background-color: white;
+        min-height: calc(100% - 157px - 56px);
+        
+        @media screen and (min-width: 768px) {
+          min-height: calc(480px - 157px - 56px);
+        }
     `,
 }
 
@@ -133,14 +135,15 @@ const AddressModal: React.FC<Props> = (props) => {
 
     useEffect(() => {
         return () => setItems([])
+
     }, [visible])
+
 
     const requestAddressList = debounce((dong: string) => {
         dispatch(commonActions.fetchAddressListAsync.request({
             dong
         }))
     }, 200);
-
 
 
 
@@ -152,6 +155,7 @@ const AddressModal: React.FC<Props> = (props) => {
                     <S.InputContainer>
                         <input placeholder="읍/면/동(지번)으로 검색해주세요"
                                type="text"
+                               autoFocus={true}
                                onChange={(e) => setDong(e.target.value)}
                                onKeyPress={(e) => {
                                    if (e.key === 'Enter') {
@@ -169,7 +173,7 @@ const AddressModal: React.FC<Props> = (props) => {
                         </div>
                     </S.InputContainer>
                 </S.Header>
-                <S.Content height={headerRef?.current?.clientHeight}>
+                <S.Content>
                     {getAddressList.data?.length !== 0 && (
                       <List type="address" direction="column" items={items} onClick={onClick} onSelect={onSelect}/>
                     )}

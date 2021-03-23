@@ -23,8 +23,9 @@ const S = {
     Container: styled.div`
         position: relative;
         height: 100%;
+        padding-top: 56px !important;
         @media (min-width: 1200px) {
-            margin: 5px 0 10px 0;
+            margin: 0 0 10px 0;
             padding: 0;
         }
     `,
