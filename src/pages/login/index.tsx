@@ -271,7 +271,7 @@ const Container = styled.div`
     height: -webkit-fill-available;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     background-color: white;
     box-sizing: border-box;
     @media screen and (min-width: 768px) {
