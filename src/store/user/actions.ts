@@ -49,3 +49,4 @@ export const signIn = createAction('SIGN_IN')<{prevPage: types.ESignInCase}>();
 export const phoneVerifyCancel = createAction('PHONE_VERIFY_CANCEL')();
 
 export const phoneVerifyReset = createAction('PHONE_VERIFY_RESET')();
+export const errorModalOff = createAction('ERROR_MODAL_OFF')();
