@@ -139,10 +139,6 @@ export function* fetchSignUpSaga(
   } catch (e) {
     if (e.response.status === 409) {
       yield put(actions.fetchSignInAsync.request({phone: tel, code}));
-      sentry.captureMessage('중복 가입 발생!!! 삐용 삐용!!', {
-        level: Severity.Error
-      })
-      sentry.captureException(e)
     }
     if (e.response.status === 500) {
       sentry.captureMessage('회원가입 실패', {
