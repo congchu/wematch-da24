@@ -24,4 +24,5 @@ export { default as LevelS } from './generated/LevelS'
 export { default as NotFound } from './generated/NotFound'
 export { default as SoldOut } from './generated/Soldout'
 export { default as Triangle } from './generated/Triangle'
+export { default as Exclamation } from './generated/Exclamation'
 
