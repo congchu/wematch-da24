@@ -17,6 +17,7 @@ import Review from 'pages/home/components/Review'
 import PartnerBanner from 'pages/home/components/PartnerBanner'
 import * as colors from 'styles/colors'
 import * as formSelectors from 'store/form/selectors';
+import {LOCAL_ENV} from "../../constants/env";
 
 const S = {
     Container: styled.div``,
@@ -73,16 +74,20 @@ const Home: React.FC<RouteComponentProps> = ({location}) => {
     const HomeRef = useRef<HTMLDivElement>(null)
     const [isFixed, setIsFixed] = useScrollDirection()
     const [loading, setLoading] = useState(false)
-    const [callDisabled, setCallDisabled] = useState(false)
+    // const [callDisabled, setCallDisabled] = useState(false)
 
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
 
     useEffect(() => {
         const mda = queryString.parse(location.search).mda || '';
-        setCookie('0dj38gepoekf98234aplyadmin', `agentid=${mda}`)
-        if (9 <= Number(dayjs().format('H')) && 18 >= Number(dayjs().format('H'))) {
-            setCallDisabled(true);
+        const options = LOCAL_ENV === 'dev' ? {} : { domain: '.wematch.com' };
+        if (mda) {
+            setCookie('0dj38gepoekf98234aplyadmin', `agentid=${mda}`, options)
         }
+
+        // if (9 <= Number(dayjs().format('H')) && 18 >= Number(dayjs().format('H'))) {
+        //     setCallDisabled(true);
+        // }
     }, [])
 
     useEffect(() => {
