@@ -4,20 +4,22 @@ import {useCookies} from 'react-cookie'
 import queryString from 'query-string'
 import {RouteComponentProps} from 'react-router'
 import {useSelector} from 'react-redux';
-import dayjs from "dayjs";
 import useScrollDirection from 'hooks/useScrollDirection'
 
 import MainHeader from 'components/common/MainHeader'
-import MoveForm from 'pages/home/components/MoveForm'
 import MainFooter from 'components/common/MainFooter'
 import BottomNav from 'components/common/BottomNav'
 import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton'
+
 import MainVisual from 'pages/home/components/MainVisual'
 import Review from 'pages/home/components/Review'
+import MoveForm from 'pages/home/components/MoveForm'
 import PartnerBanner from 'pages/home/components/PartnerBanner'
 import * as colors from 'styles/colors'
-import * as formSelectors from 'store/form/selectors';
-import {LOCAL_ENV} from "../../constants/env";
+
+import * as formSelectors from 'store/form/selectors'
+
+import {LOCAL_ENV} from 'constants/env'
 
 const S = {
     Container: styled.div``,
