@@ -40,8 +40,8 @@ const S = {
         box-shadow: none;
       }
     `,
-    CallBtn: styled.a<{disabled: boolean}>`  
-        display:${props => props.disabled ? 'inline-block' : 'none'};
+    CallBtn: styled.a<{isShow: boolean}>`  
+        display:${props => props.isShow ? 'inline-block' : 'none'};
 		position:fixed;
         bottom:60px;
         right:24px;
@@ -115,7 +115,7 @@ const Home: React.FC<RouteComponentProps> = ({location}) => {
                 </S.Wrapper>
                 <MainFooter/>
                 <BottomNav/>
-                <S.CallBtn href="tel:1522-2483" disabled={callDisabled}>
+                <S.CallBtn href="tel:1522-2483" isShow={false}>
                     <img src={require('assets/images/call.svg')}/>
                     <p>전화신청</p>
                 </S.CallBtn>

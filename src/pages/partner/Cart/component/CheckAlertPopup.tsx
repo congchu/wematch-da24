@@ -3,10 +3,10 @@ import styled from "styled-components"
 import * as colors from 'styles/colors'
 
 import ToastPopup from "components/wematch-ui/ToastPopup"
+import NewModal from "components/NewModalTemplate";
 
 interface Props {
   visible: boolean;
-  showHeaderCancelButton: boolean;
   cancelClick: () => void;
 }
 
@@ -27,13 +27,9 @@ const Notice = styled.span`
   margin-top: 24px;
 `;
 const CheckAlertPopup:React.FC<Props> = (props) => {
-  const { visible, showHeaderCancelButton, cancelClick} = props
+  const { visible, cancelClick} = props
   return (
-    <ToastPopup visible={visible} showHeaderCancelButton={showHeaderCancelButton} cancelClick={cancelClick}>
-      <h1>{`업체는 3개까지 선택할 수 있어요!`}</h1>
-      <SubText>{"3개 이상의 이사업체 비교를 원하시면 \n고객센터(1522-2483)에 문의해주세요."}</SubText>
-      <Notice>* 고객들은 업체 3개  비교시, 만족도가 가장 높았습니다.</Notice>
-    </ToastPopup>
+    <NewModal visible={visible} title={"방문견적 요청 보내기"} content={"선택하신 3개 업체에 방문견적 요청을 보내 시겠어요?"} cancelClick={cancelClick} cancelText={"취소"} confirmClick={cancelClick} confirmText={"요청 보내기"}/>
   )
 };
 

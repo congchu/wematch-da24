@@ -14,3 +14,4 @@ export const MAIN_URL = process.env.REACT_APP_MAIN_URL || 'https://wematch.com'
 
 export const WM_USER_AGENT = 'WmClientApp'
 
+export const LOCAL_ENV = process.env.REACT_APP_ENV

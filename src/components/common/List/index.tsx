@@ -58,16 +58,14 @@ const S = {
         `)};
         
         ${(({ type }) => type === 'address' && css`
-            padding-left: 16px;
+            padding-left: 8px;
             min-height: 51px;
             border-bottom: 1px solid #d8d8d8; 
         `)};
         
         &:last-child {
           border: none;
-          ${(props) => props.isApp && css`
-            margin-bottom: 350px; // 키보드 가림 때문에 마진값이 들어갔음.
-          `};
+          margin-bottom: 100px;
         }
     `,
     A: styled.a<{type: TypeProp}>`

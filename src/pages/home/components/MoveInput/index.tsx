@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
+import {debounce} from 'lodash'
 
 import Input from 'components/common/Input'
 import Select from 'components/common/Select'
 import CalendarModal from 'components/common/Modal/CalendarModal'
 import AddressModal from 'components/common/Modal/AddressModal'
-
 import { CalendarDate } from 'components/wematch-ui/utils/date'
 import * as colors from 'styles/colors'
 import * as formSelector from 'store/form/selectors'
@@ -168,7 +168,12 @@ const MoveInput: React.FC<Props> = (props) => {
             return;
         }
         dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
+        debounceSelectDate(date)
     }
+
+    const debounceSelectDate = debounce((date: CalendarDate) => {
+        setVisibleCalendarModal(false)
+    }, 300)
 
     const onSelectStartAddress = (data: string) => {
         dispatch(formActions.setAddress({

@@ -47,6 +47,7 @@ import 'swiper/components/pagination/pagination.scss'
 import { ESignInCase } from 'store/user/types'
 import useReceiveMessage from 'hooks/useReceiveMessage'
 import ToastTestPage from "./components/common/Toast/ToastTestPage";
+import { LOCAL_ENV } from 'constants/env'
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -92,8 +93,8 @@ function AppRoute() {
 
 
     useEffect(() => {
-        if(getDeviceId) {
-            dispatch(commonActions.setDeviceId({deviceId: getDeviceId}))
+        if (getDeviceId) {
+            dispatch(commonActions.setDeviceId(getDeviceId))
         }
     }, [dispatch, getDeviceId])
 
