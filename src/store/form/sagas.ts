@@ -14,6 +14,7 @@ import { deleteCookie, getCookie, setCookie } from 'lib/cookie';
 import queryString from 'query-string';
 import dayjs from 'dayjs';
 import { dataLayer } from 'lib/dataLayerUtil';
+import { ESubmittedFormResult } from './types';
 
 
 export function* setFormSaga():any  {
@@ -66,31 +67,14 @@ export function* setFormSaga():any  {
 export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsync.request>) {
     try {
         const data = yield call(requests.submitForm, action.payload.formData)
-        const formState: FormState = {
-            type: yield select(formSelector.getType),
-            date: yield select(formSelector.getDate),
-            address: yield select(formSelector.getAddress),
-            agree: yield select(formSelector.getAgree),
-            floor: yield select(formSelector.getFloor),
-            formData: yield select(formSelector.getFormData),
-            isMoveStore: yield select(formSelector.getIsMoveStore),
-            name: yield select(formSelector.getName),
-            phone: yield select(formSelector.getPhone),
-            submittedForm: {
-                data: data,
-                loading: false,
-                report: true
-            },
-            selectedSubmitType: null,
-            contents: yield select(formSelector.getContents)
-        }
-        yield put(actions.submitFormAsync.success(formState))
+        console.log(data);
+        yield put(actions.submitFormAsync.success(data))
 
-        if (formState.submittedForm.data?.result === 'success') {
-            yield put(push('/requests/completed'))
-        } else if (formState.submittedForm.data?.result === 'no partner') {
+        if (data?.result === ESubmittedFormResult.Success) {
+            yield put(push(`/requests/completed/${data['inquery_idx']}`))
+        } else if (data?.result === ESubmittedFormResult.NoPartner) {
             yield put(push('/requests/nopartner'))
-        } else if (formState.submittedForm.data?.result === 'no service') {
+        } else if (data?.result === ESubmittedFormResult.NoService) {
             yield put(push('/requests/noservice'))  
         }
     } catch (e) {
