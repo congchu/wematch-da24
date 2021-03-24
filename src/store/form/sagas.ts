@@ -1,6 +1,6 @@
-import { put, all, takeEvery, call, select, takeLatest, takeLeading } from 'redux-saga/effects'
-import { ActionType } from 'typesafe-actions'
-import { push, replace } from 'connected-react-router'
+import {all, call, put, select, takeEvery, takeLeading} from 'redux-saga/effects'
+import {ActionType} from 'typesafe-actions'
+import {push, replace} from 'connected-react-router'
 import * as userSelector from 'store/user/selectors';
 import * as commonTypes from 'store/common/types'
 import * as commonActions from 'store/common/actions';
@@ -8,16 +8,16 @@ import * as formSelector from "./selectors";
 import {FormState} from "./reducers";
 import * as actions from './actions'
 import * as requests from './requests'
-import { calcRouteByDirectionService, calcRouteByGeoCoder } from 'lib/distanceUtil';
-import { addressSplit, phoneSplit, translateMovingType } from 'components/wematch-ui/utils/form';
-import { deleteCookie, getCookie, setCookie } from 'lib/cookie';
+import {calcRouteByDirectionService, calcRouteByGeoCoder} from 'lib/distanceUtil';
+import {addressSplit, phoneSplit, translateMovingType} from 'components/wematch-ui/utils/form';
+import {deleteCookie, getCookie, setCookie} from 'lib/cookie';
 import queryString from 'query-string';
 import dayjs from 'dayjs';
-import { dataLayer } from 'lib/dataLayerUtil';
+import {dataLayer} from 'lib/dataLayerUtil'
+import * as sentry from '@sentry/react'
+import {Severity} from '@sentry/react'
 
-
-export function* setFormSaga():any  {
-
+export function* setFormSaga()  {
     const { user } = yield select(userSelector.getUser);
     const {formState: { type, date, address, floor, isMoveStore, agree }} = yield select()
 
@@ -91,10 +91,14 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
         } else if (formState.submittedForm.data?.result === 'no partner') {
             yield put(push('/requests/nopartner'))
         } else if (formState.submittedForm.data?.result === 'no service') {
-            yield put(push('/requests/noservice'))  
+            yield put(push('/requests/noservice'))
         }
     } catch (e) {
         yield put(actions.submitFormAsync.failure())
+        sentry.captureMessage('이사 접수 실패', {
+            level: Severity.Error
+        })
+        sentry.captureException(e)
         alert('에러가 발생했습니다.')
         yield put(push('/error'))
     }
