@@ -58,7 +58,7 @@ export default function NoticePage() {
             page: 1,
             size: values.DEFAULT_NOTICE_LIST_SIZE
         }))
-    }, [])
+    }, [dispatch])
 
 
     useEffect( () => {
@@ -71,9 +71,7 @@ export default function NoticePage() {
             }))
         }
 
-    }, [getNoticeList.moreLoading, getNoticeList.hasMore, getNoticeList.loading])
-
-
+    }, [getNoticeList.moreLoading, getNoticeList.hasMore, getNoticeList.loading, dispatch])
 
     return(
         <Layout title="공지사항">
@@ -81,7 +79,7 @@ export default function NoticePage() {
                 {getNoticeList.notices?.map((notice, index) => {
                     return (
                         <S.CollapsedWrap key={index} index={index}>
-                            <AccordionCollapse key={index} title={notice.title} date={notice.created_at} postNum={notice.id}>
+                            <AccordionCollapse key={index} title={notice.title} date={notice.created_at} postNum={notice.id} expand={index === 1}>
                                 {/*{notice.contents}*/}
                                 <pre dangerouslySetInnerHTML={{__html: notice.contents}} />
                             </AccordionCollapse>

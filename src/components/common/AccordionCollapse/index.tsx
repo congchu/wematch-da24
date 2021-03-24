@@ -12,6 +12,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement>  {
     date?:string;
     postNum?:number;
     defaultExpand?: boolean;
+    expand?: boolean;
 }
 
 
@@ -108,12 +109,12 @@ const S = {
 * FAQ : category, title, defaultExpand
 * 공지사항 : title, date, postNum
 * */
-function AccordionCollapse({ category ,title, children, defaultExpand=false, date, postNum } : Props) {
+function AccordionCollapse({ category ,title, children, expand=false, date, postNum } : Props) {
 
     const wholeRef = React.useRef<HTMLDivElement>(null)
     const parentRef = React.useRef<HTMLDivElement>(null)
     const childRef = React.useRef<HTMLDivElement>(null)
-    const [isCollapse, setIsCollapse] = React.useState(defaultExpand)
+    const [isCollapse, setIsCollapse] = React.useState(expand)
 
     const handleButtonClick = React.useCallback(
         (event) => {
@@ -131,7 +132,17 @@ function AccordionCollapse({ category ,title, children, defaultExpand=false, dat
         [isCollapse]
     );
 
+    useEffect(() => {
+        if (parentRef.current === null || childRef.current === null) {
+            return;
+        }
+        if (expand) {
+            parentRef.current.style.height = `${childRef.current.clientHeight}px`
+        } else {
+            parentRef.current.style.height = "0"
+        }
 
+    }, [expand])
 
     // const parentRefHeight = parentRef.current?.style.height ?? "0px";
     // const icon = parentRefHeight === "0px" ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
