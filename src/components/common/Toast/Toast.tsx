@@ -16,13 +16,15 @@ const ToastStyle = createGlobalStyle`
     width: 100%;
     position: fixed;
     margin: 0 auto;
-    bottom: 0px;
+    bottom: 56px; /*** CHECK POINT ***/
     //top: 8px;
     left: 0;
     right: 0;
+    z-index: 1;  /*** CHECK POINT ***/
 
     @media screen and (min-width:1200px) {
       width: 720px;
+      bottom: 0px;
     }
     @media screen and (min-width:768px) {
       text-align: center;
@@ -33,10 +35,10 @@ const ToastStyle = createGlobalStyle`
 const OpenAnimation = keyframes`
   from {
     opacity: 0;
-    transform: translateY(110%) ; // 1. 아래서 직선으로 위로 올라오기/
+    transform: translateY(100%);// 1. 아래서 직선으로 위로 올라오기/
   } to {
-    transform: translateY(0);
-  }
+      transform: translateY(0)
+    }
 `
 
 
@@ -44,13 +46,11 @@ const CloseAnimation = keyframes`
   from {
     transform: scale(1);
     opacity: 1;
-  }
+  } 
   to {
       transform: scale(1) translateY(100%);
       opacity: 0
   }
-  
-  
 `
 
 
@@ -59,7 +59,7 @@ const ToastItem = styled.div<{ isDestroying: boolean; type: ToastType} >`
     font-size: 14px;
     overflow: hidden;
     margin-top: 2px;
-    animation: ${OpenAnimation} 0.3s ease-in-out;
+    animation: ${OpenAnimation} 0.4s ease-in-out;
     animation-fill-mode: forwards;
     width: 100%;
     color: #fff;
@@ -68,10 +68,12 @@ const ToastItem = styled.div<{ isDestroying: boolean; type: ToastType} >`
     /* Animation for Destroying */
     ${props => props.isDestroying && css`
       animation: ${CloseAnimation} 0.4s ease-out;
+      animation-fill-mode: forwards;
     `};
   
     @media screen and (min-width:1200px) {
       width: 720px;
+      
     }
   
     .toastText {
@@ -139,7 +141,7 @@ export default function Toast({ message, type= 'detail', duration= 3000 }: Props
     <ToastPortal>
       <ToastStyle />
       <ToastItem ref={ref} isDestroying={isDestroying} type={type}
-        onClick={remove} >
+        onClick={remove}  >
         <div className='toastText'>
           {
             type === 'error' ? <Exclamation width={17} height={17} /> : <Check width={15} height={15} fill={colors.white}/>
