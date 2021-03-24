@@ -12,6 +12,7 @@ import * as commonSelector from 'store/common/selectors'
 import * as colors from 'styles/colors'
 import PopupTemplate from "../../wematch-ui/PopupTemplate";
 import {Icon} from "../../wematch-ui";
+import { useMedia } from 'react-use-media'
 
 interface Props {
     /** 모달 visible */
@@ -119,6 +120,10 @@ const AddressModal: React.FC<Props> = (props) => {
     const getAddressList = useSelector(commonSelector.getAddressList)
     const [items, setItems] = useState<ItemsProps[]>([])
     const [dong, setDong] = useState<string>('')
+    const inputRef = useRef<HTMLInputElement | null>(null)
+    const isMobile = useMedia({
+        maxWidth: 767,
+    })
 
     useEffect(() => {
         if (getAddressList.data && !getAddressList.loading) {
@@ -135,14 +140,15 @@ const AddressModal: React.FC<Props> = (props) => {
 
     useEffect(() => {
         return () => setItems([])
-
     }, [visible])
 
     useEffect(() => {
-        if(dong.length > 1) {
+        if(dong.length > 0) {
             dispatch(commonActions.fetchAddressListAsync.request({
                 dong
             }))
+        } else {
+            setItems([])
         }
     }, [dispatch, dong]);
 
@@ -150,6 +156,16 @@ const AddressModal: React.FC<Props> = (props) => {
     const handleOnChange = debounce((address: string) => {
         setDong(address);
     }, 500)
+
+    useEffect(() => {
+        const keyboardOffEvent = () => {
+            inputRef.current?.blur();
+        }
+        if(visible && isMobile)  {
+            document.addEventListener('touchstart', keyboardOffEvent)
+        } 
+        return () => { document.removeEventListener('touchstart', keyboardOffEvent) }
+    }, [visible])
 
     return (
         <PopupTemplate visible={visible} onClose={onClose}>
@@ -159,6 +175,7 @@ const AddressModal: React.FC<Props> = (props) => {
                     <S.InputContainer>
                         <input placeholder="읍/면/동까지만 입력해주세요"
                                type="text"
+                               ref={inputRef}
                                onChange={(e) => handleOnChange(e.target.value)}
                                autoFocus={true}
                                onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
