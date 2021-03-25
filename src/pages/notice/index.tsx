@@ -51,9 +51,7 @@ export default function NoticePage() {
     const router = useRouter()
     const params = useParams<{ id: string}>()
     const getNoticeList = useSelector(backofficeSelector.getNoticeList)
-    const [expand, setExpand] = useState(false)
     const [selected, setSelected] = useState< null | number >(parseInt(params?.id))
-    const [url, setUrl] = useState('/notice')
 
     useEffect(()=>{
         window.scrollTo(0, 0)
@@ -86,17 +84,12 @@ export default function NoticePage() {
     useEffect(()=>{
         if(selected){
             router.push(`/notice/${selected}`)
-        }else{
+        }
+        else{
             router.push(`/notice`)
         }
     },[selected])
 
-    // useEffect(()=>{
-    //     if(params){
-    //         const paramId = parseInt(params.id)
-    //         // setSelected(params)
-    //     }
-    // },[])
 
 
     return(
@@ -104,14 +97,12 @@ export default function NoticePage() {
             <div>
                 {getNoticeList.notices?.map((notice, index) => {
                     return (
-                        // <Link to= {url} onClick={(e) => expandHandler(notice.id)}>
-                            <S.CollapsedWrap key={index} index={index}  onClick={(e) => setSelected(notice.id)} >
-                                <AccordionCollapse key={index} title={notice.title} date={notice.created_at} postNum={notice.id} expand={selected===notice.id}>
-                                    {/*{notice.contents}*/}
-                                    <pre dangerouslySetInnerHTML={{__html: notice.contents}} />
-                                </AccordionCollapse>
-                            </S.CollapsedWrap>
-                        // </Link>
+                        <S.CollapsedWrap key={index} index={index}  onClick={(e) => setSelected(notice.id)} >
+                            <AccordionCollapse key={index} title={notice.title} date={notice.created_at} postNum={notice.id} expand={selected===notice.id}>
+                                {/*{notice.contents}*/}
+                                <pre dangerouslySetInnerHTML={{__html: notice.contents}} />
+                            </AccordionCollapse>
+                        </S.CollapsedWrap>
                     )
                 })}
             </div>

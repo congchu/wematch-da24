@@ -77,12 +77,13 @@ const S = {
       font-size: 14px;
       position: absolute;
     `,
-    ContentsWrapper : styled.div`
+    ContentsWrapper : styled.div<{isCollapsed: boolean}>`
       
       height: 0;
       width: inherit;
       //padding: 0 8px;
-      overflow: auto;
+      //overflow: auto;
+      overflow: ${props => props.isCollapsed ? 'auto': 'hidden'};
       transition: height 0.35s ease, background 0.35s ease;
 
       display: block;
@@ -105,11 +106,7 @@ const S = {
 
 }
 
-/*
-* < USAGE >  FEB.2021
-* FAQ : category, title, defaultExpand
-* 공지사항 : title, date, postNum
-* */
+
 function AccordionCollapse({ category ,title, children, expand=false, date, postNum } : Props) {
 
     const router = useRouter()
@@ -118,6 +115,7 @@ function AccordionCollapse({ category ,title, children, expand=false, date, post
     const childRef = useRef<HTMLDivElement>(null)
     const [isCollapse, setIsCollapse] = useState(expand)
     const [selected, setSelected] = useState< null | number >(null)
+    const icon = !isCollapse ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
 
     // const handleButtonClick = React.useCallback(
     //     (event) => {
@@ -140,15 +138,19 @@ function AccordionCollapse({ category ,title, children, expand=false, date, post
         if (parentRef.current === null || childRef.current === null) {
             return;
         }
-        if(parentRef.current.clientHeight > 0){
-            //자기자신 누르면 (열려있을대 닫기)
+        if(parentRef.current.clientHeight > 0){ //자기자신 누르면 (열려있을대 닫기)
             parentRef.current.style.height = "0"
-            setSelected(null)
-        }else if (!expand && postNum){
-            // 다른 아이템 누르면 expand 가 false였는데 눌리면
-            setSelected(postNum)
+            // setSelected(null)
+            router.push(`/notice`)
+        }else if (!expand && postNum){ // 다른 아이템 누르면 expand 가 false였는데 눌리면
+            // setSelected(postNum)
+            router.push(`/notice/${postNum}`)
         }else{
             parentRef.current.style.height = `${childRef.current.clientHeight}px`
+            if(postNum){
+            // setSelected(postNum)
+            router.push(`/notice/${postNum}`)
+            }
         }
         setIsCollapse(!isCollapse)
     }
@@ -172,20 +174,6 @@ function AccordionCollapse({ category ,title, children, expand=false, date, post
 
 
 
-    /* 라우트 주소 변경 */
-    // useEffect(()=>{
-    //     if(selected){
-    //         router.push(`/notice/${selected}`)
-    //     }else{
-    //         router.push(`/notice`)
-    //     }
-    // },[selected])
-
-
-    // const parentRefHeight = parentRef.current?.style.height ?? "0px";
-    // const icon = parentRefHeight === "0px" ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
-    const icon = !isCollapse ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
-
 
     return(
         <S.Container>
@@ -198,7 +186,7 @@ function AccordionCollapse({ category ,title, children, expand=false, date, post
                 </div>
                 <span>{icon}</span>
             </S.Header>
-            <S.ContentsWrapper ref={parentRef} >
+            <S.ContentsWrapper ref={parentRef} isCollapsed={isCollapse} >
                 <S.Contents ref={childRef}>{children}</S.Contents>
             </S.ContentsWrapper>
         </S.Container>
