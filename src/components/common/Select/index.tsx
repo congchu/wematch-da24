@@ -189,7 +189,7 @@ const S = {
         padding: 0 24px;
         
         @media (min-width: 1200px) {
-            max-height: 337px;
+            max-height: 310px;
         }
     `,
     Item: Styled.li`
