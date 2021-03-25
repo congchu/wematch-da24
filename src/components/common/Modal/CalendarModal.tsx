@@ -107,7 +107,7 @@ const CalendarModal: React.FC<Props> = (props) => {
         <PopupTemplate visible={visible} onClose={onClose}>
             <S.Container>
                 <S.Header>
-                    <S.Title>이사 날짜를 선택해주세요.</S.Title>
+                    <S.Title>이사 날짜를 선택해주세요</S.Title>
                     <S.DaysContainer>
                         <S.Days>
                             <tr>

@@ -296,10 +296,10 @@ const MoveInput: React.FC<Props> = (props) => {
             </S.Form>
             <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?" onClose={toggleCalendarCancel}
                 onConfirm={toggleCalendarConfirm} onSelect={onSelectDate} selected={getMoveDate} />
-            <AddressModal visible={visibleStartAddressModal} title="주소 검색" onClose={toggleStartAddress}
+            <AddressModal visible={visibleStartAddressModal} title="출발지를 검색해주세요" onClose={toggleStartAddress}
                 onConfirm={toggleStartAddress} onClick={toggleStartAddress} onSelect={onSelectStartAddress} />
             <Select visible={visibleStartFloorModal} items={floorItems} onOverlayClose={toggleStartFloor} onClose={toggleStartFloor} onSelect={onSelectStartFloorAddress} headerTitle="층수 선택" />
-            <AddressModal visible={visibleEndAddressModal} title="주소 검색" onClose={toggleEndAddress}
+            <AddressModal visible={visibleEndAddressModal} title="도착지를 검색해주세요" onClose={toggleEndAddress}
                 onConfirm={toggleEndAddress} onClick={toggleEndAddress} onSelect={onSelectEndAddress} />
             <Select visible={visibleEndFloorModal} items={floorItems} onOverlayClose={toggleEndFloor} onClose={toggleEndFloor} onSelect={onSelectEndFloorAddress} headerTitle="층수 선택" />
         </S.Container>

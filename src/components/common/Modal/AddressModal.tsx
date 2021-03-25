@@ -66,11 +66,11 @@ const S = {
         position: relative;
         display: block;
         
-        svg {
+        /* svg {
           position: absolute;
           right: 15px;
           bottom: 24px;
-        }
+        } */
         
         input {
             width: 100%;
@@ -94,8 +94,18 @@ const S = {
             }
         }
     `,
+    IconWrapper: styled.div`
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 48px;
+        padding-bottom: 6px;
+        right: 0;
+        bottom: 0;
+    `,
     Content: styled.div`
-        padding: 0 24px;
         min-height: calc(100% - 157px - 56px);
         
         @media screen and (min-width: 768px) {
@@ -139,7 +149,7 @@ const AddressModal: React.FC<Props> = (props) => {
     }, [getAddressList])
 
     useEffect(() => {
-        return () => setItems([])
+        return () => {setItems([]); setDong('');}
     }, [visible])
 
     useEffect(() => {
@@ -171,7 +181,7 @@ const AddressModal: React.FC<Props> = (props) => {
         <PopupTemplate visible={visible} onClose={onClose}>
             <S.Container>
                 <S.Header ref={headerRef}>
-                    <S.Title>주소검색</S.Title>
+                    <S.Title>{title}</S.Title>
                     <S.InputContainer>
                         <input placeholder="읍/면/동까지만 입력해주세요"
                                type="text"
@@ -183,12 +193,13 @@ const AddressModal: React.FC<Props> = (props) => {
                                         const ev = e.target as HTMLInputElement
                                         handleOnChange.cancel();
                                         setDong(ev.value);
+                                        inputRef?.current?.blur()
                                    }
                                }}
                         />
-                        <div>
+                        <S.IconWrapper onClick={e => e.preventDefault()}>
                             <Icon.Search size={24}/>
-                        </div>
+                        </S.IconWrapper>
                     </S.InputContainer>
                 </S.Header>
                 <S.Content>
@@ -199,7 +210,7 @@ const AddressModal: React.FC<Props> = (props) => {
                           </p>
                       </S.Empty>
                     ) : (
-                      <List type="address" direction="column" items={items} onClick={onClick} onSelect={onSelect}/>
+                      <List type="address" direction="column" items={items} onClick={onClick} onSelect={onSelect} style={{padding: '0 24px'}}/>
                     )}
                 </S.Content>
             </S.Container>
