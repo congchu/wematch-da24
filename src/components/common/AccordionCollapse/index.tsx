@@ -81,7 +81,7 @@ const S = {
       height: 0;
       width: inherit;
       //padding: 0 8px;
-      overflow: hidden;
+      overflow: auto;
       transition: height 0.35s ease, background 0.35s ease;
 
       display: block;
@@ -138,10 +138,10 @@ function AccordionCollapse({ category ,title, children, expand=false, date, post
         }
         if (expand) {
             parentRef.current.style.height = `${childRef.current.clientHeight}px`
+            console.log(childRef.current.clientHeight)
         } else {
             parentRef.current.style.height = "0"
         }
-
     }, [expand])
 
     // const parentRefHeight = parentRef.current?.style.height ?? "0px";
