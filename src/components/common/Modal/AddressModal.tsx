@@ -57,10 +57,10 @@ const S = {
     `,
     Title: styled.h1`
         color: ${colors.gray33};
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
         line-height: 36px;
-        margin-bottom:25px;
+        margin-bottom:17px;
     `,
     InputContainer: styled.div`
         position: relative;
