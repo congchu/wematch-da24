@@ -1,5 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+import {useParams} from 'react-router-dom'
+import {useRouter} from 'hooks/useRouter'
 import styled from 'styled-components'
 
 import Layout from 'components/base/Layout'
@@ -46,7 +48,12 @@ export default function NoticePage() {
     // const [isFetching, setIsFetching] = useInfiniteScroll(moreNotice)
 
     const dispatch = useDispatch()
+    const router = useRouter()
+    const params = useParams<{ id: string}>()
     const getNoticeList = useSelector(backofficeSelector.getNoticeList)
+    const [expand, setExpand] = useState(false)
+    const [selected, setSelected] = useState< null | number >(parseInt(params?.id))
+    const [url, setUrl] = useState('/notice')
 
     useEffect(()=>{
         window.scrollTo(0, 0)
@@ -73,17 +80,38 @@ export default function NoticePage() {
 
     }, [getNoticeList.moreLoading, getNoticeList.hasMore, getNoticeList.loading, dispatch])
 
+
+
+    /* 라우트 주소 변경 */
+    useEffect(()=>{
+        if(selected){
+            router.push(`/notice/${selected}`)
+        }else{
+            router.push(`/notice`)
+        }
+    },[selected])
+
+    // useEffect(()=>{
+    //     if(params){
+    //         const paramId = parseInt(params.id)
+    //         // setSelected(params)
+    //     }
+    // },[])
+
+
     return(
         <Layout title="공지사항">
             <div>
                 {getNoticeList.notices?.map((notice, index) => {
                     return (
-                        <S.CollapsedWrap key={index} index={index}>
-                            <AccordionCollapse key={index} title={notice.title} date={notice.created_at} postNum={notice.id} expand={index === 1}>
-                                {/*{notice.contents}*/}
-                                <pre dangerouslySetInnerHTML={{__html: notice.contents}} />
-                            </AccordionCollapse>
-                        </S.CollapsedWrap>
+                        // <Link to= {url} onClick={(e) => expandHandler(notice.id)}>
+                            <S.CollapsedWrap key={index} index={index}  onClick={(e) => setSelected(notice.id)} >
+                                <AccordionCollapse key={index} title={notice.title} date={notice.created_at} postNum={notice.id} expand={selected===notice.id}>
+                                    {/*{notice.contents}*/}
+                                    <pre dangerouslySetInnerHTML={{__html: notice.contents}} />
+                                </AccordionCollapse>
+                            </S.CollapsedWrap>
+                        // </Link>
                     )
                 })}
             </div>
@@ -91,4 +119,5 @@ export default function NoticePage() {
     )
 
 }
+
 

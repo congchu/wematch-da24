@@ -132,6 +132,7 @@ function AppRoute() {
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/notice" component={NoticePage} />
+                <Route exact path="/notice/:id" component={NoticePage} />
                 <Route exact path="/partner/list" component={PartnerList} />
                 <Route exact path="/partner/detail/:adminId" component={PartnerDetail} />
                 <Route exact path="/partner/cart" component={PartnerCart} />

@@ -2,7 +2,8 @@ import * as React from 'react'
 import styled from 'styled-components'
 import {Minus, Plus} from 'components/wematch-ui/Icon'
 import * as colors from 'styles/colors'
-import {useEffect} from "react";
+import {useEffect, useRef, useState} from "react";
+import {useRouter} from "../../../hooks/useRouter";
 
 export type faqCategory = '공통' | '이사' | '청소'
 
@@ -111,38 +112,75 @@ const S = {
 * */
 function AccordionCollapse({ category ,title, children, expand=false, date, postNum } : Props) {
 
-    const wholeRef = React.useRef<HTMLDivElement>(null)
-    const parentRef = React.useRef<HTMLDivElement>(null)
-    const childRef = React.useRef<HTMLDivElement>(null)
-    const [isCollapse, setIsCollapse] = React.useState(expand)
+    const router = useRouter()
+    const wholeRef = useRef<HTMLDivElement>(null)
+    const parentRef = useRef<HTMLDivElement>(null)
+    const childRef = useRef<HTMLDivElement>(null)
+    const [isCollapse, setIsCollapse] = useState(expand)
+    const [selected, setSelected] = useState< null | number >(null)
 
-    const handleButtonClick = React.useCallback(
-        (event) => {
-            event.stopPropagation();
-            if (parentRef.current === null || childRef.current === null) {
-                return;
-            }
-            if (parentRef.current.clientHeight > 0) {
-                parentRef.current.style.height = "0"
-            } else {
-                parentRef.current.style.height = `${childRef.current.clientHeight}px`
-            }
-            setIsCollapse(!isCollapse);
-        },
-        [isCollapse]
-    );
+    // const handleButtonClick = React.useCallback(
+    //     (event) => {
+    //         event.stopPropagation();
+    //         if (parentRef.current === null || childRef.current === null) {
+    //             return;
+    //         }
+    //         if (parentRef.current.clientHeight > 0) {
+    //             parentRef.current.style.height = "0"
+    //         } else {
+    //             parentRef.current.style.height = `${childRef.current.clientHeight}px`
+    //         }
+    //         setIsCollapse(!isCollapse);
+    //     },
+    //     [isCollapse]
+    // );
+    //
 
+    const handleButtonClick = () => {
+        if (parentRef.current === null || childRef.current === null) {
+            return;
+        }
+        if(parentRef.current.clientHeight > 0){
+            //자기자신 누르면 (열려있을대 닫기)
+            parentRef.current.style.height = "0"
+            setSelected(null)
+        }else if (!expand && postNum){
+            // 다른 아이템 누르면 expand 가 false였는데 눌리면
+            setSelected(postNum)
+        }else{
+            parentRef.current.style.height = `${childRef.current.clientHeight}px`
+        }
+        setIsCollapse(!isCollapse)
+    }
+
+
+    /* 선택된 아이템 구분 expand = selected의 의미  */
     useEffect(() => {
         if (parentRef.current === null || childRef.current === null) {
             return;
         }
         if (expand) {
+            /* 열릴때 */
             parentRef.current.style.height = `${childRef.current.clientHeight}px`
-            console.log(childRef.current.clientHeight)
+            setIsCollapse(true)
         } else {
+            /* 닫힐때 */
             parentRef.current.style.height = "0"
+            setIsCollapse(false)
         }
     }, [expand])
+
+
+
+    /* 라우트 주소 변경 */
+    // useEffect(()=>{
+    //     if(selected){
+    //         router.push(`/notice/${selected}`)
+    //     }else{
+    //         router.push(`/notice`)
+    //     }
+    // },[selected])
+
 
     // const parentRefHeight = parentRef.current?.style.height ?? "0px";
     // const icon = parentRefHeight === "0px" ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
@@ -152,6 +190,7 @@ function AccordionCollapse({ category ,title, children, expand=false, date, post
     return(
         <S.Container>
             <S.Header onClick={handleButtonClick} ref={wholeRef}>
+            {/*<S.Header onClick={() => setSelected(postNum?postNum:null)} ref={wholeRef}>*/}
                 <div className='textWrapper'>
                     {category? <em>Q {category}<br/></em> : <></>}
                     {title}
@@ -159,7 +198,7 @@ function AccordionCollapse({ category ,title, children, expand=false, date, post
                 </div>
                 <span>{icon}</span>
             </S.Header>
-            <S.ContentsWrapper ref={parentRef}>
+            <S.ContentsWrapper ref={parentRef} >
                 <S.Contents ref={childRef}>{children}</S.Contents>
             </S.ContentsWrapper>
         </S.Container>
