@@ -46,6 +46,7 @@ import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
 import { ESignInCase } from 'store/user/types'
 import useReceiveMessage from 'hooks/useReceiveMessage'
+import ToastTestPage from "./components/common/Toast/ToastTestPage";
 import { LOCAL_ENV } from 'constants/env'
 
 SwiperCore.use([Pagination, Autoplay])
@@ -53,6 +54,9 @@ SwiperCore.use([Pagination, Autoplay])
 declare global {
     interface Window {
         ReactNativeWebView: any; // eslint-disable-line
+    }
+    interface TenpingScript {
+        SendConversion: () => void
     }
 }
 
@@ -128,6 +132,7 @@ function AppRoute() {
         return (
             <Switch>
                 <Route exact path="/" component={Home} />
+                <Route exact path="/toast" component={ToastTestPage} />
                 <Route exact path="/partner/list" component={PartnerList} />
                 <Route exact path="/partner/detail/:adminId" component={PartnerDetail} />
                 <Route exact path="/partner/cart" component={PartnerCart} />
