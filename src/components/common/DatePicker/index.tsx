@@ -161,18 +161,21 @@ const DatePicker: React.FC<Props> = (props) => {
 
     const diffMonth = Math.ceil(maxDate.diff(currentDateValue, 'month', true)) + 1
     let arr = new Array(diffMonth).fill(undefined).map((val,idx) => idx);
+
+    const date = () => arr.map(index => {
+      let date = dayjs(new Date()).add(index, "month");
+      return (
+        <div key={index}>
+            <S.CalendarHeader>{`${currentDateValue.year()}년 ${currentDateValue.month() + 1 + index}월`}</S.CalendarHeader>
+            <Calendar currentDate={date} onSelect={onSelect} disabledDate={disabledDateWithRange} selected={selected} maxDate={maxDate}/>
+        </div>
+      )
+  })
+
     return (
         <S.Container>
             <S.Wrapper>
-                {arr.map(index => {
-                    let date = dayjs(new Date()).add(index, "month");
-                    return (
-                      <>
-                          <S.CalendarHeader>{`${currentDateValue.year()}년 ${currentDateValue.month() + 1 + index}월`}</S.CalendarHeader>
-                          <Calendar currentDate={date} onSelect={onSelect} disabledDate={disabledDateWithRange} selected={selected} maxDate={maxDate}/>
-                      </>
-                    )
-                })}
+                {date()}
                 <S.Info>
                     <p className="title"><em>견적신청 가능 날짜</em></p>
                     <p className="content">오늘부터 55일 이내 날짜에서만 이사업체 견적신청이 가능해요.</p>

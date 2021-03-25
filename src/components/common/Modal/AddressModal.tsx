@@ -80,7 +80,7 @@ const S = {
             margin-bottom: 8px;
             padding: 0 16px 0 16px;
             line-height: 56px;
-            font-size: 15px;
+            font-size: 16px;
             overflow: hidden;
             letter-spacing: -1px;
             cursor: pointer;
@@ -100,7 +100,7 @@ const S = {
         justify-content: center;
         align-items: center;
         height: 100%;
-        width: 48px;
+        width: 56px;
         padding-bottom: 6px;
         right: 0;
         bottom: 0;

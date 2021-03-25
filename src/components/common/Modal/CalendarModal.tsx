@@ -110,15 +110,17 @@ const CalendarModal: React.FC<Props> = (props) => {
                     <S.Title>이사 날짜를 선택해주세요</S.Title>
                     <S.DaysContainer>
                         <S.Days>
-                            <tr>
-                                <td><div>일</div></td>
-                                <td><div>월</div></td>
-                                <td><div>화</div></td>
-                                <td><div>수</div></td>
-                                <td><div>목</div></td>
-                                <td><div>금</div></td>
-                                <td><div>토</div></td>
-                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td><div>일</div></td>
+                                    <td><div>월</div></td>
+                                    <td><div>화</div></td>
+                                    <td><div>수</div></td>
+                                    <td><div>목</div></td>
+                                    <td><div>금</div></td>
+                                    <td><div>토</div></td>
+                                </tr>
+                            </tbody>
                         </S.Days>
                     </S.DaysContainer>
                 </S.Header>

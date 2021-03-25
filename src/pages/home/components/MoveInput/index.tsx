@@ -139,7 +139,7 @@ const MoveInput: React.FC<Props> = (props) => {
     }, [getMoveType])
 
     const toggleCalendarCancel = () => {
-        dispatch(formActions.setMoveDate([]))
+        /* dispatch(formActions.setMoveDate([])) */
         setVisibleCalendarModal(!visibleCalendarModal)
     }
     const toggleCalendarConfirm = () => {
@@ -162,7 +162,7 @@ const MoveInput: React.FC<Props> = (props) => {
         dispatch(formActions.setPhone(originPhoneValue))
     }
 
-    const onSelectDate = (date: CalendarDate) => {
+    const onSelectDate = (date: CalendarDate) => {  
         if (isExceedDiffDay(date, CALENDAR_MAX_DAYS)) {
             alert(`이사업체조회는 내일부터 최장${CALENDAR_MAX_DAYS}일까지만 비교가 가능합니다.`);
             return;
