@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import Styled, { css, keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import ScrollLock, { TouchScrollable } from 'react-scrolllock'
 
 import * as colors from 'styles/colors'
+import {Icon} from "../../wematch-ui";
 
 
 type SelectItemProp = {
@@ -63,7 +64,7 @@ const slideDown = keyframes`
 `
 
 const S = {
-    Container: Styled.div`
+    Container: styled.div`
         position: fixed;
         bottom: 0;
         left: 0;
@@ -86,7 +87,7 @@ const S = {
             // background-color: inherit;
         }
     `,
-    Overlay: Styled.div<{visible: boolean}>`
+    Overlay: styled.div<{visible: boolean}>`
         width: 100%;
         height: 100%;
         opacity: .88;
@@ -111,7 +112,7 @@ const S = {
             filter: none;
         }
     `,
-    SelectBox: Styled.div<{visible: boolean}>`
+    SelectBox: styled.div<{visible: boolean}>`
         overflow-y: visible;
         max-height: 320px; 
         padding: 0;
@@ -146,7 +147,7 @@ const S = {
             border-bottom-left-radius:16px;
         }
     `,
-    Header: Styled.div`
+    Header: styled.div`
         position: relative;
         display: flex;
         align-items: center;
@@ -155,8 +156,9 @@ const S = {
         height: 56px;
         border-top-right-radius: 16px;
         border-top-left-radius: 16px;
-        background-color: ${colors.grayBg};
+        background-color: white;
         text-align: right;
+        border-bottom: 0.5px solid #D7DBE2;
         strong {
             padding-left: 24px;
             font-size: 18px;
@@ -166,33 +168,34 @@ const S = {
             letter-spacing: -1px;
         }
         button {
+            display: flex;
+            align-items: center;
             height: 40px; 
             padding: 0 24px; 
-            font-size: 15px; 
-            font-weight: 400; 
-            color: ${colors.pointBlue};
-            line-height: 41px;
-            letter-spacing: -1px;
             cursor: pointer;
         }
         
         @media (min-width: 1200px) {
-            padding: 1px 0;
             strong {
                 display: block;      
             }
         }
     `,
-    List: Styled.ul`
+    ListWrapper: styled.div`
+    background-color: #FAFAFA;
+    height: calc(100% - 56px);
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+    `,
+    List: styled.ul`
         overflow-y: scroll;
-        max-height: 280px;
+        max-height: 265px;
         padding: 0 24px;
-        
         @media (min-width: 1200px) {
             max-height: 310px;
         }
     `,
-    Item: Styled.li`
+    Item: styled.li`
         height: 60px;
         margin: 0;
         padding: 8px 0 10px;
@@ -268,19 +271,23 @@ const Select:React.FC<Props> = (props) => {
                 <S.SelectBox visible={!visible}>
                     <S.Header>
                         <strong>{headerTitle}</strong>
-                        <button onClick={onClose}>닫기</button>
+                        <button onClick={onClose}>
+                            <Icon.Close size={20} color={'#121212'} />
+                        </button>
                     </S.Header>
                     <TouchScrollable>
-                        <S.List>
-                            {values.map((value, index) =>
-                                <S.Item key={index} onClick={(e) => {
-                                    handleOnSelect(keyList[index])
-                                    handleOnClose(e)
-                                }}>
-                                    {value}
-                                </S.Item>
-                            )}
-                        </S.List>
+                        <S.ListWrapper>
+                            <S.List>
+                                {values.map((value, index) =>
+                                  <S.Item key={index} onClick={(e) => {
+                                      handleOnSelect(keyList[index])
+                                      handleOnClose(e)
+                                  }}>
+                                      {value}
+                                  </S.Item>
+                                )}
+                            </S.List>
+                        </S.ListWrapper>
                     </TouchScrollable>
                 </S.SelectBox>
             </S.Container>
