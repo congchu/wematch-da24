@@ -183,9 +183,6 @@ const S = {
     `,
     ListWrapper: styled.div`
     background-color: #FAFAFA;
-    height: calc(100% - 56px);
-    border-bottom-right-radius: 16px;
-    border-bottom-left-radius: 16px;
     `,
     List: styled.ul`
         overflow-y: scroll;
@@ -194,6 +191,7 @@ const S = {
         @media (min-width: 1200px) {
             max-height: 310px;
         }
+
     `,
     Item: styled.li`
         height: 60px;
@@ -275,20 +273,20 @@ const Select:React.FC<Props> = (props) => {
                             <Icon.Close size={20} color={'#121212'} />
                         </button>
                     </S.Header>
-                    <TouchScrollable>
-                        <S.ListWrapper>
-                            <S.List>
-                                {values.map((value, index) =>
-                                  <S.Item key={index} onClick={(e) => {
-                                      handleOnSelect(keyList[index])
-                                      handleOnClose(e)
-                                  }}>
-                                      {value}
-                                  </S.Item>
-                                )}
-                            </S.List>
-                        </S.ListWrapper>
-                    </TouchScrollable>
+                  <S.ListWrapper>
+                        <TouchScrollable>
+                          <S.List>
+                            {values.map((value, index) =>
+                              <S.Item key={index} onClick={(e) => {
+                                handleOnSelect(keyList[index])
+                                handleOnClose(e)
+                              }}>
+                                {value}
+                              </S.Item>
+                            )}
+                          </S.List>
+                      </TouchScrollable>
+                  </S.ListWrapper>
                 </S.SelectBox>
             </S.Container>
         </ScrollLock>
