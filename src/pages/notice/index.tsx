@@ -51,7 +51,9 @@ export default function NoticePage() {
     const router = useRouter()
     const params = useParams<{ id: string}>()
     const getNoticeList = useSelector(backofficeSelector.getNoticeList)
+    const [loading, setLoading] = useState(true)
     const [selected, setSelected] = useState< null | number >(parseInt(params?.id))
+    const expandRef = useRef<HTMLDivElement>(null)
 
     useEffect(()=>{
         window.scrollTo(0, 0)
@@ -75,27 +77,29 @@ export default function NoticePage() {
                 size: values.DEFAULT_NOTICE_LIST_SIZE
             }))
         }
+        if( !getNoticeList.moreLoading && !getNoticeList.hasMore ){
+            setLoading(false)
+        }
 
-    }, [getNoticeList.moreLoading, getNoticeList.hasMore, getNoticeList.loading, dispatch])
+    }, [getNoticeList.moreLoading, getNoticeList.hasMore,  dispatch])
 
 
 
     /* 라우트 주소 변경 */
-    useEffect(()=>{
-        if(selected){
-            router.push(`/notice/${selected}`)
-        }
-        else{
-            router.push(`/notice`)
-        }
-    },[selected])
-
+    // useEffect(()=>{
+    //     if(selected){
+    //         router.push(`/notice/${selected}`)
+    //     }
+    //     else{
+    //         router.push(`/notice`)
+    //     }
+    // },[selected])
 
 
     return(
         <Layout title="공지사항">
             <div>
-                {getNoticeList.notices?.map((notice, index) => {
+                { (!loading) && getNoticeList.notices?.map((notice, index) => {
                     return (
                         <S.CollapsedWrap key={index} index={index}  onClick={(e) => setSelected(notice.id)} >
                             <AccordionCollapse key={index} title={notice.title} date={notice.created_at} postNum={notice.id} expand={selected===notice.id}>

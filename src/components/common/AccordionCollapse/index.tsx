@@ -82,8 +82,7 @@ const S = {
       height: 0;
       width: inherit;
       //padding: 0 8px;
-      //overflow: auto;
-      overflow: ${props => props.isCollapsed ? 'auto': 'hidden'};
+      overflow: auto;
       transition: height 0.35s ease, background 0.35s ease;
 
       display: block;
@@ -100,7 +99,7 @@ const S = {
       
     `,
     Contents : styled.div`
-      padding-top: 16px;
+      padding-top: 26px;
     `
 
 
@@ -142,15 +141,17 @@ function AccordionCollapse({ category ,title, children, expand=false, date, post
             parentRef.current.style.height = "0"
             // setSelected(null)
             router.push(`/notice`)
-        }else if (!expand && postNum){ // 다른 아이템 누르면 expand 가 false였는데 눌리면
+        }else if (!expand && postNum){ // 다른 아이템 누르면 , expand 가 false였는데 눌리면
             // setSelected(postNum)
             router.push(`/notice/${postNum}`)
-        }else{
+            parentRef.current.focus()
+        }else{ //다시 해당 아이템 눌러서 열기
             parentRef.current.style.height = `${childRef.current.clientHeight}px`
             if(postNum){
             // setSelected(postNum)
             router.push(`/notice/${postNum}`)
             }
+            parentRef.current.focus()
         }
         setIsCollapse(!isCollapse)
     }
@@ -165,6 +166,10 @@ function AccordionCollapse({ category ,title, children, expand=false, date, post
             /* 열릴때 */
             parentRef.current.style.height = `${childRef.current.clientHeight}px`
             setIsCollapse(true)
+
+            /* focus 주기 */
+            parentRef.current.focus()
+
         } else {
             /* 닫힐때 */
             parentRef.current.style.height = "0"
