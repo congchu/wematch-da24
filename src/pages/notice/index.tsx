@@ -53,7 +53,6 @@ export default function NoticePage() {
     const getNoticeList = useSelector(backofficeSelector.getNoticeList)
     const [loading, setLoading] = useState(true)
     const [selected, setSelected] = useState< null | number >(parseInt(params?.id))
-    const expandRef = useRef<HTMLDivElement>(null)
 
     useEffect(()=>{
         window.scrollTo(0, 0)
@@ -83,18 +82,14 @@ export default function NoticePage() {
 
     }, [getNoticeList.moreLoading, getNoticeList.hasMore,  dispatch])
 
-
-
-    /* 라우트 주소 변경 */
-    // useEffect(()=>{
-    //     if(selected){
-    //         router.push(`/notice/${selected}`)
-    //     }
-    //     else{
-    //         router.push(`/notice`)
-    //     }
-    // },[selected])
-
+    useEffect(()=>{
+        if(selected){
+            router.push(`/notice/${selected}`)
+        }
+        else{
+            router.push(`/notice`)
+        }
+    },[selected])
 
     return(
         <Layout title="공지사항">
