@@ -13,6 +13,7 @@ import Button from 'components/common/Button'
 import NoticePopup from 'components/common/Popup/NoticePopup'
 import OneroomNoticePopup from 'components/common/Popup/OneroomNoticePopup'
 import TermsModal from 'components/Modal/TermsModal'
+import {showToast} from 'components/common/Toast'
 
 import ButtonGroup from 'components/common/ButtonGroup'
 import MoveInput from 'pages/home/components/MoveInput'
@@ -233,31 +234,31 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
 
     const validateHouseOrOfficeForm = () => {
         if (isEmpty(getMoveDate)) {
-            alert('날짜를 선택해 주세요.')
+            showToast({ message: '날짜를 선택해 주세요.', type: 'error'  })
             return false;
         }
         if (isEmpty(getAddress.start)) {
-            alert('출발지를 입력해 주세요.')
+            showToast({ message: '출발지를 입력해 주세요.', type: 'error'  })
             return false;
         }
         if (isEmpty(getFloor.start)) {
-            alert('출발지를 층수를 입력해 주세요.')
+            showToast({ message: '출발지 층수를 입력해 주세요.', type: 'error'  })
             return false;
         }
         if (isEmpty(getAddress.detailStart)) {
-            alert('출발지 상세주소를 입력해 주세요.')
+            showToast({ message: '출발지 상세주소를 입력해 주세요.', type: 'error'  })
             return false;
         }
         if (isEmpty(getAddress.end)) {
-            alert('도착지를 입력해 주세요.')
+            showToast({ message: '도착지를 입력해 주세요.', type: 'error'  })
             return false;
         }
         if (isEmpty(getFloor.end)) {
-            alert('도착지 층수를 입력해 주세요.')
+            showToast({ message: '도착지 층수를 입력해 주세요.', type: 'error'  })
             return false;
         }
         if (isEmpty(getAddress.detailEnd)) {
-            alert('도착지 상세주소를 입력해 주세요.')
+            showToast({ message: '도착지 상세주소를 입력해 주세요.', type: 'error'  })
             return false;
         }
         return true
@@ -285,7 +286,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
         if (type === 'house') {
             dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp))
         }
-    }, [dispatch])
+    }, [cookies.formData, dispatch, router.query])
 
     return (
         <Visual.Section>

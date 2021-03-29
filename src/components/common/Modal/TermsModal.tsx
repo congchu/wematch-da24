@@ -16,6 +16,7 @@ const S = {
         padding: 0 24px;
         height: 100%;
         overflow-y: auto;
+        margin-top: 56px;
     `,
     TermsWrap: Styled.div`
         padding-top: 10px;
