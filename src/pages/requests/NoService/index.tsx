@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import {useMedia} from 'react-use-media'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useMedia } from 'react-use-media'
 import styled from 'styled-components'
 import last from 'lodash/last'
 import ReactPixel from 'react-facebook-pixel'
-import {useCookies} from 'react-cookie'
+import { useCookies } from 'react-cookie'
 
 import MainHeader from 'components/common/MainHeader'
 import NavHeader from 'components/common/NavHeader'
@@ -14,14 +14,46 @@ import Kakao from 'components/Icon/generated/Kakao_fit'
 import * as formSelectors from 'store/form/selectors'
 import * as formActions from 'store/form/actions'
 import * as formSelector from 'store/form/selectors'
-import {FormState} from 'store/form/reducers'
+import { FormState } from 'store/form/reducers'
 
-import {MOVE_URL} from 'constants/env'
-import {dataLayer} from 'lib/dataLayerUtil'
-import {events} from 'lib/appsflyer'
-import { useHistory } from 'react-router-dom'
+import { MOVE_URL } from 'constants/env'
+import { dataLayer } from 'lib/dataLayerUtil'
+import { events } from 'lib/appsflyer'
+import { Link, useHistory } from 'react-router-dom'
 
 const S = {
+    Header: styled.header`
+        display: block;
+        height: 55px;
+        padding: 0 24px;
+        margin-top:0;
+        
+        a {
+        display: block;
+        width: 87px;
+        height: 16px;
+        padding: 24px 0 10px;
+        }
+        
+        span {
+        display: block;
+        width: 87px;
+        height: 16px;
+        font-size: 1px;
+        background: url(https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/logo/wematch_c.png) 0 0 no-repeat;
+        background-size: 100% auto;
+        color: transparent;
+        }
+        @media screen and (min-width:768px) {
+        height: 72px;
+        
+        a {
+            width: 108px;
+            height: 20px;
+            padding-top: 26px;
+        }
+        }
+    `,
     Container: styled.div``,
     Contents: styled.div`
       margin-top: 120px;
@@ -52,15 +84,18 @@ const S = {
       line-height: 22px;
     `,
     LinkAlarm: styled.a`
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
+      display: block;
       height: 36px;
       padding-top: 20px;
       font-weight: 700;
       background: #FFE500;
       text-align: center;
+      border-radius: 6px;
+      margin-top: 40px;
+      margin-right: 24px;
+      margin-left: 24px;
+      font-size: 18px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 
       svg {
         margin-top: -2px;
@@ -131,7 +166,7 @@ export default function NoService() {
             })
 
             ReactPixel.fbq('track', 'Purchase')
-            gtag('event', 'conversion', {'send_to': 'AW-862163644/CmzdCIej6G0QvKWOmwM'})
+            gtag('event', 'conversion', { 'send_to': 'AW-862163644/CmzdCIej6G0QvKWOmwM' })
         }
 
         events({
@@ -167,14 +202,15 @@ export default function NoService() {
         <>
             { !getSubmittedForm.report ? <></> :
                 <S.Container>
-                    {isDesktop ? <MainHeader/> : <NavHeader title="" onPreviousButtonClick={goHome}/>}
+                    {/* {isDesktop ? <MainHeader/> : <NavHeader title="" onPreviousButtonClick={goHome}/>} */}
+                    {isDesktop ? <MainHeader /> : <S.Header><Link to="/"><span>위매치</span></Link></S.Header>}
                     <S.Contents>
-                        <AreaIcon/>
+                        <AreaIcon />
                         <S.Title>해당 지역은 서비스 준비 중입니다.</S.Title>
-                        <S.Subtext>빠른 시일 내 이용 가능하도록<br/>최선을 다하겠습니다.</S.Subtext>
+                        <S.Subtext>빠른 시일 내 이용 가능하도록<br />최선을 다하겠습니다.</S.Subtext>
                     </S.Contents>
                     <S.LinkAlarm id='dsl_a_alarm_noService' href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">
-                        <Kakao/>가능업체 알림 신청
+                        <Kakao />가능업체 알림 신청
                     </S.LinkAlarm>
                 </S.Container>
             }

@@ -22,10 +22,10 @@ interface Props {
 const S = {
     Container: styled.div`
         position: relative;
-        margin-top: 16px;
         height: 100%;
+        padding-top: 56px !important;
         @media (min-width: 1200px) {
-            margin: 5px 0 10px 0;
+            margin: 0 0 10px 0;
             padding: 0;
         }
     `,
@@ -33,6 +33,8 @@ const S = {
       border-bottom: 1px solid ${colors.lineDefault};
       padding-right: 24px;
       padding-left: 24px;
+      padding-top: 16px;
+      background: white;
     `,
     Title: styled.div`
       font-weight: bold;
@@ -105,18 +107,20 @@ const CalendarModal: React.FC<Props> = (props) => {
         <PopupTemplate visible={visible} onClose={onClose}>
             <S.Container>
                 <S.Header>
-                    <S.Title>이사 날짜를 선택해주세요.</S.Title>
+                    <S.Title>이사 날짜를 선택해주세요</S.Title>
                     <S.DaysContainer>
                         <S.Days>
-                            <tr>
-                                <td><div>일</div></td>
-                                <td><div>월</div></td>
-                                <td><div>화</div></td>
-                                <td><div>수</div></td>
-                                <td><div>목</div></td>
-                                <td><div>금</div></td>
-                                <td><div>토</div></td>
-                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td><div>일</div></td>
+                                    <td><div>월</div></td>
+                                    <td><div>화</div></td>
+                                    <td><div>수</div></td>
+                                    <td><div>목</div></td>
+                                    <td><div>금</div></td>
+                                    <td><div>토</div></td>
+                                </tr>
+                            </tbody>
                         </S.Days>
                     </S.DaysContainer>
                 </S.Header>

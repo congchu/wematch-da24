@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 import { debounce } from 'lodash'
 
-import BaseModal from './ModalTemplate'
-import Input from 'components/common/Input'
 import List from 'components/common/List'
 
 import { ItemsProps } from 'components/common/List'
@@ -14,6 +12,7 @@ import * as commonSelector from 'store/common/selectors'
 import * as colors from 'styles/colors'
 import PopupTemplate from "../../wematch-ui/PopupTemplate";
 import {Icon} from "../../wematch-ui";
+import { useMedia } from 'react-use-media'
 
 interface Props {
     /** 모달 visible */
@@ -37,10 +36,12 @@ const S = {
         display: flex;
         justify-content: center;
         flex-direction: column;
+        padding-top: 56px;
     `,
     Header: styled.div`
         padding: 16px 24px;
         border-bottom: 0.5px solid #D7DBE2;
+        background: white;
     `,
     Empty: styled.div`
         text-align: center;
@@ -56,30 +57,30 @@ const S = {
     `,
     Title: styled.h1`
         color: ${colors.gray33};
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
         line-height: 36px;
-        margin-bottom:25px;
+        margin-bottom:17px;
     `,
     InputContainer: styled.div`
         position: relative;
         display: block;
         
-        svg {
+        /* svg {
           position: absolute;
           right: 15px;
           bottom: 24px;
-        }
+        } */
         
         input {
             width: 100%;
             height: 56px;
-            background: white;
+            //background: white;
             border-radius: 8px;
             margin-bottom: 8px;
             padding: 0 16px 0 16px;
             line-height: 56px;
-            font-size: 15px;
+            font-size: 16px;
             overflow: hidden;
             letter-spacing: -1px;
             cursor: pointer;
@@ -93,11 +94,23 @@ const S = {
             }
         }
     `,
-    Content: styled.div<{height: number | undefined}>`
+    IconWrapper: styled.div`
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         height: 100%;
-        min-height: ${props => props.height && `calc(${window.innerHeight}px - ${props.height}px - ${56}px)`};
-        padding: 16px 24px;
-        background-color: #FAFAFA;
+        width: 56px;
+        padding-bottom: 6px;
+        right: 0;
+        bottom: 0;
+    `,
+    Content: styled.div`
+        min-height: calc(100% - 157px - 56px);
+        
+        @media screen and (min-width: 768px) {
+          min-height: calc(480px - 157px - 56px);
+        }
     `,
 }
 
@@ -117,6 +130,10 @@ const AddressModal: React.FC<Props> = (props) => {
     const getAddressList = useSelector(commonSelector.getAddressList)
     const [items, setItems] = useState<ItemsProps[]>([])
     const [dong, setDong] = useState<string>('')
+    const inputRef = useRef<HTMLInputElement | null>(null)
+    const isMobile = useMedia({
+        maxWidth: 767,
+    })
 
     useEffect(() => {
         if (getAddressList.data && !getAddressList.loading) {
@@ -132,50 +149,68 @@ const AddressModal: React.FC<Props> = (props) => {
     }, [getAddressList])
 
     useEffect(() => {
-        return () => setItems([])
+        return () => {setItems([]); setDong('');}
     }, [visible])
 
-    const requestAddressList = debounce((dong: string) => {
-        dispatch(commonActions.fetchAddressListAsync.request({
-            dong
-        }))
-    }, 200);
+    useEffect(() => {
+        if(dong.length > 0) {
+            dispatch(commonActions.fetchAddressListAsync.request({
+                dong
+            }))
+        } else {
+            setItems([])
+        }
+    }, [dispatch, dong]);
 
 
+    const handleOnChange = debounce((address: string) => {
+        setDong(address);
+    }, 500)
 
+    useEffect(() => {
+        const keyboardOffEvent = () => {
+            inputRef.current?.blur();
+        }
+        if(visible && isMobile)  {
+            document.addEventListener('touchstart', keyboardOffEvent)
+        } 
+        return () => { document.removeEventListener('touchstart', keyboardOffEvent) }
+    }, [visible])
 
     return (
         <PopupTemplate visible={visible} onClose={onClose}>
             <S.Container>
                 <S.Header ref={headerRef}>
-                    <S.Title>주소검색</S.Title>
+                    <S.Title>{title}</S.Title>
                     <S.InputContainer>
-                        <input placeholder="읍/면/동(지번)으로 검색해주세요"
+                        <input placeholder="읍/면/동까지만 입력해주세요"
                                type="text"
-                               onChange={(e) => setDong(e.target.value)}
-                               onKeyPress={(e) => {
+                               ref={inputRef}
+                               onChange={(e) => handleOnChange(e.target.value)}
+                               autoFocus={true}
+                               onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
                                    if (e.key === 'Enter') {
-                                       requestAddressList(dong)
-                                   }
-                               }}
-                               onKeyUp={(e) => {
-                                   if (dong.length >= 2) {
-                                       requestAddressList(dong)
+                                        const ev = e.target as HTMLInputElement
+                                        handleOnChange.cancel();
+                                        setDong(ev.value);
+                                        inputRef?.current?.blur()
                                    }
                                }}
                         />
-                        <Icon.Search size={24} />
+                        <S.IconWrapper onClick={e => e.preventDefault()}>
+                            <Icon.Search size={24}/>
+                        </S.IconWrapper>
                     </S.InputContainer>
                 </S.Header>
-                <S.Content height={headerRef?.current?.clientHeight}>
-                    {getAddressList.data?.length === 0 ? (
+                <S.Content>
+                    {getAddressList.data?.length === 0 && dong.length > 0 && !getAddressList.loading ? (
                       <S.Empty>
                           <p><em>'{dong}'</em>에 대한 검색 결과가 없습니다.
                               <br/>정확한 읍/면/동(지번)주소로 다시 검색해주세요.
                           </p>
                       </S.Empty>
                     ) : (
-                      <List type="address" direction="column" items={items} onClick={onClick} onSelect={onSelect}/>
+                      <List type="address" direction="column" items={items} onClick={onClick} onSelect={onSelect} style={{padding: '0 24px'}}/>
                     )}
                 </S.Content>
             </S.Container>
