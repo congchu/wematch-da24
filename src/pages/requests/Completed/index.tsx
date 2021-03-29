@@ -28,6 +28,7 @@ import {formatDateDash2Dot, whatDay} from 'lib/dateUtil'
 import validatePhone from 'lib/validatePhone'
 import * as sentry from "@sentry/react";
 import {Severity} from "@sentry/react";
+import NewModal from "../../../components/NewModalTemplate";
 
 const S = {
     Container: styled.div``,
@@ -353,7 +354,8 @@ export default function Completed() {
     }
 
     const togglePopup = () => {
-        setShowPopup(!showPopup)
+        setShowPopup(!showPopup);
+        window.location.href = `${MOVE_URL}`;
     }
 
     const formState: FormState = {
@@ -536,19 +538,8 @@ export default function Completed() {
                 </div>
                 <img className='right' src={require('assets/images/components/Completed/right.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사"/>
             </S.Box>
-            <S.Button onClick={togglePopup}>신청 정보 확인완료</S.Button>
-            {showPopup &&
-                <ToastPopup
-                    visible={showPopup}
-                    showHeaderCancelButton={true}
-                    closeClick={togglePopup}
-                    confirmText="네, 찾아주세요"
-                    confirmClick={() => window.location.href = `${CLEAN_URL}`}
-                    cancelText="다음에할게요"
-                    cancelClick={() => window.location.href = `${MOVE_URL}`}
-                >
-                    입주청소도 필요하세요?
-                </ToastPopup>}
+            <S.Button onClick={() => setShowPopup(!showPopup)}>신청 정보 확인완료</S.Button>
+            <NewModal visible={showPopup} title={"입주청소 찾기?"} content={"입주청소도 필요하세요?"} confirmText={"바로 찾기"} cancelText={"다음에"} confirmClick={() => window.location.href = `${CLEAN_URL}`} cancelClick={() => togglePopup()} />
         </S.Container>
     )
 }

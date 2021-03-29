@@ -242,7 +242,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
             return false;
         }
         if (isEmpty(getFloor.start)) {
-            showToast({ message: '출발지를 층수를 입력해 주세요.', type: 'error'  })
+            showToast({ message: '출발지 층수를 입력해 주세요.', type: 'error'  })
             return false;
         }
         if (isEmpty(getAddress.detailStart)) {
