@@ -14,3 +14,6 @@ export const getMoveIdx = async (formData: types.RequestUserInfoInsert) => {
 }
 
 
+export const getCompletedMoveIdx = async (inquiry_idx: string) => {
+    return await api.get(`/da24-dev/user/orders/${inquiry_idx}`)
+}

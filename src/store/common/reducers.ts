@@ -1,3 +1,4 @@
+import { IOrder } from 'store/user/types';
 import { createReducer, ActionType } from 'typesafe-actions'
 import * as actions from './actions'
 import * as types from './types';
@@ -13,6 +14,10 @@ export interface CommonState {
         idx: string | null;
         loading: boolean
     },
+    completedMove: {
+        data: IOrder | null;
+        loading: boolean
+    },
     deviceId: string;
 }
 
@@ -23,6 +28,10 @@ const initialState: CommonState = {
     },
     moveIdxData: {
         idx: null,
+        loading: false
+    },
+    completedMove: {
+        data: null,
         loading: false
     },
     deviceId: '',
