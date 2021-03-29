@@ -286,7 +286,7 @@ const MoveForm = ({headerRef, isFixed, setIsFixed}: Props) => {
         if (type === 'house') {
             dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp))
         }
-    }, [cookies.formData, dispatch, router.query])
+    }, [dispatch])
 
     return (
         <Visual.Section>
