@@ -217,11 +217,11 @@ const PartnerDetail = () => {
     }, [])
 
     useEffect(() => {
+        if(getMoveIdxData.idx) {
             dispatch(partnerActions.fetchPartnerDetailAsync.request({
                 username: params.username,
-                idx: "gAAAAABfj9pFJzSIt_WAEPuvO9vSh5QNVwJiTtK8yMQB9cZqnr37Fmm7gJYy0Grtd6fFBlCGijdTOd9YQc2sr4IQkaVHnPFmMw=="
+                idx: getMoveIdxData.idx
             }))
-        if(getMoveIdxData.idx) {
         }
 
         dispatch(partnerActions.fetchReviewListAsync.request({
@@ -254,15 +254,15 @@ const PartnerDetail = () => {
     }
 
     const renderList = () => {
-        if (true) {
+        if (getPartnerDetail.loading) {
             return <PartnerInfo/>
         }
 
-        /*if (getPartnerDetail.data) {
+        if (getPartnerDetail.data) {
           return (
             <>
               <PartnerInfo list={getPartnerDetail.data}/>
-              {/!*Review Container*!/}
+              {/*Review Container*/}
               <ReviewContainer />
               <S.BottomContainer>
                 {getReviewList.moreLoading && (
@@ -284,7 +284,7 @@ const PartnerDetail = () => {
               </S.BottomContainer>
             </>
           )
-        }*/
+        }
     }
 
     return (
@@ -294,13 +294,13 @@ const PartnerDetail = () => {
             <SetType count={getPartnerPick.data.length} formData={getFormData}/>
             {renderList()}
           </>
-            {/*<ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
+            <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
                 <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
             </ToastPopup>
             <ToastPopup visible={unavailableCheck} showHeaderCancelButton={false} confirmClick={() => setUnavailableCheck(!unavailableCheck)} confirmText={"확인"}>
                 <p>오늘 마감된 업체</p>
                 <span>해당 업체는 오늘 예약 및 상담 접수가 마감됐어요. 내일 오전에 다시 조회해보세요!</span>
-            </ToastPopup>*/}
+            </ToastPopup>
         </S.Container>
     )
 }

@@ -182,7 +182,7 @@ const PartnerList = () => {
     }, [getPartnerList.loading])
 
     const renderList = () => {
-        if (true) {
+        if (getPartnerList.loading) {
             let arr = new Array(10).fill(undefined).map((val,idx) => idx);
             return (
               <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
@@ -233,9 +233,9 @@ const PartnerList = () => {
                 </S.WrapItem>
                 {(isFetching && getPartnerList.hasMore) && <MoreLoading />}
             </>
-            {/*<ToastPopup visible={visible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
+            <ToastPopup visible={visible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
                 <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
-            </ToastPopup>*/}
+            </ToastPopup>
         </S.Container>
     )
 }

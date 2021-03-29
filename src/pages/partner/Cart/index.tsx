@@ -265,10 +265,10 @@ const PartnerCart = () => {
     })
 
     useEffect(() => {
-                dispatch(partnerActions.fetchCartListAsync.request({idx: "gAAAAABfj9pFJzSIt_WAEPuvO9vSh5QNVwJiTtK8yMQB9cZqnr37Fmm7gJYy0Grtd6fFBlCGijdTOd9YQc2sr4IQkaVHnPFmMw==", admin_id: ['a7323','psh7327']}))
         if (!isEmpty(getPartnerPickList) && getMoveIdxData.idx) {
             const selectedId = getPartnerPickList.data.map(list => list.adminid)
             if(!isEmpty(selectedId)) {
+                dispatch(partnerActions.fetchCartListAsync.request({idx: getMoveIdxData.idx, admin_id: selectedId}))
             }
         }
 
@@ -366,7 +366,7 @@ const PartnerCart = () => {
     }
 
     const renderList = () => {
-        if (true) {
+        if (getCartPartnerList.loading) {
             return (
               <>
                   <S.TitleWrapper>
@@ -456,9 +456,9 @@ const PartnerCart = () => {
             setOrderConfirmVisible(false);
             }} orderCount={checkedList.length}
         />
-        {/*<ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
+        <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
             <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
-        </ToastPopup>*/}
+        </ToastPopup>
         </>
     )
 };
