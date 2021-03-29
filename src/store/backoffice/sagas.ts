@@ -15,19 +15,10 @@ export function* fetchNoticeListSaga(action: ActionType<typeof actions.fetchNoti
     }
 }
 
-export function* fetchNoticeMoreListSaga(action: ActionType<typeof actions.fetchNoticeMoreListAsync.request>) {
-    try {
-        const data = yield call(request.getNoticeList, action.payload.page, action.payload.size)
-        yield put(actions.fetchNoticeMoreListAsync.success(data))
-    } catch (e) {
-        yield put(actions.fetchNoticeMoreListAsync.failure())
-    }
-}
 
 export default function* () {
     yield all([
         takeEvery(actions.fetchNoticeListAsync.request, fetchNoticeListSaga),
-        takeEvery(actions.fetchNoticeMoreListAsync.request, fetchNoticeMoreListSaga),
 
     ])
 }

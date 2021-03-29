@@ -67,20 +67,20 @@ export default function NoticePage() {
     }, [dispatch])
 
 
-    useEffect( () => {
-
-        if (getNoticeList.moreLoading || getNoticeList.hasMore ) {
-            nextPage.current += 1
-            dispatch(backofficeActions.fetchNoticeMoreListAsync.request({
-                page: nextPage.current,
-                size: values.DEFAULT_NOTICE_LIST_SIZE
-            }))
-        }
-        if( !getNoticeList.moreLoading && !getNoticeList.hasMore ){
-            setLoading(false)
-        }
-
-    }, [getNoticeList.moreLoading, getNoticeList.hasMore,  dispatch])
+    // useEffect( () => {
+    //
+    //     if (getNoticeList.moreLoading || getNoticeList.hasMore ) {
+    //         nextPage.current += 1
+    //         dispatch(backofficeActions.fetchNoticeMoreListAsync.request({
+    //             page: nextPage.current,
+    //             size: values.DEFAULT_NOTICE_LIST_SIZE
+    //         }))
+    //     }
+    //     if( !getNoticeList.moreLoading && !getNoticeList.hasMore ){
+    //         setLoading(false)
+    //     }
+    //
+    // }, [getNoticeList.moreLoading, getNoticeList.hasMore,  dispatch])
 
     useEffect(()=>{
         if(selected){
@@ -94,7 +94,7 @@ export default function NoticePage() {
     return(
         <Layout title="공지사항">
             <div>
-                { (!loading) && getNoticeList.notices?.map((notice, index) => {
+                { getNoticeList.notices?.map((notice, index) => {
                     return (
                         <S.CollapsedWrap key={index} index={index}  onClick={(e) => setSelected(notice.id)} >
                             <AccordionCollapse key={index} title={notice.title} date={notice.created_at} postNum={notice.id} expand={selected===notice.id}>

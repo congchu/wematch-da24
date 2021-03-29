@@ -27,5 +27,3 @@ const initialState: BackofficeState  = {
 export default createReducer <BackofficeState, Actions>(initialState)
     .handleAction(actions.fetchNoticeListAsync.request, (state) => ({ ...state, notice: { ...state.notice, loading: true }}))
     .handleAction(actions.fetchNoticeListAsync.success, (state, action) => ({ ...state, notice: { notices: action.payload.notices, loading: false, hasMore: action.payload.has_more }}))
-    .handleAction(actions.fetchNoticeMoreListAsync.request, (state) => ({ ...state, notice: { ...state.notice, moreLoading: true }}))
-    .handleAction(actions.fetchNoticeMoreListAsync.success, (state, action) => ({ ...state, notice: { notices: [...state.notice.notices, ...action.payload.notices], loading: false, moreLoading: false, hasMore: action.payload.has_more}}))
