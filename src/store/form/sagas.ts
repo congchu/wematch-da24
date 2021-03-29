@@ -67,11 +67,10 @@ export function* setFormSaga():any  {
 export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsync.request>) {
     try {
         const data = yield call(requests.submitForm, action.payload.formData)
-        console.log(data);
         yield put(actions.submitFormAsync.success(data))
-
         if (data?.result === ESubmittedFormResult.Success) {
-            yield put(push(`/requests/completed/${data['inquery_idx']}`))
+            yield put(push(`/requests/completed/${data.inquiry_idx}`))
+            // yield put(push(`/requests/completed`))
         } else if (data?.result === ESubmittedFormResult.NoPartner) {
             yield put(push('/requests/nopartner'))
         } else if (data?.result === ESubmittedFormResult.NoService) {

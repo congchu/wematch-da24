@@ -137,10 +137,11 @@ function AppRoute() {
                 <Route exact path="/myrequest" component={MyConsult} />
                 <Route exact path="/myrequest/detail" component={MyConsultDetail} />
                 <Route exact path="/terms" component={Terms} />
-                <Route exact path="/requests/completed" component={CompletedPage} />
                 <Route exact path="/requests/nopartner" component={NoPartnerPage} />
                 <Route exact path="/requests/noservice" component={NoServicePage} />
-                <Route exact path="/requests/completed/:adminId" component={RequestPartnerDetail} />
+                <Route exact path="/requests/completed/:inquiry_idx" component={CompletedPage} />
+                {/* <Route exact path="/requests/completed/:adminId" component={RequestPartnerDetail} /> */}
+                <Route exact path="/requests/partner/:adminId" component={RequestPartnerDetail} />
                 <Route exact path="/error" component={ErrorService} />
                 <Route exact path="/login" render={props => wematchToken ? <Redirect to={{ pathname: "/"}} /> : <Login />} />
                 <Route component={NotFound} />

@@ -5,7 +5,7 @@ import last from 'lodash/last'
 import {useMedia} from 'react-use-media'
 import {useDispatch, useSelector} from 'react-redux'
 import {useCookies} from 'react-cookie'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 
 import MainHeader from 'components/common/MainHeader'
 import Collapse from 'components/base/Collapse'
@@ -330,6 +330,7 @@ export default function Completed() {
     const getContents = useSelector(formSelector.getContents)
     const getFormData = useSelector(formSelector.getFormData)
     const getAgree = useSelector(formSelector.getAgree)
+    const { inquiry_idx } = useParams();
 
     const dispatch = useDispatch()
     const [cookies, setCookie] = useCookies(['report'])
