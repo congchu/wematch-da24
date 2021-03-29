@@ -17,4 +17,3 @@ export * from './Textarea'
 export * from './Progress'
 export * from './Suggestion/index'
 
-export * from './Toast'

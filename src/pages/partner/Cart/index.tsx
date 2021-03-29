@@ -24,6 +24,7 @@ import * as partnerActions from "store/partner/actions";
 import * as commonSelector from "store/common/selectors";
 import * as constants from 'constants/env'
 import CheckAlertPopup from "./component/CheckAlertPopup";
+import NewModal from "components/NewModalTemplate";
 
 interface IList {
   id: number;
@@ -426,15 +427,13 @@ const PartnerCart = () => {
         </S.CartContainer>
       </S.CartWrapper>
       <GuidePopup visible={guideVisible} onClose={() => setGuideVisible(!guideVisible)} />
-      <CheckAlertPopup visible={alertVisible} showHeaderCancelButton={true} cancelClick={() => setAlertVisible(!alertVisible)} />
+      <CheckAlertPopup visible={alertVisible} cancelClick={() => setAlertVisible(!alertVisible)} />
       <ConfirmPopup visible={orderConfirmVisible} showHeaderCancelButton={true} cancelClick={() => setOrderConfirmVisible(!orderConfirmVisible)} confirmClick={() => {
         handleSubmit();
         setOrderConfirmVisible(false);
       }} orderCount={checkedList.length}
       />
-      <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
-        <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
-      </ToastPopup>
+      <NewModal visible={sessionVisible} title={"정보 만료"} content={"현재 페이지의 정보가 만료되었습니다. 다시 조회해 주세요."} confirmClick={() => history.push('/')} confirmText={"홈으로 가기"}/>
     </>
   )
 };
