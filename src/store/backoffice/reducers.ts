@@ -50,7 +50,6 @@ const initialState: BackofficeState  = {
             name: '',
             tel: '',
             contents: '',
-            ip_address: '',
             created_at: '',
         },
         loading: false
@@ -64,7 +63,6 @@ const initialState: BackofficeState  = {
             tel: '',
             reason: '',
             contents: '',
-            ip_address: '',
             created_at: ''
         },
         loading: false

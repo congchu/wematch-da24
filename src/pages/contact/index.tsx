@@ -117,7 +117,6 @@ function ContactPage() {
     const [name, setName] = useState('');
     const [tel, setTel] = useState('');
     const [contents, setContents] = useState('');
-    const [ip, setIp] = useState('');
     const [contactType, setContactType] = useState<string>('');
     const [serviceType, setServiceType] = useState<string>('');
     const [completed, setCompleted] = useState<boolean>(false);
@@ -131,7 +130,7 @@ function ContactPage() {
     }
 
     const isCompletedForm = () => {
-        if (name !== '' && contactType !== '' && tel !== '' && contents !== '' && ip !== '' && serviceType !== '') {
+        if (name !== '' && contactType !== '' && tel !== '' && contents !== '' && serviceType !== '') {
             setCompleted(true)
         }else {
             setCompleted(false)
@@ -140,7 +139,7 @@ function ContactPage() {
 
     useEffect(()=>{
         isCompletedForm()
-    },[name, contactType, tel, contents, ip, serviceType])
+    },[name, contactType, tel, contents, serviceType])
 
 
     const contactSubmitHandler = () => {
@@ -149,24 +148,10 @@ function ContactPage() {
             name: name,
             tel: tel,
             contents: contents,
-            ip_address: ip,
             service_type: serviceType,
         }
         dispatch(backofficeActions.submitContactFormAsync.request({formData: formData}))
     }
-
-    /* TODO : IP가져오는 방법 확인 필요 */
-    useEffect(()=>{
-        fetch('https://api.ipify.org?format=jsonp?callback=?', {
-            method: 'GET',
-            headers: {},
-        })
-            .then(res => {
-                return res.text()
-            }).then(ip => {
-            setIp(ip)
-        })
-    },[])
 
     useEffect(()=>{
         setContactType('')

@@ -965,7 +965,6 @@ function PartnerRegisterPage() {
     const toggleFunnel = () => setVisibleFunnelModal(!visibleFunnelModal)
     const toggleSido = () => setVisibleSidoModal(!visibleSidoModal)
 
-    const [ip, setIp] = useState('')
     const [partnerName, setPartnerName] = useState('')
     const [category, setCategory] = useState('')
     const [sido, setSido] = useState('')
@@ -1023,23 +1022,10 @@ function PartnerRegisterPage() {
             reason: funnel !== '기타(직접입력)' ? funnel :otherFunnel,
             tel: tel,
             contents: content,
-            ip_address: ip,
         }
         dispatch(backofficeActions.submitPartnerFormAsync.request({formData: formData}))
     }
 
-    /* TODO : IP가져오는 방법 확인 필요 */
-    useEffect(()=>{
-        fetch('https://api.ipify.org?format=jsonp?callback=?', {
-            method: 'GET',
-            headers: {},
-        })
-            .then(res => {
-                return res.text()
-            }).then(ip => {
-            setIp(ip)
-        })
-    },[])
 
     useEffect(()=>{
         setCategory('')

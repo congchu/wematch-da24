@@ -3,6 +3,7 @@ import { ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
 import * as request from './requests'
+import {showToast} from 'components/common/Toast'
 
 
 export function* fetchNoticeListSaga(action: ActionType<typeof actions.fetchNoticeListAsync.request>) {
@@ -41,9 +42,11 @@ export function* submitContactFormSaga(action: ActionType<typeof actions.submitC
         const data = yield call(request.submitContactForm, action.payload.formData)
         yield put(actions.submitContactFormAsync.success(data))
         alert('접수되었습니다. 감사합니다.')
+        // showToast({ message: '접수되었습니다. 감사합니다.', type: 'success'  })
     } catch (e) {
         yield put(actions.submitContactFormAsync.failure())
         alert('에러가 발생했습니다.')
+        // showToast({ message: '에러가 발생했습니다.', type: 'error'  })
     }
 }
 
@@ -52,9 +55,11 @@ export function* submitPartnerFormSaga(action: ActionType<typeof actions.submitP
         const data = yield call(request.submitPartnerForm, action.payload.formData)
         yield put(actions.submitPartnerFormAsync.success(data))
         alert('신청되었습니다. 확인 후 곧 답변을 드리도록 하겠습니다. 감사합니다.')
+        // showToast({ message: '신청되었습니다. 확인 후 곧 답변을 드리도록 하겠습니다. 감사합니다.', type: 'success'  })
     } catch (e) {
         yield put(actions.submitPartnerFormAsync.failure())
         alert('에러가 발생했습니다.')
+        // showToast({ message: '에러가 발생했습니다.', type: 'error'  })
     }
 }
 

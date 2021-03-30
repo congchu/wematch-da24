@@ -25,7 +25,6 @@ export interface ContactFormData {
     name: string;
     tel: string;
     contents: string;
-    ip_address: string;
     created_at?: string
 }
 
@@ -37,6 +36,5 @@ export interface PartnerFormData {
     tel: string;
     reason: string;
     contents: string;
-    ip_address: string;
     created_at?: string;
 }
