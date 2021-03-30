@@ -279,8 +279,12 @@ const S = {
         position: relative;
         bottom: 0;
         right: 0;
-        margin: 20px auto 0 auto;
+        margin: 20px auto 0 ;
         
+      }
+
+      @media screen and (min-width: 1200px) {
+        margin-bottom: 70px;
       }
 
       &:disabled {
@@ -289,7 +293,6 @@ const S = {
       }
 
     `
-
 }
 
 const Reason = styled.div`
