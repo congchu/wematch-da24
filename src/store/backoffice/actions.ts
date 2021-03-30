@@ -12,9 +12,9 @@ interface FaqType {
 }
 
 export const fetchNoticeListAsync = createAsyncAction(
-  "FETCH_NOTICE_LIST_REQUEST",
-  "FETCH_NOTICE_LIST_RESPONSE",
-  "FETCH_NOTICE_LIST_FAILURE"
+    "FETCH_NOTICE_LIST_REQUEST",
+    "FETCH_NOTICE_LIST_RESPONSE",
+    "FETCH_NOTICE_LIST_FAILURE"
 )< {page: number; size: number} , NoticeType, undefined>();
 
 

@@ -49,7 +49,7 @@ export default function NoticePage() {
 
     useEffect(() => {
         if(params.id){
-            setUrl('/notice/'+parseInt(params?.id))
+            setUrl('/notice/'+params?.id)
         }
 
         dispatch(backofficeActions.fetchNoticeListAsync.request({

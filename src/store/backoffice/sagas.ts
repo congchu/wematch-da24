@@ -61,7 +61,6 @@ export function* submitPartnerFormSaga(action: ActionType<typeof actions.submitP
 export default function* () {
     yield all([
         takeEvery(actions.fetchNoticeListAsync.request, fetchNoticeListSaga),
-        takeEvery(actions.fetchNoticeMoreListAsync.request, fetchNoticeMoreListSaga),
         takeEvery(actions.fetchFaqListAsync.request, fetchFaqListSaga),
         takeEvery(actions.fetchFaqMoreListAsync.request, fetchFaqMoreListSaga),
         takeEvery(actions.submitContactFormAsync.request, submitContactFormSaga),

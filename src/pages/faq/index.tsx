@@ -75,7 +75,7 @@ export default function FaqPage() {
                 {getFaqList.faq?.map((faq, index) => {
                     return (
                         <S.CollapsedWrap key={index} index={index}>
-                            <AccordionCollapse key={index} isFaq category={faq.service_type} title={faq.title} postNum={faq.id}>
+                            <AccordionCollapse isFaq key={index} category={faq.service_type} title={faq.title} postNum={faq.id} animation>
                                 {/*{notice.contents}*/}
                                 <pre dangerouslySetInnerHTML={{__html: faq.contents}} />
                             </AccordionCollapse>
