@@ -26,7 +26,7 @@ const S = {
 		@media screen and (min-width:1200px) {
 			position:relative;
 			width:720px;
-			margin:72px auto 0 auto;
+			margin:0 auto;
 			padding-left:272px;
 			padding-top: 80px;
 			padding-bottom: 80px;
@@ -80,7 +80,7 @@ const Layout = ({children, title, subTitle} : Props) => {
         <S.Container>
             <S.HeaderContainer>
                 {isDesktop ?
-                    <MainHeader/> :
+                    <MainHeader isFixed border/> :
                     <NavHeader title={title} />}
             </S.HeaderContainer>
             <S.Wrap>
