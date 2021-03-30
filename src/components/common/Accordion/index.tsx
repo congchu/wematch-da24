@@ -129,11 +129,24 @@ function Accordion({ isFaq, category ,title, children, expand=false, date, postN
     },[expand])
 
 
+    const clickableItemHandler = () => {
+        if(wholeRef.current === null)
+            return
+        if(clickable){
+            setIsCollapse(!isCollapse)
+            window.scroll({
+                top: scrolledTopLength + wholeRef.current.getBoundingClientRect().y - 100,
+                behavior: 'smooth'
+            })
+        }else{
+            return
+        }
+    }
 
 
     return(
         <S.Container>
-            <S.Header ref={wholeRef} >
+            <S.Header ref={wholeRef} onClick={ () => clickableItemHandler()} >
                 <div className='textWrapper'>
                     {category? <em>Q {category}<br/></em> : <></>}
                     {title}
@@ -141,7 +154,7 @@ function Accordion({ isFaq, category ,title, children, expand=false, date, postN
                 </div>
                 <span>
                     {
-                        expand
+                        isCollapse
                             ? <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
                             :<Plus style={{marginTop: 0}}/>
                     }
