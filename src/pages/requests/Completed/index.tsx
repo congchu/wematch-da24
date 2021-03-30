@@ -13,6 +13,7 @@ import { Down, Up, Info } from 'components/wematch-ui/Icon'
 import { Triangle, Check, LevelA, LevelB, LevelC, LevelN, LevelS } from 'components/Icon'
 import ToastPopup from 'components/wematch-ui/ToastPopup'
 
+import * as commonActions from 'store/common/actions'
 import * as formActions from 'store/form/actions'
 import * as partnerActions from 'store/partner/actions'
 import * as formSelectors from 'store/form/selectors'
@@ -352,11 +353,11 @@ export default function Completed() {
   })
 
   const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
-
   const [infoVisible, setInfoVisible] = useState(false)
   const [expand, setExpand] = useState(true)
   const [showPopup, setShowPopup] = useState(false)
   const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
+  const { inquiry_idx } = useParams<{inquiry_idx: string}>()
 
   const toggleInfoBox = () => {
     setInfoVisible(!infoVisible)
@@ -391,69 +392,85 @@ export default function Completed() {
     }
   }, [])
 
-  useEffect(() => {
-    if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
-      dataLayer({
-        event: 'complete',
-        category: '매칭완료',
-        action: `매칭완료_${getSubmittedForm.data?.match_list?.length}`,
-        label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
-        CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
-        CD12: '바로매칭',
-      })
 
-      events({
-        action: 'app_move_done'
-      })
-      ReactPixel.fbq('track', 'Purchase')
 
-      TenpingScript.SendConversion()
+    useEffect(() => {
+      dispatch(commonActions.fetchCompletedMoveIdx.request({inquiry_idx}))
+    }, [])
 
-      gtag('event', 'conversion', { 'send_to': 'AW-862163644/CmzdCIej6G0QvKWOmwM' })
+    useEffect(() => {
+        if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+            setIsCookie(true)
+            dispatch(formActions.submitFormAsync.success(cookies.report))
+        }
+        if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
+            history.push('/myrequest')
+        }
+    }, [])
+
+    useEffect(() => {
+        if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
+            dataLayer({
+                event: 'complete',
+                category: '매칭완료',
+                action: `매칭완료_${getSubmittedForm.data?.match_list?.length}`,
+                label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
+                CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+                CD12: '바로매칭',
+            })
+
+            events({
+                action: 'app_move_done'
+            })
+            ReactPixel.fbq('track', 'Purchase')
+
+            TenpingScript.SendConversion()
+
+            gtag('event', 'conversion', {'send_to': 'AW-862163644/CmzdCIej6G0QvKWOmwM'})
+        }
+    }, [getSubmittedForm])
+
+    useEffect(() => {
+        if (getSubmittedForm.data?.result === 'success' && !getSubmittedForm.loading) {
+            const now = new Date()
+            const time = now.getTime() + (3600 * 1000)
+            now.setTime(time)
+
+            setCookie('report', formState, {
+                path: '/',
+                expires: now
+            })
+        }
+    }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
+
+    const {
+        start,
+        end,
+        detailStart,
+        detailEnd
+    }: { start: string, end: string, detailStart: string, detailEnd: string } = getAddress;
+    const {start: startFloor, end: endFloor} = getFloor
+
+    const userRequestInfo: {
+        contact: string;
+        movingDate: string;
+        movingType: string;
+        startAddr: string;
+        endAddr: string;
+        memo: string;
+    } = {
+
+        contact: '(' + getName + ') ' + validatePhone(getPhone, true),
+        movingDate: !getMoveDate[0]? getMoveDate[0]:formatDateDash2Dot(getMoveDate[0]) + ' ' + whatDay(getMoveDate[0]),
+        movingType: (getMoveType === 'house' ? '가정이사' : '사무실이사') + ' (' + (getIsMoveStore ? '보관이사 해당 있음' : '보관이사 해당 없음') + ')',
+        startAddr: start + ' ' + detailStart + ' ' + startFloor + '층',
+        endAddr: end + ' ' + detailEnd + ' ' + endFloor + '층',
+        memo: getContents|| ''
+    };
+
+    if(!cookies.report && !getSubmittedForm.report) {
+        return <></>
     }
-  }, [getSubmittedForm])
-
-  useEffect(() => {
-    if (getSubmittedForm.data?.result === 'success' && !getSubmittedForm.loading) {
-      const now = new Date()
-      const time = now.getTime() + (3600 * 1000)
-      now.setTime(time)
-
-      setCookie('report', formState, {
-        path: '/',
-        expires: now
-      })
-    }
-  }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
-
-  const {
-    start,
-    end,
-    detailStart,
-    detailEnd
-  }: { start: string, end: string, detailStart: string, detailEnd: string } = getAddress;
-  const { start: startFloor, end: endFloor } = getFloor
-
-  const userRequestInfo: {
-    contact: string;
-    movingDate: string;
-    movingType: string;
-    startAddr: string;
-    endAddr: string;
-    memo: string;
-  } = {
-
-    contact: '(' + getName + ') ' + validatePhone(getPhone, true),
-    movingDate: !getMoveDate[0] ? getMoveDate[0] : formatDateDash2Dot(getMoveDate[0]) + ' ' + whatDay(getMoveDate[0]),
-    movingType: (getMoveType === 'house' ? '가정이사' : '사무실이사') + ' (' + (getIsMoveStore ? '보관이사 해당 있음' : '보관이사 해당 없음') + ')',
-    startAddr: start + ' ' + detailStart + ' ' + startFloor + '층',
-    endAddr: end + ' ' + detailEnd + ' ' + endFloor + '층',
-    memo: getContents || ''
-  };
-
-  if (!cookies.report && !getSubmittedForm.report) {
-    return <></>
-  }
 
   return (
     <S.Container>

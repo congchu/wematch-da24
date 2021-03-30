@@ -16,6 +16,7 @@ import dayjs from 'dayjs';
 import {dataLayer} from 'lib/dataLayerUtil'
 import * as sentry from '@sentry/react'
 import {Severity} from '@sentry/react'
+import { ESubmittedFormResult } from './types';
 
 export function* setFormSaga()  {
     const { user } = yield select(userSelector.getUser);
