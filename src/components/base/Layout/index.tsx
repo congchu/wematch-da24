@@ -26,7 +26,7 @@ const S = {
 		@media screen and (min-width:1200px) {
 			position:relative;
 			width:720px;
-			margin:0 auto;
+            margin:72px auto 0 auto;
 			padding-left:272px;
 			padding-top: 80px;
 			padding-bottom: 80px;
