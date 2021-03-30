@@ -10,6 +10,7 @@ import AccordionCollapse from 'components/common/AccordionCollapse'
 import * as backofficeActions from 'store/backoffice/actions'
 import * as backofficeSelector from 'store/backoffice/selectors'
 import * as values from 'constants/values'
+import {number} from "@storybook/addon-knobs";
 
 
 export type faqCategory = '공통' | '이사' | '청소';
@@ -35,18 +36,6 @@ const S = {
 
 export default function NoticePage() {
 
-    // const moreNotice = () => {
-    //     nextPage.current += 1
-    //     dispatch(backofficeActions.fetchNoticeMoreListAsync.request({
-    //         page: nextPage.current,
-    //         size: values.DEFAULT_NOTICE_LIST_SIZE
-    //     }))
-    //     setIsFetching(false)
-    // }
-
-    const nextPage = useRef(1)
-    // const [isFetching, setIsFetching] = useInfiniteScroll(moreNotice)
-
     const dispatch = useDispatch()
     const router = useRouter()
     const params = useParams<{ id: string}>()
@@ -64,44 +53,44 @@ export default function NoticePage() {
             page: 1,
             size: values.DEFAULT_NOTICE_LIST_SIZE
         }))
+        setLoading(false)
     }, [dispatch])
 
 
-    // useEffect( () => {
-    //
-    //     if (getNoticeList.moreLoading || getNoticeList.hasMore ) {
-    //         nextPage.current += 1
-    //         dispatch(backofficeActions.fetchNoticeMoreListAsync.request({
-    //             page: nextPage.current,
-    //             size: values.DEFAULT_NOTICE_LIST_SIZE
-    //         }))
+    // useEffect(()=>{
+    //     if(selected){
+    //         router.push(`/notice/${selected}`)
     //     }
-    //     if( !getNoticeList.moreLoading && !getNoticeList.hasMore ){
-    //         setLoading(false)
+    //     else{
+    //         router.push(`/notice`)
     //     }
-    //
-    // }, [getNoticeList.moreLoading, getNoticeList.hasMore,  dispatch])
+    // },[selected])
 
-    useEffect(()=>{
-        if(selected){
-            router.push(`/notice/${selected}`)
-        }
-        else{
-            router.push(`/notice`)
-        }
-    },[selected])
+    const selection = document.querySelectorAll('.collapseItem')
+    // function collapseSetting(){
+    //     selection.forEach(l => l.classList.remove('active'))
+    // }
+    // selection.forEach(l => l.addEventListener('click', collapseSetting))
 
     return(
         <Layout title="공지사항">
             <div>
-                { getNoticeList.notices?.map((notice, index) => {
+                { !loading && getNoticeList.notices?.map((notice, index) => {
                     return (
-                        <S.CollapsedWrap key={index} index={index}  onClick={(e) => setSelected(notice.id)} >
-                            <AccordionCollapse key={index} title={notice.title} date={notice.created_at} postNum={notice.id} expand={selected===notice.id}>
+                        <S.CollapsedWrap key={index} index={index} className='collapseItem' onClick={(e) => {
+                            setSelected(notice.id)
+                            // selection.forEach(l => l.classList.remove('active'))
+                        }}>
+                            <AccordionCollapse
+                               key={index} title={notice.title}
+                               date={notice.created_at} postNum={notice.id}
+                               expand={selected === notice.id}
+                           >
                                 {/*{notice.contents}*/}
                                 <pre dangerouslySetInnerHTML={{__html: notice.contents}} />
                             </AccordionCollapse>
                         </S.CollapsedWrap>
+
                     )
                 })}
             </div>

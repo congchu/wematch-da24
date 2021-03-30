@@ -15,7 +15,6 @@ interface Props extends React.HTMLAttributes<HTMLDivElement>  {
     postNum?:number;
     defaultExpand?: boolean;
     expand?: boolean;
-    length?: string;
 }
 
 
@@ -110,7 +109,7 @@ const S = {
 }
 
 
-function AccordionCollapse({ category ,title, children, expand=false, date, postNum, length} : Props) {
+function AccordionCollapse({ category ,title, children, expand=false, date, postNum } : Props) {
 
     const router = useRouter()
     const wholeRef = useRef<HTMLDivElement>(null)
@@ -119,33 +118,32 @@ function AccordionCollapse({ category ,title, children, expand=false, date, post
     const [isCollapse, setIsCollapse] = useState(expand)
     const icon = !isCollapse ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
 
+    const [active, setActive] = useState(false)
 
     /* 선택된 아이템 구분 expand = selected의 의미  */
     useEffect(() => {
-        if (expand) { // open
-            setIsCollapse(true)
-        } else {// close
-            setIsCollapse(false)
-        }
+        // if (expand) { // open
+        //     setIsCollapse(true)
+        // } else {// close
+        //     setIsCollapse(false)
+        // }
     }, [expand])
 
     useEffect(() => {
-        if (parentRef.current === null || childRef.current === null) {
-            return;
-        }
-        if(!isCollapse){ //닫기
-            router.push(`/notice`)
-            parentRef.current.style.height = "0"
-
-        }else{
-            router.push(`/notice/${postNum}`)
-            parentRef.current.focus()
-            parentRef.current.style.height = `${childRef.current.clientHeight}px`
-        }
+        // if (parentRef.current === null || childRef.current === null) {
+        //     return;
+        // }
+        // if(!isCollapse){ //닫기
+        //     parentRef.current.style.height = "0"
+        //
+        // }else{
+        //     parentRef.current.focus()
+        //     parentRef.current.style.height = `${childRef.current.clientHeight}px`
+        // }
     }, [isCollapse])
 
     return(
-        <S.Container>
+        <S.Container >
             <S.Header onClick={() =>  setIsCollapse(!isCollapse)} ref={wholeRef}>
                 <div className='textWrapper'>
                     {category? <em>Q {category}<br/></em> : <></>}
