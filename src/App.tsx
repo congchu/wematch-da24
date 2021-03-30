@@ -29,12 +29,12 @@ import NoPartnerPage from 'pages/requests/NoPartner'
 import RequestPartnerDetail from 'pages/requests/Detail/index'
 import NotFound from 'pages/notFound'
 import ErrorService from 'pages/errorService'
-import NoticePage from "./pages/notice";
-import FaqPage from "./pages/faq";
-import ContactPage from "./pages/contact";
-import PartnerRegisterPage from "./pages/partnerRegister";
-import UserReviewPage from "./pages/userReview";
-import ChecklistPage from "./pages/checklist";
+import NoticePage from './pages/notice'
+import FaqPage from './pages/faq'
+import ContactPage from './pages/contact'
+import PartnerRegisterPage from './pages/partnerRegister'
+import UserReviewPage from './pages/userReview'
+import ChecklistPage from './pages/checklist'
 
 import * as commonActions from 'store/common/actions'
 import * as userSelector from 'store/user/selectors'
@@ -138,6 +138,8 @@ function AppRoute() {
         return (
             <Switch>
                 <Route exact path="/" component={Home} />
+
+                {/*subpages*/}
                 <Route exact path="/faq" component={FaqPage} />
                 <Route exact path="/checklist" component={ChecklistPage} />
                 <Route exact path="/partnernew" component={PartnerRegisterPage} />
@@ -145,6 +147,7 @@ function AppRoute() {
                 <Route exact path="/notice/:id" component={NoticePage} />
                 <Route exact path="/contact" component={ContactPage} />
                 <Route exact path="/comment" component={UserReviewPage} />
+
                 <Route exact path="/partner/list" component={PartnerList} />
                 <Route exact path="/partner/detail/:adminId" component={PartnerDetail} />
                 <Route exact path="/partner/cart" component={PartnerCart} />

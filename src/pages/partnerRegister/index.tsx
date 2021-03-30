@@ -947,16 +947,7 @@ const Funnel = [
     {key: '기타(직접입력)', value: '기타(직접입력)'}
 ]
 
-/*
-* FEB 2020
-* 추후 아래 작업 필요
-* - Form : 스토어 이용하여 작업 처리
-*   - 유입경로 : 기타(직접입력) 선택시, 하단에 직접입력 input 추가 필요 (주석)
-*   - 체크박스 : onChange/checked 추가
-* - 링크 복사하기 버튼 : 주소 변경 필요 copyToClipboard
-*
-* Check : font-weight 500 없어서 600으로 대체
-* */
+
 function PartnerRegisterPage() {
 
     const dispatch = useDispatch()
@@ -974,7 +965,6 @@ function PartnerRegisterPage() {
     const toggleFunnel = () => setVisibleFunnelModal(!visibleFunnelModal)
     const toggleSido = () => setVisibleSidoModal(!visibleSidoModal)
 
-    /***** 나중에 스토어 관련 작업으로 대체 필요 *****/
     const [ip, setIp] = useState('')
     const [partnerName, setPartnerName] = useState('')
     const [category, setCategory] = useState('')
@@ -1004,7 +994,7 @@ function PartnerRegisterPage() {
     const copyToClipboard = () => {
         const textarea = document.createElement('textarea')
         document.body.appendChild(textarea)
-        /***** 새로운 주소로 변경 필요 ****/
+        /* TODO : 새로운 주소로 변경 필요 */
         textarea.value = 'https://wematch.com/partnernew.asp'
         textarea.select()
         textarea.setSelectionRange(0, 99999)
@@ -1038,7 +1028,7 @@ function PartnerRegisterPage() {
         dispatch(backofficeActions.submitPartnerFormAsync.request({formData: formData}))
     }
 
-    /* get ip-addr : will be replaced */
+    /* TODO : IP가져오는 방법 확인 필요 */
     useEffect(()=>{
         fetch('https://api.ipify.org?format=jsonp?callback=?', {
             method: 'GET',
@@ -1051,7 +1041,6 @@ function PartnerRegisterPage() {
         })
     },[])
 
-    /* 제출하고 form 비우기 */
     useEffect(()=>{
         setCategory('')
         setPartnerName('')
@@ -1289,7 +1278,7 @@ function PartnerRegisterPage() {
                         <p>위매치다이사를 <span>다른 사장님들께도 </span>알려주세요!</p>
                         <ul>
                             <li>
-                                {/***** TODO : 링크복사 나중에 새로운 주소로 넣어주세요 *****/}
+                                {/** TODO : 링크복사 나중에 새로운 주소로 넣어주세요 **/}
                                 <a onClick={()=> copyToClipboard()}>
                                     <img
                                         src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/sns_link.png"

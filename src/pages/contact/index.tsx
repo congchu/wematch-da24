@@ -155,7 +155,7 @@ function ContactPage() {
         dispatch(backofficeActions.submitContactFormAsync.request({formData: formData}))
     }
 
-    /* get ip-addr : will be replaced */
+    /* TODO : IP가져오는 방법 확인 필요 */
     useEffect(()=>{
         fetch('https://api.ipify.org?format=jsonp?callback=?', {
             method: 'GET',

@@ -76,14 +76,12 @@ const S = {
               word-break: keep-all;
             }
 
-            // 임시 : 나중에 아이콘 생기면 맞춰서 조절
             span{
               position: absolute;
               top: 30px;
               left: -32px;
               width: 16px;
               height: 16px;
-              //배경색 나중에 아이콘 바뀌면 삭제 요망 
               background: white;
             }
             
@@ -101,7 +99,6 @@ const S = {
               color: #666;
               cursor: pointer;
               
-              // 임시 : 나중에 아이콘 생기면 맞춰서 조절
               svg{
                 position: absolute;
                 top: 25%;
