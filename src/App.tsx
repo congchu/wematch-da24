@@ -37,6 +37,10 @@ import ContactPage from './pages/contact'
 import PartnerRegisterPage from './pages/partnerRegister'
 import UserReviewPage from './pages/userReview'
 import ChecklistPage from './pages/checklist'
+import MoveEstimation from './pages/checklist/components/moveEstimation'
+import CleanEstimation from './pages/checklist/components/cleanEstimation'
+import MovePrep from './pages/checklist/components/movePrep'
+import CleanCheck from './pages/checklist/components/cleanCheck'
 
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
@@ -142,12 +146,16 @@ function AppRoute() {
 
                 {/*subpages*/}
                 <Route exact path="/faq" component={FaqPage} />
-                <Route exact path="/checklist" component={ChecklistPage} />
                 <Route exact path="/partnernew" component={PartnerRegisterPage} />
                 <Route exact path="/notice" component={NoticePage} />
                 <Route exact path="/notice/:id" component={NoticePage} />
                 <Route exact path="/contact" component={ContactPage} />
                 <Route exact path="/comment" component={UserReviewPage} />
+                <Route exact path="/checklist" component={ChecklistPage} />
+                <Route exact path="/checklist/moveestimation" component={MoveEstimation}/>
+                <Route exact path="/checklist/cleanestimation" component={CleanEstimation}/>
+                <Route exact path="/checklist/moveprep" component={MovePrep}/>
+                <Route exact path="/checklist/cleancheck" component={CleanCheck}/>
 
                 <Route exact path="/toast" component={ToastTestPage} />
                 <Route exact path="/partner/list" component={PartnerList} />
