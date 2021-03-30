@@ -364,7 +364,7 @@ export default function Completed() {
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
-    window.location.href = `${MOVE_URL}`;
+    history.push('/myrequest')
   }
 
   const formState: FormState = {
