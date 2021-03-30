@@ -167,6 +167,14 @@ const MoveInput: React.FC<Props> = (props) => {
             alert(`이사업체조회는 내일부터 최장${CALENDAR_MAX_DAYS}일까지만 비교가 가능합니다.`);
             return;
         }
+        dataLayer({
+            event: 'input_info',
+            category: '다이사_메인_입력창_1',
+            label: getMoveDate[0],
+            action: '이사날짜',
+            CD6: getMoveTypeText()
+        })
+
         dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
         debounceSelectDate(date)
     }
@@ -295,7 +303,7 @@ const MoveInput: React.FC<Props> = (props) => {
                 )}
             </S.Form>
             <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?" onClose={toggleCalendarCancel}
-                onConfirm={toggleCalendarConfirm} onSelect={onSelectDate} selected={getMoveDate} />
+                onSelect={onSelectDate} selected={getMoveDate} />
             <AddressModal visible={visibleStartAddressModal} title="출발지를 검색해주세요" onClose={toggleStartAddress}
                 onConfirm={toggleStartAddress} onClick={toggleStartAddress} onSelect={onSelectStartAddress} />
             <Select visible={visibleStartFloorModal} items={floorItems} onOverlayClose={toggleStartFloor} onClose={toggleStartFloor} onSelect={onSelectStartFloorAddress} headerTitle="층수 선택" />
