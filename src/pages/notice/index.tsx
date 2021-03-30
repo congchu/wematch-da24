@@ -5,7 +5,7 @@ import {useRouter} from 'hooks/useRouter'
 import styled from 'styled-components'
 
 import Layout from 'components/base/Layout'
-import AccordionCollapse from 'components/common/AccordionCollapse'
+import AccordionCollapse from 'components/common/Accordion'
 
 import * as backofficeActions from 'store/backoffice/actions'
 import * as backofficeSelector from 'store/backoffice/selectors'
@@ -40,23 +40,19 @@ export default function NoticePage() {
     const router = useRouter()
     const params = useParams<{ id: string}>()
     const getNoticeList = useSelector(backofficeSelector.getNoticeList)
-    const [loading, setLoading] = useState(true)
     const [url, setUrl] = useState('/notice')
 
-    // useEffect(()=>{
-    //     window.scrollTo(0, 0)
-    // },[])
 
     useEffect(() => {
         if(params.id){
             setUrl('/notice/'+params?.id)
         }
 
+        /**** PAGE SIZE 지우기 ***/
         dispatch(backofficeActions.fetchNoticeListAsync.request({
             page: 1,
             size: values.DEFAULT_NOTICE_LIST_SIZE
         }))
-        setLoading(false)
     }, [])
 
 
@@ -76,15 +72,14 @@ export default function NoticePage() {
     return(
         <Layout title="공지사항">
             <div>
-                { !loading && getNoticeList.notices?.map((notice, index) => {
+                { getNoticeList.notices?.map((notice, index) => {
                     return (
                         <S.CollapsedWrap key={index} index={index} className='collapseItem'
                                          onClick={(e) => clicker(notice.id)}>
                             <AccordionCollapse
                                key={index} title={notice.title}
                                date={notice.created_at} postNum={notice.id}
-                               urlDetector={url.includes('/'+notice.id)}
-                               animation={false}
+                               expand={url.includes('/'+notice.id)}
                             >
                                 {/*{notice.contents}*/}
                                 <pre dangerouslySetInnerHTML={{__html: notice.contents}} />

@@ -1,9 +1,9 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import styled from 'styled-components'
 
 import Layout from 'components/base/Layout'
-import AccordionCollapse from 'components/common/AccordionCollapse'
+import AccordionCollapse from 'components/common/Accordion'
 
 import * as backofficeSelector from 'store/backoffice/selectors'
 import * as backofficeActions from 'store/backoffice/actions'
@@ -43,6 +43,8 @@ export default function FaqPage() {
 
     const dispatch = useDispatch()
     const getFaqList = useSelector(backofficeSelector.getFaqList)
+    const [expand, setExpand] = useState<number | null >(null)
+    const [clicked, setClicked] = useState(false)
 
     useEffect(()=>{
         window.scrollTo(0, 0)
@@ -74,8 +76,8 @@ export default function FaqPage() {
             <div>
                 {getFaqList.faq?.map((faq, index) => {
                     return (
-                        <S.CollapsedWrap key={index} index={index}>
-                            <AccordionCollapse isFaq key={index} category={faq.service_type} title={faq.title} postNum={faq.id} animation>
+                        <S.CollapsedWrap key={index} index={index} >
+                            <AccordionCollapse key={index} category={faq.service_type ? faq.service_type : '공통'} title={faq.title} postNum={faq.id} >
                                 {/*{notice.contents}*/}
                                 <pre dangerouslySetInnerHTML={{__html: faq.contents}} />
                             </AccordionCollapse>
@@ -87,3 +89,4 @@ export default function FaqPage() {
     )
 
 }
+

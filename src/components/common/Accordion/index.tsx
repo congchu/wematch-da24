@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactHTML, useEffect, useRef, useState} from "react"
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import {useRouter} from 'hooks/useRouter'
 
 import {Minus, Plus} from 'components/wematch-ui/Icon'
@@ -16,8 +16,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement>  {
     postNum?:number;
     defaultExpand?: boolean;
     expand?: boolean;
-    urlDetector?: boolean;
-    animation?: boolean;
+    clickable?: boolean;
 }
 
 
@@ -77,13 +76,14 @@ const S = {
       position: absolute;
     `,
     ContentsWrapper : styled.div<{isCollapsed: boolean}>`
-      
-      height: 0;
-      width: inherit;
-      //padding: 0 8px;
-      //overflow: auto;
-      overflow: auto;
-      transition: height 0.35s ease, background 0.35s ease;
+      max-height: 0;
+      overflow: hidden;
+      transition: all .5s;
+      ${props => props.isCollapsed && css`
+        height: auto;
+        max-height: 100vh;
+        transition: all 0.5s;
+      `};
       display: block;
       font-size: 15px;
       line-height: 22px;
@@ -91,12 +91,11 @@ const S = {
       letter-spacing: -1px;
       padding: 0 24px;
       margin: 5px 0 14px 0;
-      
       .contentStyle {
         padding-top: 16px;
       }
-      
     `,
+
     Contents : styled.div`
       padding-top: 26px;
       overflow: visible;
@@ -106,42 +105,28 @@ const S = {
 }
 
 
-function AccordionCollapse({ isFaq, category ,title, children, expand=false, date, postNum, urlDetector, animation } : Props) {
+function Accordion({ isFaq, category ,title, children, expand=false, date, postNum, clickable=false } : Props) {
 
     const wholeRef = useRef<HTMLDivElement>(null)
     const parentRef = useRef<HTMLDivElement>(null)
     const childRef = useRef<HTMLDivElement>(null)
     const [isCollapse, setIsCollapse] = useState(expand)
+    const scrolledTopLength = window.pageYOffset; // 스크롤된 길이
 
 
     useEffect(()=>{
-        if (parentRef.current === null || childRef.current === null) {
-            return;
-        }
-        if(urlDetector){
-            parentRef.current.focus()
-            // parentRef.current.style.height = `${childRef.current.clientHeight}px`
-            parentRef.current.style.height = animation ? `${childRef.current.clientHeight}px` : `auto`
+        if(wholeRef.current === null)
+            return
+        if(expand){
+            setIsCollapse(true)
+            window.scroll({
+                top: scrolledTopLength + wholeRef.current.getBoundingClientRect().y - 100,
+                behavior: 'smooth'
+            })
         }else{
-            parentRef.current.style.height = "0"
+            setIsCollapse(false)
         }
-    },[urlDetector])
-
-    const handleButtonClick = React.useCallback(
-        (event) => {
-            event.stopPropagation();
-            if (parentRef.current === null || childRef.current === null) {
-                return;
-            }
-            if (parentRef.current.clientHeight > 0) {
-                parentRef.current.style.height = "0"
-            } else {
-                parentRef.current.style.height = `${childRef.current.clientHeight}px`
-            }
-            setIsCollapse(!isCollapse);
-        },
-        [isCollapse]
-    );
+    },[expand])
 
 
 
@@ -150,14 +135,13 @@ function AccordionCollapse({ isFaq, category ,title, children, expand=false, dat
         <S.Container>
             <S.Header ref={wholeRef} >
                 <div className='textWrapper'>
-                    {isFaq? <em>Q {category ? category : '공통'}<br/></em> : <></>}
+                    {category? <em>Q {category}<br/></em> : <></>}
                     {title}
                     <h6>{ (date && postNum) && <>{date}..{postNum}</>}</h6>
                 </div>
-                {/*<span>{icon}</span>*/}
                 <span>
                     {
-                        urlDetector
+                        expand
                             ? <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
                             :<Plus style={{marginTop: 0}}/>
                     }
@@ -171,4 +155,4 @@ function AccordionCollapse({ isFaq, category ,title, children, expand=false, dat
 
 }
 
-export default React.memo(AccordionCollapse);
+export default React.memo(Accordion);
