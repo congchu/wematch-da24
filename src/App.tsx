@@ -29,10 +29,19 @@ import NoPartnerPage from 'pages/requests/NoPartner'
 import RequestPartnerDetail from 'pages/requests/Detail/index'
 import NotFound from 'pages/notFound'
 import ErrorService from 'pages/errorService'
+import NoticePage from "./pages/notice";
+import FaqPage from "./pages/faq";
+import ContactPage from "./pages/contact";
+import PartnerRegisterPage from "./pages/partnerRegister";
+import UserReviewPage from "./pages/userReview";
+import ChecklistPage from "./pages/checklist";
+
 import * as commonActions from 'store/common/actions'
 import * as userSelector from 'store/user/selectors'
+
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
+import useReceiveMessage from 'hooks/useReceiveMessage'
 import { useCookies } from 'react-cookie'
 import { dataLayer } from 'lib/dataLayerUtil'
 import MyConsult from 'pages/myconsult'
@@ -45,12 +54,6 @@ import SwiperCore, { Pagination, Autoplay } from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
 import { ESignInCase } from 'store/user/types'
-import useReceiveMessage from 'hooks/useReceiveMessage'
-import NoticePage from "./pages/notice";
-import FaqPage from "./pages/faq";
-import ContactPage from "./pages/contact";
-import PartnerRegisterPage from "./pages/partnerRegister";
-import UserReviewPage from "./pages/userReview";
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -136,6 +139,7 @@ function AppRoute() {
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/faq" component={FaqPage} />
+                <Route exact path="/checklist" component={ChecklistPage} />
                 <Route exact path="/partnernew" component={PartnerRegisterPage} />
                 <Route exact path="/notice" component={NoticePage} />
                 <Route exact path="/notice/:id" component={NoticePage} />
