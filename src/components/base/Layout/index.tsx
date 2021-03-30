@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import * as colors from 'styles/colors'
-import MainHeader from "../../common/MainHeader";
-import {useMedia} from "react-use-media";
-import NavHeader from "../../common/NavHeader";
+
+import {useMedia} from 'react-use-media'
+
+import MainHeader from 'components/common/MainHeader'
+import NavHeader from 'components/common/NavHeader'
 
 const S = {
     Container: styled.div`
@@ -12,27 +14,13 @@ const S = {
     HeaderContainer: styled.div`
         display: block;
     `,
-    SpaceLine: styled.div`
-          display: block;
-          width: 100%;
-          background:${colors.grayBg};
-          box-shadow: inset 0 1px 0 #ebeef2;
-          margin-top: 56px;
-          height: 8px;
-    
-          @media screen and (min-width:1200px) {
-            margin-top: 72px;
-            height: 10px;
-          }
-    `,
-
     Wrap: styled.div`
         margin:66px auto 0 auto;
 		@media screen and (min-width: 768px) {
             position: relative;
             width: 608px;
             //margin: 0 auto;
-            margin:66px auto 0 auto;
+            margin:66px auto 0;
             padding-bottom: 60px;
 		}
 		@media screen and (min-width:1200px) {
@@ -92,10 +80,9 @@ const Layout = ({children, title, subTitle} : Props) => {
         <S.Container>
             <S.HeaderContainer>
                 {isDesktop ?
-                    <MainHeader isFixed={true} border={true}/> :
+                    <MainHeader/> :
                     <NavHeader title={title} />}
             </S.HeaderContainer>
-            {/*<S.SpaceLine/>*/}
             <S.Wrap>
                 <S.Title>
                     <h3>{title}</h3>
