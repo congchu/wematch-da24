@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import {Minus, Plus} from 'components/wematch-ui/Icon'
 import * as colors from 'styles/colors'
+import {useEffect} from "react";
 
 export type faqCategory = '공통' | '이사' | '청소' | null
 
@@ -12,6 +13,9 @@ interface Props extends React.HTMLAttributes<HTMLDivElement>  {
     date?:string;
     postNum?:number;
     defaultExpand?: boolean;
+    expand?: boolean;
+    urlDetector?: boolean;
+    animation?: boolean;
 }
 
 
@@ -75,12 +79,13 @@ const S = {
       font-size: 14px;
       position: absolute;
     `,
-    ContentsWrapper : styled.div`
+    ContentsWrapper : styled.div<{isCollapsed: boolean}>`
       
       height: 0;
       width: inherit;
       //padding: 0 8px;
-      overflow: hidden;
+      //overflow: auto;
+      overflow: auto;
       transition: height 0.35s ease, background 0.35s ease;
 
       display: block;
@@ -97,64 +102,59 @@ const S = {
       
     `,
     Contents : styled.div`
-      padding-top: 16px;
+      padding-top: 26px;
+      overflow: visible;
     `
 
 
 }
 
-/*
-* < USAGE >  FEB.2021
-* FAQ : category, title, defaultExpand
-* 공지사항 : title, date, postNum
-* */
-function AccordionCollapse({ isFaq, category='공통' ,title, children, defaultExpand=false, date, postNum } : Props) {
 
-    const wholeRef = React.useRef<HTMLDivElement>(null)
-    const parentRef = React.useRef<HTMLDivElement>(null)
-    const childRef = React.useRef<HTMLDivElement>(null)
-    const [isCollapse, setIsCollapse] = React.useState(defaultExpand)
+function AccordionCollapse({ category ,title, children, expand=false, date, postNum, urlDetector, animation } : Props) {
 
-    const handleButtonClick = React.useCallback(
-        (event) => {
-            event.stopPropagation();
-            if (parentRef.current === null || childRef.current === null) {
-                return;
-            }
-            if (parentRef.current.clientHeight > 0) {
-                parentRef.current.style.height = "0"
-            } else {
-                parentRef.current.style.height = `${childRef.current.clientHeight}px`
-            }
-            setIsCollapse(!isCollapse);
-        },
-        [isCollapse]
-    );
+    const wholeRef = useRef<HTMLDivElement>(null)
+    const parentRef = useRef<HTMLDivElement>(null)
+    const childRef = useRef<HTMLDivElement>(null)
+    const [isCollapse, setIsCollapse] = useState(expand)
 
 
+    useEffect(()=>{
+        if (parentRef.current === null || childRef.current === null) {
+            return;
+        }
+        if(urlDetector){
+            parentRef.current.focus()
+            // parentRef.current.style.height = `${childRef.current.clientHeight}px`
+            parentRef.current.style.height = animation ? `${childRef.current.clientHeight}px` : `auto`
+        }else{
+            parentRef.current.style.height = "0"
+        }
+    },[urlDetector])
 
-    // const parentRefHeight = parentRef.current?.style.height ?? "0px";
-    // const icon = parentRefHeight === "0px" ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
-    const icon = !isCollapse ? <Plus style={{marginTop: 0}}/> : <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
 
 
     return(
-        <S.Container>
-            <S.Header onClick={handleButtonClick} ref={wholeRef}>
+        <S.Container >
+            <S.Header ref={wholeRef}>
                 <div className='textWrapper'>
-                    {isFaq? <em>Q {category ? category : '공통'}<br/></em> : <></>}
+                    {category? <em>Q {category}<br/></em> : <></>}
                     {title}
                     <h6>{ (date && postNum) && <>{date}..{postNum}</>}</h6>
                 </div>
-                <span>{icon}</span>
+                {/*<span>{icon}</span>*/}
+                <span>
+                    {
+                        urlDetector
+                            ? <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
+                            :<Plus style={{marginTop: 0}}/>
+                    }
+                </span>
             </S.Header>
-            <S.ContentsWrapper ref={parentRef}>
+            <S.ContentsWrapper ref={parentRef} isCollapsed={isCollapse} >
                 <S.Contents ref={childRef}>{children}</S.Contents>
             </S.ContentsWrapper>
         </S.Container>
     )
-
-
 
 }
 

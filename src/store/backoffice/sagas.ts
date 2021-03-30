@@ -11,17 +11,10 @@ export function* fetchNoticeListSaga(action: ActionType<typeof actions.fetchNoti
         yield put(actions.fetchNoticeListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchNoticeListAsync.failure())
+        console.log('실패')
     }
 }
 
-export function* fetchNoticeMoreListSaga(action: ActionType<typeof actions.fetchNoticeMoreListAsync.request>) {
-    try {
-        const data = yield call(request.getNoticeList, action.payload.page, action.payload.size)
-        yield put(actions.fetchNoticeMoreListAsync.success(data))
-    } catch (e) {
-        yield put(actions.fetchNoticeMoreListAsync.failure())
-    }
-}
 
 export function* fetchFaqListSaga(action: ActionType<typeof actions.fetchFaqListAsync.request>) {
     try {
