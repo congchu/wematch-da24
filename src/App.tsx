@@ -41,7 +41,6 @@ import * as userSelector from 'store/user/selectors'
 
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
-import useReceiveMessage from 'hooks/useReceiveMessage'
 import { useCookies } from 'react-cookie'
 import { dataLayer } from 'lib/dataLayerUtil'
 import MyConsult from 'pages/myconsult'
@@ -54,6 +53,9 @@ import SwiperCore, { Pagination, Autoplay } from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
 import { ESignInCase } from 'store/user/types'
+import useReceiveMessage from 'hooks/useReceiveMessage'
+import ToastTestPage from "./components/common/Toast/ToastTestPage";
+import { LOCAL_ENV } from 'constants/env'
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -99,8 +101,8 @@ function AppRoute() {
 
 
     useEffect(() => {
-        if(getDeviceId) {
-            dispatch(commonActions.setDeviceId({deviceId: getDeviceId}))
+        if (getDeviceId) {
+            dispatch(commonActions.setDeviceId(getDeviceId))
         }
     }, [dispatch, getDeviceId])
 
@@ -148,6 +150,7 @@ function AppRoute() {
                 <Route exact path="/contact" component={ContactPage} />
                 <Route exact path="/comment" component={UserReviewPage} />
 
+                <Route exact path="/toast" component={ToastTestPage} />
                 <Route exact path="/partner/list" component={PartnerList} />
                 <Route exact path="/partner/detail/:adminId" component={PartnerDetail} />
                 <Route exact path="/partner/cart" component={PartnerCart} />

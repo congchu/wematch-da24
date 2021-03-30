@@ -4,6 +4,7 @@ import * as colors from 'styles/colors';
 import * as userActions from 'store/user/actions';
 import * as formSelector from 'store/form/selectors';
 import * as userSelector from 'store/user/selectors';
+import * as commonSelector from 'store/common/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import useTimer from 'hooks/useTimer';
 import useHashToggle from 'hooks/useHashToggle';
@@ -29,6 +30,7 @@ function LoginPage() {
     const getMoveType = useSelector(formSelector.getType)
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
+    const { error } = useSelector(userSelector.getUser);
     const {  isVerified, isSendMessage, loading } = useSelector(userSelector.getPhoneVerified)
     const { counter, handleCounterStart, handleCounterStop } = useTimer(180);
     const [code, setCode] = useState<string>('')
@@ -78,7 +80,6 @@ function LoginPage() {
     const handleSignUp = () => {
 
         const agentId = get(cookies, '0dj38gepoekf98234aplyadmin')
-        
         dispatch(userActions.fetchSignUpAsync.request({
             tel: phone,
             name: name,
@@ -114,9 +115,6 @@ function LoginPage() {
 
     useEffect(() => {
         dispatch(userActions.phoneVerifyCancel());
-        if(nameInputRef.current) {
-            nameInputRef.current.focus();
-        }
     }, [])
 
     useEffect(() => {
@@ -161,7 +159,6 @@ function LoginPage() {
             <LoginWrapper id={'dsl_login_popup'}>
                 <div style={{ width: '100%' }}>
                     <TextWrppaer>
-                        <strong>번호인증</strong>
                         <p>
                             업체와의 <span>견적상담신청/내신청내역 확인</span>을 위해
                             <span> 번호인증</span>이 필요해요. (최초 1회만 인증)
@@ -236,12 +233,12 @@ function LoginPage() {
                         </div>
                     </FormWrapper>
                 </div>
-                {mobileOS === 'Android' && <MobileKeyboardSection isMobileKeyboard={isMobileKeyboard} />}
+                {/* {mobileOS === 'Android' && <MobileKeyboardSection isMobileKeyboard={isMobileKeyboard} />} */}
                 <FooterWrappe isIOS={mobileOS === 'iOS'}>
                     <p>
                         <span onClick={() => setVisibleTerms(true)}>이용약관 및 개인정보처리방침 동의</span>, 견적상담을 위한 개인 정보 제3자 제공 및 마케팅 정보수신 동의 필요
                     </p>
-                    <Button theme="primary" disabled={!isVerified || !name} style={{ fontSize: '18px' }}
+                    <Button theme="primary" disabled={!isVerified || !name} style={{ fontSize: '18px', borderRadius: '6px' }}
                         bold={true} onClick={handleSignUp}>
                         동의하고 진행하기
                     </Button>
@@ -259,6 +256,7 @@ function LoginPage() {
             tags={{cancel: 'dsl_logincancel_cancel', success: 'dsl_logincancel_continue'}}
             />
             <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
+            <NewModal visible={error} title={'죄송합니다'} content={`진행 중 오류가 발생하였습니다. 문제가 지속될 시 고객센터로 문의해주세요. \n고객센터 1522-2483`} confirmText={"확인"} confirmClick={ ()=> dispatch(userActions.errorModalOff()) } />
         </Container>
     );
 }
@@ -273,7 +271,7 @@ const Container = styled.div`
     height: -webkit-fill-available;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     background-color: white;
     box-sizing: border-box;
     @media screen and (min-width: 768px) {
@@ -289,7 +287,7 @@ const LoginWrapper = styled.div`
     background-color: white;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
     padding-top: 18px;
     margin-top: 56px;
@@ -352,26 +350,15 @@ const FormWrapper = styled.div`
     }
 `
 
-const FooterWrappe = styled.div<{ isIOS: boolean }>`
-    width: 100%;
+const FooterWrappe = styled.div<{ isIOS?: boolean }>`
+    padding: 24px;
     p {
         color: ${colors.gray66};
-        padding-bottom: 16px;
-        padding: 0 16px 16px 16px;
-        
+        padding-bottom: 8px;
         span {
             text-decoration: underline;
         }
     }
-
-    ${({ isIOS }) => isIOS && css`
-        position: fixed;
-        bottom: 0;
-
-        p {
-            padding: 16px;
-        }
-    `}
     
     a {
         color: ${colors.gray66};
@@ -382,8 +369,9 @@ const FooterWrappe = styled.div<{ isIOS: boolean }>`
     }
 
     @media screen and (min-width: 768px) {
+        padding: 0;
+        padding-bottom: 16px;
         p {
-            padding: 0;
             padding-bottom: 16px;
         }
         button {

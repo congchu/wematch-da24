@@ -305,7 +305,10 @@ const MyConsultDetail = () => {
         <S.Icon>
           <img src={require('assets/images/white_list.svg')} alt="icon" />
         </S.Icon>
-        <S.TopTitle><em>{selectedOrder?.type}</em> 신청내역 <br /><span>업체에서 연락이 없다면 먼저 전화해보세요!<br /> 전화번호를 알림톡으로 보내드립니다.</span></S.TopTitle>
+        <S.TopTitle>
+          <em>{selectedOrder?.type}</em> 신청내역 <br />
+          <span>업체에서 연락이 없다면 먼저 전화해주세요!<br /> 전화번호를 문자로 보내드립니다.</span>
+        </S.TopTitle>
       </S.TopContents>
       <S.ContentsWrap>
         <S.TitleWrap>
@@ -314,8 +317,8 @@ const MyConsultDetail = () => {
         </S.TitleWrap>
         <S.LevelInfoBox visible={infoVisible}>
           <Triangle />
-                            이용 고객이 평가한 내용으로 산출한 빅 데이터 등급입니다.
-                        </S.LevelInfoBox>
+          이용 고객이 평가한 내용으로 산출한 빅 데이터 등급입니다.
+        </S.LevelInfoBox>
         <S.CompanyList>
           {selectedOrder?.partners.map((list: IPartnerDetail, index: number, arr: IPartnerDetail[]) => (
             <li key={index}>
@@ -360,8 +363,8 @@ const MyConsultDetail = () => {
               <S.MoveSubtext>{selectedOrder?.moving_date}</S.MoveSubtext>
             </li>
             <li>
-              <S.MoveText>출발지</S.MoveText>
-              <S.MoveSubtext>{selectedOrder?.start_address}{selectedOrder?.type !== '원룸이사' && '층'}</S.MoveSubtext>
+              <S.MoveText>{!selectedOrder?.type.includes('청소') ? `출발지` : `청소지`}</S.MoveText>
+              <S.MoveSubtext>{selectedOrder?.start_address}{selectedOrder?.type !== '원룸이사' && !selectedOrder?.type.includes('청소') && '층'}</S.MoveSubtext>
             </li>
             {
               !selectedOrder?.type.includes('청소') && (

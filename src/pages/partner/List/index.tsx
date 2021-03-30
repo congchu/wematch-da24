@@ -24,6 +24,7 @@ import * as formSelector from "store/form/selectors";
 import * as commonSelector from "store/common/selectors";
 import { dataLayer } from "lib/dataLayerUtil";
 import { IPartnerList } from "types/partner";
+import NewModal from "components/NewModalTemplate";
 
 const S = {
     Container: styled.div`
@@ -240,9 +241,7 @@ const PartnerList = () => {
                 </S.WrapItem>
                 {(isFetching && getPartnerList.hasMore) && <MoreLoading />}
             </>
-            <ToastPopup visible={visible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
-                <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
-            </ToastPopup>
+            <NewModal visible={visible} title={"정보 만료"} content={"현재 페이지의 정보가 만료되었습니다. 다시 조회해 주세요."} confirmClick={() => history.push('/')} confirmText={"홈으로 가기"}/>
         </S.Container>
     )
 }

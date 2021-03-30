@@ -4,19 +4,22 @@ import {useCookies} from 'react-cookie'
 import queryString from 'query-string'
 import {RouteComponentProps} from 'react-router'
 import {useSelector} from 'react-redux';
-import dayjs from "dayjs";
 import useScrollDirection from 'hooks/useScrollDirection'
 
 import MainHeader from 'components/common/MainHeader'
-import MoveForm from 'pages/home/components/MoveForm'
 import MainFooter from 'components/common/MainFooter'
 import BottomNav from 'components/common/BottomNav'
 import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton'
+
 import MainVisual from 'pages/home/components/MainVisual'
 import Review from 'pages/home/components/Review'
+import MoveForm from 'pages/home/components/MoveForm'
 import PartnerBanner from 'pages/home/components/PartnerBanner'
 import * as colors from 'styles/colors'
-import * as formSelectors from 'store/form/selectors';
+
+import * as formSelectors from 'store/form/selectors'
+
+import {LOCAL_ENV} from 'constants/env'
 
 const S = {
     Container: styled.div``,
@@ -40,8 +43,8 @@ const S = {
         box-shadow: none;
       }
     `,
-    CallBtn: styled.a<{disabled: boolean}>`  
-        display:${props => props.disabled ? 'inline-block' : 'none'};
+    CallBtn: styled.a<{isShow: boolean}>`  
+        display:${props => props.isShow ? 'inline-block' : 'none'};
 		position:fixed;
         bottom:60px;
         right:24px;
@@ -73,16 +76,20 @@ const Home: React.FC<RouteComponentProps> = ({location}) => {
     const HomeRef = useRef<HTMLDivElement>(null)
     const [isFixed, setIsFixed] = useScrollDirection()
     const [loading, setLoading] = useState(false)
-    const [callDisabled, setCallDisabled] = useState(false)
+    // const [callDisabled, setCallDisabled] = useState(false)
 
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
 
     useEffect(() => {
         const mda = queryString.parse(location.search).mda || '';
-        setCookie('0dj38gepoekf98234aplyadmin', `agentid=${mda}`)
-        if (9 <= Number(dayjs().format('H')) && 18 >= Number(dayjs().format('H'))) {
-            setCallDisabled(true);
+        const options = LOCAL_ENV === 'dev' ? {} : { domain: '.wematch.com' };
+        if (mda) {
+            setCookie('0dj38gepoekf98234aplyadmin', `agentid=${mda}`, options)
         }
+
+        // if (9 <= Number(dayjs().format('H')) && 18 >= Number(dayjs().format('H'))) {
+        //     setCallDisabled(true);
+        // }
     }, [])
 
     useEffect(() => {
@@ -115,7 +122,7 @@ const Home: React.FC<RouteComponentProps> = ({location}) => {
                 </S.Wrapper>
                 <MainFooter/>
                 <BottomNav/>
-                <S.CallBtn href="tel:1522-2483" disabled={callDisabled}>
+                <S.CallBtn href="tel:1522-2483" isShow={false}>
                     <img src={require('assets/images/call.svg')}/>
                     <p>전화신청</p>
                 </S.CallBtn>

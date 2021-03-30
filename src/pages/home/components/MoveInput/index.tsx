@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
+import {debounce} from 'lodash'
 
 import Input from 'components/common/Input'
 import Select from 'components/common/Select'
 import CalendarModal from 'components/common/Modal/CalendarModal'
 import AddressModal from 'components/common/Modal/AddressModal'
-
 import { CalendarDate } from 'components/wematch-ui/utils/date'
 import * as colors from 'styles/colors'
 import * as formSelector from 'store/form/selectors'
@@ -139,7 +139,7 @@ const MoveInput: React.FC<Props> = (props) => {
     }, [getMoveType])
 
     const toggleCalendarCancel = () => {
-        dispatch(formActions.setMoveDate([]))
+        /* dispatch(formActions.setMoveDate([])) */
         setVisibleCalendarModal(!visibleCalendarModal)
     }
     const toggleCalendarConfirm = () => {
@@ -162,13 +162,27 @@ const MoveInput: React.FC<Props> = (props) => {
         dispatch(formActions.setPhone(originPhoneValue))
     }
 
-    const onSelectDate = (date: CalendarDate) => {
+    const onSelectDate = (date: CalendarDate) => {  
         if (isExceedDiffDay(date, CALENDAR_MAX_DAYS)) {
             alert(`이사업체조회는 내일부터 최장${CALENDAR_MAX_DAYS}일까지만 비교가 가능합니다.`);
             return;
         }
+
+        dataLayer({
+            event: 'input_info',
+            category: '다이사_메인_입력창_1',
+            label: getMoveDate[0],
+            action: '이사날짜',
+            CD6: getMoveTypeText()
+        })
+        
         dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
+        debounceSelectDate(date)
     }
+
+    const debounceSelectDate = debounce((date: CalendarDate) => {
+        setVisibleCalendarModal(false)
+    }, 300)
 
     const onSelectStartAddress = (data: string) => {
         dispatch(formActions.setAddress({
@@ -290,11 +304,11 @@ const MoveInput: React.FC<Props> = (props) => {
                 )}
             </S.Form>
             <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?" onClose={toggleCalendarCancel}
-                onConfirm={toggleCalendarConfirm} onSelect={onSelectDate} selected={getMoveDate} />
-            <AddressModal visible={visibleStartAddressModal} title="주소 검색" onClose={toggleStartAddress}
+                onSelect={onSelectDate} selected={getMoveDate} />
+            <AddressModal visible={visibleStartAddressModal} title="출발지를 검색해주세요" onClose={toggleStartAddress}
                 onConfirm={toggleStartAddress} onClick={toggleStartAddress} onSelect={onSelectStartAddress} />
             <Select visible={visibleStartFloorModal} items={floorItems} onOverlayClose={toggleStartFloor} onClose={toggleStartFloor} onSelect={onSelectStartFloorAddress} headerTitle="층수 선택" />
-            <AddressModal visible={visibleEndAddressModal} title="주소 검색" onClose={toggleEndAddress}
+            <AddressModal visible={visibleEndAddressModal} title="도착지를 검색해주세요" onClose={toggleEndAddress}
                 onConfirm={toggleEndAddress} onClick={toggleEndAddress} onSelect={onSelectEndAddress} />
             <Select visible={visibleEndFloorModal} items={floorItems} onOverlayClose={toggleEndFloor} onClose={toggleEndFloor} onSelect={onSelectEndFloorAddress} headerTitle="층수 선택" />
         </S.Container>

@@ -32,6 +32,7 @@ export interface ResponseVerifyCodeProps {
     isVerified: boolean | undefined;
 }
 export interface RequestUserInfoInsert {
+    uuid?: string;
     moving_type: '가정' | '원룸' | '사무실' | undefined;
     moving_date: string;
     sido: string;

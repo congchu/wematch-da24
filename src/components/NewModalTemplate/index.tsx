@@ -30,7 +30,7 @@ const ToastContent = styled.div`
 const Content = styled.div`
   display: flex;
   width: 312px;
-  min-height: 210px;
+  /*min-height: 210px;*/
   background-color: #FFF;
   padding: 24px;
   box-sizing: border-box;
@@ -48,7 +48,7 @@ const Text = styled.div`
   font-weight: bold;
   line-height: 30px;
   color: ${colors.gray33};
-  margin-bottom: 16px;
+  margin-bottom: 9px;
   white-space: pre-wrap;
 `;
 
@@ -58,7 +58,7 @@ const SubText = styled.p`
   color: ${colors.gray66};
   letter-spacing: -0.03px;
   text-align: left;
-  margin-bottom: 22px;
+  margin-bottom: 34px;
   line-height: 24px;
   white-space: pre-wrap;
 `;
