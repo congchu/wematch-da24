@@ -5,7 +5,7 @@ import { withKnobs, array, select } from '@storybook/addon-knobs';
 import GlobalStyled from 'styles/global'
 
 export default {
-    title: 'components|ButtonGroup',
+    title: 'ReviewItem|ButtonGroup',
     component: ButtonGroup,
     decorators: [withKnobs]
 };

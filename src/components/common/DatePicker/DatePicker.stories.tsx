@@ -9,7 +9,7 @@ import { action } from '@storybook/addon-actions';
 import GlobalStyled from 'styles/global'
 
 export default  {
-    title: 'components|DatePicker',
+    title: 'ReviewItem|DatePicker',
     component: DatePicker,
     decorators: [withKnobs]
 };

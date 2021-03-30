@@ -6,7 +6,7 @@ import { action } from '@storybook/addon-actions';
 import GlobalStyled from 'styles/global'
 
 export default {
-    title: 'components|Button',
+    title: 'ReviewItem|Button',
     component: Button,
     decorators: [withKnobs],
 };
