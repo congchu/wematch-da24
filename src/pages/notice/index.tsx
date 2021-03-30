@@ -45,7 +45,7 @@ export default function NoticePage() {
 
     useEffect(() => {
         if(params.id){
-            setUrl('/notice/'+params?.id)
+            setUrl('/notice/'+params?.id+'/')
         }
 
         /**** PAGE SIZE 지우기 ***/
@@ -60,7 +60,7 @@ export default function NoticePage() {
         if(url.includes('/'+idx)){
             setUrl('/notice')
         }else{
-            setUrl('/notice/'+idx)
+            setUrl('/notice/'+idx+'/')
         }
     }
 
@@ -79,7 +79,7 @@ export default function NoticePage() {
                             <AccordionCollapse
                                key={index} title={notice.title}
                                date={notice.created_at} postNum={notice.id}
-                               expand={url.includes('/'+notice.id)}
+                               expand={url.includes('/'+notice.id+'/')}
                             >
                                 {/*{notice.contents}*/}
                                 <pre dangerouslySetInnerHTML={{__html: notice.contents}} />
