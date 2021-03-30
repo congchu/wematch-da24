@@ -80,7 +80,7 @@ const Layout = ({children, title, subTitle} : Props) => {
         <S.Container>
             <S.HeaderContainer>
                 {isDesktop ?
-                    <MainHeader/> :
+                    <MainHeader isFixed border/> :
                     <NavHeader title={title} />}
             </S.HeaderContainer>
             <S.Wrap>
