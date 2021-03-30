@@ -12,7 +12,9 @@ import ReactPixel from 'react-facebook-pixel'
 import store from 'store/index'
 import browserHistory from 'lib/history'
 import GlobalStyled from 'styles/global'
-import * as userActions from 'store/user/actions';
+import * as userActions from 'store/user/actions'
+import * as commonActions from 'store/common/actions'
+import * as userSelector from 'store/user/selectors'
 
 import Home from 'pages/home'
 import PartnerList from 'pages/partner/List/index'
@@ -36,9 +38,6 @@ import PartnerRegisterPage from './pages/partnerRegister'
 import UserReviewPage from './pages/userReview'
 import ChecklistPage from './pages/checklist'
 
-import * as commonActions from 'store/common/actions'
-import * as userSelector from 'store/user/selectors'
-
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
 import { useCookies } from 'react-cookie'
@@ -54,7 +53,7 @@ import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
 import { ESignInCase } from 'store/user/types'
 import useReceiveMessage from 'hooks/useReceiveMessage'
-import ToastTestPage from "./components/common/Toast/ToastTestPage";
+import ToastTestPage from './components/common/Toast/ToastTestPage'
 import { LOCAL_ENV } from 'constants/env'
 
 SwiperCore.use([Pagination, Autoplay])
