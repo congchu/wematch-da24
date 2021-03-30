@@ -1,36 +1,69 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import last from 'lodash/last'
 import ReactPixel from 'react-facebook-pixel'
-import {useDispatch, useSelector} from 'react-redux'
-import {useHistory} from 'react-router-dom'
-import {useMedia} from 'react-use-media'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useHistory } from 'react-router-dom'
+import { useMedia } from 'react-use-media'
 import useHashToggle from 'hooks/useHashToggle'
-import {useCookies} from 'react-cookie'
+import { useCookies } from 'react-cookie'
 
 import MainHeader from 'components/common/MainHeader'
 import NavHeader from 'components/common/NavHeader'
 import Input from 'components/common/Input'
-import {SoldOut} from 'components/Icon'
+import { SoldOut } from 'components/Icon'
 import CalendarModal from 'components/common/Modal/CalendarModal'
-import {CalendarDate} from 'components/wematch-ui/utils/date'
+import { CalendarDate } from 'components/wematch-ui/utils/date'
 import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton';
 
 import * as formActions from 'store/form/actions'
 import * as formSelectors from 'store/form/selectors'
 import * as formSelector from 'store/form/selectors'
+import * as userSelector from 'store/user/selectors'
 import {FormState} from 'store/form/reducers'
 
-import {CALENDAR_MAX_DAYS} from 'constants/values';
-import {MOVE_URL} from 'constants/env'
-import {dataLayer} from 'lib/dataLayerUtil'
-import {events} from 'lib/appsflyer'
-import {isExceedDiffDay} from 'lib/dateUtil'
+import { CALENDAR_MAX_DAYS } from 'constants/values';
+import { MOVE_URL } from 'constants/env'
+import { dataLayer } from 'lib/dataLayerUtil'
+import { events } from 'lib/appsflyer'
+import { isExceedDiffDay } from 'lib/dateUtil'
 
 
 const S = {
-    Container: styled.div``,
-    Contents: styled.div`
+  Header: styled.header`
+  display: block;
+  height: 55px;
+  padding: 0 24px;
+  margin-top:0;
+  
+  a {
+  display: block;
+  width: 87px;
+  height: 16px;
+  padding: 24px 0 10px;
+  }
+  
+  span {
+  display: block;
+  width: 87px;
+  height: 16px;
+  font-size: 1px;
+  background: url(https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/logo/wematch_c.png) 0 0 no-repeat;
+  background-size: 100% auto;
+  color: transparent;
+  }
+  @media screen and (min-width:768px) {
+  height: 72px;
+  
+  a {
+      width: 108px;
+      height: 20px;
+      padding-top: 26px;
+  }
+  }
+`,
+  Container: styled.div``,
+  Contents: styled.div`
       margin-top: 96px;
       text-align: center;
       letter-spacing: -0.5px;
@@ -51,7 +84,7 @@ const S = {
         margin-top: 46px;
       }
     `,
-    Title: styled.strong`
+  Title: styled.strong`
       display: inline-block;
       margin-top: 20px;
       font-size: 16px;
@@ -61,7 +94,7 @@ const S = {
         font-size: 15px;
       }
     `,
-    Subtext: styled.p`
+  Subtext: styled.p`
       margin-top: 10px;
       font-size: 15px;
       color: #666;
@@ -72,7 +105,7 @@ const S = {
         line-height: 20px;
       }
     `,
-    ChangeDate: styled.div`
+  ChangeDate: styled.div`
       margin-top: 34px;
       padding: 0 24px;
       @media screen and (min-width: 1200px) {
@@ -83,7 +116,7 @@ const S = {
         margin-top: 22px;
       }
     `,
-    DateTitle: styled.strong`
+  DateTitle: styled.strong`
       display: inline-block;
       margin-bottom: 14px;
       font-size: 15px;
@@ -92,7 +125,7 @@ const S = {
         margin-bottom: 10px;
       }
     `,
-    DateSelect: styled.button`
+  DateSelect: styled.button`
       width: 100%;
       height: 56px;
       margin: 10px 0 4px;
@@ -110,7 +143,7 @@ const S = {
         font-size: 16px;
       }
     `,
-    LinkAlarm: styled.a`
+  LinkAlarm: styled.a`
       display: inline-block;
       width: 100%;
       height: 36px;
@@ -125,7 +158,7 @@ const S = {
 
 
 interface ReceivedFormState {
-    formState: FormState;
+  formState: FormState;
 }
 
 export default function NoPartner() {
@@ -148,6 +181,7 @@ export default function NoPartner() {
     const getContents = useSelector(formSelector.getContents)
     const getFormData = useSelector(formSelector.getFormData)
     const getAgree = useSelector(formSelector.getAgree)
+    const { user } = useSelector(userSelector.getUser)
 
     const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar');
     const [cookies, setCookie] = useCookies(['report'])
@@ -163,132 +197,133 @@ export default function NoPartner() {
 
 
     const handleSubmit = () => {
-        dispatch(formActions.submitFormAsync.request({formData: getFormData}))
-    }
+        dispatch(formActions.submitFormAsync.request({formData: { uuid: user?.uuid, ...getFormData}})) }
 
     const toggleCalendarCancel = () => {
         dispatch(formActions.setMoveDate([]))
         setVisibleCalendarModal(!visibleCalendarModal)
     }
-    const toggleCalendarConfirm = () => {
-        dataLayer({
-            event: 'input_info',
-            category: '다이사_메인_입력창_1',
-            label: getMoveDate[0],
-            action: '이사날짜',
-            CD6: getMoveTypeText()
-        })
-        setVisibleCalendarModal(!visibleCalendarModal)
+
+  const toggleCalendarConfirm = () => {
+    dataLayer({
+      event: 'input_info',
+      category: '다이사_메인_입력창_1',
+      label: getMoveDate[0],
+      action: '이사날짜',
+      CD6: getMoveTypeText()
+    })
+    setVisibleCalendarModal(!visibleCalendarModal)
+  }
+  
+  const onSelectDate = (date: CalendarDate) => {
+    if (isExceedDiffDay(date, CALENDAR_MAX_DAYS)) {
+      alert(`이사업체조회는 내일부터 최장${CALENDAR_MAX_DAYS}일까지만 비교가 가능합니다.`);
+      return;
     }
-    const onSelectDate = (date: CalendarDate) => {
-        if (isExceedDiffDay(date, CALENDAR_MAX_DAYS)) {
-            alert(`이사업체조회는 내일부터 최장${CALENDAR_MAX_DAYS}일까지만 비교가 가능합니다.`);
-            return;
-        }
-        dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
-        dispatch(formActions.setFormData({
-            ...getFormData,
-            'moving_date': date.date.format('YYYY-MM-DD')
-        }))
-    }
+    dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
+    dispatch(formActions.setFormData({
+      ...getFormData,
+      'moving_date': date.date.format('YYYY-MM-DD')
+    }))
+  }
 
-    const goHome = () => {
-        window.location.href = `${MOVE_URL}`
-    }
+  const goHome = () => {
+    window.location.href = `${MOVE_URL}`
+  }
 
 
-    const formState: FormState = {
-        type: getMoveType,
-        date: getMoveDate,
-        address: getAddress,
-        agree: getAgree,
-        floor: getFloor,
-        formData: getFormData,
-        isMoveStore: getIsMoveStore,
-        name: getName,
-        phone: getPhone,
-        submittedForm: getSubmittedForm,
-        contents: getContents
-    }
+  const formState: FormState = {
+    type: getMoveType,
+    date: getMoveDate,
+    address: getAddress,
+    agree: getAgree,
+    floor: getFloor,
+    formData: getFormData,
+    isMoveStore: getIsMoveStore,
+    name: getName,
+    phone: getPhone,
+    submittedForm: getSubmittedForm,
+    contents: getContents
+  }
 
 
-    useEffect(() => {
-        if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
-            dataLayer({
-                event: 'complete',
-                category: '업체마감',
-                action: '업체마감',
-                label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
-                CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
-                CD12: '바로매칭',
-            })
-            ReactPixel.fbq('track', 'Purchase')
+  useEffect(() => {
+    if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
+      dataLayer({
+        event: 'complete',
+        category: '업체마감',
+        action: '업체마감',
+        label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
+        CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+        CD12: '바로매칭',
+      })
+      ReactPixel.fbq('track', 'Purchase')
 
-            gtag('event', 'conversion', {'send_to': 'AW-862163644/CmzdCIej6G0QvKWOmwM'})
-        }
-
-        events({
-            action: 'app_move_nopartner'
-        })
-    }, [])
-
-    useEffect(() => {
-        if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
-            setIsCookie(true)
-            dispatch(formActions.submitFormAsync.success(cookies.report))
-        }
-        if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
-            history.push('/myrequest')
-        }
-
-    }, [getSubmittedForm])
-
-    useEffect(() => {
-        if (getSubmittedForm.data?.result === 'no partner' && !getSubmittedForm.loading) {
-            const now = new Date()
-            const time = now.getTime() + (3600 * 1000)
-            now.setTime(time)
-            setCookie('report', formState, {
-                path: '/',
-                expires: now
-            })
-        }
-    }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
-
-
-    if (getSubmittedForm.loading) {
-        return <ResponsiveSkeleton />
+      gtag('event', 'conversion', { 'send_to': 'AW-862163644/CmzdCIej6G0QvKWOmwM' })
     }
 
+    events({
+      action: 'app_move_nopartner'
+    })
+  }, [])
 
-    return (
-        <>
-            { !getSubmittedForm.report ? <></> :
-                <S.Container>
-                    {isDesktop ? <MainHeader/> : <NavHeader title="" onPreviousButtonClick={goHome} />}
-                    <S.Contents>
-                        <SoldOut/>
-                        <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>
-                        <S.Subtext>다른날짜로 선택해서<br/>비교견적 받아보세요.</S.Subtext>
-                    </S.Contents>
-                    <S.ChangeDate>
-                        <S.DateTitle>날짜 변경</S.DateTitle>
-                        <Input theme="default" border readOnly placeholder="이사예정일"
-                               onClick={() => setVisibleCalendarModal(true)} value={getMoveDate}
-                               style={{backgroundColor: "transparent"}}/>
-                        <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?"
-                                       onClose={toggleCalendarCancel}
-                                       onConfirm={toggleCalendarConfirm} onSelect={onSelectDate}
-                                       selected={getMoveDate}/>
+  useEffect(() => {
+    if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+      setIsCookie(true)
+      dispatch(formActions.submitFormAsync.success(cookies.report))
+    }
+    if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
+      history.push('/myrequest')
+    }
 
-                        <S.DateSelect id='dsl_button_retry' onClick={handleSubmit}>다른 날짜로 견적 재요청</S.DateSelect>
-                        <S.LinkAlarm id='dsl_a_alarm_noPartner' href="https://pf.kakao.com/_Ppsxexd/chat"
-                                     target="_blank">가능업체
+  }, [getSubmittedForm])
+
+  useEffect(() => {
+    if (getSubmittedForm.data?.result === 'no partner' && !getSubmittedForm.loading) {
+      const now = new Date()
+      const time = now.getTime() + (3600 * 1000)
+      now.setTime(time)
+      setCookie('report', formState, {
+        path: '/',
+        expires: now
+      })
+    }
+  }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
+
+
+  if (getSubmittedForm.loading) {
+    return <ResponsiveSkeleton />
+  }
+
+
+  return (
+    <>
+      { !getSubmittedForm.report ? <></> :
+        <S.Container>
+          {isDesktop ? <MainHeader /> : <S.Header><Link to="/"><span>위매치</span></Link></S.Header>}
+          <S.Contents>
+            <SoldOut />
+            <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>
+            <S.Subtext>다른날짜로 선택해서<br />비교견적 받아보세요.</S.Subtext>
+          </S.Contents>
+          <S.ChangeDate>
+            <S.DateTitle>날짜 변경</S.DateTitle>
+            <Input theme="default" border readOnly placeholder="이사예정일"
+              onClick={() => setVisibleCalendarModal(true)} value={getMoveDate}
+              style={{ backgroundColor: "transparent" }} />
+            <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?"
+              onClose={toggleCalendarCancel}
+              onConfirm={toggleCalendarConfirm} onSelect={onSelectDate}
+              selected={getMoveDate} />
+
+            <S.DateSelect id='dsl_button_retry' onClick={handleSubmit}>다른 날짜로 견적 재요청</S.DateSelect>
+            <S.LinkAlarm id='dsl_a_alarm_noPartner' href="https://pf.kakao.com/_Ppsxexd/chat"
+              target="_blank">가능업체
                             발생 시 알림신청</S.LinkAlarm>
-                    </S.ChangeDate>
-                </S.Container>
-            }
-        </>
-    )
+          </S.ChangeDate>
+        </S.Container>
+      }
+    </>
+  )
 }
 

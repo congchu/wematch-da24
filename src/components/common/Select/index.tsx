@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import Styled, { css, keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import ScrollLock, { TouchScrollable } from 'react-scrolllock'
 
 import * as colors from 'styles/colors'
+import {Icon} from "../../wematch-ui";
 
 
 type SelectItemProp = {
@@ -63,7 +64,7 @@ const slideDown = keyframes`
 `
 
 const S = {
-    Container: Styled.div`
+    Container: styled.div`
         position: fixed;
         bottom: 0;
         left: 0;
@@ -86,17 +87,15 @@ const S = {
             // background-color: inherit;
         }
     `,
-    Overlay: Styled.div<{visible: boolean}>`
+    Overlay: styled.div<{visible: boolean}>`
         width: 100%;
         height: 100%;
         opacity: .88;
-        background: ${colors.pointVividBlue};
+        background-color: rgba(18, 18, 18, 0.6);
         position: fixed;
         top: 0;
         left: 0;
         z-index: 20;
-        background: linear-gradient(to bottom, ${colors.pointVividBlue} 0%, #2ccbcb 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=${colors.pointVividBlue}, endColorstr='#2ccbcb', GradientType=0);
         
         transition: all 0.25s ease-in-out;
         animation-duration: 0.25s;
@@ -113,7 +112,7 @@ const S = {
             filter: none;
         }
     `,
-    SelectBox: Styled.div<{visible: boolean}>`
+    SelectBox: styled.div<{visible: boolean}>`
         overflow-y: visible;
         max-height: 320px; 
         padding: 0;
@@ -148,52 +147,53 @@ const S = {
             border-bottom-left-radius:16px;
         }
     `,
-    Header: Styled.div`
+    Header: styled.div`
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         width: 100%;
-        height: 40px;
+        height: 56px;
         border-top-right-radius: 16px;
         border-top-left-radius: 16px;
-        background-color: ${colors.grayBg};
+        background-color: white;
         text-align: right;
+        border-bottom: 0.5px solid #D7DBE2;
         strong {
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            font-size: 15px;
-            font-weight: 400;
+            padding-left: 24px;
+            font-size: 18px;
+            font-weight: bold;
             color: ${colors.gray33};
             line-height: 24px;
             letter-spacing: -1px;
         }
         button {
+            display: flex;
+            align-items: center;
             height: 40px; 
             padding: 0 24px; 
-            font-size: 15px; 
-            font-weight: 400; 
-            color: ${colors.pointBlue};
-            line-height: 41px;
-            letter-spacing: -1px;
             cursor: pointer;
         }
         
         @media (min-width: 1200px) {
-            padding: 1px 0;
             strong {
                 display: block;      
             }
         }
     `,
-    List: Styled.ul`
-        overflow-y: scroll;
-        max-height: 280px;
-        padding: 0 24px;
-        
-        @media (min-width: 1200px) {
-            max-height: 337px;
-        }
+    ListWrapper: styled.div`
+    background-color: #FAFAFA;
     `,
-    Item: Styled.li`
+    List: styled.ul`
+        overflow-y: scroll;
+        max-height: 265px;
+        padding: 0 24px;
+        @media (min-width: 1200px) {
+            max-height: 310px;
+        }
+
+    `,
+    Item: styled.li`
         height: 60px;
         margin: 0;
         padding: 8px 0 10px;
@@ -269,20 +269,24 @@ const Select:React.FC<Props> = (props) => {
                 <S.SelectBox visible={!visible}>
                     <S.Header>
                         <strong>{headerTitle}</strong>
-                        <button onClick={onClose}>닫기</button>
+                        <button onClick={onClose}>
+                            <Icon.Close size={20} color={'#121212'} />
+                        </button>
                     </S.Header>
-                    <TouchScrollable>
-                        <S.List>
+                  <S.ListWrapper>
+                        <TouchScrollable>
+                          <S.List>
                             {values.map((value, index) =>
-                                <S.Item key={index} onClick={(e) => {
-                                    handleOnSelect(keyList[index])
-                                    handleOnClose(e)
-                                }}>
-                                    {value}
-                                </S.Item>
+                              <S.Item key={index} onClick={(e) => {
+                                handleOnSelect(keyList[index])
+                                handleOnClose(e)
+                              }}>
+                                {value}
+                              </S.Item>
                             )}
-                        </S.List>
-                    </TouchScrollable>
+                          </S.List>
+                      </TouchScrollable>
+                  </S.ListWrapper>
                 </S.SelectBox>
             </S.Container>
         </ScrollLock>

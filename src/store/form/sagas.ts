@@ -110,7 +110,8 @@ export function* fetchMoveFormSaga() {
     const getMoveType = yield select(formSelector.getType)
     yield call(setFormSaga)
     const formData = yield select(formSelector.getFormData);
-
+    const {user: {uuid}} = yield select(userSelector.getUser);
+    
 
     dataLayer({
         event: 'request',
@@ -123,10 +124,10 @@ export function* fetchMoveFormSaga() {
 
     if(selectedSubmitType === 'curation') {
         yield put(replace('/'));
-        yield put(actions.submitFormAsync.request({formData: {...formData}}));
+        yield put(actions.submitFormAsync.request({formData: { uuid, ...formData }}));   
     } else if(selectedSubmitType === 'select') {
         yield put(replace('/'));
-        yield put(commonActions.fetchMoveIdx.request(formData));
+        yield put(commonActions.fetchMoveIdx.request({ uuid, ...formData }));
     }
 }
 

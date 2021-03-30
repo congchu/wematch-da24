@@ -10,8 +10,30 @@ import * as requests from "./requests";
 import {ESignInCase, IOrder} from "./types";
 import * as userSelector from "./selectors";
 import * as commonSelector from "store/common/selectors";
+import {LOCAL_ENV} from "constants/env";
 import * as sentry from '@sentry/react'
 import {Severity} from '@sentry/react'
+
+const COOKIE_OPTIONS =
+  LOCAL_ENV === "DEV"
+    ? {
+        "max-age": 60 * 60 * 24 * 60,
+        expires: new Date(
+          dayjs()
+            .add(60, "day")
+            .format()
+        ),
+      }
+    : {
+        "max-age": 60 * 60 * 24 * 60,
+        domain: ".wematch.com",
+        expires: new Date(
+          dayjs()
+            .add(60, "day")
+            .format()
+        ),
+      };
+
 
 export function* fetchUserConsultSaga(
   action: ActionType<typeof actions.fetchUserConsultAsync.request>
@@ -124,15 +146,7 @@ export function* fetchSignUpSaga(
         : action.payload;
 
     const {token, data} = yield call(requests.postSignUp, params);
-    setCookie("x-wematch-token", token, {
-      "max-age": 60 * 60 * 24 * 60,
-      domain: ".wematch.com",
-      expires: new Date(
-        dayjs()
-          .add(60, "day")
-          .format()
-      ),
-    });
+    setCookie("x-wematch-token", token, COOKIE_OPTIONS);
     yield put(actions.fetchSignUpAsync.success({token, user: {...data}}));
 
     yield call(signInAfterFlowSaga);
@@ -155,15 +169,8 @@ export function* fetchSignInSaga(
   try {
     const {phone, code} = action.payload;
     const {token, data} = yield call(requests.getSignIn, phone, code);
-    setCookie("x-wematch-token", token, {
-      "max-age": 60 * 60 * 24 * 60,
-      domain: ".wematch.com",
-      expires: new Date(
-        dayjs()
-          .add(60, "day")
-          .format()
-      ),
-    });
+
+    setCookie("x-wematch-token", token, COOKIE_OPTIONS);
     yield put(actions.fetchSignInAsync.success({token, user: {...data}}));
 
     yield call(signInAfterFlowSaga);

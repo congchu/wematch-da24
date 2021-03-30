@@ -24,6 +24,7 @@ import * as commonSelector from 'store/common/selectors'
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
 import { some } from 'lodash'
+import NewModal from "components/NewModalTemplate";
 
 
 
@@ -530,9 +531,7 @@ const PartnerDetail = () => {
                     </S.BottomContainer>
                 </>
             )}
-            <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
-                <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
-            </ToastPopup>
+            <NewModal visible={sessionVisible} title={"정보 만료"} content={"현재 페이지의 정보가 만료되었습니다. 다시 조회해 주세요."} confirmClick={() => history.push('/')} confirmText={"홈으로 가기"}/>
             <ToastPopup visible={unavailableCheck} showHeaderCancelButton={false} confirmClick={() => setUnavailableCheck(!unavailableCheck)} confirmText={"확인"}>
                 <p>오늘 마감된 업체</p>
                 <span>해당 업체는 오늘 예약 및 상담 접수가 마감됐어요. 내일 오전에 다시 조회해보세요!</span>
