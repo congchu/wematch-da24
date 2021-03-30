@@ -33,7 +33,7 @@ const MyConsult = () => {
         onMessageHandler({
             action: 'clearData'
         })
-        history.replace('/');
+        window.location.href = "/"
     }
 
     const { data: { clean_orders, move_orders }, loading } = useSelector(userSelector.getConsult);
