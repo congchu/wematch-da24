@@ -53,6 +53,7 @@ export interface RequestUserInfoInsert {
     keep_move: boolean;
     mkt_agree: boolean;
     agent_id: string | string[] | null | undefined;
+    memo: string;
 }
 
 export interface RequestUserInfoInsertProps {
