@@ -20,7 +20,7 @@ import { ESubmittedFormResult } from './types';
 
 export function* setFormSaga()  {
     const { user } = yield select(userSelector.getUser);
-    const {formState: { type, date, address, floor, isMoveStore, agree }} = yield select()
+    const {formState: { type, date, address, floor, isMoveStore, agree, contents }} = yield select()
 
     let distance  = yield call(calcRouteByDirectionService, {start: address.start, end: address.end})
 
@@ -53,6 +53,7 @@ export function* setFormSaga()  {
         mkt_agree: agree.marketing,
         distance: Number(distance) || 1,
         agent_id: cookie ? queryString.parse(cookie).agentid : '',
+        memo: contents
     }
 
     yield put(actions.setFormData(formData))
