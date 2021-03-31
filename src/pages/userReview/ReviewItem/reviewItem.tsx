@@ -11,7 +11,7 @@ import * as colors from 'styles/colors'
 const S = {
     Container: styled.div`
       padding: 30px 24px;
-      border-bottom: 1px solid #ebeef2;
+      border-bottom: 1px solid ${colors.lineDeco};
       
 
       @media screen and (min-width: 768px){
@@ -79,7 +79,7 @@ const S = {
         top: 2px;
         right: 0;
         font-size: 14px;
-        color: #666;
+        color: ${colors.gray66};
         @media screen and (min-width: 768px){
           top: 14px
         }
@@ -155,7 +155,7 @@ const S = {
       padding-top: 11px;
       font-size: 15px;
       font-weight: 400;
-      color: #333;
+      color: ${colors.gray33};
       letter-spacing: -0.8px;
       float: none;
       width: 100%;

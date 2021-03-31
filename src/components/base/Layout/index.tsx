@@ -15,7 +15,7 @@ const S = {
         display: block;
     `,
     Wrap: styled.div`
-        margin:66px auto 0 auto;
+        margin:66px auto 0 ;
 		@media screen and (min-width: 768px) {
             position: relative;
             width: 608px;
@@ -26,7 +26,7 @@ const S = {
 		@media screen and (min-width:1200px) {
 			position:relative;
 			width:720px;
-            margin:72px auto 0 auto;
+            margin:72px auto 0;
 			padding-left:272px;
 			padding-top: 80px;
 			padding-bottom: 80px;

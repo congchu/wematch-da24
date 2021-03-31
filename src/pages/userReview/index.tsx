@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
+import {isEmpty} from 'lodash'
 
 import Layout from 'components/base/Layout'
 import ReviewItem from './ReviewItem/reviewItem'
@@ -59,16 +60,22 @@ export default function UserReviewPage() {
     const dispatch = useDispatch()
     const getCommentList = useSelector(partnerSelector.getCommentList)
 
-    useEffect(()=>{
-        window.scrollTo(0, 0)
-    },[])
-
     useEffect(() => {
-        dispatch(partnerActions.fetchCommentListAsync.request({
-            page: 1,
-            size: values.DEFAULT_COMMENT_LIST_SIZE
-        }))
+        if (isEmpty(getCommentList.data)) {
+            window.scrollTo(0, 0)
+            dispatch(partnerActions.fetchCommentListAsync.request({
+                page: 1,
+                size: values.DEFAULT_COMMENT_LIST_SIZE
+            }))
+        }
     }, [])
+
+
+    /* 스켈레톤 끝나면 스크롤 방지 해제 */
+    if(!getCommentList.loading) {
+        document.body.style.overflow = "unset"
+    }
+
 
     return (
         <>
@@ -79,7 +86,7 @@ export default function UserReviewPage() {
                         {getCommentList.loading ? <ReviewSkeleton/> : (
                             getCommentList.data.map((comment, index) => {
                                 return (
-                                    <ReviewItem adminid={comment.partner} partnerName={comment.area + " " + comment.level  + "등급 업체"}
+                                    <ReviewItem key={index} adminid={comment.partner} partnerName={comment.area + " " + comment.level  + "등급 업체"}
                                                 userId={comment.id*7} created_at={comment.created_at}
                                                 star={comment.star} price={comment.price} kind={comment.kind} professional={comment.professional}
                                                 reviewContents={comment.memo} reply={comment.reply}/>

@@ -175,6 +175,10 @@ interface Props {
 
 export default function ReviewSkeleton( ) {
 
+
+    /* 스크롤 방지 */
+    document.body.style.overflow = "hidden";
+
     const isDesktop = useMedia({
         minWidth: 1200,
     })
@@ -190,8 +194,13 @@ export default function ReviewSkeleton( ) {
     if (isDesktop) {
         return (
             <>
-
                 <Desk.Container>
+                    <SkeletonType2Desktop/>
+                    <Desk.Line style={{marginTop: 18}}/>
+                    <SkeletonType2Desktop/>
+                    <Desk.Line style={{marginTop: 18}}/>
+                    <SkeletonType2Desktop/>
+                    <Desk.Line style={{marginTop: 18}}/>
                     <SkeletonType2Desktop/>
                     <Desk.Line style={{marginTop: 18}}/>
                     <SkeletonType2Desktop/>

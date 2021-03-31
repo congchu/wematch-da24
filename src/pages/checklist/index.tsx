@@ -60,7 +60,7 @@ const S = {
         
             &:first-child {
               padding-top: 33px;
-              border-top: 0 none;
+              border-top: 0;
             }
             
             strong {
@@ -96,7 +96,7 @@ const S = {
               border: 1px solid #c4c9d1;
               font-size: 15px;
               line-height: 40px;
-              color: #666;
+              color: ${colors.gray66};
               cursor: pointer;
               
               svg{

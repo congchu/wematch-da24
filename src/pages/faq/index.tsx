@@ -8,17 +8,15 @@ import AccordionCollapse from 'components/common/Accordion'
 import * as backofficeSelector from 'store/backoffice/selectors'
 import * as backofficeActions from 'store/backoffice/actions'
 import * as values from 'constants/values'
+import * as colors from 'styles/colors'
+
 
 export type faqCategory = '공통' | '이사' | '청소'
 
 const S = {
     CollapsedWrap: styled.div<{index?: number}> `
       padding-top: ${props => props.index === 0 ? '0px' : '18px'};
-      border-bottom: 1px solid #d7dbe2;
-      .first1 {
-        padding-top: 0px;
-        border-bottom: 1px solid #d7dbe2;
-      }
+      border-bottom: 1px solid ${colors.lineDefault};
       pre{
         white-space: pre-wrap;
         img{
@@ -32,19 +30,15 @@ const S = {
     `,
     TopCollapsedWrap: styled.div`
       padding-top: 0px;
-      border-bottom: 1px solid #d7dbe2;
+      border-bottom: 1px solid ${colors.lineDefault};
     `
 }
 
 export default function FaqPage() {
 
-    const nextPage = useRef(1)
-    // const [isFetching, setIsFetching] = useInfiniteScroll(moreNotice)
 
     const dispatch = useDispatch()
     const getFaqList = useSelector(backofficeSelector.getFaqList)
-    const [expand, setExpand] = useState<number | null >(null)
-    const [clicked, setClicked] = useState(false)
 
     useEffect(()=>{
         window.scrollTo(0, 0)
@@ -52,24 +46,9 @@ export default function FaqPage() {
 
 
     useEffect(() => {
-        dispatch(backofficeActions.fetchFaqListAsync.request({
-            page: 1,
-            size: values.DEFAULT_NOTICE_LIST_SIZE
-        }))
+        dispatch(backofficeActions.fetchFaqListAsync.request())
     }, [])
 
-
-    useEffect( () => {
-
-        if (getFaqList.moreLoading || getFaqList.hasMore ) {
-            nextPage.current += 1
-            dispatch(backofficeActions.fetchFaqMoreListAsync.request({
-                page: nextPage.current,
-                size: values.DEFAULT_NOTICE_LIST_SIZE
-            }))
-        }
-
-    }, [getFaqList.moreLoading, getFaqList.hasMore, getFaqList.loading])
 
     return(
         <Layout title="자주 묻는 질문">

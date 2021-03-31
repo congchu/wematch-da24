@@ -15,20 +15,14 @@ export const fetchNoticeListAsync = createAsyncAction(
     "FETCH_NOTICE_LIST_REQUEST",
     "FETCH_NOTICE_LIST_RESPONSE",
     "FETCH_NOTICE_LIST_FAILURE"
-)< {page: number; size: number} , NoticeType, undefined>();
+)< undefined, NoticeType, undefined>();
 
 
 export const fetchFaqListAsync = createAsyncAction(
     "FETCH_FAQ_LIST_REQUEST",
     "FETCH_FAQ_LIST_RESPONSE",
     "FETCH_FAQ_LIST_FAILURE"
-)< {page: number; size: number} , FaqType, undefined>();
-
-export const fetchFaqMoreListAsync = createAsyncAction(
-    "FETCH_FAQ_MORE_LIST_REQUEST",
-    "FETCH_FAQ_MORE_RESPONSE",
-    "FETCH_FAQ_MORE_FAILURE"
-)< {page: number; size: number} , FaqType, undefined>();
+)< undefined , FaqType, undefined>();
 
 
 export const submitContactFormAsync = createAsyncAction(

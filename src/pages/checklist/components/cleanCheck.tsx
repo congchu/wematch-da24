@@ -6,7 +6,7 @@ import Layout from 'components/base/Layout'
 const S = {
 
     ImageContainer: styled.div`
-      padding: 0 0 0 0 ;
+      padding: 0;
       display: block;
       margin: 0;
       width: 100%;

@@ -10,7 +10,7 @@ import AccordionCollapse from 'components/common/Accordion'
 import * as backofficeActions from 'store/backoffice/actions'
 import * as backofficeSelector from 'store/backoffice/selectors'
 import * as values from 'constants/values'
-import {INotice} from "../../types/backoffice";
+import * as colors from 'styles/colors'
 
 
 export type faqCategory = '공통' | '이사' | '청소';
@@ -19,7 +19,7 @@ export type faqCategory = '공통' | '이사' | '청소';
 const S = {
     CollapsedWrap: styled.div<{index?: number}> `
       padding-top: ${props => props.index === 0 ? '0px' : '18px'};
-      border-bottom: 1px solid #d7dbe2;
+      border-bottom: 1px solid ${colors.lineDefault};
 
       pre{
         white-space: pre-wrap;
@@ -49,10 +49,8 @@ export default function NoticePage() {
         }
 
         /**** PAGE SIZE 지우기 ***/
-        dispatch(backofficeActions.fetchNoticeListAsync.request({
-            page: 1,
-            size: values.DEFAULT_NOTICE_LIST_SIZE
-        }))
+        dispatch(backofficeActions.fetchNoticeListAsync.request())
+
     }, [])
 
 

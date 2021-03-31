@@ -2,7 +2,7 @@ import axios from 'axios'
 import {api, ApiResponse} from 'lib/api'
 import {IFaq, INotice, PartnerFormData,ContactFormData} from 'types/backoffice'
 
-export const getNoticeList = async (page: number, size: number) => {
+export const getNoticeList = async () => {
 
     const { data } = await api.request<ApiResponse<INotice[]>>({
         method: 'get',
@@ -13,11 +13,11 @@ export const getNoticeList = async (page: number, size: number) => {
     return data.data
 }
 
-export const getFaqList = async (page: number, size: number) => {
+export const getFaqList = async () => {
 
     const { data } = await api.request<ApiResponse<IFaq[]>>({
         method: 'get',
-        url: `/backoffice/api/notices?size=${size}&page=${page}&type=FAQ`
+        url: `/backoffice/api/notices?type=FAQ`
 
     })
 

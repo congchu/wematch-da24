@@ -11,6 +11,8 @@ import * as colors from 'styles/colors'
 import {ContactFormData} from 'types/backoffice'
 import * as backofficeActions from 'store/backoffice/actions'
 import * as backofficeSelector from 'store/backoffice/selectors'
+import {debounce} from "lodash";
+import {getContactStatus} from "store/backoffice/selectors";
 
 const S = {
     Container: styled.div``,
@@ -73,6 +75,7 @@ const S = {
       font-size: 18px;
       background: #1672F7;
       color: #fff;
+      cursor: pointer;
       
       @media screen and (max-width: 768px) {
         position: fixed;
@@ -106,14 +109,13 @@ const Type = [
 function ContactPage() {
 
     const dispatch = useDispatch()
-    const getContactForm = useSelector(backofficeSelector.getContactForm)
+    const getContactStatus = useSelector(backofficeSelector.getContactStatus)
 
     const [visibleCategoryModal, setVisibleCategoryModal] = useHashToggle('#category')
     const [visibleTypeModal, setVisibleTypeModal] = useHashToggle('#type')
     const toggleCategory = () => setVisibleCategoryModal(!visibleCategoryModal)
     const toggleType = () => setVisibleTypeModal(!visibleTypeModal)
 
-    /* 나중에 스토어 관련 작업으로 대체 권장 */
     const [name, setName] = useState('');
     const [tel, setTel] = useState('');
     const [contents, setContents] = useState('');
@@ -142,7 +144,7 @@ function ContactPage() {
     },[name, contactType, tel, contents, serviceType])
 
 
-    const contactSubmitHandler = () => {
+    const debounceSubmitHandler = debounce(() => {
         const formData : ContactFormData = {
             contact_type: contactType,
             name: name,
@@ -151,15 +153,18 @@ function ContactPage() {
             service_type: serviceType,
         }
         dispatch(backofficeActions.submitContactFormAsync.request({formData: formData}))
-    }
+
+    }, 500);
 
     useEffect(()=>{
-        setContactType('')
-        setName('')
-        setTel('')
-        setContents('')
-        setServiceType('')
-    },[getContactForm.created_at])
+        if(getContactStatus === "success") {
+            setContactType('')
+            setName('')
+            setTel('')
+            setContents('')
+            setServiceType('')
+        }
+    },[getContactStatus])
 
 
     return(
@@ -202,7 +207,7 @@ function ContactPage() {
             </S.Form>
             <Select visible={visibleCategoryModal} items={Category} onOverlayClose={toggleCategory} onClose={toggleCategory} onSelect={selectServiceType}/>
             <Select visible={visibleTypeModal} items={Type} onOverlayClose={toggleType} onClose={toggleType} onSelect={selectContactType} />
-            <S.Button theme={"primary"} disabled={!completed} onClick={() => contactSubmitHandler() }>확인</S.Button>
+            <S.Button theme={"primary"} disabled={!completed} onClick={() => debounceSubmitHandler() }>확인</S.Button>
         </Layout>
 
     )

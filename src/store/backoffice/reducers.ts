@@ -20,8 +20,9 @@ export interface BackofficeState {
         hasMore: boolean;
     },
     contactForm: {
-        data: ContactFormData,
+        data: ContactFormData
         loading: boolean;
+        status: 'success' | 'failure' | 'default' | 'loading'
     },
     partnerForm: {
         data: PartnerFormData,
@@ -52,7 +53,8 @@ const initialState: BackofficeState  = {
             contents: '',
             created_at: '',
         },
-        loading: false
+        loading: false,
+        status: 'default'
     },
     partnerForm: {
         data: {
@@ -75,9 +77,7 @@ export default createReducer <BackofficeState, Actions>(initialState)
     .handleAction(actions.fetchNoticeListAsync.success, (state, action) => ({ ...state, notice: { notices: action.payload.notices, loading: false, hasMore: action.payload.has_more }}))
     .handleAction(actions.fetchFaqListAsync.request, (state) => ({ ...state, faq: { ...state.faq, loading: true }}))
     .handleAction(actions.fetchFaqListAsync.success, (state, action) => ({ ...state, faq: { faq: action.payload.notices, loading: false, hasMore: action.payload.has_more }}))
-    .handleAction(actions.fetchFaqMoreListAsync.request, (state) => ({ ...state, faq: { ...state.faq, moreLoading: true }}))
-    .handleAction(actions.fetchFaqMoreListAsync.success, (state, action) => ({ ...state, faq: { faq: [...state.faq.faq, ...action.payload.notices], loading: false, moreLoading: false, hasMore: action.payload.has_more}}))
-    .handleAction(actions.submitContactFormAsync.request, (state) => ({...state, contactForm: { ...state.contactForm, loading: true}}))
-    .handleAction(actions.submitContactFormAsync.success, (state, action) => ({...state, contactForm: { ...state.contactForm, data: action.payload ,loading: false}}))
+    .handleAction(actions.submitContactFormAsync.request, (state) => ({...state, contactForm: { ...state.contactForm, loading: true, status: 'loading'}}))
+    .handleAction(actions.submitContactFormAsync.success, (state, action) => ({...state, contactForm: { ...state.contactForm, data: action.payload ,loading: false, status: 'success'}}))
     .handleAction(actions.submitPartnerFormAsync.request, (state) => ({...state, partnerForm: { ...state.partnerForm, loading: true}}))
     .handleAction(actions.submitPartnerFormAsync.success, (state, action) => ({...state, partnerForm: { ...state.partnerForm, data: action.payload ,loading: false}}))
