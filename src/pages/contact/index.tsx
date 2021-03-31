@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import styled, {css} from 'styled-components'
 import {useDispatch, useSelector} from "react-redux"
 import useHashToggle from 'hooks/useHashToggle'
+import {isEmpty, every} from 'lodash'
 
 import Layout from 'components/base/Layout'
 import Input from 'components/common/Input'
@@ -123,6 +124,13 @@ function ContactPage() {
     const [serviceType, setServiceType] = useState<string>('');
     const [completed, setCompleted] = useState<boolean>(false);
 
+    const initObj = {
+        contact_type: contactType,
+        name: name,
+        tel: tel,
+        contents: contents,
+        service_type: serviceType,
+    }
 
     const selectContactType = (data: string ) => {
         setContactType(data)
@@ -131,18 +139,11 @@ function ContactPage() {
         setServiceType(data)
     }
 
-    const isCompletedForm = () => {
-        if (name !== '' && contactType !== '' && tel !== '' && contents !== '' && serviceType !== '') {
-            setCompleted(true)
-        }else {
-            setCompleted(false)
-        }
-    }
-
     useEffect(()=>{
-        isCompletedForm()
+        if(every(initObj)){
+            setCompleted(true)
+        }
     },[name, contactType, tel, contents, serviceType])
-
 
     const debounceSubmitHandler = debounce(() => {
         const formData : ContactFormData = {
@@ -153,7 +154,6 @@ function ContactPage() {
             service_type: serviceType,
         }
         dispatch(backofficeActions.submitContactFormAsync.request({formData: formData}))
-
     }, 500);
 
     useEffect(()=>{

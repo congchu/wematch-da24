@@ -5,7 +5,7 @@ import {useRouter} from 'hooks/useRouter'
 import styled from 'styled-components'
 
 import Layout from 'components/base/Layout'
-import AccordionCollapse from 'components/common/Accordion'
+import Accordion from 'components/common/Accordion'
 
 import * as backofficeActions from 'store/backoffice/actions'
 import * as backofficeSelector from 'store/backoffice/selectors'
@@ -48,7 +48,6 @@ export default function NoticePage() {
             setUrl('/notice/'+params?.id+'/')
         }
 
-        /**** PAGE SIZE 지우기 ***/
         dispatch(backofficeActions.fetchNoticeListAsync.request())
 
     }, [])
@@ -74,14 +73,14 @@ export default function NoticePage() {
                     return (
                         <S.CollapsedWrap key={index} index={index} className='collapseItem'
                                          onClick={(e) => clicker(notice.id)}>
-                            <AccordionCollapse
+                            <Accordion
                                key={index} title={notice.title}
                                date={notice.created_at} postNum={notice.id}
                                expand={url.includes('/'+notice.id+'/')}
                             >
                                 {/*{notice.contents}*/}
                                 <pre dangerouslySetInnerHTML={{__html: notice.contents}} />
-                            </AccordionCollapse>
+                            </Accordion>
                         </S.CollapsedWrap>
                     )
                 })}

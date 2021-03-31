@@ -81,7 +81,7 @@ const S = {
       transition: all .5s;
       ${props => props.isCollapsed && css`
         height: auto;
-        max-height: 100vh;
+        max-height: 1000vh;
         transition: all 0.5s;
       `};
       display: block;
@@ -123,6 +123,10 @@ function Accordion({ isFaq, category ,title, children, expand=false, date, postN
                 top: scrolledTopLength + wholeRef.current.getBoundingClientRect().y - 100,
                 behavior: 'smooth'
             })
+            // window.scrollBy({
+            //     top: 400,
+            //     behavior: 'smooth'
+            // })
         }else{
             setIsCollapse(false)
         }
