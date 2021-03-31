@@ -80,6 +80,7 @@ const initialState: FormState = {
         keep_move: false,
         mkt_agree: false,
         agent_id: '',
+        memo: '',
     },
     selectedSubmitType: null,
     /* submittedForm */
