@@ -139,7 +139,6 @@ const MoveInput: React.FC<Props> = (props) => {
     }, [getMoveType])
 
     const toggleCalendarCancel = () => {
-        /* dispatch(formActions.setMoveDate([])) */
         setVisibleCalendarModal(!visibleCalendarModal)
     }
     const toggleCalendarConfirm = () => {
