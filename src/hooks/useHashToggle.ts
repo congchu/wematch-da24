@@ -16,11 +16,17 @@ const useHashToggle = (hash: string): [boolean, React.Dispatch<boolean>] =>  {
         if (isToggle) {
             toggleOpenModal(isToggle)
         } else {
-            if(history.location.hash.length > 0) {
+            if(history.location.hash === hash) {
                 history.goBack();
             }
         }
     }, [isToggle])
+
+    useEffect(() => {
+        if (isToggle && !history.location.hash) {
+            setIsToggle(false)
+        }
+    }, [history.location.hash])
 
 
     return [isToggle, setIsToggle];
