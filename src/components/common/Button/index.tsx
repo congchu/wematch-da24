@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Styled, { css } from "styled-components";
 
 import * as colors from "styles/colors";
@@ -82,6 +82,7 @@ const Button: React.FC<Props> = (props) => {
     bold = false,
     children,
     loading = false,
+    onClick,
     ...restProps
   } = props;
 
@@ -91,6 +92,13 @@ const Button: React.FC<Props> = (props) => {
       disabled={disabled}
       border={border}
       bold={bold}
+      onClick={
+        !loading
+          ? onClick
+          : (e) => {
+              e.preventDefault();
+            }
+      }
       {...restProps}
     >
       {loading && <S.Icon theme={theme} />}
