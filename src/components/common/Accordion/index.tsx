@@ -10,9 +10,6 @@ interface Props extends React.HTMLAttributes<HTMLDivElement>  {
     title: string;
     date?:string;
     postNum?:number;
-    defaultExpand?: boolean;
-    expand?: boolean;
-    clickable?: boolean;
 }
 const S = {
     Container: styled.div`
@@ -66,15 +63,11 @@ const S = {
       font-size: 14px;
       position: absolute;
     `,
-    ContentsWrapper : styled.div<{isCollapsed: boolean}>`
-      max-height: 0;
+    ContentsWrapper : styled.div<{isCollapsed?: boolean}>`
+      max-height: 1000vh;
+      height: 0;
       overflow: hidden;
-      transition: all .5s;
-      ${props => props.isCollapsed && css`
-        height: auto;
-        max-height: 1000vh;
-        transition: all 0.5s;
-      `};
+      transition: height 0.35s ease, background 0.35s ease;
       display: block;
       font-size: 15px;
       line-height: 22px;
@@ -91,35 +84,33 @@ const S = {
       overflow: visible;
     `
 }
-function Accordion({ category ,title, children, expand=false, date, postNum, clickable=false } : Props) {
+function Accordion({ category ,title,  date, postNum, children  } : Props) {
     const wholeRef = useRef<HTMLDivElement>(null)
     const parentRef = useRef<HTMLDivElement>(null)
     const childRef = useRef<HTMLDivElement>(null)
-    const [isCollapse, setIsCollapse] = useState(expand)
+    const [isCollapse, setIsCollapse] = useState(false)
 
-    useEffect(()=>{
-        if(wholeRef.current === null)
-            return
-        if(expand){
-            setIsCollapse(true)
-        }else{
-            setIsCollapse(false)
-        }
-    },[expand])
+    const handleButtonClick = React.useCallback(
+        (event) => {
+            event.stopPropagation();
+            if (parentRef.current === null || childRef.current === null) {
+                return;
+            }
+            if (parentRef.current.clientHeight > 0) {
+                parentRef.current.style.height = "0"
+            } else {
+                parentRef.current.style.height = `${childRef.current.clientHeight}px`
+            }
+            setIsCollapse(!isCollapse);
+        },
+        [isCollapse]
+    )
 
-    const clickableItemHandler = () => {
-        if(wholeRef.current === null)
-            return
-        if(clickable){
-            setIsCollapse(!isCollapse)
-        }else{
-            return
-        }
-    }
+
 
     return(
         <S.Container>
-            <S.Header ref={wholeRef} onClick={ () => clickableItemHandler()} >
+            <S.Header ref={wholeRef} onClick={handleButtonClick} >
                 <div className='textWrapper'>
                     {category? <em>Q {category}<br/></em> : <></>}
                     {title}
@@ -133,7 +124,7 @@ function Accordion({ category ,title, children, expand=false, date, postNum, cli
                     }
                 </span>
             </S.Header>
-            <S.ContentsWrapper ref={parentRef} isCollapsed={isCollapse} >
+            <S.ContentsWrapper ref={parentRef}  >
                 <S.Contents ref={childRef}>{children}</S.Contents>
             </S.ContentsWrapper>
         </S.Container>

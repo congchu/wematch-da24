@@ -1,7 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {useParams,Link} from 'react-router-dom'
-import {useRouter} from 'hooks/useRouter'
 import styled from 'styled-components'
 
 import Layout from 'components/base/Layout'
@@ -9,7 +7,6 @@ import Accordion from 'components/common/Accordion'
 
 import * as backofficeActions from 'store/backoffice/actions'
 import * as backofficeSelector from 'store/backoffice/selectors'
-import * as values from 'constants/values'
 import * as colors from 'styles/colors'
 
 
@@ -37,33 +34,12 @@ const S = {
 export default function NoticePage() {
 
     const dispatch = useDispatch()
-    const router = useRouter()
-    const params = useParams<{ id: string}>()
     const getNoticeList = useSelector(backofficeSelector.getNoticeList)
-    const [url, setUrl] = useState('/notice')
-
 
     useEffect(() => {
-        if(params.id){
-            setUrl('/notice/'+params?.id+'/')
-        }
-
         dispatch(backofficeActions.fetchNoticeListAsync.request())
 
     }, [])
-
-
-    const clicker = (idx: number) => {
-        if(url.includes('/'+idx)){
-            setUrl('/notice')
-        }else{
-            setUrl('/notice/'+idx+'/')
-        }
-    }
-
-    useEffect(()=>{
-        router.push(url)
-    },[url])
 
 
     return(
@@ -71,13 +47,8 @@ export default function NoticePage() {
             <div>
                 { getNoticeList.notices?.map((notice, index) => {
                     return (
-                        <S.CollapsedWrap key={index} index={index} className='collapseItem'
-                                         onClick={(e) => clicker(notice.id)}>
-                            <Accordion
-                               key={index} title={notice.title}
-                               date={notice.created_at} postNum={notice.id}
-                               expand={url.includes('/'+notice.id+'/')}
-                            >
+                        <S.CollapsedWrap key={index} index={index}>
+                            <Accordion key={index} title={notice.title} date={notice.created_at} postNum={notice.id}>
                                 {/*{notice.contents}*/}
                                 <pre dangerouslySetInnerHTML={{__html: notice.contents}} />
                             </Accordion>
