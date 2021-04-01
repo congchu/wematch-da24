@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ReactPixel from "react-facebook-pixel";
-import last from "lodash/last";
 import { useMedia } from "react-use-media";
 import { useDispatch, useSelector } from "react-redux";
-import { useCookies } from "react-cookie";
 import { useHistory, useParams } from "react-router-dom";
 
 import MainHeader from "components/common/MainHeader";
@@ -19,27 +17,20 @@ import {
   LevelN,
   LevelS,
 } from "components/Icon";
-import ToastPopup from "components/wematch-ui/ToastPopup";
 import * as commonSelector from "store/common/selectors";
 import * as commonActions from "store/common/actions";
-import * as formActions from "store/form/actions";
 import * as partnerActions from "store/partner/actions";
-import * as formSelectors from "store/form/selectors";
-import * as formSelector from "store/form/selectors";
-
-import { FormState } from "store/form/reducers";
-
 import * as colors from "styles/colors";
 import { MOVE_URL, CLEAN_URL } from "constants/env";
 import { dataLayer } from "lib/dataLayerUtil";
 import { events } from "lib/appsflyer";
-import { formatDateDash2Dot, whatDay } from "lib/dateUtil";
-import validatePhone from "lib/validatePhone";
+import { whatDay } from "lib/dateUtil";
 import * as sentry from "@sentry/react";
 import { Severity } from "@sentry/react";
 import NewModal from "../../../components/NewModalTemplate";
 import ResponsiveSkeleton from "components/common/Skeleton/responsiveSkeleton";
 import dayjs from "dayjs";
+import { useRouter } from "../../../hooks/useRouter";
 
 const S = {
   Container: styled.div`
@@ -343,32 +334,21 @@ const S = {
 
 export default function Completed() {
   const { data, loading, error } = useSelector(commonSelector.getCompletedData);
-  const getMoveType = useSelector(formSelector.getType);
-  const getMoveDate = useSelector(formSelector.getDate);
-  const getAddress = useSelector(formSelector.getAddress);
-  const getFloor = useSelector(formSelector.getFloor);
-  const getName = useSelector(formSelector.getName);
-  const getPhone = useSelector(formSelector.getPhone);
-  const getIsMoveStore = useSelector(formSelector.getIsMoveStore);
-  const getContents = useSelector(formSelector.getContents);
-  const getFormData = useSelector(formSelector.getFormData);
-  const getAgree = useSelector(formSelector.getAgree);
-
   const dispatch = useDispatch();
-  const [cookies, setCookie] = useCookies(["report"]);
   const history = useHistory();
 
   const isDesktop = useMedia({
     minWidth: 1200,
   });
-
-  const getSubmittedForm = useSelector(formSelectors.getSubmittedForm);
   const [infoVisible, setInfoVisible] = useState(false);
   const [expand, setExpand] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
   const [isCookie, setIsCookie] = useState(false); //새로고침 시 픽셀,데이터 레이어 재요청 방지용
   const { inquiry_idx } = useParams<{ inquiry_idx: string }>();
   const [firstLoading, setFirstLoading] = useState(true);
+  const {
+    query: { msg },
+  } = useRouter();
   const toggleInfoBox = () => {
     setInfoVisible(!infoVisible);
   };
@@ -388,27 +368,35 @@ export default function Completed() {
     dispatch(commonActions.fetchCompletedMoveIdx.request({ inquiry_idx }));
   }, [dispatch, inquiry_idx]);
 
-  // useEffect(() => {
-  //     if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
-  //         dataLayer({
-  //             event: 'complete',
-  //             category: '매칭완료',
-  //             action: `매칭완료_${getSubmittedForm.data?.match_list?.length}`,
-  //             label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
-  //             CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
-  //             CD12: '바로매칭',
-  //         })
+  useEffect(() => {
+    if (data !== null && !loading && !error && msg !== "true") {
+      dataLayer({
+        event: "complete",
+        category: "매칭완료",
+        action: `매칭완료_${data?.partners?.length}`,
+        label: `${data?.start_address
+          .split(" ")
+          .slice(0, -1)
+          .pop()}_${data?.end_address
+          .split(" ")
+          .slice(0, -1)
+          .pop()}`,
+        CD6: `${data.type === "가정이사" ? "가정" : "사무실"}`,
+        CD12: "바로매칭",
+      });
 
-  //         events({
-  //             action: 'app_move_done'
-  //         })
-  //         ReactPixel.fbq('track', 'Purchase')
+      events({
+        action: "app_move_done",
+      });
+      ReactPixel.fbq("track", "Purchase");
 
-  //         TenpingScript.SendConversion()
+      TenpingScript.SendConversion();
 
-  //         gtag('event', 'conversion', {'send_to': 'AW-862163644/CmzdCIej6G0QvKWOmwM'})
-  //     }
-  // }, [getSubmittedForm])
+      gtag("event", "conversion", {
+        send_to: "AW-862163644/CmzdCIej6G0QvKWOmwM",
+      });
+    }
+  }, []);
 
   const userRequestInfo: {
     contact: string;
@@ -476,13 +464,13 @@ export default function Completed() {
               <S.LinkCompany
                 onClick={() => {
                   dataLayer({
-                    event: "complete",
-                    category: "매칭완료",
+                    event: msg !== "true" ? "complete" : "msg_complete",
+                    category:
+                      msg !== "true" ? "매칭완료" : "매칭완료페이지_업체정보",
                     action: "고객평가_확인",
                     label: `${arr.length}_${index + 1}`,
-                    CD6: data.type,
-                    // CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
-                    CD12: "바로매칭",
+                    // CD6: data.type,
+                    CD6: `${data.type === "가정이사" ? "가정" : "사무실"}`,
                   });
                   /* 페이지 재접속시 이전상태 초기화 */
                   dispatch(partnerActions.detailReset());
