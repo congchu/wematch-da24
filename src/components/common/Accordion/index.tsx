@@ -2,14 +2,10 @@ import * as React from 'react'
 import {ReactHTML, useEffect, useRef, useState} from "react"
 import styled, {css} from 'styled-components'
 import {useRouter} from 'hooks/useRouter'
-
 import {Minus, Plus} from 'components/wematch-ui/Icon'
 import * as colors from 'styles/colors'
-
 export type faqCategory = '공통' | '이사' | '청소'
-
 interface Props extends React.HTMLAttributes<HTMLDivElement>  {
-    isFaq?: boolean;
     category?: faqCategory;
     title: string;
     date?:string;
@@ -18,8 +14,6 @@ interface Props extends React.HTMLAttributes<HTMLDivElement>  {
     expand?: boolean;
     clickable?: boolean;
 }
-
-
 const S = {
     Container: styled.div`
       display: flex;
@@ -31,7 +25,6 @@ const S = {
       display: flex;
       align-items: center;
       cursor: pointer;
-      
       overflow: hidden;
       line-height: 1.5;
       color: #333;
@@ -63,11 +56,9 @@ const S = {
       svg {
         float: right;
       }
-      
       @media screen and (min-width: 768px) {
         //padding-top: 52px;
       }
-      
     `,
     Button: styled.div`
       top: 8px;
@@ -95,58 +86,36 @@ const S = {
         padding-top: 16px;
       }
     `,
-
     Contents : styled.div`
       padding-top: 26px;
       overflow: visible;
     `
-
-
 }
-
-
-function Accordion({ isFaq, category ,title, children, expand=false, date, postNum, clickable=false } : Props) {
-
+function Accordion({ category ,title, children, expand=false, date, postNum, clickable=false } : Props) {
     const wholeRef = useRef<HTMLDivElement>(null)
     const parentRef = useRef<HTMLDivElement>(null)
     const childRef = useRef<HTMLDivElement>(null)
     const [isCollapse, setIsCollapse] = useState(expand)
-    const scrolledTopLength = window.pageYOffset; // 스크롤된 길이
-
 
     useEffect(()=>{
         if(wholeRef.current === null)
             return
         if(expand){
             setIsCollapse(true)
-            window.scroll({
-                top: scrolledTopLength + wholeRef.current.getBoundingClientRect().y - 100,
-                behavior: 'smooth'
-            })
-            // window.scrollBy({
-            //     top: 400,
-            //     behavior: 'smooth'
-            // })
         }else{
             setIsCollapse(false)
         }
     },[expand])
-
 
     const clickableItemHandler = () => {
         if(wholeRef.current === null)
             return
         if(clickable){
             setIsCollapse(!isCollapse)
-            window.scroll({
-                top: scrolledTopLength + wholeRef.current.getBoundingClientRect().y - 100,
-                behavior: 'smooth'
-            })
         }else{
             return
         }
     }
-
 
     return(
         <S.Container>
@@ -169,7 +138,5 @@ function Accordion({ isFaq, category ,title, children, expand=false, date, postN
             </S.ContentsWrapper>
         </S.Container>
     )
-
 }
-
 export default React.memo(Accordion);

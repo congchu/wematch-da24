@@ -7,7 +7,6 @@ import AccordionCollapse from 'components/common/Accordion'
 
 import * as backofficeSelector from 'store/backoffice/selectors'
 import * as backofficeActions from 'store/backoffice/actions'
-import * as values from 'constants/values'
 import * as colors from 'styles/colors'
 
 
