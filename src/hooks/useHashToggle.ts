@@ -1,34 +1,33 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 const useHashToggle = (hash: string): [boolean, React.Dispatch<boolean>] =>  {
     const [isToggle, setIsToggle] = useState<boolean>(false);
     const history = useHistory()
-    const location = useLocation();
 
     const toggleOpenModal = useCallback((isToggle: boolean) => {
         if (isToggle) {
             history.push(hash)
+        }
+    }, [isToggle])
+
+
+    useEffect(() => {
+        if (isToggle) {
+            toggleOpenModal(isToggle)
         } else {
-            if(location.hash) {
+            if(history.location.hash === hash) {
                 history.goBack();
             }
         }
     }, [isToggle])
 
-    const handleOnHashChange = () => {
-        const isHashMatch = window.location.hash === hash;
-        setIsToggle(isHashMatch);
-    };
-
     useEffect(() => {
-        toggleOpenModal(isToggle)
-    }, [isToggle])
+        if (isToggle && !history.location.hash) {
+            setIsToggle(false)
+        }
+    }, [history.location.hash])
 
-    useEffect(() => {
-        window.addEventListener('hashchange', handleOnHashChange);
-        return () => window.removeEventListener('hashchange', handleOnHashChange);
-    }, []);
 
     return [isToggle, setIsToggle];
 }
