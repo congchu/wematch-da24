@@ -99,14 +99,14 @@ const Home: React.FC<RouteComponentProps> = ({location}) => {
     }, [getSubmittedForm.loading])
 
     // memory leak 경고 메시지 해결을 위해 한번 감싸는 용도
-    useEffect(() => {
-        setLoading(getSubmittedForm.loading)
-        return () => setLoading(false)
-    }, [getSubmittedForm.loading])
+    // useEffect(() => {
+    //     setLoading(getSubmittedForm.loading)
+    //     return () => setLoading(false)
+    // }, [getSubmittedForm.loading])
 
-    if (loading) {
-        return <ResponsiveSkeleton />
-    }
+    // if (loading) {
+    //     return <ResponsiveSkeleton />
+    // }
 
     return (
         <>

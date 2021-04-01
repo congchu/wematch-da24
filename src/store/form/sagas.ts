@@ -51,7 +51,7 @@ export function* setFormSaga()  {
         phone3: phone3,
         keep_move: isMoveStore,
         mkt_agree: agree.marketing,
-        distance: Number(distance) || 1,
+        distance: Math.round(Number(distance)) || 1,
         agent_id: cookie ? queryString.parse(cookie).agentid : '',
         memo: contents
     }
@@ -70,7 +70,7 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
         const data = yield call(requests.submitForm, action.payload.formData)
         yield put(actions.submitFormAsync.success(data))
         if (data?.result === ESubmittedFormResult.Success) {
-            yield put(push(`/requests/completed/${data.inquiry_idx}`))
+            yield put(push(`/completed/${data.inquiry_idx}`))
             // yield put(push(`/requests/completed`))
         } else if (data?.result === ESubmittedFormResult.NoPartner) {
             yield put(push('/requests/nopartner'))

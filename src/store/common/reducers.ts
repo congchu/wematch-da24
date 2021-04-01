@@ -16,7 +16,8 @@ export interface CommonState {
     },
     completedMove: {
         data: IOrder | null;
-        loading: boolean
+        loading: boolean;
+        error: boolean;
     },
     deviceId: string;
 }
@@ -32,7 +33,8 @@ const initialState: CommonState = {
     },
     completedMove: {
         data: null,
-        loading: false
+        loading: false,
+        error: false,
     },
     deviceId: '',
 }
@@ -42,5 +44,8 @@ export default createReducer<CommonState, Actions>(initialState)
     .handleAction(actions.fetchAddressListAsync.success, (state, action) => ({ ...state,  addressList: { data: action.payload, loading: false } }))
     .handleAction(actions.fetchMoveIdx.request, (state) => ({ ...state, moveIdxData: { ...state.moveIdxData, loading: true }}))
     .handleAction(actions.fetchMoveIdx.success, ((state, action) => ({ ...state, moveIdxData: {idx: action.payload.idx, loading: false}})))
+    .handleAction(actions.fetchCompletedMoveIdx.request, (state) => ({...state, completedMove: {...state.completedMove, loading: true}}))
+    .handleAction(actions.fetchCompletedMoveIdx.success, (state, action) => ({...state, completedMove: { loading: false, data: action.payload, error: false }}))
+    .handleAction(actions.fetchCompletedMoveIdx.failure, (state, action) => ({...state, completedMove: { loading: false, data: null, error: true }}))
     .handleAction(actions.resetAll, (state) => ({ ...state, ...initialState }))
     .handleAction(actions.setDeviceId, (state, action) => ({...state, deviceId: action.payload}))

@@ -25,9 +25,9 @@ export function* fetchMoveIdxSaga(action: ActionType<typeof actions.fetchMoveIdx
 
 export function* fetchCompletedMoveSaga(action: ActionType<typeof actions.fetchCompletedMoveIdx.request>) {
     try {
-        const data = yield call(requests.getCompletedMoveIdx, action.payload.inquiry_idx)
-        console.log(data);
-        // yield put(actions.fetchCompletedMoveIdx.success())
+        const { data } = yield call(requests.getCompletedMoveIdx, action.payload.inquiry_idx)
+        // console.log(data);
+        yield put(actions.fetchCompletedMoveIdx.success(data))
     } catch(e) {
         yield put(actions.fetchCompletedMoveIdx.failure())
     }

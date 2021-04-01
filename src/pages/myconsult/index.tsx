@@ -12,7 +12,6 @@ import * as userSelector from 'store/user/selectors';
 import dayjs from 'dayjs';
 import { IOrder } from 'store/user/types';
 import Button from 'components/common/Button';
-import LoginModal from 'components/common/Modal/LoginModal';
 import { deleteCookie } from 'lib/cookie';
 import { useCookies } from 'react-cookie';
 import { get } from 'lodash';

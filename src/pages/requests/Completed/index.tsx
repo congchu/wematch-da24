@@ -12,7 +12,7 @@ import Collapse from 'components/base/Collapse'
 import { Down, Up, Info } from 'components/wematch-ui/Icon'
 import { Triangle, Check, LevelA, LevelB, LevelC, LevelN, LevelS } from 'components/Icon'
 import ToastPopup from 'components/wematch-ui/ToastPopup'
-
+import * as commonSelector from 'store/common/selectors';
 import * as commonActions from 'store/common/actions'
 import * as formActions from 'store/form/actions'
 import * as partnerActions from 'store/partner/actions'
@@ -30,6 +30,8 @@ import validatePhone from 'lib/validatePhone'
 import * as sentry from "@sentry/react";
 import { Severity } from "@sentry/react";
 import NewModal from "../../../components/NewModalTemplate";
+import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton'
+import dayjs from 'dayjs'
 
 const S = {
   Container: styled.div`
@@ -332,7 +334,7 @@ const S = {
 }
 
 export default function Completed() {
-
+  const { data, loading, error } = useSelector(commonSelector.getCompletedData)
   const getMoveType = useSelector(formSelector.getType)
   const getMoveDate = useSelector(formSelector.getDate)
   const getAddress = useSelector(formSelector.getAddress)
@@ -358,7 +360,7 @@ export default function Completed() {
   const [showPopup, setShowPopup] = useState(false)
   const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
   const { inquiry_idx } = useParams<{inquiry_idx: string}>()
-
+  const [firstLoading, setFirstLoading] = useState(true);
   const toggleInfoBox = () => {
     setInfoVisible(!infoVisible)
   }
@@ -368,88 +370,87 @@ export default function Completed() {
     history.push('/myrequest')
   }
 
-  const formState: FormState = {
-    type: getMoveType,
-    date: getMoveDate,
-    address: getAddress,
-    agree: getAgree,
-    floor: getFloor,
-    formData: getFormData,
-    isMoveStore: getIsMoveStore,
-    name: getName,
-    phone: getPhone,
-    submittedForm: getSubmittedForm,
-    contents: getContents
-  }
-
   useEffect(() => {
-    if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
-      setIsCookie(true)
-      dispatch(formActions.submitFormAsync.success(cookies.report))
+    if(loading) {
+      setFirstLoading(false);
     }
-    if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
-      history.push('/myrequest')
-    }
-  }, [])
+  }, [loading])
+
+  // const formState: FormState = {
+  //   type: getMoveType,
+  //   date: getMoveDate,
+  //   address: getAddress,
+  //   agree: getAgree,
+  //   floor: getFloor,
+  //   formData: getFormData,
+  //   isMoveStore: getIsMoveStore,
+  //   name: getName,
+  //   phone: getPhone,
+  //   submittedForm: getSubmittedForm,
+  //   contents: getContents
+  // }
+
+  // useEffect(() => {
+  //   if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+  //     setIsCookie(true)
+  //     dispatch(formActions.submitFormAsync.success(cookies.report))
+  //   }
+  //   if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
+  //     history.push('/myrequest')
+  //   }
+  // }, [])
 
 
 
     useEffect(() => {
       dispatch(commonActions.fetchCompletedMoveIdx.request({inquiry_idx}))
-    }, [])
+    }, [dispatch, inquiry_idx])
 
-    useEffect(() => {
-        if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
-            setIsCookie(true)
-            dispatch(formActions.submitFormAsync.success(cookies.report))
-        }
-        if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
-            history.push('/myrequest')
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+    //         setIsCookie(true)
+    //         dispatch(formActions.submitFormAsync.success(cookies.report))
+    //     }
+    //     if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
+    //         history.push('/myrequest')
+    //     }
+    // }, [])
 
-    useEffect(() => {
-        if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
-            dataLayer({
-                event: 'complete',
-                category: '매칭완료',
-                action: `매칭완료_${getSubmittedForm.data?.match_list?.length}`,
-                label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
-                CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
-                CD12: '바로매칭',
-            })
+    // useEffect(() => {
+    //     if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
+    //         dataLayer({
+    //             event: 'complete',
+    //             category: '매칭완료',
+    //             action: `매칭완료_${getSubmittedForm.data?.match_list?.length}`,
+    //             label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
+    //             CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+    //             CD12: '바로매칭',
+    //         })
 
-            events({
-                action: 'app_move_done'
-            })
-            ReactPixel.fbq('track', 'Purchase')
+    //         events({
+    //             action: 'app_move_done'
+    //         })
+    //         ReactPixel.fbq('track', 'Purchase')
 
-            TenpingScript.SendConversion()
+    //         TenpingScript.SendConversion()
 
-            gtag('event', 'conversion', {'send_to': 'AW-862163644/CmzdCIej6G0QvKWOmwM'})
-        }
-    }, [getSubmittedForm])
+    //         gtag('event', 'conversion', {'send_to': 'AW-862163644/CmzdCIej6G0QvKWOmwM'})
+    //     }
+    // }, [getSubmittedForm])
 
-    useEffect(() => {
-        if (getSubmittedForm.data?.result === 'success' && !getSubmittedForm.loading) {
-            const now = new Date()
-            const time = now.getTime() + (3600 * 1000)
-            now.setTime(time)
+    // useEffect(() => {
+    //     if (getSubmittedForm.data?.result === 'success' && !getSubmittedForm.loading) {
+    //         const now = new Date()
+    //         const time = now.getTime() + (3600 * 1000)
+    //         now.setTime(time)
 
-            setCookie('report', formState, {
-                path: '/',
-                expires: now
-            })
-        }
-    }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
+    //         setCookie('report', formState, {
+    //             path: '/',
+    //             expires: now
+    //         })
+    //     }
+    // }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
 
-    const {
-        start,
-        end,
-        detailStart,
-        detailEnd
-    }: { start: string, end: string, detailStart: string, detailEnd: string } = getAddress;
-    const {start: startFloor, end: endFloor} = getFloor
 
     const userRequestInfo: {
         contact: string;
@@ -460,16 +461,17 @@ export default function Completed() {
         memo: string;
     } = {
 
-        contact: '(' + getName + ') ' + validatePhone(getPhone, true),
-        movingDate: !getMoveDate[0]? getMoveDate[0]:formatDateDash2Dot(getMoveDate[0]) + ' ' + whatDay(getMoveDate[0]),
-        movingType: (getMoveType === 'house' ? '가정이사' : '사무실이사') + ' (' + (getIsMoveStore ? '보관이사 해당 있음' : '보관이사 해당 없음') + ')',
-        startAddr: start + ' ' + detailStart + ' ' + startFloor + '층',
-        endAddr: end + ' ' + detailEnd + ' ' + endFloor + '층',
-        memo: getContents|| ''
+        // contact: '(' + data?.name + ') ' + validatePhone(getPhone, true),
+        contact: `(${data?.name}) ${data?.phone_number}`,
+        movingDate: `(${whatDay(data?.moving_date)}) ${dayjs(data?.moving_date).format('YYYY.MM.DD')}`,
+        movingType: `${data?.type}`,
+        startAddr: `${data?.start_address}층`,
+        endAddr: `${data?.end_address}층`,
+        memo: `${data?.memo}`
     };
 
-    if(!cookies.report && !getSubmittedForm.report) {
-        return <></>
+    if (loading || firstLoading) {
+      return <ResponsiveSkeleton />
     }
 
   return (
@@ -492,7 +494,7 @@ export default function Completed() {
           이용 고객이 평가한 내용으로 산출한 빅 데이터 등급입니다.
         </S.LevelInfoBox>
         <S.CompanyList>
-          {getSubmittedForm?.data?.["match_list"]?.map((list, index) => (
+          {data?.partners.map((list, index, arr) => (
             <li key={index}>
               <S.ListBox>
                 {list.level === 'NEW' && <LevelN />}
@@ -510,8 +512,9 @@ export default function Completed() {
                   event: 'complete',
                   category: '매칭완료',
                   action: '고객평가_확인',
-                  label: `${getSubmittedForm?.data?.["match_list"].length}_${index + 1}`,
-                  CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+                  label: `${arr.length}_${index + 1}`,
+                  CD6: data.type,
+                  // CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
                   CD12: '바로매칭',
                 })
                 /* 페이지 재접속시 이전상태 초기화 */
@@ -563,13 +566,14 @@ export default function Completed() {
       <S.Box href={CLEAN_URL}>
         <img className='left' src={require('assets/images/components/Completed/home.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사" />
         <div>
-          <h3 className='title'>{last(getAddress.end.split(' '))}</h3>
+          <h3 className='title'>{data?.end_address.split(' ').slice(0, -1).pop()}</h3>
           <p className='desc'>잘하는 입주청소 업체 찾기</p>
         </div>
         <img className='right' src={require('assets/images/components/Completed/right.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사" />
       </S.Box>
       <S.Button onClick={() => setShowPopup(!showPopup)}>신청 정보 확인완료</S.Button>
       <NewModal visible={showPopup} title={"입주청소 찾기"} content={"입주청소도 필요하세요?"} confirmText={"바로 찾기"} cancelText={"다음에"} confirmClick={() => window.location.href = `${CLEAN_URL}`} cancelClick={() => togglePopup()} />
+      <NewModal visible={error} title={"정보 만료"} content={"현재 페이지의 정보가 만료되었습니다. 다시 조회해 주세요."} confirmClick={() => history.push('/')} confirmText={"홈으로 가기"}/>
     </S.Container>
   )
 }
