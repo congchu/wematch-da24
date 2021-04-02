@@ -12,7 +12,9 @@ import ReactPixel from 'react-facebook-pixel'
 import store from 'store/index'
 import browserHistory from 'lib/history'
 import GlobalStyled from 'styles/global'
-import * as userActions from 'store/user/actions';
+import * as userActions from 'store/user/actions'
+import * as commonActions from 'store/common/actions'
+import * as userSelector from 'store/user/selectors'
 
 import Home from 'pages/home'
 import PartnerList from 'pages/partner/List/index'
@@ -29,8 +31,17 @@ import NoPartnerPage from 'pages/requests/NoPartner'
 import RequestPartnerDetail from 'pages/requests/Detail/index'
 import NotFound from 'pages/notFound'
 import ErrorService from 'pages/errorService'
-import * as commonActions from 'store/common/actions'
-import * as userSelector from 'store/user/selectors'
+import NoticePage from './pages/notice'
+import FaqPage from './pages/faq'
+import ContactPage from './pages/contact'
+import PartnerRegisterPage from './pages/partnerRegister'
+import UserReviewPage from './pages/userReview'
+import ChecklistPage from './pages/checklist'
+import MoveEstimation from './pages/checklist/components/moveEstimation'
+import CleanEstimation from './pages/checklist/components/cleanEstimation'
+import MovePrep from './pages/checklist/components/movePrep'
+import CleanCheck from './pages/checklist/components/cleanCheck'
+
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
 import { useCookies } from 'react-cookie'
@@ -46,7 +57,7 @@ import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
 import { ESignInCase } from 'store/user/types'
 import useReceiveMessage from 'hooks/useReceiveMessage'
-import ToastTestPage from "./components/common/Toast/ToastTestPage";
+import ToastTestPage from './components/common/Toast/ToastTestPage'
 import { LOCAL_ENV } from 'constants/env'
 
 SwiperCore.use([Pagination, Autoplay])
@@ -132,6 +143,19 @@ function AppRoute() {
         return (
             <Switch>
                 <Route exact path="/" component={Home} />
+
+                {/*subpages*/}
+                <Route exact path="/faq" component={FaqPage} />
+                <Route exact path="/partnernew" component={PartnerRegisterPage} />
+                <Route exact path="/notice" component={NoticePage} />
+                <Route exact path="/contact" component={ContactPage} />
+                <Route exact path="/comment" component={UserReviewPage} />
+                <Route exact path="/checklist" component={ChecklistPage} />
+                <Route exact path="/checklist/moveestimation" component={MoveEstimation}/>
+                <Route exact path="/checklist/cleanestimation" component={CleanEstimation}/>
+                <Route exact path="/checklist/moveprep" component={MovePrep}/>
+                <Route exact path="/checklist/cleancheck" component={CleanCheck}/>
+
                 <Route exact path="/toast" component={ToastTestPage} />
                 <Route exact path="/partner/list" component={PartnerList} />
                 <Route exact path="/partner/detail/:adminId" component={PartnerDetail} />
@@ -145,7 +169,7 @@ function AppRoute() {
                 <Route exact path="/requests/completed" component={CompletedPage} />
                 <Route exact path="/requests/nopartner" component={NoPartnerPage} />
                 <Route exact path="/requests/noservice" component={NoServicePage} />
-                <Route exact path="/requests/completed/:adminId" component={RequestPartnerDetail} />
+                <Route exact path={["/requests/completed/:adminId", "/comment/:adminId"]} component={RequestPartnerDetail} />
                 <Route exact path="/error" component={ErrorService} />
                 <Route exact path="/login" render={props => wematchToken ? <Redirect to={{ pathname: "/"}} /> : <Login />} />
                 <Route component={NotFound} />

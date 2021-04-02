@@ -88,7 +88,7 @@ export default function BannerLayout({ title, onBack, children, tags, ...restPro
             )}
             {children}
             <S.Bottom>
-                <Button id={tags?.home} theme="primary" bold onClick={() => router.history.goBack()}>위매치 이용하러 가기</Button>
+                <Button id={tags?.home} theme="primary" bold onClick={() => router.push('/')}>위매치 이용하러 가기</Button>
             </S.Bottom>
         </S.Container>
     )

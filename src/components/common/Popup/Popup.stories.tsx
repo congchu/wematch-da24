@@ -15,7 +15,7 @@ import {Provider} from "react-redux";
 import store from 'store/index'
 
 export default {
-    title: 'components|Popup',
+    title: 'ReviewItem|Popup',
     component: Popup,
     decorators: [withKnobs],
     parameters: {

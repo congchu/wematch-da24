@@ -8,7 +8,7 @@ import { action } from '@storybook/addon-actions';
 import GlobalStyled from 'styles/global'
 
 export default {
-    title: 'components|Input',
+    title: 'ReviewItem|Input',
     component: Input,
     decorators: [withKnobs]
 };

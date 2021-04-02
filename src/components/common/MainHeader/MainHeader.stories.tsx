@@ -5,7 +5,7 @@ import MainHeader from './index'
 import GlobalStyled from 'styles/global'
 
 export default {
-    title: 'components|MainHeader',
+    title: 'ReviewItem|MainHeader',
     component: MainHeader,
 };
 

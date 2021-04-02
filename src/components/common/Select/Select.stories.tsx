@@ -7,7 +7,7 @@ import GlobalStyled from 'styles/global'
 import Button from "components/common/Button";
 
 export default {
-    title: 'components|Select',
+    title: 'ReviewItem|Select',
     component: Select,
     decorators: [withKnobs],
     parameters: {
