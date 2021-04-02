@@ -10,3 +10,4 @@ export const getReviewList = createSelector(getPartnerState, state => state.revi
 export const getCartPartnerList = createSelector(getPartnerState, state => state.cart)
 export const getMatchingData = createSelector(getPartnerState, state => state.matching)
 export const getPartnerDetailCompleted = createSelector(getPartnerState, state => state.detailForCompleted)
+export const getCommentList = createSelector(getPartnerState, state => state.comment)

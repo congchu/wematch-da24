@@ -16,7 +16,7 @@ import GlobalStyled from 'styles/global'
 import store from 'store/index'
 
 export default {
-    title: 'components|Modal',
+    title: 'ReviewItem|Modal',
     component: Modal,
     decorators: [withKnobs],
     parameters: {
