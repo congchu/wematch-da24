@@ -9,30 +9,18 @@ export const getAddress = async (dong: string) => {
     return data
 }
 
-export const verifySendMessage = async (phone: string) => {
-    const { data } = await api.request<types.RequestVerifySendMessageProps>({
-        method: 'post',
-        url: `/msg/auth`,
-        data: {
-            'send_phone': 'DA24_CUSTOMER',
-            'dest_phone': `${phone}`
-        }
-    })
-
-    return data
-}
-
-export const verifyAuthCode = async (phone: string, code: string) => {
-    const { data } = await api.request<types.RequestVerifyAuthCodeProps>({
-        method: 'get',
-        url: `${API_MESSAGE_URL}?dest_phone=${phone}&code=${code}`
-    })
-
-    return data
-}
-
 export const getMoveIdx = async (formData: types.RequestUserInfoInsert) => {
     return await axios.post(`${API_MIDDLEWARE_URL}/inquiry`, formData)
 }
 
 
+export const getCompletedMoveIdx = async (inquiry_idx: string) => {
+    const { data } = await api.get(`/da24-dev/user/orders/${inquiry_idx}`, {
+        paramsSerializer: function(params) {
+          var result = '';
+          return result;
+        }
+      })
+
+    return data;
+}

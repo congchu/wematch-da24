@@ -66,4 +66,6 @@ export enum MovingType {
     office = '사무실'
 }
 
-
+export interface RequestCompletedMoveIdxProps {
+    inquiry_idx: string;
+}

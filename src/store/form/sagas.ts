@@ -16,6 +16,7 @@ import dayjs from 'dayjs';
 import {dataLayer} from 'lib/dataLayerUtil'
 import * as sentry from '@sentry/react'
 import {Severity} from '@sentry/react'
+import { ESubmittedFormResult } from './types';
 
 export function* setFormSaga()  {
     const { user } = yield select(userSelector.getUser);
@@ -50,7 +51,7 @@ export function* setFormSaga()  {
         phone3: phone3,
         keep_move: isMoveStore,
         mkt_agree: agree.marketing,
-        distance: Number(distance) || 1,
+        distance: Math.round(Number(distance)) || 1,
         agent_id: cookie ? queryString.parse(cookie).agentid : '',
         memo: contents
     }
@@ -67,32 +68,14 @@ export function* setFormSaga()  {
 export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsync.request>) {
     try {
         const data = yield call(requests.submitForm, action.payload.formData)
-        const formState: FormState = {
-            type: yield select(formSelector.getType),
-            date: yield select(formSelector.getDate),
-            address: yield select(formSelector.getAddress),
-            agree: yield select(formSelector.getAgree),
-            floor: yield select(formSelector.getFloor),
-            formData: yield select(formSelector.getFormData),
-            isMoveStore: yield select(formSelector.getIsMoveStore),
-            name: yield select(formSelector.getName),
-            phone: yield select(formSelector.getPhone),
-            submittedForm: {
-                data: data,
-                loading: false,
-                report: true
-            },
-            selectedSubmitType: null,
-            contents: yield select(formSelector.getContents)
-        }
-        yield put(actions.submitFormAsync.success(formState))
-
-        if (formState.submittedForm.data?.result === 'success') {
-            yield put(push('/requests/completed'))
-        } else if (formState.submittedForm.data?.result === 'no partner') {
+        yield put(actions.submitFormAsync.success(data))
+        if (data?.result === ESubmittedFormResult.Success) {
+            yield put(push(`/completed/${data.inquiry_idx}`))
+            // yield put(push(`/requests/completed`))
+        } else if (data?.result === ESubmittedFormResult.NoPartner) {
             yield put(push('/requests/nopartner'))
-        } else if (formState.submittedForm.data?.result === 'no service') {
-            yield put(push('/requests/noservice'))
+        } else if (data?.result === ESubmittedFormResult.NoService) {
+            yield put(push('/requests/noservice'))  
         }
     } catch (e) {
         yield put(actions.submitFormAsync.failure())

@@ -19,7 +19,8 @@
     "noEmit": true,
     "jsx": "react",
     "baseUrl": "src",
-    "types": ["googlemaps"]
+    "types": ["googlemaps"],
+    "downlevelIteration": true
   },
   "include": [
     "src"
