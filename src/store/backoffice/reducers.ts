@@ -20,13 +20,14 @@ export interface BackofficeState {
         hasMore: boolean;
     },
     contactForm: {
-        data: ContactFormData
+        data: ContactFormData;
         loading: boolean;
         status: 'success' | 'failure' | 'default' | 'loading'
     },
     partnerForm: {
-        data: PartnerFormData,
-        loading: boolean
+        data: PartnerFormData;
+        loading: boolean;
+        status: 'success' | 'failure' | 'default' | 'loading'
     }
 }
 
@@ -67,7 +68,8 @@ const initialState: BackofficeState  = {
             contents: '',
             created_at: ''
         },
-        loading: false
+        loading: false,
+        status: 'default'
     }
 
 }
@@ -79,5 +81,5 @@ export default createReducer <BackofficeState, Actions>(initialState)
     .handleAction(actions.fetchFaqListAsync.success, (state, action) => ({ ...state, faq: { faq: action.payload.notices, loading: false, hasMore: action.payload.has_more }}))
     .handleAction(actions.submitContactFormAsync.request, (state) => ({...state, contactForm: { ...state.contactForm, loading: true, status: 'loading'}}))
     .handleAction(actions.submitContactFormAsync.success, (state, action) => ({...state, contactForm: { ...state.contactForm, data: action.payload ,loading: false, status: 'success'}}))
-    .handleAction(actions.submitPartnerFormAsync.request, (state) => ({...state, partnerForm: { ...state.partnerForm, loading: true}}))
-    .handleAction(actions.submitPartnerFormAsync.success, (state, action) => ({...state, partnerForm: { ...state.partnerForm, data: action.payload ,loading: false}}))
+    .handleAction(actions.submitPartnerFormAsync.request, (state) => ({...state, partnerForm: { ...state.partnerForm, loading: true, status: 'loading'}}))
+    .handleAction(actions.submitPartnerFormAsync.success, (state, action) => ({...state, partnerForm: { ...state.partnerForm, data: action.payload ,loading: false, status: 'success'}}))

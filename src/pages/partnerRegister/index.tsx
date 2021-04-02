@@ -10,13 +10,15 @@ import Select from 'components/common/Select'
 import TermsModal from 'components/common/Modal/TermsModal'
 import { Checkbox } from 'components/wematch-ui'
 import { Download } from 'components/Icon'
+import {showToast} from 'components/common/Toast'
 
 import * as colors from 'styles/colors'
 import { gray33, gray66, pointBlue } from 'styles/colors'
 import { PartnerFormData } from 'types/backoffice'
 import * as backofficeActions from 'store/backoffice/actions'
 import * as backofficeSelector from 'store/backoffice/selectors'
-
+import {every} from "lodash";
+import { MOVE_URL } from 'constants/env'
 
 const CustomSwiper = styled(Swiper)`
   .swiper-pagination-bullets {
@@ -952,6 +954,7 @@ function PartnerRegisterPage() {
 
     const dispatch = useDispatch()
     const getPartnerForm = useSelector(backofficeSelector.getPartnerForm)
+    const getPartnerStatus = useSelector(backofficeSelector.getPartnerStatus)
 
     const autoPlayOptions = {
         delay: 4000
@@ -973,8 +976,16 @@ function PartnerRegisterPage() {
     const [content, setContent] = useState('')
     const [checked, setChecked] = useState<boolean>(false)
     const [completed, setCompleted] = useState(false)
-
     const [otherFunnel, setOtherFunnel] = useState<string>('')
+
+    const initObj = {
+        service_type: category,
+        area: sido,
+        company_name: partnerName,
+        reason: funnel,
+        tel: tel,
+        contents: content,
+    }
 
     const selectCategory = (data: string) => {
         setCategory(data)
@@ -994,25 +1005,19 @@ function PartnerRegisterPage() {
         const textarea = document.createElement('textarea')
         document.body.appendChild(textarea)
         /* TODO : 새로운 주소로 변경 필요 */
-        textarea.value = 'https://wematch.com/partnernew.asp'
+        textarea.value = `${MOVE_URL}` + '/partnernew'
         textarea.select()
         textarea.setSelectionRange(0, 99999)
         document.execCommand('copy')
         document.body.removeChild(textarea)
-        alert('복사되었습니다.')
-    }
-
-    const isCompletedForm = () => {
-        if (category !== '' && partnerName !== '' && tel !== '' && content !== '' && sido !== '' && funnel !== '' && checked) {
-            setCompleted(true)
-        }else {
-            setCompleted(false)
-        }
+        showToast({ message: '복사되었습니다.', type: 'success'})
     }
 
     useEffect(()=>{
-        isCompletedForm()
-    },[partnerName, category, sido, funnel, tel, content, checked, isCompletedForm])
+        if(every(initObj)){
+            setCompleted(true)
+        }
+    },[partnerName, category, sido, funnel, tel, content, checked])
 
     const contactSubmitHandler = () => {
         const formData : PartnerFormData = {
@@ -1028,16 +1033,18 @@ function PartnerRegisterPage() {
 
 
     useEffect(()=>{
-        setCategory('')
-        setPartnerName('')
-        setContent('')
-        setSido('')
-        setFunnel('')
-        setOtherFunnel('')
-        setContent('')
-        setTel('')
-        setChecked(false)
-    },[getPartnerForm.created_at])
+        if(getPartnerStatus === 'success') {
+            setCategory('')
+            setPartnerName('')
+            setContent('')
+            setSido('')
+            setFunnel('')
+            setOtherFunnel('')
+            setContent('')
+            setTel('')
+            setChecked(false)
+        }
+    },[getPartnerStatus])
 
 
     return (
