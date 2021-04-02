@@ -162,6 +162,7 @@ function ContactPage() {
             setTel('')
             setContents('')
             setServiceType('')
+            setCompleted(false)
         }
     },[getContactStatus])
 
