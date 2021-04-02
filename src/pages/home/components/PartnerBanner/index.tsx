@@ -110,7 +110,7 @@ const Banner = styled.section`
 export default function PartnerBanner() {
     return (
         <Banner>
-            <a href="https://da24.wematch.com/partnernew.asp">
+            <a href="https://landing-da24.wematch.com/partner_application">
                 <h3>파트너 등록문의</h3>
                 <p style={{ marginBottom: 21 }}>No.1 이사업체 매칭플랫폼 위매치다이사</p>
                 <div className="banner">
