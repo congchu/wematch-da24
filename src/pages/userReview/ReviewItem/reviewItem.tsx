@@ -255,7 +255,7 @@ export default function ReviewItem({ adminid,partnerName, userId, created_at, st
 
     return (
         <S.Container>
-            <S.PartnerName onClick={() => history.push(`/requests/completed/${adminid}`)}>
+            <S.PartnerName onClick={() => history.push(`/comment/${adminid}`)}>
                 {partnerName}
                 <PrevIcon size={16} />
             </S.PartnerName>
