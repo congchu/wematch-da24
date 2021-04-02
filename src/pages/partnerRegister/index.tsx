@@ -19,6 +19,7 @@ import * as backofficeActions from 'store/backoffice/actions'
 import * as backofficeSelector from 'store/backoffice/selectors'
 import {every} from "lodash";
 import { MOVE_URL } from 'constants/env'
+import {debounce} from "lodash"
 
 const CustomSwiper = styled(Swiper)`
   .swiper-pagination-bullets {
@@ -985,6 +986,7 @@ function PartnerRegisterPage() {
         reason: funnel,
         tel: tel,
         contents: content,
+        checked: checked
     }
 
     const selectCategory = (data: string) => {
@@ -1019,7 +1021,8 @@ function PartnerRegisterPage() {
         }
     },[partnerName, category, sido, funnel, tel, content, checked])
 
-    const contactSubmitHandler = () => {
+    const contactSubmitHandler =  debounce( () => {
+
         const formData : PartnerFormData = {
             service_type: category,
             area: sido,
@@ -1029,7 +1032,7 @@ function PartnerRegisterPage() {
             contents: content,
         }
         dispatch(backofficeActions.submitPartnerFormAsync.request({formData: formData}))
-    }
+    }, 500)
 
 
     useEffect(()=>{
@@ -1043,6 +1046,7 @@ function PartnerRegisterPage() {
             setContent('')
             setTel('')
             setChecked(false)
+            setCompleted(false)
         }
     },[getPartnerStatus])
 
@@ -1271,7 +1275,6 @@ function PartnerRegisterPage() {
                         <p>위매치다이사를 <span>다른 사장님들께도 </span>알려주세요!</p>
                         <ul>
                             <li>
-                                {/** TODO : 링크복사 나중에 새로운 주소로 넣어주세요 **/}
                                 <a onClick={()=> copyToClipboard()}>
                                     <img
                                         src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/sns_link.png"
