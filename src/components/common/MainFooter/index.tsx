@@ -5,6 +5,7 @@ import { Down, Up } from 'components/wematch-ui/Icon'
 import { checkIos } from 'lib/checkDevice'
 import BlankLink from 'components/base/BlankLink'
 import * as constants from 'constants/env'
+import { useRouter } from 'hooks/useRouter'
 
 const S = {
     Footer: styled.footer`
@@ -248,6 +249,7 @@ const S = {
 export default function MainFooter() {
     const [visibleDescription, setVisibleDescription] = React.useState<boolean>(false)
     const [isIos, setIsIos] = React.useState<boolean>(false)
+    const router = useRouter()
 
     const handleVisibleDescription = () => {
         setVisibleDescription(!visibleDescription)
@@ -287,13 +289,13 @@ export default function MainFooter() {
                     <S.ExternalLink href="https://da24.wematch.com/terms" target="_blank">
                         이용약관 및 개인정보처리방침
                     </S.ExternalLink><br />
-                    <S.ExternalLink href="https://da24.wematch.com/faq.asp">
+                    <S.ExternalLink onClick={()=> router.push('/faq')}>
                         자주묻는 질문
                     </S.ExternalLink>
-                    <S.ExternalLink href="https://da24.wematch.com/suggest.asp">
+                    <S.ExternalLink onClick={()=> router.push('/contact')}>
                         문의하기
                     </S.ExternalLink>
-                    <S.ExternalLink href="https://da24.wematch.com/notice.asp">
+                    <S.ExternalLink onClick={()=> router.push('/notice')}>
                         공지사항
                     </S.ExternalLink>
                     <S.ExternalLink onClick={handleVisibleDescription} className="companyInfo">

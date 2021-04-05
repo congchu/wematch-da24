@@ -8,8 +8,9 @@ export type faqCategory = '공통' | '이사' | '청소'
 interface Props extends React.HTMLAttributes<HTMLDivElement>  {
     category?: faqCategory;
     title: string;
-    date?:string;
-    postNum?:number;
+    date?: string;
+    postNum?: number;
+    defaultExpand?: boolean;
 }
 const S = {
     Container: styled.div`
@@ -53,9 +54,6 @@ const S = {
       svg {
         float: right;
       }
-      @media screen and (min-width: 768px) {
-        //padding-top: 52px;
-      }
     `,
     Button: styled.div`
       top: 8px;
@@ -67,7 +65,12 @@ const S = {
       max-height: 1000vh;
       height: 0;
       overflow: hidden;
-      transition: height 0.35s ease, background 0.35s ease;
+      transition: all .5s;
+      ${props => props.isCollapsed && css`
+        height: auto;
+        max-height: 1000vh;
+        transition: height 0.35s ease, background 0.35s ease;
+      `};
       display: block;
       font-size: 15px;
       line-height: 22px;
@@ -84,47 +87,45 @@ const S = {
       overflow: visible;
     `
 }
-function Accordion({ category ,title,  date, postNum, children  } : Props) {
+function Accordion({ category ,title,  date, postNum, children, defaultExpand=false } : Props) {
     const wholeRef = useRef<HTMLDivElement>(null)
     const parentRef = useRef<HTMLDivElement>(null)
     const childRef = useRef<HTMLDivElement>(null)
-    const [isCollapse, setIsCollapse] = useState(false)
+    const [isCollapse, setIsCollapse] = useState(defaultExpand)
+    const [expand, setExpand] = useState(defaultExpand)
 
-    const handleButtonClick = React.useCallback(
-        (event) => {
-            event.stopPropagation();
-            if (parentRef.current === null || childRef.current === null) {
-                return;
-            }
-            if (parentRef.current.clientHeight > 0) {
-                parentRef.current.style.height = "0"
-            } else {
-                parentRef.current.style.height = `${childRef.current.clientHeight}px`
-            }
-            setIsCollapse(!isCollapse);
-        },
-        [isCollapse]
-    )
+    useEffect(()=>{
+        if (parentRef.current === null || childRef.current === null) {
+            return;
+        }
+        if(isCollapse && !expand){
+            parentRef.current.style.height = `${childRef.current.clientHeight}px`
+        }else if(!isCollapse && !expand){
+            parentRef.current.style.height = "0"
+        }
 
+    },[isCollapse])
 
+    const clickableItemHandler = () => {
+        if(expand){
+            setExpand(false)
+        }
+        setIsCollapse(!isCollapse)
+    }
 
     return(
         <S.Container>
-            <S.Header ref={wholeRef} onClick={handleButtonClick} >
+            <S.Header ref={wholeRef} onClick={clickableItemHandler} >
                 <div className='textWrapper'>
                     {category? <em>Q {category}<br/></em> : <></>}
                     {title}
                     <h6>{ (date && postNum) && <>{date}..{postNum}</>}</h6>
                 </div>
                 <span>
-                    {
-                        isCollapse
-                            ? <Minus style={{marginTop: 0}} color={colors.pointBlue}/>
-                            :<Plus style={{marginTop: 0}}/>
-                    }
+                    {isCollapse ? <Minus style={{marginTop: 0}} color={colors.pointBlue}/> : <Plus style={{marginTop: 0}}/>}
                 </span>
             </S.Header>
-            <S.ContentsWrapper ref={parentRef}  >
+            <S.ContentsWrapper ref={parentRef} isCollapsed={isCollapse}>
                 <S.Contents ref={childRef}>{children}</S.Contents>
             </S.ContentsWrapper>
         </S.Container>
