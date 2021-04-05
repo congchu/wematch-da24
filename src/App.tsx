@@ -156,7 +156,6 @@ function AppRoute() {
                 <Route exact path="/checklist/moveprep" component={MovePrep}/>
                 <Route exact path="/checklist/cleancheck" component={CleanCheck}/>
 
-                <Route exact path="/toast" component={ToastTestPage} />
                 <Route exact path="/partner/list" component={PartnerList} />
                 <Route exact path="/partner/detail/:adminId" component={PartnerDetail} />
                 <Route exact path="/partner/cart" component={PartnerCart} />
