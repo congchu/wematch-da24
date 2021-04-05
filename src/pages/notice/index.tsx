@@ -48,7 +48,7 @@ export default function NoticePage() {
                 { getNoticeList.notices?.map((notice, index) => {
                     return (
                         <S.CollapsedWrap key={index} index={index}>
-                            <Accordion key={index} title={notice.title} date={notice.created_at} postNum={notice.id}>
+                            <Accordion key={index} title={notice.title} date={notice.created_at} postNum={notice.id} defaultExpand={index === 0} >
                                 {/*{notice.contents}*/}
                                 <pre dangerouslySetInnerHTML={{__html: notice.contents}} />
                             </Accordion>
