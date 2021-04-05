@@ -37,8 +37,8 @@ export default function NoticePage() {
     const getNoticeList = useSelector(backofficeSelector.getNoticeList)
 
     useEffect(() => {
+        window.scrollTo(0, 0)
         dispatch(backofficeActions.fetchNoticeListAsync.request())
-
     }, [])
 
 

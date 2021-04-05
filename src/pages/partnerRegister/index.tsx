@@ -1015,6 +1015,10 @@ function PartnerRegisterPage() {
         showToast({ message: '복사되었습니다.', type: 'success'})
     }
 
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     useEffect(()=>{
         if(every(initObj)){
             setCompleted(true)

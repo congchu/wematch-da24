@@ -138,6 +138,10 @@ function ContactPage() {
         setServiceType(data)
     }
 
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     useEffect(()=>{
         if(every(initObj)){
             setCompleted(true)

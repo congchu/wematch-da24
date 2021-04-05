@@ -68,6 +68,7 @@ export default function UserReviewPage() {
                 size: values.DEFAULT_COMMENT_LIST_SIZE
             }))
         }
+        window.scrollTo(0,0)
     }, [])
 
 
