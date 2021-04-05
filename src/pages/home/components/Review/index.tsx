@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import styled from 'styled-components/macro'
 
 import { gray33, gray66, pointBlue } from 'styles/colors'
+import { useRouter } from 'hooks/useRouter'
 
 const S = {
   Container: styled.section`
@@ -63,6 +64,7 @@ const CustomSwiper = styled(Swiper)`
 `
 
 function Review() {
+    const router = useRouter()
     const reviews = [
       require('assets/images/components/Review/review_01.png'),
       require('assets/images/components/Review/review_02.png'),
@@ -80,7 +82,7 @@ function Review() {
           <S.Title>이사업체 고객 평가</S.Title>
           <S.Group>
             <S.Text>이사 후 고객이 평가한 업체별 만족도</S.Text>
-            <S.More href="https://da24.wematch.com/comment2.asp">더보기</S.More>
+            <S.More onClick={()=> router.push('/comment')}>더보기</S.More>
           </S.Group>
           <CustomSwiper
             centeredSlides={true}

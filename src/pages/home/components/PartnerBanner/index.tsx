@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components/macro'
 
 import * as colors from 'styles/colors'
+import {useRouter} from 'hooks/useRouter'
 
 const Banner = styled.section`
   padding: 80px 24px 73px;
@@ -108,9 +109,10 @@ const Banner = styled.section`
 `
 
 export default function PartnerBanner() {
+    const router = useRouter()
     return (
         <Banner>
-            <a href="https://landing-da24.wematch.com/partner_application">
+            <a onClick={()=> router.push('/partnernew')}>
                 <h3>파트너 등록문의</h3>
                 <p style={{ marginBottom: 21 }}>No.1 이사업체 매칭플랫폼 위매치다이사</p>
                 <div className="banner">
