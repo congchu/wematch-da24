@@ -395,7 +395,7 @@ export default function Completed() {
         send_to: "AW-862163644/CmzdCIej6G0QvKWOmwM",
       });
     }
-  }, []);
+  }, [data, loading, error, msg]);
 
   const userRequestInfo: {
     contact: string;
