@@ -343,7 +343,6 @@ export default function Completed() {
   const [infoVisible, setInfoVisible] = useState(false);
   const [expand, setExpand] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
-  const [isCookie, setIsCookie] = useState(false); //새로고침 시 픽셀,데이터 레이어 재요청 방지용
   const { inquiry_idx } = useParams<{ inquiry_idx: string }>();
   const [firstLoading, setFirstLoading] = useState(true);
   const {

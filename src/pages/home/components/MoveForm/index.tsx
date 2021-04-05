@@ -371,7 +371,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
               bold
               border
               onClick={() => handleRequestClick("curation")}
-              loading={getSubmittedForm.loading}
             >
               추천업체 바로 신청하기
             </Button>
