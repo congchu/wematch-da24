@@ -72,8 +72,7 @@ function LoginPage() {
     const handleLoginClose = () => {
         if (visibleCancel) {
             dispatch(userActions.phoneVerifyCancel())
-            setVisibleCancel(!visibleCancel)
-            history.goBack()
+            history.go(-2);
         }
     }
 
@@ -98,9 +97,7 @@ function LoginPage() {
             action: '로그인취소',
             label: '취소'
         })
-        setTimeout(() => {
-            handleLoginClose();
-        }, 300)
+        handleLoginClose();
     }
 
     const handleLoginConfirm = () => {
