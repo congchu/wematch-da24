@@ -105,7 +105,7 @@ export default createReducer<FormState, Actions>(initialState)
     .handleAction(actions.setInitialFormData, (state, action) => {
         const {
             moving_date, detail_addr, detail_addr2, dong, dong2,
-            floor, floor2, gugun, gugun2, keepMove, terms, privacy, marketing,
+            floor, floor2, gugun, gugun2, keep_move, terms, privacy, marketing,
             name, phone1, phone2, phone3, sido, sido2
         } = action.payload;
         return {
@@ -113,6 +113,7 @@ export default createReducer<FormState, Actions>(initialState)
             date: moving_date === null ? [] : [moving_date],
             floor: {start: floor, end: floor2},
             address: {start: `${sido} ${gugun} ${dong}`, end: `${sido2} ${gugun2} ${dong2}`,detailStart: detail_addr, detailEnd: detail_addr2},
+            isMoveStore: keep_move,
             name: name,
             phone: `${phone1}${phone2}${phone3}`,
             agree: {terms, privacy, marketing}
