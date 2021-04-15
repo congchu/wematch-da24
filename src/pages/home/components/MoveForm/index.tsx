@@ -231,24 +231,26 @@ interface Props {
 
 const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const router = useRouter();
+
   const getMoveType = useSelector(formSelector.getType);
   const getMoveDate = useSelector(formSelector.getDate);
   const getAddress = useSelector(formSelector.getAddress);
   const getFloor = useSelector(formSelector.getFloor);
   const getIsMoveStore = useSelector(formSelector.getIsMoveStore);
-  const getSubmittedForm = useSelector(formSelector.getSubmittedForm);
   const { user } = useSelector(userSelector.getUser);
-  const history = useHistory();
+
   const [visibleTerms, setVisibleTerms] = useHashToggle("#terms");
   const [visibleOneroom, setVisibleOneroom] = useState(false);
   const [isVerifySuccess, setIsVerifySuccess] = useState(false);
   const selectedSubmitType = useRef<"curation" | "select" | null>(null);
-  const [cookies, setCookies, removeCookies] = useCookies([
+  const [cookies] = useCookies([
     "0dj38gepoekf98234aplyadmin",
   ]);
-  const router = useRouter();
 
   const validateHouseOrOfficeForm = () => {
+    console.log(getMoveDate)
     if (isEmpty(getMoveDate)) {
       showToast({ message: "날짜를 선택해 주세요.", type: "error" });
       return false;
@@ -297,6 +299,10 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
     const { type } = router.query;
     if (cookies.formData) {
       dispatch(formActions.setInitialFormData(cookies.formData));
+    }
+
+    if (cookies.jusoData) {
+      dispatch(commonActions.setJuso(cookies.jusoData))
     }
 
     if (type === "house") {

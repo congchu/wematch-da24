@@ -110,7 +110,7 @@ export default createReducer<FormState, Actions>(initialState)
         } = action.payload;
         return {
             ...state,
-            date: [moving_date],
+            date: moving_date === null ? [] : [moving_date],
             floor: {start: floor, end: floor2},
             address: {start: `${sido} ${gugun} ${dong}`, end: `${sido2} ${gugun2} ${dong2}`,detailStart: detail_addr, detailEnd: detail_addr2},
             name: name,

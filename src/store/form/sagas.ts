@@ -1,32 +1,96 @@
 import {all, call, put, select, takeEvery, takeLeading} from 'redux-saga/effects'
 import {ActionType} from 'typesafe-actions'
 import {push, replace} from 'connected-react-router'
+import queryString from 'query-string';
+import dayjs from 'dayjs';
+
+import {phoneSplit, translateMovingType} from 'components/wematch-ui/utils/form';
+
 import * as userSelector from 'store/user/selectors';
 import * as commonTypes from 'store/common/types'
 import * as commonActions from 'store/common/actions';
+import * as commonSelector from 'store/common/selectors';
+import * as commonRequests from 'store/common/requests'
+
 import * as formSelector from "./selectors";
-import {FormState} from "./reducers";
 import * as actions from './actions'
 import * as requests from './requests'
-import {calcRouteByDirectionService, calcRouteByGeoCoder} from 'lib/distanceUtil';
-import {addressSplit, phoneSplit, translateMovingType} from 'components/wematch-ui/utils/form';
-import {deleteCookie, getCookie, setCookie} from 'lib/cookie';
-import queryString from 'query-string';
-import dayjs from 'dayjs';
-import {dataLayer} from 'lib/dataLayerUtil'
-import * as sentry from '@sentry/react'
-import {Severity} from '@sentry/react'
 import { ESubmittedFormResult } from './types';
 
+import {deleteCookie, getCookie, setCookie} from 'lib/cookie';
+import {dataLayer} from 'lib/dataLayerUtil'
+
+import * as sentry from '@sentry/react'
+import {Severity} from '@sentry/react'
+
+
+export function* setJusoSaga() {
+    const getJuso = yield select(commonSelector.getJuso)
+
+    try {
+        if (getJuso.start) {
+            const {data} = yield call(commonRequests.getDistance, {
+                startZone: getJuso.start.admCd,
+                startRoad: getJuso.start.rnMgtSn,
+                startIsGf: getJuso.start.udrtYn,
+                startMainBd: getJuso.start.buldMnnm,
+                startSubBd: getJuso.start.buldSlno,
+                endZone: getJuso.end.admCd,
+                endRoad: getJuso.end.rnMgtSn,
+                endIsGf: getJuso.end.udrtYn,
+                endMainBd: getJuso.end.buldMnnm,
+                endSubBd: getJuso.end.buldSlno
+            })
+            yield put(commonActions.setJuso({
+                ...getJuso,
+                distance: data
+            }))
+
+            //쿠키값이 너무 커져서 필요한것만 짜른다..
+            const replaceCookieFormData = {
+                start: {
+                    admCd: getJuso.start.admCd,
+                    rnMgtSn: getJuso.start.rnMgtSn,
+                    udrtYn: getJuso.start.udrtYn,
+                    buldMnnm: getJuso.start.buldMnnm,
+                    buldSlno: getJuso.start.buldSlno,
+                    rn: getJuso.start.rn,
+                    siNm: getJuso.start.siNm,
+                    sggNm: getJuso.start.sggNm,
+                    emdNm: getJuso.start.emdNm,
+                    roadAddr: getJuso.start.roadAddr,
+                },
+                end: {
+                    admCd: getJuso.end.admCd,
+                    rnMgtSn: getJuso.end.rnMgtSn,
+                    udrtYn: getJuso.end.udrtYn,
+                    buldMnnm: getJuso.end.buldMnnm,
+                    buldSlno: getJuso.end.buldSlno,
+                    rn: getJuso.end.rn,
+                    siNm: getJuso.end.siNm,
+                    sggNm: getJuso.end.sggNm,
+                    emdNm: getJuso.end.emdNm,
+                    roadAddr: getJuso.end.roadAddr
+                },
+                distance: data
+            }
+
+            setCookie('jusoData', JSON.stringify(replaceCookieFormData), { expires: new Date(dayjs().add(2, 'day').format()) })
+        }
+    } catch (e) {
+        sentry.captureMessage('거리계산 실패', {
+            level: Severity.Error
+        })
+        sentry.captureException(e)
+    }
+}
+
 export function* setFormSaga()  {
+    yield call(setJusoSaga);
+
     const { user } = yield select(userSelector.getUser);
     const {formState: { type, date, address, floor, isMoveStore, agree, contents }} = yield select()
-
-    let distance  = yield call(calcRouteByDirectionService, {start: address.start, end: address.end})
-
-    if(!distance) {
-        distance = yield call(calcRouteByGeoCoder, [address.start, address.end])
-    }
+    const getJuso = yield select(commonSelector.getJuso)
 
     const { phone1, phone2, phone3 } = phoneSplit(user.tel);
 
@@ -36,33 +100,42 @@ export function* setFormSaga()  {
         moving_type: translateMovingType(type),
         moving_date: date[0],
         floor: `${floor.start}`,
-        detail_addr: address.detailStart,
-        sido: addressSplit(address.start).sido,
-        gugun: addressSplit(address.start).gugun,
-        dong: addressSplit(address.start).dong,
-        sido2: addressSplit(address.end).sido,
-        gugun2: addressSplit(address.end).gugun,
-        dong2: addressSplit(address.end).dong,
+        detail_addr: getJuso.start.rn + ' ' + getJuso.start.buldMnnm + '-' + getJuso.start.buldSlno + ' ' + address.detailStart,
+        sido: getJuso.start.siNm,
+        gugun: getJuso.start.sggNm,
+        dong: getJuso.start.emdNm,
+        sido2: getJuso.end.siNm,
+        gugun2: getJuso.end.sggNm,
+        dong2: getJuso.end.emdNm,
         floor2: `${floor.end}`,
-        detail_addr2: address.detailEnd,
+        detail_addr2: getJuso.end.rn + ' ' + getJuso.end.buldMnnm + '-' + getJuso.end.buldSlno + ' ' + address.detailEnd,
         name: user.name,
         phone1: phone1,
         phone2: phone2,
         phone3: phone3,
         keep_move: isMoveStore,
         mkt_agree: agree.marketing,
-        distance: Math.round(Number(distance)) || 1,
+        distance: getJuso.distance,
         agent_id: cookie ? queryString.parse(cookie).agentid : '',
         memo: contents
     }
 
     yield put(actions.setFormData(formData))
 
-    if (getCookie('formData')) {
-        deleteCookie('formData')
-    }
+    // 필요 없는것 같음
+    // if (getCookie('formData')) {
+    //     deleteCookie('formData')
+    // }
 
-    setCookie('formData', JSON.stringify({ ...formData, ...agree }), { expires: new Date(dayjs().add(2, 'day').format()) })
+    // 메인화면에 쿠키값 불러올때 보여줄값을 따로 만들어준다. (날짜값은 초기화)
+    const replaceCookieFormData = {
+        ...formData,
+        ...agree,
+        moving_date: null,
+        detail_addr: address.detailStart,
+        detail_addr2: address.detailEnd,
+    }
+    setCookie('formData', JSON.stringify(replaceCookieFormData), { expires: new Date(dayjs().add(2, 'day').format()) })
 }
 
 export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsync.request>) {
@@ -75,7 +148,7 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
         } else if (data?.result === ESubmittedFormResult.NoPartner) {
             yield put(push('/requests/nopartner'))
         } else if (data?.result === ESubmittedFormResult.NoService) {
-            yield put(push('/requests/noservice'))  
+            yield put(push('/requests/noservice'))
         }
     } catch (e) {
         yield put(actions.submitFormAsync.failure())
@@ -95,7 +168,7 @@ export function* fetchMoveFormSaga() {
     yield call(setFormSaga)
     const formData = yield select(formSelector.getFormData);
     const {user: {uuid}} = yield select(userSelector.getUser);
-    
+
 
     dataLayer({
         event: 'request',
@@ -108,7 +181,7 @@ export function* fetchMoveFormSaga() {
 
     if(selectedSubmitType === 'curation') {
         yield put(replace('/'));
-        yield put(actions.submitFormAsync.request({formData: { uuid, ...formData }}));   
+        yield put(actions.submitFormAsync.request({formData: { uuid, ...formData }}));
     } else if(selectedSubmitType === 'select') {
         yield put(replace('/'));
         yield put(commonActions.fetchMoveIdx.request({ uuid, ...formData }));

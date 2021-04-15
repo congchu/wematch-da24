@@ -26,4 +26,4 @@ export { default as SoldOut } from './generated/Soldout'
 export { default as Triangle } from './generated/Triangle'
 export { default as Download } from './generated/Download'
 export { default as Exclamation } from './generated/Exclamation'
-
+export { default as Cancel } from './generated/Cancel'

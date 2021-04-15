@@ -1,18 +1,20 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { debounce } from 'lodash'
+import { useDispatch, useSelector } from 'react-redux'
+import { useMedia } from 'react-use-media'
+import { DebounceInput } from 'react-debounce-input'
+import { isEmpty } from 'lodash'
 
 import List from 'components/common/List'
+import PopupTemplate from 'components/wematch-ui/PopupTemplate'
+import { Icon } from 'components/wematch-ui'
 
-import { ItemsProps } from 'components/common/List'
-
-import { useDispatch, useSelector } from 'react-redux'
 import * as commonActions from 'store/common/actions'
 import * as commonSelector from 'store/common/selectors'
+import { CNT_PER_PAGE } from 'store/common/reducers'
+import { Juso } from 'store/common/types'
 import * as colors from 'styles/colors'
-import PopupTemplate from "../../wematch-ui/PopupTemplate";
-import {Icon} from "../../wematch-ui";
-import { useMedia } from 'react-use-media'
+
 
 interface Props {
     /** 모달 visible */
@@ -26,7 +28,7 @@ interface Props {
     /** 클릭 이벤트 정의 */
     onClick?: () => void;
     /** Select 이벤트 정의 */
-    onSelect?: (data: string) => void;
+    onSelect?: (juso: Juso) => void;
     /** 확인 버튼 이벤트 정의 */
     onConfirm?: () => void;
 }
@@ -53,6 +55,11 @@ const S = {
         line-height: 24px;
         em {
             font-weight: 600;
+        }
+        p {
+          border-bottom: 1px solid ${colors.lineDeco};
+          margin: 0 24px;
+          padding-bottom: 22px;
         }
     `,
     Title: styled.h1`
@@ -86,7 +93,6 @@ const S = {
             cursor: pointer;
             box-sizing: border-box;
             color: ${colors.gray88};
-            box-sizing: border-box;
             border: 1px solid ${colors.lineDefault};
 
             &:focus {
@@ -100,18 +106,37 @@ const S = {
         justify-content: center;
         align-items: center;
         height: 100%;
-        width: 56px;
+        //width: 56px;
         padding-bottom: 6px;
-        right: 0;
+        right: 16px;
         bottom: 0;
     `,
     Content: styled.div`
         min-height: calc(100% - 157px - 56px);
-        
         @media screen and (min-width: 768px) {
           min-height: calc(480px - 157px - 56px);
         }
     `,
+    Tip: styled.div`
+      font-style: normal;
+      font-weight: normal;
+      margin: 24px 24px 0;
+      .title {
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 23px;
+        color: ${colors.gray33};
+        margin-bottom: 8px;
+      }
+      .desc {
+        font-size: 14px;
+        line-height: 21px;
+      }
+      ul {
+        list-style-type : disc;
+        padding-left: 24px;
+      }
+    `
 }
 
 const AddressModal: React.FC<Props> = (props) => {
@@ -119,53 +144,49 @@ const AddressModal: React.FC<Props> = (props) => {
         visible = false,
         title,
         onClose,
-        onOverlayClose,
         onClick,
-        onConfirm,
         onSelect
     } = props
 
     const dispatch = useDispatch()
     const headerRef = useRef<HTMLDivElement | null>(null)
     const getAddressList = useSelector(commonSelector.getAddressList)
-    const [items, setItems] = useState<ItemsProps[]>([])
-    const [dong, setDong] = useState<string>('')
+    const [road, setRoad] = useState<string>('')
+    const [currPage, setCurrPage] = useState(1)
     const inputRef = useRef<HTMLInputElement | null>(null)
     const isMobile = useMedia({
         maxWidth: 767,
     })
 
     useEffect(() => {
-        if (getAddressList.data && !getAddressList.loading) {
-            const newAddressList = getAddressList.data.map((address, idx) => {
-                return {
-                    id: idx,
-                    label: `${address.sido} ${address.gugun} <em>${address.dong}</em>`,
-                    value: `${address.sido} ${address.gugun} ${address.dong}`
-                }
-            })
-            setItems(newAddressList)
+        return () => {
+            setRoad('')
+            dispatch(commonActions.resetAddressList())
         }
-    }, [getAddressList])
-
-    useEffect(() => {
-        return () => {setItems([]); setDong('');}
     }, [visible])
 
     useEffect(() => {
-        if(dong.length > 0) {
+        if(road.length > 2) {
             dispatch(commonActions.fetchAddressListAsync.request({
-                dong
+                keyword: road,
+                currPage: 1,
+                cntPerPage: CNT_PER_PAGE
             }))
-        } else {
-            setItems([])
         }
-    }, [dispatch, dong]);
+        if (road?.length <= 1 ) {
+            dispatch(commonActions.resetAddressList())
+        }
+    }, [dispatch, road]);
 
 
-    const handleOnChange = debounce((address: string) => {
-        setDong(address);
-    }, 500)
+    const handleOnChange = (address: string) => {
+        setRoad(address);
+    }
+
+    const handleOnReset = () => {
+        setRoad('')
+        dispatch(commonActions.resetAddressList())
+    }
 
     useEffect(() => {
         const keyboardOffEvent = () => {
@@ -173,7 +194,7 @@ const AddressModal: React.FC<Props> = (props) => {
         }
         if(visible && isMobile)  {
             document.addEventListener('touchstart', keyboardOffEvent)
-        } 
+        }
         return () => { document.removeEventListener('touchstart', keyboardOffEvent) }
     }, [visible])
 
@@ -183,34 +204,67 @@ const AddressModal: React.FC<Props> = (props) => {
                 <S.Header ref={headerRef}>
                     <S.Title>{title}</S.Title>
                     <S.InputContainer>
-                        <input placeholder="읍/면/동까지만 입력해주세요"
-                               type="text"
-                               ref={inputRef}
-                               onChange={(e) => handleOnChange(e.target.value)}
-                               autoFocus={true}
-                               onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                                   if (e.key === 'Enter') {
-                                        const ev = e.target as HTMLInputElement
-                                        handleOnChange.cancel();
-                                        setDong(ev.value);
-                                        inputRef?.current?.blur()
-                                   }
-                               }}
+                        <DebounceInput
+                            placeholder='도로명, 지번, 건물명(2글자 이상)'
+                            autoFocus
+                            inputRef={inputRef}
+                            debounceTimeout={500}
+                            onChange={(e) => handleOnChange(e.target.value)}
+                            onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                                if (e.key === 'Enter') {
+                                    const ev = e.target as HTMLInputElement
+                                    setRoad(ev.value);
+                                    inputRef?.current?.blur()
+                                }
+                            }}
+                            style={{ paddingRight: 85 }}
+                            value={road}
                         />
+                        {!isEmpty(road) && (
+                            <S.IconWrapper style={{ right: 56, cursor: 'pointer' }} onClick={handleOnReset}>
+                                {/*<Icon.Cancel />*/}
+                            </S.IconWrapper>
+                        )}
                         <S.IconWrapper onClick={e => e.preventDefault()}>
                             <Icon.Search size={24}/>
                         </S.IconWrapper>
                     </S.InputContainer>
                 </S.Header>
                 <S.Content>
-                    {getAddressList.data?.length === 0 && dong.length > 0 && !getAddressList.loading ? (
-                      <S.Empty>
-                          <p><em>'{dong}'</em>에 대한 검색 결과가 없습니다.
-                              <br/>정확한 읍/면/동(지번)주소로 다시 검색해주세요.
-                          </p>
-                      </S.Empty>
+                    {getAddressList?.data?.length === 0 && road?.length > 0 && !getAddressList.loading ? (
+                        <S.Empty>
+                            <p>
+                                <em>‘{road}'</em>검색 결과가 없습니다<br/>
+                                정확한 도로명, 번지, 건물명으로 다시 검색해주세요.
+                            </p>
+                        </S.Empty>
                     ) : (
-                      <List type="address" direction="column" items={items} onClick={onClick} onSelect={onSelect} style={{padding: '0 24px'}}/>
+                        <List
+                            addresses={getAddressList?.data}
+                            onClick={onClick}
+                            onSelect={onSelect}
+                            style={{padding: '0 24px'}}
+                            onMoreAddresses={() => {
+                                setCurrPage(currPage + 1)
+                                if (getAddressList.hasMore && !getAddressList.loading) {
+                                    dispatch(commonActions.fetchAddressMoreListAsync.request({
+                                        keyword: road,
+                                        currPage,
+                                        cntPerPage: CNT_PER_PAGE
+                                    }))
+                                }
+                            }
+                            }/>
+                    )}
+                    {isEmpty(getAddressList?.data) && (
+                        <S.Tip>
+                            <h2 className="title">주소검색 Tip</h2>
+                            <ul className="desc">
+                                <li>도로명 + 건물번호 (예 : 테헤란로20길 9)</li>
+                                <li>지번(동/읍.면/리) + 번지수 (예: 역삼동 736-17)</li>
+                                <li>건물명, 아파트명 (예: 동궁빌딩)</li>
+                            </ul>
+                        </S.Tip>
                     )}
                 </S.Content>
             </S.Container>
