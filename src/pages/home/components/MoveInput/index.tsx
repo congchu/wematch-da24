@@ -184,10 +184,10 @@ const MoveInput: React.FC<Props> = (props) => {
         })
 
         dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
-        debounceSelectDate(date)
+        debounceSelectDate()
     }
 
-    const debounceSelectDate = debounce((date: CalendarDate) => {
+    const debounceSelectDate = debounce(() => {
         setVisibleCalendarModal(false)
     }, 300)
 

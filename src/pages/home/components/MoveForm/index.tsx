@@ -250,7 +250,6 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
   ]);
 
   const validateHouseOrOfficeForm = () => {
-    console.log(getMoveDate)
     if (isEmpty(getMoveDate)) {
       showToast({ message: "날짜를 선택해 주세요.", type: "error" });
       return false;
