@@ -23,6 +23,19 @@ export function* fetchAddressListSaga(action: ActionType<typeof actions.fetchAdd
     }
 }
 
+export function* fetchAddressListMoreSaga(action: ActionType<typeof actions.fetchAddressMoreListAsync.request>) {
+    try {
+        const {data} = yield call(requests.getAddress, action.payload)
+        yield put(actions.fetchAddressMoreListAsync.success(data))
+    } catch (e) {
+        showToast({
+            message: e.error.message,
+            type: 'error',
+            position: 'bottom'
+        })
+        yield put(actions.fetchAddressMoreListAsync.failure(e.error))
+    }
+}
 
 export function* fetchMoveIdxSaga(action: ActionType<typeof actions.fetchMoveIdx.request>) {
     try {
@@ -47,6 +60,7 @@ export function* fetchCompletedMoveSaga(action: ActionType<typeof actions.fetchC
 export default function* () {
     yield all([
         takeEvery(actions.fetchAddressListAsync.request, fetchAddressListSaga),
+        takeEvery(actions.fetchAddressMoreListAsync.request, fetchAddressListMoreSaga),
         takeEvery(actions.fetchMoveIdx.request, fetchMoveIdxSaga),
         takeEvery(actions.fetchCompletedMoveIdx.request, fetchCompletedMoveSaga)
     ])

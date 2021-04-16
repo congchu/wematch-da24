@@ -28,12 +28,11 @@ export const bookingApi = axios.create({
 export const middlewareApi = axios.create({
     baseURL: API_MIDDLEWARE_URL
 })
+
 api.interceptors.response.use((response) => {
     return response
 }, (error: AxiosError) => {
-    if (error.response?.data.result === 'failure') {
-        //TODO: 예외처리 추가해야함
-    }
+    return Promise.reject(error?.response?.data)
 })
 
 export default {bookingApi, api, middlewareApi}

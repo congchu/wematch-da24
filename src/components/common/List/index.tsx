@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
+import { isEmpty } from 'lodash'
 
 import { Icon } from 'components/wematch-ui'
 import { Juso } from 'store/common/types'
@@ -23,7 +24,7 @@ export type ItemsProps = {
 };
 
 const S = {
-    Ul: styled.ul`
+    Ul: styled.ul<{ isEmpty: boolean }>`
       display: flex;
       flex-direction: column;
       // max-height: calc(${window.innerHeight}px - 99px - 48px);
@@ -32,13 +33,12 @@ const S = {
       
       @media (min-width: 768px) {
         //max-height: 1200px;
-        height: 350px;
+        height: ${props => props.isEmpty ? '0' : '350px'};
         //overflow-y: auto;
       }
-      @media (min-width: 1200px) {
-        height: 350px;
+      //@media (min-width: 1200px) {
         //overflow-y: auto;
-      }
+      //}
     `,
     Li: styled.li<{isApp: boolean}>`
         display: flex;
@@ -99,7 +99,7 @@ const List: React.FC<Props> = (props) => {
     }, []);
 
     return (
-        <S.Ul ref={scrollRef} onScroll={handleScroll} {...restProps}>
+        <S.Ul ref={scrollRef} onScroll={handleScroll} {...restProps} isEmpty={isEmpty(addresses)}>
             {addresses?.map((juso, index) => {
                 return (
                     <S.Li key={index} isApp={checkMobile() || checkApp()} onClick={() => handleOnSelect(juso)}>
