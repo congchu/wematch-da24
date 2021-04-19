@@ -1,9 +1,10 @@
 import React, { } from 'react'
 import styled from 'styled-components'
-import {gray33, gray66, lineDeco, lineDefault} from "styles/colors";
+import {gray66, lineDeco } from "styles/colors";
 
 const S = {
     Card: styled.div`
+      margin-left: 10px;
       width: 312px;
       height: 210px;
       border: 1px solid ${lineDeco};
@@ -84,6 +85,10 @@ const S = {
       display: inline-block;
       font-size: 14px;
       color: ${gray66};
+      span {
+        color: #C4C4C4;
+        margin: 0 5px;
+      }
     `
 
 
@@ -136,7 +141,7 @@ const ReviewCard = ({partnerName, userId, created_at, grade, price, kind, profes
                     </S.StarContainer>
                 </S.StarDiv>
                 <S.Contents>{reviewContents}</S.Contents>
-                <S.LastLine>{userId}님  | {created_at} </S.LastLine>
+                <S.LastLine>{userId}님<span>|</span>{created_at}</S.LastLine>
             </S.Container>
         </S.Card>
     )

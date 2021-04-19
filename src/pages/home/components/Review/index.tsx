@@ -1,11 +1,11 @@
 import React, { memo } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-
 import styled from 'styled-components/macro'
+
+import ReviewCard from './ReviewCard'
 
 import { gray33, gray66, pointBlue } from 'styles/colors'
 import { useRouter } from 'hooks/useRouter'
-import ReviewCard from "./ReviewCard";
 
 const S = {
   Container: styled.section`
@@ -113,7 +113,7 @@ function Review() {
             centeredSlides={true}
             centeredSlidesBounds={true}
             pagination={{ clickable: true }}
-            width={330}
+            width={340}
             loop={true}
             autoplay={autoPlayOptions}
             loopAdditionalSlides={1}
