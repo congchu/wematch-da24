@@ -15,7 +15,6 @@ import { CNT_PER_PAGE } from 'store/common/reducers'
 import { Juso } from 'store/common/types'
 import * as colors from 'styles/colors'
 
-
 interface Props {
     /** 모달 visible */
     visible: boolean
@@ -222,7 +221,7 @@ const AddressModal: React.FC<Props> = (props) => {
                         />
                         {!isEmpty(road) && (
                             <S.IconWrapper style={{ right: 56, cursor: 'pointer' }} onClick={handleOnReset}>
-                                {/*<Icon.Cancel />*/}
+                                <Icon.Cancel />
                             </S.IconWrapper>
                         )}
                         <S.IconWrapper onClick={e => e.preventDefault()}>
