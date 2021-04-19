@@ -36,7 +36,10 @@ const S = {
     font-size: 16px;
     line-height: 23px;
     color: ${gray66};
-  `
+  `,
+    SliderContainer: styled.div`
+        margin-bottom: 20px;
+    `
 }
 
 const Image = styled.img`
@@ -46,7 +49,7 @@ const Image = styled.img`
 
 const CustomSwiper = styled(Swiper)`
   .swiper-wrapper{
-    padding-bottom: 15px;
+    padding-bottom: 20px;
   }
 
   .swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction{
@@ -116,16 +119,14 @@ function Review() {
             loopAdditionalSlides={1}
             breakpoints={{ 768: { slidesPerView: 3, centeredSlides: false, centeredSlidesBounds: false, width: 990 }}}
           >
-            {reviews.map((review, i) => (
-              <SwiperSlide key={i}>
-                  <ReviewCard partnerName={review.partnerName} userId={review.customer} created_at={review.created_at} grade={review.grade} price={review.price} kind={review.kind} professional={review.professional} reviewContents={review.content}/>
-              </SwiperSlide>
+              {reviews.map((review, i) => (
+                  <SwiperSlide key={i}>
+                      <ReviewCard partnerName={review.partnerName} userId={review.customer} created_at={review.created_at} grade={review.grade} price={review.price} kind={review.kind} professional={review.professional} reviewContents={review.content}/>
+                  </SwiperSlide>
               ))}
               <div className="swiper-wrapper" />
-              <div className="swiper-pagination" />
-
-            {/*<ReviewCard partnerName={'서울시 강서구 A등급 업체'} userId={591423} created_at={'2020.10.01'} grade={'매우 만족'} price={4} kind={5} professional={5} reviewContents={'골목이라는 열악한 조건의 이사였음에도 불구하고 끝까지 처리해 주셨어요~ 2년뒤에 또 이사 예정에 있는데 또 와달라고 할 정도 였습니다!!'}/>*/}
-            </CustomSwiper>
+              <div className="swiper-pagination"/>
+          </CustomSwiper>
         </S.Container>
     )
 }
