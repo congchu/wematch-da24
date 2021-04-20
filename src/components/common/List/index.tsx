@@ -48,7 +48,7 @@ const S = {
         padding-left: 8px;
         min-height: 51px;
         border-bottom: 1px solid #d8d8d8; 
-
+        word-break: keep-all;
         &:last-child {
           border: none;
           //margin-bottom: 100px;
@@ -61,7 +61,6 @@ const S = {
         em {
             color: ${colors.pointBlue};
         }
-
     `
 }
 
@@ -86,7 +85,7 @@ const List: React.FC<Props> = (props) => {
         const scrollTop = scrollRef?.current?.scrollTop || 0
         const clientHeight = scrollRef?.current?.clientHeight || 0
         const scrollHeight = scrollRef?.current?.scrollHeight || 0
-        if (Math.ceil(scrollTop + clientHeight) === scrollHeight) {
+        if (Math.floor(scrollTop + clientHeight) === scrollHeight) {
             if (onMoreAddresses) {
                 onMoreAddresses()
             }

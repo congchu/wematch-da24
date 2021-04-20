@@ -11,7 +11,7 @@ export function* fetchAddressListSaga(action: ActionType<typeof actions.fetchAdd
         const {data} = yield call(requests.getAddress, action.payload)
         yield put(actions.fetchAddressListAsync.success(data))
     } catch (e) {
-        const errorCode = ['E0009', 'E0010', 'EE0011', 'E0012', 'E0013']
+        const errorCode = ['E0006', 'E0009', 'E0010', 'EE0011', 'E0012', 'E0013']
         if (!errorCode.includes(e.error.code)) {
             showToast({
                 message: e.error.message,

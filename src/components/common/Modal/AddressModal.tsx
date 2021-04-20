@@ -46,7 +46,7 @@ const S = {
     `,
     Empty: styled.div`
         text-align: center;
-        margin-top: 40px;    
+        margin-top: 24px;    
         letter-spacing: -1px;
         color: ${colors.gray33};
         font-weight: 400;
@@ -91,7 +91,7 @@ const S = {
             letter-spacing: -1px;
             cursor: pointer;
             box-sizing: border-box;
-            color: ${colors.gray88};
+            color: ${colors.gray33};
             border: 1px solid ${colors.lineDefault};
 
             &:focus {
@@ -106,7 +106,7 @@ const S = {
         align-items: center;
         height: 100%;
         //width: 56px;
-        padding-bottom: 6px;
+        padding-bottom: 5px;
         right: 16px;
         bottom: 0;
     `,
@@ -133,7 +133,7 @@ const S = {
       }
       ul {
         list-style-type : disc;
-        padding-left: 24px;
+        padding-left: 14px;
       }
     `
 }
@@ -172,7 +172,7 @@ const AddressModal: React.FC<Props> = (props) => {
                 cntPerPage: CNT_PER_PAGE
             }))
         }
-        if (road?.length <= 1 ) {
+        if (road?.length <= 2) {
             dispatch(commonActions.resetAddressList())
         }
     }, [dispatch, road]);
@@ -204,7 +204,7 @@ const AddressModal: React.FC<Props> = (props) => {
                     <S.Title>{title}</S.Title>
                     <S.InputContainer>
                         <DebounceInput
-                            placeholder='도로명, 지번, 건물명(2글자 이상)'
+                            placeholder='도로명, 지번, 건물명(3글자 이상)'
                             autoFocus
                             inputRef={inputRef}
                             debounceTimeout={500}
@@ -230,10 +230,11 @@ const AddressModal: React.FC<Props> = (props) => {
                     </S.InputContainer>
                 </S.Header>
                 <S.Content>
-                    {getAddressList?.data?.length === 0 && road?.length > 0 && !getAddressList.loading ? (
+                    {getAddressList?.data?.length === 0 && road?.length > 2 && !getAddressList.loading ? (
                         <S.Empty>
                             <p>
-                                <em>‘{road}'</em>검색 결과가 없습니다<br/>
+                                {getAddressList.error?.code === 'E0006' ?
+                                    <><em>시도명</em>으로 검색할 수 없습니다.<br/></> : <><em>‘{road}'</em>검색 결과가 없습니다<br/></>}
                                 정확한 도로명, 번지, 건물명으로 다시 검색해주세요.
                             </p>
                         </S.Empty>
@@ -246,22 +247,24 @@ const AddressModal: React.FC<Props> = (props) => {
                             onMoreAddresses={() => {
                                 setCurrPage(currPage + 1)
                                 if (getAddressList.hasMore && !getAddressList.loading) {
-                                    dispatch(commonActions.fetchAddressMoreListAsync.request({
-                                        keyword: road,
-                                        currPage,
-                                        cntPerPage: CNT_PER_PAGE
-                                    }))
+                                    setTimeout(() => {
+                                        dispatch(commonActions.fetchAddressMoreListAsync.request({
+                                            keyword: road,
+                                            currPage,
+                                            cntPerPage: CNT_PER_PAGE
+                                        }))
+                                    }, 500)
                                 }
                             }
-                            }/>
+                        }/>
                     )}
                     {isEmpty(getAddressList?.data) && (
                         <S.Tip>
                             <h2 className="title">주소검색 Tip</h2>
                             <ul className="desc">
                                 <li>도로명 + 건물번호 (예 : 테헤란로20길 9)</li>
-                                <li>지번(동/읍.면/리) + 번지수 (예: 역삼동 736-17)</li>
-                                <li>건물명, 아파트명 (예: 동궁빌딩)</li>
+                                <li>지번(동/읍.면/리) + 번지수 (예 : 역삼동 736-17)</li>
+                                <li>건물명, 아파트명 (예 : 동궁빌딩)</li>
                             </ul>
                         </S.Tip>
                     )}
