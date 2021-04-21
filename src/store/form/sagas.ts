@@ -169,16 +169,6 @@ export function* fetchMoveFormSaga() {
     const formData = yield select(formSelector.getFormData);
     const {user: {uuid}} = yield select(userSelector.getUser);
 
-
-    dataLayer({
-        event: 'request',
-        category: '다이사_메인_신청_1',
-        label: '매칭신청',
-        action: selectedSubmitType === 'curation' ? '업체_바로매칭' : '업체_직접고르기',
-        CD6: getMoveType === 'house' ? '가정' : '사무실',
-        CD10: getIsMoveStore ? 'Y' : 'N'
-    })
-
     if(selectedSubmitType === 'curation') {
         yield put(replace('/'));
         yield put(actions.submitFormAsync.request({formData: { uuid, ...formData }}));
