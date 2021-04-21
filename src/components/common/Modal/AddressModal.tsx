@@ -247,13 +247,11 @@ const AddressModal: React.FC<Props> = (props) => {
                             onMoreAddresses={() => {
                                 setCurrPage(currPage + 1)
                                 if (getAddressList.hasMore && !getAddressList.loading) {
-                                    setTimeout(() => {
-                                        dispatch(commonActions.fetchAddressMoreListAsync.request({
-                                            keyword: road,
-                                            currPage,
-                                            cntPerPage: CNT_PER_PAGE
-                                        }))
-                                    }, 500)
+                                    dispatch(commonActions.fetchAddressMoreListAsync.request({
+                                        keyword: road,
+                                        currPage,
+                                        cntPerPage: CNT_PER_PAGE
+                                    }))
                                 }
                             }
                         }/>

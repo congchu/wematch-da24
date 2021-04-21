@@ -1,6 +1,6 @@
-import React, {useEffect, useRef} from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { isEmpty } from 'lodash'
+import { isEmpty, throttle } from 'lodash'
 
 import { Icon } from 'components/wematch-ui'
 import { Juso } from 'store/common/types'
@@ -81,16 +81,14 @@ const List: React.FC<Props> = (props) => {
         }
     }
 
-    const handleScroll = () => {
+    const handleScroll = throttle(() => {
         const scrollTop = scrollRef?.current?.scrollTop || 0
         const clientHeight = scrollRef?.current?.clientHeight || 0
         const scrollHeight = scrollRef?.current?.scrollHeight || 0
-        if (Math.floor(scrollTop + clientHeight) === scrollHeight) {
-            if (onMoreAddresses) {
-                onMoreAddresses()
-            }
+        if ((scrollTop + clientHeight) >= (scrollHeight - 10) && onMoreAddresses) {
+            onMoreAddresses()
         }
-    }
+    }, 300)
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
