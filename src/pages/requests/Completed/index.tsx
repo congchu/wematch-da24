@@ -368,8 +368,6 @@ export default function Completed() {
     dispatch(commonActions.fetchCompletedMoveIdx.request({ inquiry_idx }));
   }, [dispatch, inquiry_idx]);
 
-  console.log(`msg ${msg}`)
-
   useEffect(() => {
     if (data !== null && !loading && !error && msg !== "true") {
       dataLayer({
