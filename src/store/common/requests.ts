@@ -1,4 +1,4 @@
-import {api} from 'lib/api'
+import {api, bookingApi} from 'lib/api'
 import axios from 'axios';
 import * as types from './types'
 import { API_MIDDLEWARE_URL, API_BOOKING_URL } from "constants/env";
@@ -8,7 +8,7 @@ export const getMoveIdx = async (formData: types.RequestUserInfoInsert) => {
 }
 
 export const getCompletedMoveIdx = async (inquiry_idx: string) => {
-    const { data } = await api.get(`/da24-dev/user/orders/${inquiry_idx}`, {
+    const { data } = await bookingApi.get(`/user/orders/${inquiry_idx}`, {
         paramsSerializer: function(params) {
           const result = '';
           return result;
