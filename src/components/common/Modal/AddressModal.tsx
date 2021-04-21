@@ -165,14 +165,14 @@ const AddressModal: React.FC<Props> = (props) => {
     }, [visible])
 
     useEffect(() => {
-        if(road.length > 2) {
+        if(road.length > 1) {
             dispatch(commonActions.fetchAddressListAsync.request({
                 keyword: road,
                 currPage: 1,
                 cntPerPage: CNT_PER_PAGE
             }))
         }
-        if (road?.length <= 2) {
+        if (road?.length <= 1) {
             dispatch(commonActions.resetAddressList())
         }
     }, [dispatch, road]);
@@ -204,7 +204,7 @@ const AddressModal: React.FC<Props> = (props) => {
                     <S.Title>{title}</S.Title>
                     <S.InputContainer>
                         <DebounceInput
-                            placeholder='도로명, 지번, 건물명(3글자 이상)'
+                            placeholder={road.length === 0 ? '도로명, 지번, 건물명(2글자 이상)' : ''} // 아이폰에서 placeholder가 깜빡이는 현상 때문
                             autoFocus
                             inputRef={inputRef}
                             debounceTimeout={500}
@@ -230,7 +230,7 @@ const AddressModal: React.FC<Props> = (props) => {
                     </S.InputContainer>
                 </S.Header>
                 <S.Content>
-                    {getAddressList?.data?.length === 0 && road?.length > 2 && !getAddressList.loading ? (
+                    {getAddressList?.data?.length === 0 && road?.length > 1 && !getAddressList.loading ? (
                         <S.Empty>
                             <p>
                                 {getAddressList.error?.code === 'E0006' ?

@@ -22,6 +22,7 @@ import {dataLayer} from 'lib/dataLayerUtil'
 
 import * as sentry from '@sentry/react'
 import {Severity} from '@sentry/react'
+import {useCallback} from "react";
 
 
 export function* setJusoSaga() {
@@ -96,11 +97,19 @@ export function* setFormSaga()  {
 
     const cookie = getCookie('0dj38gepoekf98234aplyadmin')
 
+    const getDetailAddress = (type: 'start' | 'end') => {
+        // 건물 번호가 없는 경우에는 생략
+        if (getJuso[type].buldSlno === '0') {
+            return getJuso[type].rn + ' ' + getJuso[type].buldMnnm + ' ' + address.detailStart
+        }
+        return getJuso[type].rn + ' ' + getJuso[type].buldMnnm + '-' + getJuso[type].buldSlno + ' ' + address.detailStart
+    }
+
     const formData: commonTypes.RequestUserInfoInsert = {
         moving_type: translateMovingType(type),
         moving_date: date[0],
         floor: `${floor.start}`,
-        detail_addr: getJuso.start.rn + ' ' + getJuso.start.buldMnnm + '-' + getJuso.start.buldSlno + ' ' + address.detailStart,
+        detail_addr: getDetailAddress('start'),
         sido: getJuso.start.siNm,
         gugun: getJuso.start.sggNm,
         dong: getJuso.start.emdNm,
@@ -108,7 +117,7 @@ export function* setFormSaga()  {
         gugun2: getJuso.end.sggNm,
         dong2: getJuso.end.emdNm,
         floor2: `${floor.end}`,
-        detail_addr2: getJuso.end.rn + ' ' + getJuso.end.buldMnnm + '-' + getJuso.end.buldSlno + ' ' + address.detailEnd,
+        detail_addr2: getDetailAddress('end'),
         name: user.name,
         phone1: phone1,
         phone2: phone2,
