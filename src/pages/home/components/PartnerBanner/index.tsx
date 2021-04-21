@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components/macro'
 
 import * as colors from 'styles/colors'
+import { useRouter } from 'hooks/useRouter'
 
 const Banner = styled.section`
   padding: 80px 24px 73px;
@@ -108,18 +109,20 @@ const Banner = styled.section`
 `
 
 export default function PartnerBanner() {
-    return (
-        <Banner>
-            <a href="https://da24.wematch.com/partnernew.asp">
-                <h3>파트너 등록문의</h3>
-                <p style={{ marginBottom: 21 }}>No.1 이사업체 매칭플랫폼 위매치다이사</p>
-                <div className="banner">
-                    <div className="box">
-                        <strong className="title">500만 고객의 선택! &nbsp;</strong>
-                        <p className="text">이제 영업은 저희에게 맡기세요</p>
-                    </div>
-                </div>
-            </a>
-        </Banner>
-    )
+  const router = useRouter()
+  return (
+    <Banner>
+      <h3>파트너 등록문의</h3>
+      <p style={{ marginBottom: 21 }}>No.1 이사업체 매칭플랫폼 위매치다이사</p>
+      {/* <a onClick={()=> router.push('/partnernew')}> */}
+      <a onClick={() => window.location.href = `https://landing-da24.wematch.com/partner_application/`}>
+        <div className="banner">
+          <div className="box">
+            <strong className="title">500만 고객의 선택! &nbsp;</strong>
+            <p className="text">이제 영업은 저희에게 맡기세요</p>
+          </div>
+        </div>
+      </a>
+    </Banner>
+  )
 }

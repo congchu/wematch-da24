@@ -8,9 +8,9 @@ export const isExceedDiffDay = (date: CalendarDate, maxDays: number) => {
     return diffDay > maxDays
 }
 
-export const whatDay = (targetDate: string): string => {
+export const whatDay = (targetDate?: string): string => {
     const week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일')
-    const movingOutDay = new Date(targetDate).getDay()
+    const movingOutDay = dayjs(targetDate).day()
     return week[movingOutDay]
 }
 

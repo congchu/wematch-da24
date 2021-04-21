@@ -33,7 +33,7 @@ export const submitFormAsync = createAsyncAction(
     'FETCH_SUBMIT_FORM_REQUEST',
     'FETCH_SUBMIT_FORM_SUCCESS',
     'FETCH_SUBMIT_FORM_FAILURE'
-)<{formData: types.RequestUserInfoInsert}, FormState, undefined>()
+)<{formData: types.RequestUserInfoInsert}, SubmittedForm, undefined>()
 
 export const setSubmitType = createAction('SET_SUBMIT_TYPE')<'curation' | 'select'>()
 export const fetchMoveData = createAction('FETCH_MOVE_DATA')();

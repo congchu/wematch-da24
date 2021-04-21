@@ -105,14 +105,15 @@ export default createReducer<FormState, Actions>(initialState)
     .handleAction(actions.setInitialFormData, (state, action) => {
         const {
             moving_date, detail_addr, detail_addr2, dong, dong2,
-            floor, floor2, gugun, gugun2, keepMove, terms, privacy, marketing,
+            floor, floor2, gugun, gugun2, keep_move, terms, privacy, marketing,
             name, phone1, phone2, phone3, sido, sido2
         } = action.payload;
         return {
             ...state,
-            date: [moving_date],
+            date: moving_date === null ? [] : [moving_date],
             floor: {start: floor, end: floor2},
             address: {start: `${sido} ${gugun} ${dong}`, end: `${sido2} ${gugun2} ${dong2}`,detailStart: detail_addr, detailEnd: detail_addr2},
+            isMoveStore: keep_move,
             name: name,
             phone: `${phone1}${phone2}${phone3}`,
             agree: {terms, privacy, marketing}
@@ -127,17 +128,6 @@ export default createReducer<FormState, Actions>(initialState)
     // .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state,  submittedForm: { ...state.submittedForm, loading: false, report: false } }))
     .handleAction(actions.submitFormAsync.request, (state) => ({ ...state, submittedForm: { data: undefined, loading: true, report: true } }))
     .handleAction(actions.submitFormAsync.success, (state, action) => ({
-        ...state,
-        type: action.payload.type,
-        date: action.payload.date,
-        address: action.payload.address ,
-        agree: action.payload.agree,
-        floor: action.payload.floor,
-        formData: action.payload.formData,
-        isMoveStore: action.payload.isMoveStore,
-        name: action.payload.name ,
-        phone: action.payload.phone,
-        contents: action.payload.contents,
-        submittedForm: { data: action.payload.submittedForm.data, loading: false, report: true }
+        ...state, submittedForm: { data: action.payload, loading: false, report: true }
     }))
     .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state,  submittedForm: { ...state.submittedForm, loading: false, report: false } }))

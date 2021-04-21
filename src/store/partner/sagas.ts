@@ -86,6 +86,26 @@ export function* fetchMatchingPartnerSaga(action: ActionType<typeof actions.fetc
         yield put(actions.fetchMatchingAsync.failure())
     }
 }
+
+export function* fetchCommentListSaga(action: ActionType<typeof actions.fetchCommentListAsync.request>) {
+    try {
+        const data = yield call(request.getCommentList, action.payload.page, action.payload.size)
+        yield put(actions.fetchCommentListAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchCommentMoreListAsync.failure())
+    }
+}
+
+
+export function* fetchCommentMoreListSaga(action: ActionType<typeof actions.fetchCommentMoreListAsync.request>) {
+    try {
+        const data = yield call(request.getCommentList, action.payload.page, action.payload.size)
+        yield put(actions.fetchCommentMoreListAsync.success(data))
+    } catch (e) {
+        yield put(actions.fetchCommentMoreListAsync.failure())
+    }
+}
+
 export default function* () {
     yield all([
         takeEvery(actions.fetchPartnerListAsync.request, fetchPartnerListSaga),
@@ -96,5 +116,7 @@ export default function* () {
         takeEvery(actions.fetchCartListAsync.request, fetchRecommendedPartnerListSaga),
         takeEvery(actions.fetchMatchingAsync.request, fetchMatchingPartnerSaga),
         takeEvery(actions.fetchPartnerDetailCompAsync.request, fetchPartnerDetailForCompletedSaga),
+        takeEvery(actions.fetchCommentListAsync.request, fetchCommentListSaga),
+        takeEvery(actions.fetchCommentMoreListAsync.request, fetchCommentMoreListSaga),
     ])
 }

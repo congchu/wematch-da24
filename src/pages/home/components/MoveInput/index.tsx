@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import {debounce} from 'lodash'
@@ -8,13 +8,20 @@ import Select from 'components/common/Select'
 import CalendarModal from 'components/common/Modal/CalendarModal'
 import AddressModal from 'components/common/Modal/AddressModal'
 import { CalendarDate } from 'components/wematch-ui/utils/date'
-import * as colors from 'styles/colors'
+
+import useHashToggle from 'hooks/useHashToggle'
+
+import { CALENDAR_MAX_DAYS } from 'constants/values'
+
+import { Juso } from 'store/common/types'
+import * as commonSelector from 'store/common/selectors'
+import * as commonActions from 'store/common/actions'
 import * as formSelector from 'store/form/selectors'
 import * as formActions from 'store/form/actions'
+
 import { isExceedDiffDay } from 'lib/dateUtil'
 import { dataLayer } from 'lib/dataLayerUtil'
-import { CALENDAR_MAX_DAYS } from 'constants/values'
-import useHashToggle from 'hooks/useHashToggle'
+import * as colors from 'styles/colors'
 
 type MoveInputProps = {
     departAddress: string;
@@ -89,6 +96,7 @@ const MoveInput: React.FC<Props> = (props) => {
     const getMoveFloor = useSelector(formSelector.getFloor)
     const getName = useSelector(formSelector.getName)
     const getPhone = useSelector(formSelector.getPhone)
+    const getJuso = useSelector(commonSelector.getJuso)
 
     const floorItems = [
         { key: '1', value: '1층' },
@@ -161,7 +169,7 @@ const MoveInput: React.FC<Props> = (props) => {
         dispatch(formActions.setPhone(originPhoneValue))
     }
 
-    const onSelectDate = (date: CalendarDate) => {  
+    const onSelectDate = (date: CalendarDate) => {
         if (isExceedDiffDay(date, CALENDAR_MAX_DAYS)) {
             alert(`이사업체조회는 내일부터 최장${CALENDAR_MAX_DAYS}일까지만 비교가 가능합니다.`);
             return;
@@ -174,25 +182,30 @@ const MoveInput: React.FC<Props> = (props) => {
             action: '이사날짜',
             CD6: getMoveTypeText()
         })
-        
+
         dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
-        debounceSelectDate(date)
+        debounceSelectDate()
     }
 
-    const debounceSelectDate = debounce((date: CalendarDate) => {
+    const debounceSelectDate = debounce(() => {
         setVisibleCalendarModal(false)
     }, 300)
 
-    const onSelectStartAddress = (data: string) => {
+    const onSelectStartAddress = (juso: Juso) => {
         dispatch(formActions.setAddress({
             ...getMoveAddress,
-            start: data
+            start: juso.roadAddr
+        }))
+
+        dispatch(commonActions.setJuso({
+            ...getJuso,
+            start: juso
         }))
 
         dataLayer({
             event: 'input_info',
             category: '다이사_메인_입력창_1',
-            label: data,
+            label: juso.roadAddr,
             action: '출발지',
             CD6: getMoveTypeText()
         })
@@ -215,16 +228,21 @@ const MoveInput: React.FC<Props> = (props) => {
         })
     }
 
-    const onSelectEndAddress = (data: string) => {
+    const onSelectEndAddress = (juso: Juso) => {
         dispatch(formActions.setAddress({
             ...getMoveAddress,
-            end: data
+            end: juso.roadAddr
+        }))
+
+        dispatch(commonActions.setJuso({
+            ...getJuso,
+            end: juso
         }))
 
         dataLayer({
             event: 'input_info',
             category: '다이사_메인_입력창_1',
-            label: data,
+            label: juso.roadAddr,
             action: '도착지',
             CD6: getMoveTypeText()
         })
@@ -253,7 +271,7 @@ const MoveInput: React.FC<Props> = (props) => {
                 <S.Title>이사정보를 입력해주세요.</S.Title>
                 <Input theme="default" border readOnly placeholder="이사예정일" onClick={() => setVisibleCalendarModal(true)} value={getMoveDate} style={{ backgroundColor: "transparent" }} />
                 <div style={{ display: "flex", flexDirection: "row" }}>
-                    <Input theme="default" border readOnly placeholder="출발지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleStartAddress} value={getMoveAddress.start} style={{ backgroundColor: "transparent" }} />
+                    <Input theme="default" border readOnly placeholder="출발지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleStartAddress} value={getJuso.start?.roadAddr || ''} style={{ backgroundColor: "transparent" }} />
                     <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "49%" }} onClick={toggleStartFloor} value={getMoveFloor.start ? getMoveFloor.start + '층' : getMoveFloor.start} style={{ backgroundColor: "transparent" }} />
                 </div>
                 {getMoveAddress?.start && (
@@ -274,7 +292,7 @@ const MoveInput: React.FC<Props> = (props) => {
                 )}
                 {getMoveAddress?.start && (
                     <div style={{ display: "flex", flexDirection: "row" }}>
-                        <Input theme="default" border readOnly placeholder="도착지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleEndAddress} value={getMoveAddress.end} style={{ backgroundColor: "transparent" }} />
+                        <Input theme="default" border readOnly placeholder="도착지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleEndAddress} value={getJuso.end?.roadAddr || ''} style={{ backgroundColor: "transparent" }} />
                         <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "49%" }} onClick={toggleEndFloor} value={getMoveFloor.end ? getMoveFloor.end + '층' : getMoveFloor.end} style={{ backgroundColor: "transparent" }} />
                     </div>
                 )}

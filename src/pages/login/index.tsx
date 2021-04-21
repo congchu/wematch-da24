@@ -72,7 +72,7 @@ function LoginPage() {
     const handleLoginClose = () => {
         if (visibleCancel) {
             dispatch(userActions.phoneVerifyCancel())
-            history.go(-2);
+            history.go(-2)
         }
     }
 

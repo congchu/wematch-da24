@@ -1,5 +1,5 @@
 export interface SubmittedForm {
-    'result': 'success' | 'no partner' | 'no service';
+    'result': ESubmittedFormResult;
     'match_list': {
         'adminname': string;
         'adminid': string;
@@ -10,4 +10,12 @@ export interface SubmittedForm {
         'level_text': string;
         'status': string;
     }[];
+    'inquiry_idx': string;
+}
+
+
+export enum ESubmittedFormResult {
+    Success = 'success',
+    NoPartner = 'no partner',
+    NoService = 'no service'
 }

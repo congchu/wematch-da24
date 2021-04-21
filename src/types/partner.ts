@@ -70,6 +70,11 @@ export type IReview = {
     star: number;
 }
 
+export interface IComment extends IReview {
+    area: string;
+    level: Level;
+}
+
 export type IRecommendedList = {
   adminname: string;
   adminid: string;

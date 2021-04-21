@@ -27,6 +27,8 @@ import { MOVE_URL } from 'constants/env'
 import { dataLayer } from 'lib/dataLayerUtil'
 import { events } from 'lib/appsflyer'
 import { isExceedDiffDay } from 'lib/dateUtil'
+import {debounce} from "lodash";
+import {showToast} from "../../../components/common/Toast";
 
 
 const S = {
@@ -156,13 +158,7 @@ const S = {
     `,
 }
 
-
-interface ReceivedFormState {
-  formState: FormState;
-}
-
 export default function NoPartner() {
-
     const isDesktop = useMedia({
         minWidth: 1200,
     })
@@ -195,110 +191,113 @@ export default function NoPartner() {
         }
     }, [getMoveType])
 
-
     const handleSubmit = () => {
-        dispatch(formActions.submitFormAsync.request({formData: { uuid: user?.uuid, ...getFormData}})) }
+        if (!getSubmittedForm.data?.result) {
+            showToast({
+                message: '이사 정보가 존재하지 않습니다.',
+                type: 'error',
+                position: 'bottom'
+            })
+            return
+        }
+        dispatch(formActions.submitFormAsync.request({formData: { uuid: user?.uuid, ...getFormData}}))
+    }
 
     const toggleCalendarCancel = () => {
         dispatch(formActions.setMoveDate([]))
         setVisibleCalendarModal(!visibleCalendarModal)
     }
 
-  const toggleCalendarConfirm = () => {
-    dataLayer({
-      event: 'input_info',
-      category: '다이사_메인_입력창_1',
-      label: getMoveDate[0],
-      action: '이사날짜',
-      CD6: getMoveTypeText()
-    })
-    setVisibleCalendarModal(!visibleCalendarModal)
-  }
-  
-  const onSelectDate = (date: CalendarDate) => {
-    if (isExceedDiffDay(date, CALENDAR_MAX_DAYS)) {
-      alert(`이사업체조회는 내일부터 최장${CALENDAR_MAX_DAYS}일까지만 비교가 가능합니다.`);
-      return;
-    }
-    dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
-    dispatch(formActions.setFormData({
-      ...getFormData,
-      'moving_date': date.date.format('YYYY-MM-DD')
-    }))
-  }
-
-  const goHome = () => {
-    window.location.href = `${MOVE_URL}`
-  }
-
-
-  const formState: FormState = {
-    type: getMoveType,
-    date: getMoveDate,
-    address: getAddress,
-    agree: getAgree,
-    floor: getFloor,
-    formData: getFormData,
-    isMoveStore: getIsMoveStore,
-    name: getName,
-    phone: getPhone,
-    submittedForm: getSubmittedForm,
-    contents: getContents
-  }
-
-
-  useEffect(() => {
-    if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
-      dataLayer({
-        event: 'complete',
-        category: '업체마감',
-        action: '업체마감',
-        label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
-        CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
-        CD12: '바로매칭',
-      })
-      ReactPixel.fbq('track', 'Purchase')
-
-      gtag('event', 'conversion', { 'send_to': 'AW-862163644/CmzdCIej6G0QvKWOmwM' })
+    const toggleCalendarConfirm = () => {
+        dataLayer({
+            event: 'input_info',
+            category: '다이사_메인_입력창_1',
+            label: getMoveDate[0],
+            action: '이사날짜',
+            CD6: getMoveTypeText()
+        })
+        setVisibleCalendarModal(!visibleCalendarModal)
     }
 
-    events({
-      action: 'app_move_nopartner'
-    })
-  }, [])
+    const debounceSelectDate = debounce(() => {
+        setVisibleCalendarModal(!visibleCalendarModal)
+    }, 300)
 
-  useEffect(() => {
-    if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
-      setIsCookie(true)
-      dispatch(formActions.submitFormAsync.success(cookies.report))
+    const onSelectDate = (date: CalendarDate) => {
+        if (isExceedDiffDay(date, CALENDAR_MAX_DAYS)) {
+          alert(`이사업체조회는 내일부터 최장${CALENDAR_MAX_DAYS}일까지만 비교가 가능합니다.`);
+          return;
+        }
+        dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
+        dispatch(formActions.setFormData({
+          ...getFormData,
+          'moving_date': date.date.format('YYYY-MM-DD')
+        }))
+
+        debounceSelectDate()
     }
-    if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
-      history.push('/myrequest')
+
+    const formState: FormState = {
+        type: getMoveType,
+        date: getMoveDate,
+        address: getAddress,
+        agree: getAgree,
+        floor: getFloor,
+        formData: getFormData,
+        isMoveStore: getIsMoveStore,
+        name: getName,
+        phone: getPhone,
+        submittedForm: getSubmittedForm,
+        contents: getContents
     }
 
-  }, [getSubmittedForm])
+    useEffect(() => {
+        if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
+          dataLayer({
+            event: 'complete',
+            category: '업체마감',
+            action: '업체마감',
+            label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
+            CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+            CD12: '바로매칭',
+          })
+          ReactPixel.fbq('track', 'Purchase')
 
-  useEffect(() => {
-    if (getSubmittedForm.data?.result === 'no partner' && !getSubmittedForm.loading) {
-      const now = new Date()
-      const time = now.getTime() + (3600 * 1000)
-      now.setTime(time)
-      setCookie('report', formState, {
-        path: '/',
-        expires: now
-      })
+          gtag('event', 'conversion', { 'send_to': 'AW-862163644/CmzdCIej6G0QvKWOmwM' })
+        }
+
+        events({
+          action: 'app_move_nopartner'
+        })
+    }, [])
+
+    useEffect(() => {
+        if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+          setIsCookie(true)
+          dispatch(formActions.submitFormAsync.success(cookies.report))
+        }
+        // if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
+        //   history.push('/myrequest')
+        // }
+    }, [getSubmittedForm])
+
+    useEffect(() => {
+        if (getSubmittedForm.data?.result === 'no partner' && !getSubmittedForm.loading) {
+            const now = new Date()
+            const time = now.getTime() + (3600 * 1000)
+            now.setTime(time)
+            setCookie('report', formState, {
+            path: '/',
+            expires: now
+            })
+        }
+    }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
+
+    if (getSubmittedForm.loading) {
+        return <ResponsiveSkeleton />
     }
-  }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
 
-
-  if (getSubmittedForm.loading) {
-    return <ResponsiveSkeleton />
-  }
-
-
-  return (
-    <>
-      { !getSubmittedForm.report ? <></> :
+    return (
         <S.Container>
           {isDesktop ? <MainHeader /> : <S.Header><Link to="/"><span>위매치</span></Link></S.Header>}
           <S.Contents>
@@ -315,15 +314,11 @@ export default function NoPartner() {
               onClose={toggleCalendarCancel}
               onConfirm={toggleCalendarConfirm} onSelect={onSelectDate}
               selected={getMoveDate} />
-
             <S.DateSelect id='dsl_button_retry' onClick={handleSubmit}>다른 날짜로 견적 재요청</S.DateSelect>
             <S.LinkAlarm id='dsl_a_alarm_noPartner' href="https://pf.kakao.com/_Ppsxexd/chat"
-              target="_blank">가능업체
-                            발생 시 알림신청</S.LinkAlarm>
+              target="_blank">가능업체 발생 시 알림신청</S.LinkAlarm>
           </S.ChangeDate>
         </S.Container>
-      }
-    </>
-  )
+    )
 }
 

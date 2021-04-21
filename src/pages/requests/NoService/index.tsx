@@ -86,7 +86,7 @@ const S = {
     LinkAlarm: styled.a`
       display: block;
       height: 36px;
-      padding-top: 20px;
+      padding: 10px 0;
       font-weight: 700;
       background: #FFE500;
       text-align: center;
@@ -101,6 +101,10 @@ const S = {
         margin-top: -2px;
         margin-right: 10px;
         vertical-align: middle;
+      }
+      
+      span {
+        line-height: 35px;
       }
 
       @media screen and (min-width: 1200px) {
@@ -118,7 +122,6 @@ export default function NoService() {
         minWidth: 1200,
     })
 
-
     const dispatch = useDispatch()
     const [cookies, setCookie] = useCookies(['report'])
     const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
@@ -134,7 +137,6 @@ export default function NoService() {
     const getContents = useSelector(formSelector.getContents)
     const getFormData = useSelector(formSelector.getFormData)
     const getAgree = useSelector(formSelector.getAgree)
-
 
     const formState: FormState = {
         type: getMoveType,
@@ -180,10 +182,9 @@ export default function NoService() {
             setIsCookie(true)
             dispatch(formActions.submitFormAsync.success(cookies.report))
         }
-        if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
-            history.push('/myrequest')
-        }
-
+        // if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
+        //     history.push('/myrequest')
+        // }
     }, [getSubmittedForm])
 
     useEffect(() => {
@@ -199,21 +200,18 @@ export default function NoService() {
     }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
 
     return (
-        <>
-            { !getSubmittedForm.report ? <></> :
-                <S.Container>
-                    {/* {isDesktop ? <MainHeader/> : <NavHeader title="" onPreviousButtonClick={goHome}/>} */}
-                    {isDesktop ? <MainHeader /> : <S.Header><Link to="/"><span>위매치</span></Link></S.Header>}
-                    <S.Contents>
-                        <AreaIcon />
-                        <S.Title>해당 지역은 서비스 준비 중입니다.</S.Title>
-                        <S.Subtext>빠른 시일 내 이용 가능하도록<br />최선을 다하겠습니다.</S.Subtext>
-                    </S.Contents>
-                    <S.LinkAlarm id='dsl_a_alarm_noService' href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">
-                        <Kakao />가능업체 알림 신청
-                    </S.LinkAlarm>
-                </S.Container>
-            }
-        </>
+        <S.Container>
+            {/* {isDesktop ? <MainHeader/> : <NavHeader title="" onPreviousButtonClick={goHome}/>} */}
+            {isDesktop ? <MainHeader /> : <S.Header><Link to="/"><span>위매치</span></Link></S.Header>}
+            <S.Contents>
+                <AreaIcon />
+                <S.Title>해당 지역은 서비스 준비 중입니다.</S.Title>
+                <S.Subtext>빠른 시일 내 이용 가능하도록<br />최선을 다하겠습니다.</S.Subtext>
+            </S.Contents>
+            <S.LinkAlarm id='dsl_a_alarm_noService' href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">
+                <Kakao />
+                <span>가능업체 알림 신청</span>
+            </S.LinkAlarm>
+        </S.Container>
     )
 }
