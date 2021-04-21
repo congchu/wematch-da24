@@ -338,7 +338,7 @@ const MyConsultDetail = () => {
                   event: 'myrequest_detail',
                   category: '내신청내역_상세',
                   action: '고객평가_확인',
-                  label: `${arr.length}_${index}`,
+                  label: `${arr.length}_${index + 1}`,
                   CD6: selectedOrder.type,
                   CD8: `${list.level}등급`
                 })

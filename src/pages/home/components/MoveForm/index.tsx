@@ -283,6 +283,16 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
 
   const handleRequestClick = (submitType: "curation" | "select") => {
     if (!validateHouseOrOfficeForm()) return;
+
+    dataLayer({
+      event: 'request',
+      category: '다이사_메인_신청_1',
+      label: '매칭신청',
+      action: submitType === 'curation' ? '업체_바로매칭' : '업체_직접고르기',
+      CD6: getMoveType === 'house' ? '가정' : '사무실',
+      CD10: getIsMoveStore ? 'Y' : 'N'
+  })
+
     selectedSubmitType.current = submitType;
     dispatch(formActions.setSubmitType(submitType));
 

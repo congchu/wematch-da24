@@ -31,6 +31,7 @@ import NewModal from "../../../components/NewModalTemplate";
 import ResponsiveSkeleton from "components/common/Skeleton/responsiveSkeleton";
 import dayjs from "dayjs";
 import { useRouter } from "../../../hooks/useRouter";
+import { useCallback } from 'react';
 
 const S = {
   Container: styled.div`
@@ -367,6 +368,8 @@ export default function Completed() {
     dispatch(commonActions.fetchCompletedMoveIdx.request({ inquiry_idx }));
   }, [dispatch, inquiry_idx]);
 
+  console.log(`msg ${msg}`)
+
   useEffect(() => {
     if (data !== null && !loading && !error && msg !== "true") {
       dataLayer({
@@ -396,6 +399,38 @@ export default function Completed() {
       });
     }
   }, [data, loading, error, msg]);
+
+  const handleCleanConfirm = useCallback(() => {
+    if(data !== null) {
+      const pl = new Promise((resolve) => {
+        dataLayer({
+          event: "msg_complete",
+          category: msg ? '매칭완료메시지_크로스셀' : '매칭완료_크로스셀',
+          action: '입주청소찾기',
+          label: '바로찾기',
+          CD6: `${data.type === "가정이사" ? "가정" : "사무실"}`,
+        })
+        resolve(null);
+      })
+      pl.then(() => window.location.href = `${CLEAN_URL}`)
+    }
+  }, [msg, data])
+
+  const handleCleanCancel = useCallback(() => {
+    if(data !== null) {
+      const pl = new Promise((resolve) => {
+        dataLayer({
+          event: "msg_complete",
+          category: msg ? '매칭완료메시지_크로스셀' : '매칭완료_크로스셀',
+          action: '입주청소찾기',
+          label: '다음에',
+          CD6: `${data.type === "가정이사" ? "가정" : "사무실"}`,
+        })
+        resolve(null);
+      })
+      pl.then(() => togglePopup())
+    }
+  }, [msg, data])
 
   const userRequestInfo: {
     contact: string;
@@ -552,8 +587,8 @@ export default function Completed() {
         content={"입주청소도 필요하세요?"}
         confirmText={"바로 찾기"}
         cancelText={"다음에"}
-        confirmClick={() => (window.location.href = `${CLEAN_URL}`)}
-        cancelClick={() => togglePopup()}
+        confirmClick={handleCleanConfirm}
+        cancelClick={handleCleanCancel}
       />
       <NewModal
         visible={error}
