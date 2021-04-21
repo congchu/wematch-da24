@@ -28,11 +28,14 @@ export function* fetchAddressListMoreSaga(action: ActionType<typeof actions.fetc
         const {data} = yield call(requests.getAddress, action.payload)
         yield put(actions.fetchAddressMoreListAsync.success(data))
     } catch (e) {
-        showToast({
-            message: e.error.message,
-            type: 'error',
-            position: 'bottom'
-        })
+        const errorCode = ['E0006', 'E0009', 'E0010', 'EE0011', 'E0012', 'E0013']
+        if (!errorCode.includes(e.error.code)) {
+            showToast({
+                message: e.error.message,
+                type: 'error',
+                position: 'bottom'
+            })
+        }
         yield put(actions.fetchAddressMoreListAsync.failure(e.error))
     }
 }
