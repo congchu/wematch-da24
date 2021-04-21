@@ -374,13 +374,7 @@ export default function Completed() {
         event: "complete",
         category: "매칭완료",
         action: `매칭완료_${data?.partners?.length}`,
-        label: `${data?.start_address
-          .split(" ")
-          .slice(0, -1)
-          .pop()}_${data?.end_address
-          .split(" ")
-          .slice(0, -1)
-          .pop()}`,
+        label: `${data?.start_address?.replace(/ /g, '-')}층_${data?.end_address?.replace(/ /g, '-')}층`,
         CD6: `${data.type === "가정이사" ? "가정" : "사무실"}`,
         CD12: "바로매칭",
       });
