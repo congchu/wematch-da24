@@ -289,13 +289,15 @@ export default function MainFooter() {
                     <S.ExternalLink href="https://da24.wematch.com/terms" target="_blank">
                         이용약관 및 개인정보처리방침
                     </S.ExternalLink><br />
-                    <S.ExternalLink onClick={()=> router.push('/faq')}>
+                    {/*<S.ExternalLink onClick={()=> router.push('/faq')}>*/}
+                    <S.ExternalLink onClick={()=> window.location.href = 'https://da24.wematch.com/faq.asp'}>
                         자주묻는 질문
                     </S.ExternalLink>
                     <S.ExternalLink onClick={()=> router.push('/contact')}>
                         문의하기
                     </S.ExternalLink>
-                    <S.ExternalLink onClick={()=> router.push('/notice')}>
+                    {/*<S.ExternalLink onClick={()=> router.push('/notice')}>*/}
+                    <S.ExternalLink onClick={()=> window.location.href = 'https://da24.wematch.com/notice.asp'}>
                         공지사항
                     </S.ExternalLink>
                     <S.ExternalLink onClick={handleVisibleDescription} className="companyInfo">
