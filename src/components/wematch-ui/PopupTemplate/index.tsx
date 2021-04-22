@@ -90,6 +90,8 @@ const PopupHeader = styled.div`
   align-items: center;
   justify-content: flex-end;
   background-color: white;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
   z-index: 210;
   svg {
     margin-right: 20px;
