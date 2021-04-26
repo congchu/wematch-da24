@@ -12,7 +12,7 @@ import { Icon } from 'components/wematch-ui'
 import * as commonActions from 'store/common/actions'
 import * as commonSelector from 'store/common/selectors'
 import { CNT_PER_PAGE } from 'store/common/reducers'
-import { Juso } from 'store/common/types'
+import {Juso, JusoType} from 'store/common/types'
 import * as colors from 'styles/colors'
 
 interface Props {
@@ -27,7 +27,7 @@ interface Props {
     /** 클릭 이벤트 정의 */
     onClick?: () => void;
     /** Select 이벤트 정의 */
-    onSelect?: (juso: Juso) => void;
+    onSelect?: (juso: Juso, type: JusoType) => void;
     /** 확인 버튼 이벤트 정의 */
     onConfirm?: () => void;
 }
@@ -204,7 +204,7 @@ const AddressModal: React.FC<Props> = (props) => {
                     <S.Title>{title}</S.Title>
                     <S.InputContainer>
                         <DebounceInput
-                            placeholder={road.length === 0 ? '도로명, 지번, 건물명(2글자 이상)' : ''} // 아이폰에서 placeholder가 깜빡이는 현상 때문
+                            placeholder='도로명, 지번, 건물명(2글자 이상)'
                             autoFocus
                             inputRef={inputRef}
                             debounceTimeout={500}
@@ -244,6 +244,7 @@ const AddressModal: React.FC<Props> = (props) => {
                             onClick={onClick}
                             onSelect={onSelect}
                             style={{padding: '0 24px'}}
+                            loading={getAddressList.loading}
                             onMoreAddresses={() => {
                                 setCurrPage(currPage + 1)
                                 if (getAddressList.hasMore && !getAddressList.loading) {
