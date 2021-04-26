@@ -110,9 +110,8 @@ const S = {
         right: 16px;
         bottom: 0;
     `,
-    Content: styled.div<{height: number}>`
-        //min-height: calc(100% - 157px - 56px);
-        min-height: ${props => props.height && props.height}px;
+    Content: styled.div`
+        min-height: calc(100% - 157px - 56px);
         @media screen and (min-width: 768px) {
           min-height: calc(480px - 157px - 56px);
         }
@@ -158,7 +157,6 @@ const AddressModal: React.FC<Props> = (props) => {
         maxWidth: 767,
     })
 
-    const innerHeight = window.innerHeight;
     useEffect(() => {
         return () => {
             setRoad('')
@@ -179,7 +177,6 @@ const AddressModal: React.FC<Props> = (props) => {
         }
     }, [dispatch, road]);
 
-
     const handleOnChange = (address: string) => {
         setRoad(address);
     }
@@ -199,7 +196,6 @@ const AddressModal: React.FC<Props> = (props) => {
         return () => { document.removeEventListener('touchstart', keyboardOffEvent) }
     }, [visible])
 
-    console.log(window.innerHeight)
     return (
         <PopupTemplate visible={visible} onClose={onClose}>
             <S.Container>
@@ -232,7 +228,7 @@ const AddressModal: React.FC<Props> = (props) => {
                         </S.IconWrapper>
                     </S.InputContainer>
                 </S.Header>
-                <S.Content height={window.innerHeight - 157 - 56}>
+                <S.Content>
                     {getAddressList?.data?.length === 0 && road?.length > 1 && !getAddressList.loading ? (
                         <S.Empty>
                             <p>

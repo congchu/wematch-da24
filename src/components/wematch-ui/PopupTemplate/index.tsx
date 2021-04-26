@@ -50,7 +50,7 @@ const PopupOverlay = styled.div`
   width: 100%;
   height: 100%;
   z-index: 200;
-  
+  overflow: hidden;
   background-color: white;
   @media screen and (min-width: 768px) {
     background-color: rgba(18, 18, 18, 0.6);
