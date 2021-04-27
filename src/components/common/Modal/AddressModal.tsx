@@ -177,7 +177,6 @@ const AddressModal: React.FC<Props> = (props) => {
         }
     }, [dispatch, road]);
 
-
     const handleOnChange = (address: string) => {
         setRoad(address);
     }

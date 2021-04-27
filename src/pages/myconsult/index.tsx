@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import * as colors from 'styles/colors'
 import { ConsultCard, FindCard } from './components/MyConsultCard';
 import * as userActions from 'store/user/actions';
+import *  as formActions from 'store/form/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import * as userSelector from 'store/user/selectors';
 import dayjs from 'dayjs';
@@ -27,7 +28,7 @@ const MyConsult = () => {
     })
 
     const handleLogout = () => {
-        dispatch(userActions.signOut());
+        // dispatch(userActions.signOut()); // location href 처리로 리덕스 데이터 갱신됨 
         deleteCookie('x-wematch-token');
         onMessageHandler({
             action: 'clearData'
@@ -50,6 +51,11 @@ const MyConsult = () => {
         dispatch(userActions.selectOrder({order}));
     }
 
+    const handleCertifyButtonClick = () => {
+        dispatch(formActions.setMoveType("office"));
+        history.push('/login')
+    }
+
 
     // TODO: Skeleton UI 적용 필요. 현재 임시로 작업
     if(loading) {
@@ -65,7 +71,7 @@ const MyConsult = () => {
                         <strong>쉽고, 빠르게 이용하기</strong>
                         <p>최초 1회만 번호인증을 하시면 무료 견적상담 및 내 신청내역 기능을 자유롭게 이용하실 수 있어요!</p>
                     </LoginWrapper>
-                    <Button theme="primary" border={true} bold={true} onClick={() => history.push('/login')} id={'dsl_myrequests_gate_button'}>인증하기</Button>               
+                    <Button theme="primary" border={true} bold={true} onClick={handleCertifyButtonClick} id={'dsl_myrequests_gate_button'}>인증하기</Button>               
                 </LoginContent>
                 <BottomNav />
             </Container>
