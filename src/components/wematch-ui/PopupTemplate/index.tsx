@@ -1,17 +1,15 @@
 import React, {useEffect} from 'react'
 import {createPortal} from "react-dom";
 import styled from 'styled-components'
-import * as colors from "../../../styles/colors";
 import { Icon } from "../index";
 
 interface Props {
   visible: boolean;
   onClose?: () => void;
-  pcHeight?: number;
 }
 
 const PopupTemplate: React.FC<Props> = (props) => {
-  const { visible, children, onClose, pcHeight } = props;
+  const { visible, children, onClose } = props;
 
   useEffect(() => {
     if (visible) {
@@ -50,14 +48,13 @@ const PopupOverlay = styled.div`
   width: 100%;
   height: 100%;
   z-index: 200;
-  
   background-color: white;
   @media screen and (min-width: 768px) {
     background-color: rgba(18, 18, 18, 0.6);
   }
 `;
 
-const PopupWrapper = styled.div<{ pcHeight?: number }>`
+const PopupWrapper = styled.div`
   position: relative;
   height: 100%;
   overflow-y: hidden;
@@ -74,7 +71,7 @@ const PopupWrapper = styled.div<{ pcHeight?: number }>`
   
   @media screen and (min-width: 768px) {
     width: 360px;
-    height: ${({ pcHeight }) => !pcHeight ? '580px' : `${pcHeight}px`};
+    height: 580px;
     border-radius: 16px;
     top: 50%;
     left: 50%;
@@ -90,6 +87,8 @@ const PopupHeader = styled.div`
   align-items: center;
   justify-content: flex-end;
   background-color: white;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
   z-index: 210;
   svg {
     margin-right: 20px;
