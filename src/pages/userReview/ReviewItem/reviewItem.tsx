@@ -265,19 +265,19 @@ export default function ReviewItem({ adminid,partnerName, userId, created_at, st
                     <S.StarContainer>
                         <p>가격도</p>
                         <S.StarFill star={convertGradeToStar(price)}>
-                            <span className="fill"></span>
+                            <span className="fill"/>
                         </S.StarFill>
                     </S.StarContainer>
                     <S.StarContainer>
                         <p>친절도</p>
                         <S.StarFill star={convertGradeToStar(kind)}>
-                            <span className="fill"></span>
+                            <span className="fill"/>
                         </S.StarFill>
                     </S.StarContainer>
                     <S.StarContainer>
                         <p>전문성</p>
                         <S.StarFill star={convertGradeToStar(professional)}>
-                            <span className="fill"></span>
+                            <span className="fill"/>
                         </S.StarFill>
                     </S.StarContainer>
                 </S.StarDiv>

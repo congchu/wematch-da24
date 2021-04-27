@@ -37,9 +37,6 @@ const S = {
     line-height: 23px;
     color: ${gray66};
   `,
-    SliderContainer: styled.div`
-        margin-bottom: 20px;
-    `
 }
 
 const Image = styled.img`
@@ -71,7 +68,7 @@ function Review() {
     const router = useRouter()
     const reviews = [
         {
-          partnerName: '서울시 강서구 A등급 업체', grade: '최고', price: 4, kind: 5, professional: 5,
+            partnerName: '서울시 강서구 A등급 업체', grade: '최고', price: 4, kind: 5, professional: 5,
             content: '골목이라는 열악한 조건의 이사였음에도 불구하고 끝까지 처리해 주셨어요~ 2년뒤에 또 이사 예정에 있는데 또 와달라고 할 정도 였습니다!!',
             customer: 591423, created_at: '2020.10.01'
         },

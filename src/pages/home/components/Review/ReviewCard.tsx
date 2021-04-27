@@ -11,6 +11,8 @@ const S = {
       box-sizing: border-box;
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
+      user-select: none;
+      cursor: pointer;
     `,
     Container: styled.div`
       margin: 20px;
@@ -35,10 +37,9 @@ const S = {
         width: 46px;
         height: 18px;
         display: inline-block;
-        color: #${props => props.gradeColor};
-        //float: left;
+        color: ${props => props.gradeColor};
         border-radius: 20px;
-        border: 1.2px solid #${props => props.gradeColor};
+        border: 1.2px solid ${props => props.gradeColor};
         padding: 1px;
         font-weight: 600;
         font-size: 10px;
@@ -63,19 +64,39 @@ const S = {
     StarFill: styled.span<{star: number}>`
         margin: 0 6px 0 4px;
 		display: inline-block;
-    	z-index:5;
-		width:58px;
-    	height:10px;
+    	z-index: 5;
+		width: 60px;
+    	height: 12px;
 		background:url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/icon/star.svg) no-repeat 0 0;
-        background-size: 58px;
+        background-size: 60px;
 		.fill{
 			display:block;
-			width: ${props => props.star && props.star*15}%;
+			width: ${props => props.star && props.star*20}%;
 			height:10px;
 			background:url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/icon/starfill.svg) no-repeat 0 0;
-            background-size: 58px;
+            background-size: 60px;
 		}
-        
+	`,
+    StarFill2: styled.span<{star: number}>`
+        margin: 0 8px 0 6px;
+		display: inline-block;
+    	position:relative;
+    	z-index:5;
+		width:80px;
+    	height:16px;
+		vertical-align:middle;
+		background:url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/icon/star.svg) no-repeat 0 0;
+		.fill{
+			display:block;
+			width: ${props => props.star && props.star*20}%;
+			height:16px;
+			background:url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/icon/starfill.svg) no-repeat 0 0;
+		}
+        //별사이즈/디자 바뀌면 바꾸기
+        @media screen and (max-width: 446px){
+          display: block;
+          margin: 2px 16px 0 0;
+        }
 	`,
     Contents: styled.div`
       margin: 20px auto ;
@@ -90,9 +111,6 @@ const S = {
         margin: 0 5px;
       }
     `
-
-
-
 }
 interface Props {
     partnerName: string; //업체명
@@ -107,11 +125,9 @@ interface Props {
 //업체명	등급	가격	친절	전문	내용	고객번호 (-님)	게시일
 const ReviewCard = ({partnerName, userId, created_at, grade, price, kind, professional, reviewContents}: Props) => {
     const gradeBadge = (grade: string) => {
-        if(grade === '최고' ) return "1672f7"
-        else if (grade === '매우 만족') return "00b6ed"
-        // else if (starAvg > 2) return "ffae2c"
-        // else if (starAvg > 1) return  "fa6e3c"
-        else return "fa3c3c"
+        if(grade === '최고' ) return '#1672f7'
+        else if (grade === '매우 만족') return '#00b6ed'
+        else return '#fa3c3c'
     }
     return(
         <S.Card>
@@ -124,19 +140,19 @@ const ReviewCard = ({partnerName, userId, created_at, grade, price, kind, profes
                     <S.StarContainer>
                         <p>가격</p>
                         <S.StarFill star={price}>
-                            <span className="fill"></span>
+                            <span className="fill"/>
                         </S.StarFill>
                     </S.StarContainer>
                     <S.StarContainer>
                         <p>친절</p>
                         <S.StarFill star={kind}>
-                            <span className="fill"></span>
+                            <span className="fill"/>
                         </S.StarFill>
                     </S.StarContainer>
                     <S.StarContainer>
                         <p>전문</p>
                         <S.StarFill star={professional}>
-                            <span className="fill"></span>
+                            <span className="fill"/>
                         </S.StarFill>
                     </S.StarContainer>
                 </S.StarDiv>
