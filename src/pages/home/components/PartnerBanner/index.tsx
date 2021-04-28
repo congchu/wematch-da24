@@ -5,7 +5,7 @@ import * as colors from 'styles/colors'
 import { useRouter } from 'hooks/useRouter'
 
 const Banner = styled.section`
-  padding: 80px 24px 73px;
+  padding: 50px 24px 73px;
   
   a {
     cursor: pointer;
