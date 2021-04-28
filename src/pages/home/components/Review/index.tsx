@@ -39,11 +39,6 @@ const S = {
   `,
 }
 
-const Image = styled.img`
-  width: 312px;
-  height: 210px;
-`
-
 const CustomSwiper = styled(Swiper)`
   .swiper-wrapper{
     padding-bottom: 20px;
@@ -96,7 +91,8 @@ function Review() {
     ]
 
     const autoPlayOptions = {
-      delay: 4000
+      // delay: 4000
+        delay: 400000000
     }
 
     return (
@@ -110,7 +106,7 @@ function Review() {
             centeredSlides={true}
             centeredSlidesBounds={true}
             pagination={{ clickable: true }}
-            width={340}
+            width={330}
             loop={true}
             autoplay={autoPlayOptions}
             loopAdditionalSlides={1}
@@ -122,7 +118,7 @@ function Review() {
                   </SwiperSlide>
               ))}
               <div className="swiper-wrapper" />
-              <div className="swiper-pagination"/>
+              <div className="swiper-pagination" />
           </CustomSwiper>
         </S.Container>
     )

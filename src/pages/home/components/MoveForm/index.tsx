@@ -47,7 +47,8 @@ import { ESignInCase } from "store/user/types";
 
 const Visual = {
   Section: styled.section`
-    padding: 0 24px 80px;
+    //padding: 0 24px 80px;
+    padding: 0 24px 50px;
   `,
   Container: styled.div`
     padding-top: 32px;
