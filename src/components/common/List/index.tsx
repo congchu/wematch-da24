@@ -62,10 +62,10 @@ const S = {
       align-items: center;
     `,
     Tag: styled.div`
-      font-size: 10px;
+      font-size: 11px;
       width: 34px;
       height: 18px;
-      line-height: 18px;
+      line-height: 19px;
       text-align: center;
       color: ${colors.pointBlue};
       border: 1px solid ${colors.pointBlue};
