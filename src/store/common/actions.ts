@@ -33,7 +33,7 @@ export const fetchDistance = createAsyncAction(
 )<types.RequestDistanceType, types.ResponseDistanceType, undefined>()
 
 export const setDeviceId = createAction('SET_DEVICE_ID')<string>();
-export const setJuso = createAction('SET_JUSO')<{ start: types.Juso | null, end: types.Juso | null, distance: number }>()
+export const setJuso = createAction('SET_JUSO')<{ start: types.Juso | null, end: types.Juso | null, distance: number, type: { start: types.JusoType, end: types.JusoType } }>()
 
 export const resetAddressList = createAction('RESET_ADDRESS_LIST')()
 export const resetAll = createAction('RESET_ALL')()

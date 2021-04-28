@@ -2,8 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { isEmpty, throttle } from 'lodash'
 
-import { Icon } from 'components/wematch-ui'
-import { Juso } from 'store/common/types'
+import { Juso, JusoType } from 'store/common/types'
 
 import * as colors from 'styles/colors'
 import { checkApp, checkMobile } from 'lib/checkDevice'
@@ -13,7 +12,8 @@ interface Props extends Omit<React.HTMLAttributes<HTMLUListElement>, 'onSelect'>
     onClick?: () => void;
     /** 아이템 정의 */
     addresses: Juso[] | undefined;
-    onSelect? (juso: Juso): void;
+    onSelect? (juso: Juso, type: JusoType): void;
+    loading: boolean;
     onMoreAddresses?: () => void;
 }
 
@@ -28,12 +28,12 @@ const S = {
       display: flex;
       flex-direction: column;
       // max-height: calc(${window.innerHeight}px - 99px - 48px);
-      max-height: calc(${window.innerHeight}px - 200px);
+      max-height: calc(${window.innerHeight}px - 250px);
       overflow-y: auto;
       
       @media (min-width: 768px) {
         //max-height: 1200px;
-        height: ${props => props.isEmpty ? '0' : '350px'};
+        height: ${props => props.isEmpty ? '0' : '325px'};
         //overflow-y: auto;
       }
       //@media (min-width: 1200px) {
@@ -41,26 +41,51 @@ const S = {
       //}
     `,
     Li: styled.li<{isApp: boolean}>`
-        display: flex;
+        font-size: 12px;
+        display: inline-block;
         align-items: center;
         justify-content: space-between;
-        cursor: pointer;
-        padding-left: 8px;
-        min-height: 51px;
-        border-bottom: 1px solid #d8d8d8; 
+        border-top: 1px solid #d8d8d8; 
         word-break: keep-all;
-        &:last-child {
+        
+        &:first-child {
           border: none;
-          //margin-bottom: 100px;
         }
     `,
-    A: styled.a`
-        letter-spacing: -1px;
-        font-size: 14px;
-        color: ${colors.gray33};
-        em {
-            color: ${colors.pointBlue};
-        }
+    Content: styled.div`
+      margin: 24px 3px 24px 0; 
+    `,
+    Line: styled.div`
+      height: fit-content;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    `,
+    Tag: styled.div`
+      font-size: 10px;
+      width: 34px;
+      height: 18px;
+      line-height: 18px;
+      text-align: center;
+      color: ${colors.pointBlue};
+      border: 1px solid ${colors.pointBlue};
+      border-radius: 3px;
+      margin-right: 8px;
+  `,
+   A: styled.a`
+      width: 100%;
+      letter-spacing: -1px;
+      font-size: 14px;
+      line-height: 1.2;
+      color: ${colors.gray33};
+      cursor: pointer;
+      em {
+        color: ${colors.pointBlue};
+      }
+   `,
+    Spinner: styled.div`
+      margin-top: 8px;
+      text-align: center;
     `
 }
 
@@ -69,15 +94,16 @@ const List: React.FC<Props> = (props) => {
         onClick,
         addresses,
         onSelect,
+        loading,
         onMoreAddresses,
         ...restProps
     } = props
 
     const scrollRef = useRef<HTMLUListElement>(null);
 
-    const handleOnSelect = (juso: Juso) => {
+    const handleOnSelect = (juso: Juso, type: JusoType) => {
         if (onSelect) {
-            return onSelect(juso)
+            return onSelect(juso, type)
         }
     }
 
@@ -96,16 +122,25 @@ const List: React.FC<Props> = (props) => {
     }, []);
 
     return (
-        <S.Ul ref={scrollRef} onScroll={handleScroll} {...restProps} isEmpty={isEmpty(addresses)}>
-            {addresses?.map((juso, index) => {
-                return (
-                    <S.Li key={index} isApp={checkMobile() || checkApp()} onClick={() => handleOnSelect(juso)}>
-                        <S.A>{juso.roadAddr}</S.A>
-                        <Icon.Next size={17} color={colors.black} style={{marginRight:'15px'}}/>
-                    </S.Li>
-                )
-            })}
-        </S.Ul>
+        <>
+            <S.Ul ref={scrollRef} onScroll={handleScroll} {...restProps} isEmpty={isEmpty(addresses)}>
+                {addresses?.map((juso, index) => {
+                    return (
+                        <S.Li key={index} isApp={checkMobile() || checkApp()}>
+                            <S.Content>
+                                <S.Line onClick={() => handleOnSelect(juso, 'road')} >
+                                    <S.Tag>도로명</S.Tag><S.A>{juso.roadAddr}</S.A>
+                                </S.Line>
+                                <S.Line onClick={() => handleOnSelect(juso, 'jibun')}>
+                                    <S.Tag>지번</S.Tag><S.A>{juso.jibunAddr}</S.A>
+                                </S.Line>
+                            </S.Content>
+                        </S.Li>
+                    )
+                })}
+            </S.Ul>
+            {<S.Spinner>{loading && !isEmpty(addresses) && <img src={require('assets/images/wematch_spinner.svg')} alt="로딩중"/>}</S.Spinner>}
+        </>
     )
 }
 

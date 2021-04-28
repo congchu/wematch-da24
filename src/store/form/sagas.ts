@@ -60,6 +60,7 @@ export function* setJusoSaga() {
                     sggNm: getJuso.start.sggNm,
                     emdNm: getJuso.start.emdNm,
                     roadAddr: getJuso.start.roadAddr,
+                    jibunAddr: getJuso.start.jibunAddr,
                 },
                 end: {
                     admCd: getJuso.end.admCd,
@@ -71,9 +72,14 @@ export function* setJusoSaga() {
                     siNm: getJuso.end.siNm,
                     sggNm: getJuso.end.sggNm,
                     emdNm: getJuso.end.emdNm,
-                    roadAddr: getJuso.end.roadAddr
+                    roadAddr: getJuso.end.roadAddr,
+                    jibunAddr: getJuso.end.jibunAddr,
                 },
-                distance: data
+                distance: data,
+                type: {
+                    start: getJuso.type.start,
+                    end: getJuso.type.end,
+                }
             }
 
             setCookie('jusoData', JSON.stringify(replaceCookieFormData), { expires: new Date(dayjs().add(2, 'day').format()) })
@@ -105,19 +111,50 @@ export function* setFormSaga()  {
         return getJuso[type].rn + ' ' + getJuso[type].buldMnnm + '-' + getJuso[type].buldSlno + ' ' + address.detailStart
     }
 
+    const getStartAddress = () => {
+        if (getJuso.type.start === 'road') {
+            return {
+                detail_addr: getDetailAddress('start'),
+                sido: getJuso.start.siNm,
+                gugun: getJuso.start.sggNm,
+                dong: getJuso.start.emdNm,
+            }
+        }
+        const [sido, gugun, dong, detail1, detail2] = getJuso.start.jibunAddr.split(' ')
+        return {
+            detail_addr: detail1 + ' ' + detail2,
+            sido,
+            gugun,
+            dong,
+        }
+    }
+
+    const getEndAddress = () => {
+        if (getJuso.type.end === 'road') {
+            return {
+                detail_addr2: getDetailAddress('end'),
+                sido2: getJuso.start.siNm,
+                gugun2: getJuso.start.sggNm,
+                dong2: getJuso.start.emdNm,
+            }
+        }
+        const [sido2, gugun2, dong2, detail1, detail2] = getJuso.end.jibunAddr.split(' ')
+        return {
+            detail_addr2: detail1 + ' ' + detail2,
+            sido2,
+            gugun2,
+            dong2,
+        }
+    }
+
+
     const formData: commonTypes.RequestUserInfoInsert = {
         moving_type: translateMovingType(type),
         moving_date: date[0],
         floor: `${floor.start}`,
-        detail_addr: getDetailAddress('start'),
-        sido: getJuso.start.siNm,
-        gugun: getJuso.start.sggNm,
-        dong: getJuso.start.emdNm,
-        sido2: getJuso.end.siNm,
-        gugun2: getJuso.end.sggNm,
-        dong2: getJuso.end.emdNm,
+        ...getStartAddress(),
+        ...getEndAddress(),
         floor2: `${floor.end}`,
-        detail_addr2: getDetailAddress('end'),
         name: user.name,
         phone1: phone1,
         phone2: phone2,
