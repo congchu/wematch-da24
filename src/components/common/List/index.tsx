@@ -33,7 +33,7 @@ const S = {
       
       @media (min-width: 768px) {
         //max-height: 1200px;
-        height: ${props => props.isEmpty ? '0' : '350px'};
+        height: ${props => props.isEmpty ? '0' : '325px'};
         //overflow-y: auto;
       }
       //@media (min-width: 1200px) {
@@ -59,6 +59,7 @@ const S = {
       height: fit-content;
       margin-bottom: 10px;
       display: flex;
+      align-items: center;
     `,
     Tag: styled.div`
       font-size: 10px;
@@ -83,6 +84,7 @@ const S = {
       }
    `,
     Spinner: styled.div`
+      margin-top: 8px;
       text-align: center;
     `
 }
@@ -136,7 +138,6 @@ const List: React.FC<Props> = (props) => {
                         </S.Li>
                     )
                 })}
-                {/*<S.Spinner>{loading && !isEmpty(addresses) && <img src={require('assets/images/wematch_spinner.svg')} alt="로딩중"/>}</S.Spinner>*/}
             </S.Ul>
             {<S.Spinner>{loading && !isEmpty(addresses) && <img src={require('assets/images/wematch_spinner.svg')} alt="로딩중"/>}</S.Spinner>}
         </>
