@@ -150,7 +150,7 @@ const LoginModal: React.FC<Props> = (props) => {
 
 
     return createPortal((
-        <PopupTemplate visible={visible} onClose={() => setVisibleCancel(true)} pcHeight={640}>
+        <PopupTemplate visible={visible} onClose={() => setVisibleCancel(true)}>
             <LoginModalWrapper id={'dsl_login_popup'}>
                 <div style={{ width: '100%' }}>
                     <TextWrppaer>

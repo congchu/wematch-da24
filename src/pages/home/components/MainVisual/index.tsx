@@ -96,24 +96,6 @@ const Slide = styled.div<{image: string}>`
   }
 `
 
-const EventSlide = styled(Slide)`
-  p {
-    font-size: 22px;
-    line-height: 32px;
-  }
-  @media screen and (min-width: 1200px) {
-    span {
-      font-size: 18px;
-      line-height: 27px;
-    } 
-    
-    p {
-      font-size: 36px;
-      line-height: 52px;
-    } 
-  }
-`
-
 function MainVisual() {
     const router = useRouter()
 
@@ -139,11 +121,11 @@ function MainVisual() {
             pagination={{ clickable: true }}
             onSlideChange={(e) => {
                 reset()
-                if (e.activeIndex === 1 || e.activeIndex === 5) {
+                if (e.activeIndex === 1 || e.activeIndex === 4) {
                     update(5402531)
-                } else if (e.activeIndex === 3) {
+                } else if (e.activeIndex === 2) {
                     update(1036351)
-                } else if (e.activeIndex === 4) {
+                } else if (e.activeIndex === 0 || e.activeIndex === 3) {
                     update(111267)
                 }
             }}
@@ -170,26 +152,26 @@ function MainVisual() {
                     </div>
                 </Slide>
             </SwiperSlide>
-            <SwiperSlide>
-                <EventSlide image="mattress_event" onClick={() => {
-                    dataLayer({
-                        event: 'header_banner',
-                        category: '다이사_메인_상단배너_1',
-                        action: '이사 견적서 올리면, 매트리스 소독권 또는 편의점 상품권!',
-                        label: '2'
-                    })
-                    window.location.href = 'https://da24.wematch.com/notice.asp'
-                    // router.push('/notice')
-                }}>
-                    <div className="wrapper">
-                        <span>놓칠 수 없는 혜택!</span>
-                        <p>
-                            이사 견적서 올리면, <br /><strong>무료 매트리스 소독권 증정!</strong>
-                        </p>
-                        <a>자세히</a>
-                    </div>
-                </EventSlide>
-            </SwiperSlide>
+            {/*<SwiperSlide>*/}
+            {/*    <EventSlide image="mattress_event" onClick={() => {*/}
+            {/*        dataLayer({*/}
+            {/*            event: 'header_banner',*/}
+            {/*            category: '다이사_메인_상단배너_1',*/}
+            {/*            action: '이사 견적서 올리면, 매트리스 소독권 또는 편의점 상품권!',*/}
+            {/*            label: '2'*/}
+            {/*        })*/}
+            {/*        window.location.href = 'https://da24.wematch.com/notice.asp'*/}
+            {/*        // router.push('/notice')*/}
+            {/*    }}>*/}
+            {/*        <div className="wrapper">*/}
+            {/*            <span>놓칠 수 없는 혜택!</span>*/}
+            {/*            <p>*/}
+            {/*                이사 견적서 올리면, <br /><strong>무료 매트리스 소독권 증정!</strong>*/}
+            {/*            </p>*/}
+            {/*            <a>자세히</a>*/}
+            {/*        </div>*/}
+            {/*    </EventSlide>*/}
+            {/*</SwiperSlide>*/}
             <SwiperSlide>
                 <Slide image="main_visual_02" onClick={() => {
                     dataLayer({
