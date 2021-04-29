@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback  } from "react";
 import styled from "styled-components";
 import ReactPixel from "react-facebook-pixel";
 import { useMedia } from "react-use-media";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import { useRouter } from "hooks/useRouter";
 
 import MainHeader from "components/common/MainHeader";
 import Collapse from "components/base/Collapse";
@@ -17,9 +18,14 @@ import {
   LevelN,
   LevelS, Question,
 } from "components/Icon";
+import ProcessBar from "./processBar";
+import NewModal from "components/NewModalTemplate";
+import ResponsiveSkeleton from "components/common/Skeleton/responsiveSkeleton";
+
 import * as commonSelector from "store/common/selectors";
 import * as commonActions from "store/common/actions";
 import * as partnerActions from "store/partner/actions";
+
 import * as colors from "styles/colors";
 import { MOVE_URL, CLEAN_URL } from "constants/env";
 import { dataLayer } from "lib/dataLayerUtil";
@@ -27,12 +33,8 @@ import { events } from "lib/appsflyer";
 import { whatDay } from "lib/dateUtil";
 import * as sentry from "@sentry/react";
 import { Severity } from "@sentry/react";
-import NewModal from "../../../components/NewModalTemplate";
-import ResponsiveSkeleton from "components/common/Skeleton/responsiveSkeleton";
 import dayjs from "dayjs";
-import { useRouter } from "../../../hooks/useRouter";
-import { useCallback } from 'react';
-import ProcessBar from "./processBar";
+
 
 const S = {
   Container: styled.div`
@@ -145,8 +147,6 @@ const S = {
       float: left;
       margin-right: 5px;
     }
-    
-    
   `,
   LevelInfoBox: styled.div<{ visible: boolean }>`
     display: ${(props) => (props.visible ? "block" : "none")};
@@ -183,7 +183,7 @@ const S = {
   `,
   ListBox: styled.div`
     overflow: hidden;
-
+    
     svg {
       float: left;
       @media screen and (max-width: 320px) {

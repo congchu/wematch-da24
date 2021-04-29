@@ -19,7 +19,7 @@ function DotDot({ width=20, height=20, fill='#1672F7', ...props }: React.SVGProp
                 {/*    attributeType="XML"*/}
                 {/*    attributeName="fill"*/}
                 {/*    values="#1672f7;#82B5FF;#1672f7;#1672f7;"*/}
-                {/*    dur="1.6s"*/}
+                {/*    dur="1.5s"*/}
                 {/*    repeatCount="3"/>*/}
             </path>
         </svg>
