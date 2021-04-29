@@ -279,7 +279,7 @@ const MoveInput: React.FC<Props> = (props) => {
                 <S.Title>이사정보를 입력해주세요.</S.Title>
                 <Input theme="default" border readOnly placeholder="이사예정일" onClick={() => setVisibleCalendarModal(true)} value={getMoveDate} style={{ backgroundColor: "transparent" }} />
                 <div style={{ display: "flex", flexDirection: "row" }}>
-                    <Input theme="default" border readOnly placeholder="출발지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleStartAddress} value={getJuso.type.start === 'road' ? getJuso.start?.roadAddr : getJuso.start?.jibunAddr} style={{ backgroundColor: "transparent" }} />
+                    <Input theme="default" border readOnly placeholder="출발지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleStartAddress} value={getJuso.type?.start === 'road' ? getJuso.start?.roadAddr : getJuso.start?.jibunAddr} style={{ backgroundColor: "transparent" }} />
                     <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "49%" }} onClick={toggleStartFloor} value={getMoveFloor.start ? getMoveFloor.start + '층' : getMoveFloor.start} style={{ backgroundColor: "transparent" }} />
                 </div>
                 {getMoveAddress?.start && (
@@ -300,7 +300,7 @@ const MoveInput: React.FC<Props> = (props) => {
                 )}
                 {getMoveAddress?.start && (
                     <div style={{ display: "flex", flexDirection: "row" }}>
-                        <Input theme="default" border readOnly placeholder="도착지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleEndAddress} value={getJuso.type.end === 'road' ? getJuso.end?.roadAddr : getJuso.end?.jibunAddr} style={{ backgroundColor: "transparent" }} />
+                        <Input theme="default" border readOnly placeholder="도착지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleEndAddress} value={getJuso.type?.end === 'road' ? getJuso.end?.roadAddr : getJuso.end?.jibunAddr} style={{ backgroundColor: "transparent" }} />
                         <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "49%" }} onClick={toggleEndFloor} value={getMoveFloor.end ? getMoveFloor.end + '층' : getMoveFloor.end} style={{ backgroundColor: "transparent" }} />
                     </div>
                 )}
