@@ -29,6 +29,13 @@ export function* setJusoSaga() {
     const getJuso = yield select(commonSelector.getJuso)
 
     try {
+        // 디버깅용
+        sentry.setExtra('juso', {
+            start: getJuso.start,
+            end: getJuso.end,
+            type: getJuso.type
+        })
+
         if (getJuso.start) {
             const {data} = yield call(commonRequests.getDistance, {
                 startZone: getJuso.start.admCd,
@@ -98,6 +105,12 @@ export function* setFormSaga()  {
     const { user } = yield select(userSelector.getUser);
     const {formState: { type, date, address, floor, isMoveStore, agree, contents }} = yield select()
     const getJuso = yield select(commonSelector.getJuso)
+    // 디버깅용
+    sentry.setExtra('setFormSaga', {
+        start: getJuso.start,
+        end: getJuso.end,
+        type: getJuso.type
+    })
 
     const { phone1, phone2, phone3 } = phoneSplit(user.tel);
 
@@ -186,6 +199,11 @@ export function* setFormSaga()  {
 
 export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsync.request>) {
     try {
+        // 디버깅용
+        sentry.setExtra('submitFormSaga', {
+            payload: action.payload.formData
+        })
+
         const data = yield call(requests.submitForm, action.payload.formData)
         yield put(actions.submitFormAsync.success(data))
         if (data?.result === ESubmittedFormResult.Success) {
