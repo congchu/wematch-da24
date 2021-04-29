@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled, {keyframes} from 'styled-components'
+import {CheckInRound, DotDot} from 'components/Icon'
 import * as colors from 'styles/colors'
-import {Check, CheckInRound, DotDot} from 'components/Icon'
-
 
 const blink = keyframes`
   50%{
@@ -20,18 +19,15 @@ const S = {
       list-style: dash;
       position: relative;
       font-weight: bold;
- 
       .point{
         color: ${colors.pointBlue};
         animation: ${blink} 1.5s;
         animation-iteration-count: 3;
       }
-      
       .disabled{
         color: ${colors.gray99};
         font-weight: normal;
       }
-
       li{
         position: relative;
         padding: 0 0 4px 5px;
@@ -45,9 +41,7 @@ const S = {
                 height: 23px;
                 border-left: 2px #333 solid;
               }
-              
             }
-            
             strong {
               display: block;
               font-weight: 600;
@@ -60,7 +54,7 @@ const S = {
               line-height: 22px;
               word-break: keep-all;
             }
-
+    
             span{
               position: absolute;
               top: 10px;
@@ -96,7 +90,6 @@ const S = {
               }
             }
         }
-      
         &:before {
           content: '';
           position: absolute;
@@ -106,19 +99,10 @@ const S = {
           height: 45%;
           border-left: 1px dashed #C4C9D1;
         }
-      
     `
 };
 
-interface Props {
-    step?: number
-}
-
-export default function ProcessBar({step}: Props) {
-
-
-
-
+export default function ProcessBar() {
     return (
         <S.Container>
             <S.ListContainer>
