@@ -146,9 +146,9 @@ export function* setFormSaga()  {
         if (getJuso.type.end === 'road') {
             return {
                 detail_addr2: getDetailAddress('end'),
-                sido2: getJuso.start.siNm,
-                gugun2: getJuso.start.sggNm,
-                dong2: getJuso.start.emdNm,
+                sido2: getJuso.end.siNm,
+                gugun2: getJuso.end.sggNm,
+                dong2: getJuso.end.emdNm,
             }
         }
         const [sido2, gugun2, dong2, detail1, detail2] = getJuso.end.jibunAddr.split(' ')
