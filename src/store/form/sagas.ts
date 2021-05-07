@@ -133,11 +133,11 @@ export function* setFormSaga()  {
                 dong: getJuso.start.emdNm,
             }
         }
-        const [sido, gugun, dong, detail1, detail2] = getJuso.start.jibunAddr.split(' ')
+        const [sido, gugun1, gugun2, dong, ...rest] = getJuso.start.jibunAddr.split(' ')
         return {
-            detail_addr: detail1 + ' ' + detail2,
+            detail_addr: rest.join(' '),
             sido,
-            gugun,
+            gugun: gugun1 + ' ' + gugun2,
             dong,
         }
     }
@@ -151,15 +151,14 @@ export function* setFormSaga()  {
                 dong2: getJuso.end.emdNm,
             }
         }
-        const [sido2, gugun2, dong2, detail1, detail2] = getJuso.end.jibunAddr.split(' ')
+        const [sido, gugun1, gugun2, dong, ...rest] = getJuso.end.jibunAddr.split(' ')
         return {
-            detail_addr2: detail1 + ' ' + detail2,
-            sido2,
-            gugun2,
-            dong2,
+            detail_addr2: rest.join(' '),
+            sido2: sido,
+            gugun2: gugun1 + ' ' + gugun2,
+            dong2: dong,
         }
     }
-
 
     const formData: commonTypes.RequestUserInfoInsert = {
         moving_type: translateMovingType(type),
