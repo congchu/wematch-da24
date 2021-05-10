@@ -13,7 +13,7 @@ import useHashToggle from 'hooks/useHashToggle'
 
 import { CALENDAR_MAX_DAYS } from 'constants/values'
 
-import { Juso } from 'store/common/types'
+import {Juso, JusoType} from 'store/common/types'
 import * as commonSelector from 'store/common/selectors'
 import * as commonActions from 'store/common/actions'
 import * as formSelector from 'store/form/selectors'
@@ -191,15 +191,19 @@ const MoveInput: React.FC<Props> = (props) => {
         setVisibleCalendarModal(false)
     }, 300)
 
-    const onSelectStartAddress = (juso: Juso) => {
+    const onSelectStartAddress = (juso: Juso, type: JusoType) => {
         dispatch(formActions.setAddress({
             ...getMoveAddress,
-            start: juso.roadAddr
+            start: juso.roadAddr,
         }))
 
         dispatch(commonActions.setJuso({
             ...getJuso,
-            start: juso
+            start: juso,
+            type: {
+                ...getJuso.type,
+                start: type
+            }
         }))
 
         dataLayer({
@@ -228,7 +232,7 @@ const MoveInput: React.FC<Props> = (props) => {
         })
     }
 
-    const onSelectEndAddress = (juso: Juso) => {
+    const onSelectEndAddress = (juso: Juso, type: JusoType) => {
         dispatch(formActions.setAddress({
             ...getMoveAddress,
             end: juso.roadAddr
@@ -236,7 +240,11 @@ const MoveInput: React.FC<Props> = (props) => {
 
         dispatch(commonActions.setJuso({
             ...getJuso,
-            end: juso
+            end: juso,
+            type: {
+                ...getJuso.type,
+                end: type
+            }
         }))
 
         dataLayer({
@@ -271,7 +279,7 @@ const MoveInput: React.FC<Props> = (props) => {
                 <S.Title>이사정보를 입력해주세요.</S.Title>
                 <Input theme="default" border readOnly placeholder="이사예정일" onClick={() => setVisibleCalendarModal(true)} value={getMoveDate} style={{ backgroundColor: "transparent" }} />
                 <div style={{ display: "flex", flexDirection: "row" }}>
-                    <Input theme="default" border readOnly placeholder="출발지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleStartAddress} value={getJuso.start?.roadAddr || ''} style={{ backgroundColor: "transparent" }} />
+                    <Input theme="default" border readOnly placeholder="출발지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleStartAddress} value={getJuso.type?.start === 'road' ? getJuso.start?.roadAddr : getJuso.start?.jibunAddr} style={{ backgroundColor: "transparent" }} />
                     <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "49%" }} onClick={toggleStartFloor} value={getMoveFloor.start ? getMoveFloor.start + '층' : getMoveFloor.start} style={{ backgroundColor: "transparent" }} />
                 </div>
                 {getMoveAddress?.start && (
@@ -292,7 +300,7 @@ const MoveInput: React.FC<Props> = (props) => {
                 )}
                 {getMoveAddress?.start && (
                     <div style={{ display: "flex", flexDirection: "row" }}>
-                        <Input theme="default" border readOnly placeholder="도착지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleEndAddress} value={getJuso.end?.roadAddr || ''} style={{ backgroundColor: "transparent" }} />
+                        <Input theme="default" border readOnly placeholder="도착지" rootStyle={{ width: "49%", marginRight: "2%" }} onClick={toggleEndAddress} value={getJuso.type?.end === 'road' ? getJuso.end?.roadAddr : getJuso.end?.jibunAddr} style={{ backgroundColor: "transparent" }} />
                         <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: "49%" }} onClick={toggleEndFloor} value={getMoveFloor.end ? getMoveFloor.end + '층' : getMoveFloor.end} style={{ backgroundColor: "transparent" }} />
                     </div>
                 )}

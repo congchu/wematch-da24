@@ -29,6 +29,13 @@ export function* setJusoSaga() {
     const getJuso = yield select(commonSelector.getJuso)
 
     try {
+        // 디버깅용
+        sentry.setExtra('juso', {
+            start: getJuso.start,
+            end: getJuso.end,
+            type: getJuso.type
+        })
+
         if (getJuso.start) {
             const {data} = yield call(commonRequests.getDistance, {
                 startZone: getJuso.start.admCd,
@@ -60,6 +67,7 @@ export function* setJusoSaga() {
                     sggNm: getJuso.start.sggNm,
                     emdNm: getJuso.start.emdNm,
                     roadAddr: getJuso.start.roadAddr,
+                    jibunAddr: getJuso.start.jibunAddr,
                 },
                 end: {
                     admCd: getJuso.end.admCd,
@@ -71,9 +79,14 @@ export function* setJusoSaga() {
                     siNm: getJuso.end.siNm,
                     sggNm: getJuso.end.sggNm,
                     emdNm: getJuso.end.emdNm,
-                    roadAddr: getJuso.end.roadAddr
+                    roadAddr: getJuso.end.roadAddr,
+                    jibunAddr: getJuso.end.jibunAddr,
                 },
-                distance: data
+                distance: data,
+                type: {
+                    start: getJuso.type.start,
+                    end: getJuso.type.end,
+                }
             }
 
             setCookie('jusoData', JSON.stringify(replaceCookieFormData), { expires: new Date(dayjs().add(2, 'day').format()) })
@@ -92,6 +105,12 @@ export function* setFormSaga()  {
     const { user } = yield select(userSelector.getUser);
     const {formState: { type, date, address, floor, isMoveStore, agree, contents }} = yield select()
     const getJuso = yield select(commonSelector.getJuso)
+    // 디버깅용
+    sentry.setExtra('setFormSaga', {
+        start: getJuso.start,
+        end: getJuso.end,
+        type: getJuso.type
+    })
 
     const { phone1, phone2, phone3 } = phoneSplit(user.tel);
 
@@ -113,11 +132,11 @@ export function* setFormSaga()  {
         sido: getJuso.start.siNm,
         gugun: getJuso.start.sggNm,
         dong: getJuso.start.emdNm,
+        detail_addr2: getDetailAddress('end'),
         sido2: getJuso.end.siNm,
         gugun2: getJuso.end.sggNm,
         dong2: getJuso.end.emdNm,
         floor2: `${floor.end}`,
-        detail_addr2: getDetailAddress('end'),
         name: user.name,
         phone1: phone1,
         phone2: phone2,
@@ -149,6 +168,11 @@ export function* setFormSaga()  {
 
 export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsync.request>) {
     try {
+        // 디버깅용
+        sentry.setExtra('submitFormSaga', {
+            payload: action.payload.formData
+        })
+
         const data = yield call(requests.submitForm, action.payload.formData)
         yield put(actions.submitFormAsync.success(data))
         if (data?.result === ESubmittedFormResult.Success) {

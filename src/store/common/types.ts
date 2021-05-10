@@ -58,6 +58,8 @@ export interface RequestCompletedMoveIdxProps {
     inquiry_idx: string;
 }
 
+export type JusoType = 'road' | 'jibun'
+
 export interface Juso {
     detBdNmList: string;
     engAddr: string;
