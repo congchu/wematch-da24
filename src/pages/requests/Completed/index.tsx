@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback  } from "react";
 import styled from "styled-components";
 import ReactPixel from "react-facebook-pixel";
 import { useMedia } from "react-use-media";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import { useRouter } from "hooks/useRouter";
 
 import MainHeader from "components/common/MainHeader";
 import Collapse from "components/base/Collapse";
@@ -15,11 +16,16 @@ import {
   LevelB,
   LevelC,
   LevelN,
-  LevelS,
+  LevelS, Question,
 } from "components/Icon";
+import ProcessBar from "./processBar";
+import NewModal from "components/NewModalTemplate";
+import ResponsiveSkeleton from "components/common/Skeleton/responsiveSkeleton";
+
 import * as commonSelector from "store/common/selectors";
 import * as commonActions from "store/common/actions";
 import * as partnerActions from "store/partner/actions";
+
 import * as colors from "styles/colors";
 import { MOVE_URL, CLEAN_URL } from "constants/env";
 import { dataLayer } from "lib/dataLayerUtil";
@@ -27,23 +33,30 @@ import { events } from "lib/appsflyer";
 import { whatDay } from "lib/dateUtil";
 import * as sentry from "@sentry/react";
 import { Severity } from "@sentry/react";
-import NewModal from "../../../components/NewModalTemplate";
-import ResponsiveSkeleton from "components/common/Skeleton/responsiveSkeleton";
 import dayjs from "dayjs";
-import { useRouter } from "../../../hooks/useRouter";
-import { useCallback } from 'react';
+
 
 const S = {
   Container: styled.div`
+    background-color: #FAFAFA;
     padding-bottom: 56px;
     @media screen and (min-width: 1200px) {
       padding-bottom: 106px;
     }
   `,
+  TopContainer: styled.div`
+    background-color: ${colors.white};
+    border-bottom: 1px solid #ebeef2;
+  `,
   TopContents: styled.div`
     padding: 50px 0 8px;
+    margin: 0 24px;
     @media screen and (max-width: 320px) {
       padding: 40px 0 0;
+    }
+    @media screen and (min-width: 768px) {
+      width: 720px;
+      margin: 15px auto 0;
     }
   `,
   ContentsWrap: styled.div`
@@ -54,7 +67,6 @@ const S = {
       margin: 0 auto;
       padding: 0 0 42px;
     }
-
     .toggle {
       cursor: pointer;
     }
@@ -66,7 +78,6 @@ const S = {
     margin: 0 auto;
     border-radius: 50%;
     background-color: #1672f7;
-
     svg {
       position: absolute;
       top: 50%;
@@ -76,10 +87,11 @@ const S = {
     }
   `,
   TopTitle: styled.p`
-    margin-top: 15px;
-    font-size: 18px;
+    margin: 15px auto 0;
+    font-size: 20px;
     text-align: center;
-
+    border-bottom: 1px solid #ebeef2;
+    
     em {
       font-weight: 700;
     }
@@ -89,15 +101,19 @@ const S = {
       margin-top: 14px;
       font-size: 14px;
       line-height: 20px;
+      margin-bottom: 24px;
     }
-
+    @media screen and (min-width: 768px) {
+      width: 720px;
+      margin: 15px auto 0;
+    }
     @media screen and (min-width: 1200px) {
       font-size: 24px;
     }
   `,
   TitleWrap: styled.div`
     overflow: hidden;
-    padding-top: 32px;
+    padding-top: 24px;
     border-bottom: 1px solid #ebeef2;
 
     svg {
@@ -112,7 +128,7 @@ const S = {
     display: block;
     float: left;
     padding-bottom: 10px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     line-height: 24px;
 
@@ -120,14 +136,16 @@ const S = {
       color: #1672f7;
     }
   `,
-  LevelInfo: styled.p`
+  LevelInfo: styled.div`
     float: right;
     padding-top: 4px;
     font-size: 14px;
     cursor: pointer;
+    color: ${colors.gray66};
 
     svg {
-      margin-left: 8px;
+      float: left;
+      margin-right: 5px;
     }
   `,
   LevelInfoBox: styled.div<{ visible: boolean }>`
@@ -157,6 +175,7 @@ const S = {
     }
   `,
   CompanyList: styled.ul`
+    margin-bottom: 66px;
     li {
       overflow: hidden;
       padding: 20px 0 9px;
@@ -164,7 +183,7 @@ const S = {
   `,
   ListBox: styled.div`
     overflow: hidden;
-
+    
     svg {
       float: left;
       @media screen and (max-width: 320px) {
@@ -200,6 +219,7 @@ const S = {
     }
   `,
   LinkCompany: styled.a`
+    background-color:${colors.white};
     display: block;
     margin-top: 20px;
     padding: 12px 0;
@@ -450,23 +470,26 @@ export default function Completed() {
   return (
     <S.Container>
       {isDesktop && <MainHeader />}
-      <S.TopContents>
-        <S.Icon>
-          <Check fill={"#fff"} />
-        </S.Icon>
-        <S.TopTitle>
-          <em>이사업체 매칭</em> 완료 <br />
-          <span>
+      <S.TopContainer>
+        <S.TopContents>
+          <S.Icon>
+            <Check fill={"#fff"} />
+          </S.Icon>
+          <S.TopTitle>
+            <em>이사업체 매칭</em> 완료 <br />
+            <span>
             업체에서 연락이 없다면 먼저 전화해주세요!
             <br /> 전화번호를 문자로 보내드립니다.
           </span>
-        </S.TopTitle>
-      </S.TopContents>
+          </S.TopTitle>
+          <ProcessBar/>
+        </S.TopContents>
+      </S.TopContainer>
       <S.ContentsWrap>
         <S.TitleWrap>
-          <S.BoxTitle>업체 정보</S.BoxTitle>
+          <S.BoxTitle>매칭 업체 정보</S.BoxTitle>
           <S.LevelInfo onClick={toggleInfoBox}>
-            소비자평가등급 <Info />
+            <em>소비자평가등급이란?</em><Question/>
           </S.LevelInfo>
         </S.TitleWrap>
         <S.LevelInfoBox visible={infoVisible}>
