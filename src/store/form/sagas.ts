@@ -124,48 +124,18 @@ export function* setFormSaga()  {
         return getJuso[type].rn + ' ' + getJuso[type].buldMnnm + '-' + getJuso[type].buldSlno + ' ' + address.detailStart
     }
 
-    const getStartAddress = () => {
-        if (getJuso.type.start === 'road') {
-            return {
-                detail_addr: getDetailAddress('start'),
-                sido: getJuso.start.siNm,
-                gugun: getJuso.start.sggNm,
-                dong: getJuso.start.emdNm,
-            }
-        }
-        const [sido, gugun1, gugun2, dong, ...rest] = getJuso.start.jibunAddr.split(' ')
-        return {
-            detail_addr: rest.join(' '),
-            sido,
-            gugun: gugun1 + ' ' + gugun2,
-            dong,
-        }
-    }
-
-    const getEndAddress = () => {
-        if (getJuso.type.end === 'road') {
-            return {
-                detail_addr2: getDetailAddress('end'),
-                sido2: getJuso.end.siNm,
-                gugun2: getJuso.end.sggNm,
-                dong2: getJuso.end.emdNm,
-            }
-        }
-        const [sido, gugun1, gugun2, dong, ...rest] = getJuso.end.jibunAddr.split(' ')
-        return {
-            detail_addr2: rest.join(' '),
-            sido2: sido,
-            gugun2: gugun1 + ' ' + gugun2,
-            dong2: dong,
-        }
-    }
-
     const formData: commonTypes.RequestUserInfoInsert = {
         moving_type: translateMovingType(type),
         moving_date: date[0],
         floor: `${floor.start}`,
-        ...getStartAddress(),
-        ...getEndAddress(),
+        detail_addr: getDetailAddress('start'),
+        sido: getJuso.start.siNm,
+        gugun: getJuso.start.sggNm,
+        dong: getJuso.start.emdNm,
+        detail_addr2: getDetailAddress('end'),
+        sido2: getJuso.end.siNm,
+        gugun2: getJuso.end.sggNm,
+        dong2: getJuso.end.emdNm,
         floor2: `${floor.end}`,
         name: user.name,
         phone1: phone1,
