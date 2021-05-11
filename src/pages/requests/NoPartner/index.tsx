@@ -64,12 +64,13 @@ const S = {
   }
   }
 `,
-  Container: styled.div``,
+  Container: styled.div`
+    padding-bottom: 24px;
+  `,
   Contents: styled.div`
-      margin-top: 96px;
+      margin-top: 56px;
       text-align: center;
       letter-spacing: -0.5px;
-
       svg {
         display: block;
         margin: 0 auto;
@@ -88,7 +89,7 @@ const S = {
     `,
   Title: styled.strong`
       display: inline-block;
-      margin-top: 20px;
+      margin-top: 18px;
       font-size: 16px;
       line-height: 22px;
       @media screen and (max-width: 320px) {
@@ -97,10 +98,11 @@ const S = {
       }
     `,
   Subtext: styled.p`
-      margin-top: 10px;
-      font-size: 15px;
+      font-size: 14px;
       color: #666;
       line-height: 22px;
+      margin-bottom: 24px;
+      text-align: center;
       @media screen and (max-width: 320px) {
         margin-top: 6px;
         font-size: 14px;
@@ -108,8 +110,12 @@ const S = {
       }
     `,
   ChangeDate: styled.div`
-      margin-top: 34px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 117px;
       padding: 0 24px;
+      
       @media screen and (min-width: 1200px) {
         width: 720px;
         margin: 0 auto;
@@ -120,9 +126,10 @@ const S = {
     `,
   DateTitle: styled.strong`
       display: inline-block;
-      margin-bottom: 14px;
-      font-size: 15px;
-      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
       @media screen and (max-width: 320px) {
         margin-bottom: 10px;
       }
@@ -130,13 +137,12 @@ const S = {
   DateSelect: styled.button`
       width: 100%;
       height: 56px;
-      margin: 10px 0 4px;
+      margin-top: 12px;
       font-size: 18px;
       font-weight: 700;
       border-radius: 6px;
       color: #fff;
       background: #1672F7;
-      box-shadow: 0 4px 10px rgba(22, 114, 247, 0.25);
       @media screen and (min-width: 1200px) {
         margin: 22px 0 13px;
       }
@@ -149,8 +155,8 @@ const S = {
       display: inline-block;
       width: 100%;
       height: 36px;
-      padding-top: 20px;
-      font-size: 15px;
+      padding-top: 6px;
+      font-size: 14px;
       text-align: center;
       text-decoration: underline;
       letter-spacing: -0.5px;
@@ -204,7 +210,6 @@ export default function NoPartner() {
     }
 
     const toggleCalendarCancel = () => {
-        dispatch(formActions.setMoveDate([]))
         setVisibleCalendarModal(!visibleCalendarModal)
     }
 
@@ -303,20 +308,20 @@ export default function NoPartner() {
           <S.Contents>
             <SoldOut />
             <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>
-            <S.Subtext>다른날짜로 선택해서<br />비교견적 받아보세요.</S.Subtext>
+            <S.LinkAlarm id='dsl_a_alarm_noPartner' href="https://pf.kakao.com/_Ppsxexd/chat"
+              target="_blank">가능업체발생 시 알림 신청하기</S.LinkAlarm>
           </S.Contents>
           <S.ChangeDate>
-            <S.DateTitle>날짜 변경</S.DateTitle>
+            <S.DateTitle>다른 날짜에 이사가 가능하신가요?</S.DateTitle>
+            <S.Subtext>*실제 이사가 가능한 날짜만 선택해주세요! <br/> 날짜에 따라 이사 비용이 변동될 수 있습니다.</S.Subtext>
             <Input theme="default" border readOnly placeholder="이사예정일"
               onClick={() => setVisibleCalendarModal(true)} value={getMoveDate}
-              style={{ backgroundColor: "transparent" }} />
+              style={{ backgroundColor: "transparent" }} rootStyle={{width: '100%'}} icon={'down'}/>
             <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?"
               onClose={toggleCalendarCancel}
               onConfirm={toggleCalendarConfirm} onSelect={onSelectDate}
               selected={getMoveDate} />
-            <S.DateSelect id='dsl_button_retry' onClick={handleSubmit}>다른 날짜로 견적 재요청</S.DateSelect>
-            <S.LinkAlarm id='dsl_a_alarm_noPartner' href="https://pf.kakao.com/_Ppsxexd/chat"
-              target="_blank">가능업체 발생 시 알림신청</S.LinkAlarm>
+            <S.DateSelect id='dsl_button_retry' onClick={handleSubmit}>변경한 날짜로 업체 추천 받기</S.DateSelect>
           </S.ChangeDate>
         </S.Container>
     )
