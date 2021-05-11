@@ -4,7 +4,7 @@ import * as actions from './actions'
 import * as types from './types';
 
 export type Actions = ActionType<typeof actions>
-export const CNT_PER_PAGE = 30
+export const CNT_PER_PAGE = 10
 
 export interface CommonState {
     addressList: {
@@ -26,7 +26,11 @@ export interface CommonState {
     juso: {
         start: types.Juso | null,
         end : types.Juso | null,
-        distance: number
+        distance: number,
+        type: {
+            start: types.JusoType,
+            end: types.JusoType
+        }
     }
 }
 
@@ -50,7 +54,11 @@ const initialState: CommonState = {
     juso: {
         start: null,
         end: null,
-        distance: 1
+        distance: 1,
+        type: {
+            start: 'road',
+            end: 'road',
+        }
     }
 }
 
