@@ -35,8 +35,6 @@ const S = {
   Container: Styled.div<StyleProps>`
         display: flex;
         flex-direction: row;
-        /* border: 1px solid ${colors.pointBlue}; */
-        /* border-radius: 8px; */
         background-color: white;
         height: 102px;
         ${({ direction }) =>
@@ -44,16 +42,6 @@ const S = {
           css`
             flex-direction: column;
           `}
-        
-        /* button:first-child {
-            border-top-left-radius: 5px;
-            border-bottom-left-radius: 5px;
-        }
-        
-        button:last-child {
-            border-top-right-radius: 5px;
-            border-bottom-right-radius: 5px;
-        } */
     `,
   Button: Styled.button<buttonProps>`
         position: relative;
@@ -70,6 +58,7 @@ const S = {
         justify-content: center;
         align-items: center;
         margin-right: 2px;
+        -webkit-tap-highlight-color: transparent;
         span {
             display: block;
             font-size: 16px;
@@ -85,10 +74,6 @@ const S = {
                 margin-top: 8px;
             }
         }
-        /* &:last-child {
-            border-right: 0px;
-        } */
-        
         &:last-child {
             margin-right: 0;
         }
