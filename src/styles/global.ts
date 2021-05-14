@@ -4,7 +4,6 @@ import { resetButton, resetInput } from './mixins'
 import * as colors from 'styles/colors'
 
 export default createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap');
   ${reset}
   html, body, #root {
     height: 100%;
