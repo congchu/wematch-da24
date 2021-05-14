@@ -32,7 +32,7 @@ const S = {
         svg {
           position: absolute;
           right: 15px;
-          bottom: 28px;
+          bottom: 26px;
         }
     `,
     StyledInput: Styled.input<{ theme: ThemeProps, border: BorderProp }>`
@@ -48,7 +48,7 @@ const S = {
         box-sizing: border-box;
         
         ${(({ border }) => border && css`
-            border-radius: 4px;
+            border-radius: 8px;
         `)};
         
         ${(({ theme }) => theme === 'default' && css`
@@ -96,8 +96,8 @@ const Input: React.FC<InputProps> = (props) => {
     return (
         <S.Container style={rootStyle}>
             <S.StyledInput theme={theme} border={border} disabled={disabled} {...restProps} ref={inputRef} />
-            {icon === 'search' && (<Icon.Search size={15} />)}
-            {icon === 'down' && (<Icon.Down size={15} />)}
+            {icon === 'search' && (<Icon.Search size={22} />)}
+            {icon === 'down' && (<Icon.Down size={22} />)}
         </S.Container>
     )
 }
