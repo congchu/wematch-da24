@@ -75,7 +75,7 @@ const S = {
 		}
 	`,
     Contents: styled.div`
-      margin: 20px auto;
+      margin: 15px auto;
       font-size: 15px;
       letter-spacing: -1px;
     `,
