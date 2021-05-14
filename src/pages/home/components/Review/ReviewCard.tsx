@@ -15,7 +15,7 @@ const S = {
       cursor: pointer;
     `,
     Container: styled.div`
-      margin: 20px 15px;
+      margin: 20px 18px;
       display: block;
     `,
     FirstLine: styled.div`
@@ -77,7 +77,7 @@ const S = {
     Contents: styled.div`
       margin: 20px auto;
       font-size: 15px;
-      letter-spacing: -1.6px;
+      letter-spacing: -1px;
     `,
     LastLine: styled.div`
       display: inline-block;
