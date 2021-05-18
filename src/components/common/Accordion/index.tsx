@@ -119,7 +119,7 @@ function Accordion({ category ,title,  date, postNum, children, defaultExpand=fa
                 <div className='textWrapper'>
                     {category? <em>Q {category}<br/></em> : <></>}
                     {title}
-                    <h6>{(date && postNum) && {date}}</h6>
+                    <h6>{date}</h6>
                 </div>
                 <span>
                     {isCollapse ? <Minus style={{marginTop: 0}} color={colors.pointBlue}/> : <Plus style={{marginTop: 0}}/>}

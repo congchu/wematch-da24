@@ -42,6 +42,7 @@ export interface RequestUserInfoInsert {
   mkt_agree: boolean
   agent_id: string | string[] | null | undefined
   memo: string
+  auto_match: boolean
 }
 
 export interface RequestUserInfoInsertProps {
