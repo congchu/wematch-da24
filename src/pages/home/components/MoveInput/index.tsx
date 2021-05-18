@@ -166,7 +166,7 @@ const MoveInput: React.FC<Props> = (props) => {
       CD6: getMoveTypeText()
     })
 
-    dispatch(formActions.setMoveDate([date.date.format('YYYY.MM.DD')]))
+    dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
     debounceSelectDate()
   }
 
@@ -281,7 +281,7 @@ const MoveInput: React.FC<Props> = (props) => {
     <S.Container id="dsl_move_input_terms_1" {...restProps} type={type}>
       <S.Form>
         <S.Title>이사 날짜</S.Title>
-        <InputBox icon={'down'} placeHolder={'날짜 선택'} value={getMoveDate.join()} onClick={() => setVisibleCalendarModal(true)} error={formValidations.includes(EFormError.DATE)} />
+        <InputBox icon={'down'} placeHolder={'날짜 선택'} value={getMoveDate[0]?.split('-')?.join('.')} onClick={() => setVisibleCalendarModal(true)} error={formValidations.includes(EFormError.DATE)} />
         {/* <Input theme="default" border readOnly placeholder="이사예정일" onClick={() => setVisibleCalendarModal(true)} value={getMoveDate} style={{ backgroundColor: 'transparent' }} icon="down" /> */}
         <div style={{ display: 'flex', flexDirection: 'column', marginTop: '24px' }}>
           <S.Title>출발지 주소</S.Title>
