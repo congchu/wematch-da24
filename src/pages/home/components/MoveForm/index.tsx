@@ -39,7 +39,7 @@ const Visual = {
       display: block;
       font-style: normal;
       font-weight: bold;
-      font-size: 20px;
+      font-size: 22px;
       line-height: 30px;
       letter-spacing: -1px;
       color: ${colors.gray33};
