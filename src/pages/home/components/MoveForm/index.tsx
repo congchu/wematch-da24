@@ -1,49 +1,30 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useCookies } from "react-cookie";
-import { useRouter } from "hooks/useRouter";
-import queryString from "query-string";
-import styled, { css } from "styled-components";
-import { debounce, get, isEmpty } from "lodash";
-import dayjs from "dayjs";
-import { Checkbox } from "components/wematch-ui/Checkbox";
-
-import Button from "components/common/Button";
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useCookies } from 'react-cookie'
+import { useRouter } from 'hooks/useRouter'
+import styled, { css } from 'styled-components'
+import { isEmpty } from 'lodash'
+import { Checkbox } from 'components/wematch-ui/Checkbox'
+import Button from 'components/common/Button'
 // import PhoneVerifyPopup from 'components/common/Popup/PhoneVerifyPopup'
-import NoticePopup from "components/common/Popup/NoticePopup";
-import OneroomNoticePopup from "components/common/Popup/OneroomNoticePopup";
-import TermsModal from "components/Modal/TermsModal";
-import { showToast } from "components/common/Toast";
-
-import ButtonGroup from "components/common/ButtonGroup";
-import MoveInput from "pages/home/components/MoveInput";
-
-import * as commonSelector from "store/common/selectors";
-import * as commonActions from "store/common/actions";
-import * as commonTypes from "store/common/types";
-import * as formSelector from "store/form/selectors";
-import * as formActions from "store/form/actions";
-import * as userActions from "store/user/actions";
-import * as userSelector from "store/user/selectors";
-
-import * as colors from "styles/colors";
-import {
-  addressSplit,
-  phoneSplit,
-  translateMovingType,
-} from "components/wematch-ui/utils/form";
-
-import {
-  calcRouteByDirectionService,
-  calcRouteByGeoCoder,
-} from "lib/distanceUtil";
-import { dataLayer } from "lib/dataLayerUtil";
-import { MOVE_URL, ONEROOM_URL } from "constants/env";
-import useHashToggle from "hooks/useHashToggle";
-import LoginModal from "components/common/Modal/LoginModal";
-import { events } from "lib/appsflyer";
-import { useHistory } from "react-router-dom";
-import { ESignInCase } from "store/user/types";
+import NoticePopup from 'components/common/Popup/NoticePopup'
+import OneroomNoticePopup from 'components/common/Popup/OneroomNoticePopup'
+import TermsModal from 'components/Modal/TermsModal'
+import { showToast } from 'components/common/Toast'
+import ButtonGroup from 'components/common/ButtonGroup'
+import MoveInput from 'pages/home/components/MoveInput'
+import * as commonActions from 'store/common/actions'
+import * as formSelector from 'store/form/selectors'
+import * as formActions from 'store/form/actions'
+import * as userActions from 'store/user/actions'
+import * as userSelector from 'store/user/selectors'
+import * as colors from 'styles/colors'
+import { dataLayer } from 'lib/dataLayerUtil'
+import { ONEROOM_URL } from 'constants/env'
+import useHashToggle from 'hooks/useHashToggle'
+import { useHistory } from 'react-router-dom'
+import { ESignInCase } from 'store/user/types'
+import { Question } from 'components/Icon'
 
 const Visual = {
   Section: styled.section`
@@ -52,17 +33,16 @@ const Visual = {
   `,
   Container: styled.div`
     padding-top: 32px;
-    padding-bottom: 16px;
+    padding-bottom: 24px;
 
     strong {
       display: block;
       font-style: normal;
       font-weight: bold;
       font-size: 22px;
-      line-height: 32px;
-      letter-spacing: -0.03em;
+      line-height: 30px;
+      letter-spacing: -1px;
       color: ${colors.gray33};
-      margin-bottom: 8px;
     }
 
     p {
@@ -70,14 +50,15 @@ const Visual = {
       font-weight: normal;
       font-size: 16px;
       line-height: 24px;
-      letter-spacing: -0.03em;
+      letter-spacing: -1px;
       color: ${colors.gray66};
+      margin-bottom: 4px;
     }
   `,
   ButtonGroupContainer: styled.div`
     margin-top: 26px;
-  `,
-};
+  `
+}
 
 const Description = {
   Container: styled.div`
@@ -102,10 +83,9 @@ const Description = {
     }
   `,
   InfoType: styled.div<{
-    selectMoveType: "house" | "oneroom" | "office" | undefined;
+    selectMoveType: 'house' | 'oneroom' | 'office' | undefined
   }>`
-    display: ${(props) =>
-      props.selectMoveType === "office" ? "block" : "none"};
+    display: ${(props) => (props.selectMoveType === 'office' ? 'block' : 'none')};
     text-align: center;
     margin-bottom: 28px;
 
@@ -124,18 +104,18 @@ const Description = {
       text-decoration: underline;
       letter-spacing: -0.5px;
     }
-  `,
-};
+  `
+}
 
 const Terms = {
   Container: styled.div<{ selectMoveType: boolean }>`
     position: relative;
-    display: ${(props) => (props.selectMoveType ? "flex" : "none")};
-    flex-direction: column;
+    display: ${(props) => (props.selectMoveType ? 'flex' : 'none')};
     margin-bottom: 14px;
-
-    label {
-      margin-top: 14px;
+    align-items: center;
+    margin-top: 24px;
+    svg {
+      margin-left: 4px;
     }
   `,
   View: styled.div`
@@ -170,7 +150,7 @@ const Terms = {
     }
   `,
   SubmitContainer: styled.div<{ selectMoveType: boolean }>`
-    display: ${(props) => (props.selectMoveType ? "flex" : "none")};
+    display: ${(props) => (props.selectMoveType ? 'flex' : 'none')};
     flex-direction: column;
 
     .text {
@@ -206,12 +186,49 @@ const Terms = {
       }
     }
   `,
-};
+  LevelInfoWrapper: styled.div<{ visible: boolean }>`
+    position: fixed;
+    display: ${({ visible }) => (visible ? 'flex' : 'none')};
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+  `,
+  LevelInfoBox: styled.div<{ visible: boolean }>`
+    position: absolute;
+    display: ${({ visible }) => (visible ? 'flex' : 'none')};
+    align-items: center;
+    left: 35px;
+    top: -17px;
+    width: 160px;
+    padding: 11px;
+    background-color: rgba(0, 0, 0, 0.75);
+    border-radius: 4px;
+    color: white;
+    font-size: 12px;
+    line-height: 17px;
+    letter-spacing: -1px;
+    box-sizing: border-box;
+  `,
+  Arrow: styled.div`
+    position: absolute;
+    left: -8px;
+    top: 21px;
+    width: 0;
+    height: 0;
+    border-top: 7.5px solid transparent; /* 화살표 */
+    border-bottom: 7.5px solid transparent;
+    border-right: 8px solid rgba(0, 0, 0, 0.75);
+  `
+}
 
 const HouseTitle = styled.div<{
-  selectMoveType: "house" | "oneroom" | "office" | undefined;
+  selectMoveType: 'house' | 'oneroom' | 'office' | undefined
 }>`
-  display: ${(props) => (props.selectMoveType === "house" ? "block" : "none")};
+  display: ${(props) => (props.selectMoveType === 'house' ? 'block' : 'none')};
   text-align: center;
 
   strong {
@@ -222,68 +239,70 @@ const HouseTitle = styled.div<{
     letter-spacing: -0.03em;
     color: ${colors.gray33};
   }
-`;
+`
+export enum EFormError {
+  DATE = 'date',
+  START_ADDRESS = 'startAddress',
+  END_ADDRESS = 'endAddress',
+  START_FLOOR = 'startFloor',
+  END_FLOOR = 'endFloor'
+}
 
 interface Props {
-  headerRef?: React.RefObject<HTMLDivElement>;
-  isFixed?: boolean;
-  setIsFixed?: React.Dispatch<boolean>;
+  headerRef?: React.RefObject<HTMLDivElement>
+  isFixed?: boolean
+  setIsFixed?: React.Dispatch<boolean>
 }
 
 const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const router = useRouter();
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const router = useRouter()
 
-  const getMoveType = useSelector(formSelector.getType);
-  const getMoveDate = useSelector(formSelector.getDate);
-  const getAddress = useSelector(formSelector.getAddress);
-  const getFloor = useSelector(formSelector.getFloor);
-  const getIsMoveStore = useSelector(formSelector.getIsMoveStore);
-  const { user } = useSelector(userSelector.getUser);
-
-  const [visibleTerms, setVisibleTerms] = useHashToggle("#terms");
-  const [visibleOneroom, setVisibleOneroom] = useState(false);
-  const [isVerifySuccess, setIsVerifySuccess] = useState(false);
-  const selectedSubmitType = useRef<"curation" | "select" | null>(null);
-  const [cookies] = useCookies([
-    "0dj38gepoekf98234aplyadmin",
-  ]);
+  const getMoveType = useSelector(formSelector.getType)
+  const getMoveDate = useSelector(formSelector.getDate)
+  const getAddress = useSelector(formSelector.getAddress)
+  const getFloor = useSelector(formSelector.getFloor)
+  const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
+  const { user } = useSelector(userSelector.getUser)
+  const [infoVisible, setInfoVisible] = useState(false)
+  const [visibleTerms, setVisibleTerms] = useHashToggle('#terms')
+  const [visibleOneroom, setVisibleOneroom] = useState(false)
+  const [isVerifySuccess, setIsVerifySuccess] = useState(false)
+  const selectedSubmitType = useRef<'curation' | 'select' | null>(null)
+  const [cookies] = useCookies(['0dj38gepoekf98234aplyadmin'])
+  const [formValidations, setFormValidations] = useState<EFormError[]>([])
 
   const validateHouseOrOfficeForm = () => {
+    let errors = []
     if (isEmpty(getMoveDate)) {
-      showToast({ message: "날짜를 선택해 주세요.", type: "error" });
-      return false;
+      errors.push(EFormError.DATE)
     }
     if (isEmpty(getAddress.start)) {
-      showToast({ message: "출발지를 입력해 주세요.", type: "error" });
-      return false;
+      errors.push(EFormError.START_ADDRESS)
     }
     if (isEmpty(getFloor.start)) {
-      showToast({ message: "출발지 층수를 입력해 주세요.", type: "error" });
-      return false;
+      errors.push(EFormError.START_FLOOR)
     }
-    if (isEmpty(getAddress.detailStart)) {
-      showToast({ message: "출발지 상세주소를 입력해 주세요.", type: "error" });
-      return false;
-    }
+
     if (isEmpty(getAddress.end)) {
-      showToast({ message: "도착지를 입력해 주세요.", type: "error" });
-      return false;
+      errors.push(EFormError.END_ADDRESS)
     }
     if (isEmpty(getFloor.end)) {
-      showToast({ message: "도착지 층수를 입력해 주세요.", type: "error" });
-      return false;
+      errors.push(EFormError.END_FLOOR)
     }
-    if (isEmpty(getAddress.detailEnd)) {
-      showToast({ message: "도착지 상세주소를 입력해 주세요.", type: "error" });
-      return false;
-    }
-    return true;
-  };
 
-  const handleRequestClick = (submitType: "curation" | "select") => {
-    if (!validateHouseOrOfficeForm()) return;
+    if (errors.length > 0) {
+      setFormValidations(errors)
+      showToast({ message: '이사 정보를 입력해 주세요', type: 'error' })
+      return false
+    }
+
+    return true
+  }
+
+  const handleRequestClick = (submitType: 'curation' | 'select') => {
+    if (!validateHouseOrOfficeForm()) return
 
     dataLayer({
       event: 'request',
@@ -292,54 +311,76 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
       action: submitType === 'curation' ? '업체_바로매칭' : '업체_직접고르기',
       CD6: getMoveType === 'house' ? '가정' : '사무실',
       CD10: getIsMoveStore ? 'Y' : 'N'
-  })
+    })
 
-    selectedSubmitType.current = submitType;
-    dispatch(formActions.setSubmitType(submitType));
+    selectedSubmitType.current = submitType
+    dispatch(formActions.setSubmitType(submitType))
 
     if (!user) {
-      dispatch(userActions.signIn({ prevPage: ESignInCase.FORM }));
-      history.push("/login");
+      dispatch(userActions.signIn({ prevPage: ESignInCase.FORM }))
+      history.push('/login')
     } else {
-      dispatch(formActions.fetchMoveData());
+      dispatch(formActions.fetchMoveData())
     }
-  };
+  }
 
   useEffect(() => {
-    const { type } = router.query;
+    if (getMoveDate.length > 0) {
+      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.DATE))
+    }
+    if (!isEmpty(getAddress.start)) {
+      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.START_ADDRESS))
+    }
+
+    if (!isEmpty(getAddress.end)) {
+      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.END_ADDRESS))
+    }
+
+    if (!isEmpty(getFloor.start)) {
+      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.START_FLOOR))
+    }
+
+    if (!isEmpty(getFloor.end)) {
+      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.END_FLOOR))
+    }
+  }, [getMoveType, getMoveDate, getAddress, getFloor])
+
+  useEffect(() => {
+    const { type } = router.query
     if (cookies.formData) {
-      dispatch(formActions.setInitialFormData(cookies.formData));
+      dispatch(formActions.setInitialFormData(cookies.formData))
     }
 
     if (cookies.jusoData) {
       dispatch(commonActions.setJuso(cookies.jusoData))
     }
 
-    if (type === "house") {
-      dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp));
+    if (type === 'house') {
+      dispatch(formActions.setMoveType('house' as formActions.MoveTypeProp))
     }
-  }, [dispatch]);
+  }, [dispatch])
 
   return (
     <Visual.Section>
       <Visual.Container>
-        <strong>어떤 이사업체를 찾으세요?</strong>
-        <p>이사 종류를 선택해주세요.</p>
+        <p>이사 조건 선택하고</p>
+        <strong>잘하는 이사업체 찾아보세요!</strong>
       </Visual.Container>
       <ButtonGroup
         headerRef={headerRef}
         isFixed={isFixed}
         setIsFixed={setIsFixed}
-        onClick={(type: "house" | "oneroom" | "office" | undefined) => {
-          if (type === "oneroom") {
-            document.location.href = `${ONEROOM_URL}`;
-            return;
+        onClick={(type: 'house' | 'oneroom' | 'office' | undefined) => {
+          setFormValidations([])
+          if (type === 'oneroom') {
+            document.location.href = `${ONEROOM_URL}`
+            return
           }
-          dispatch(formActions.setMoveType(type as formActions.MoveTypeProp));
+          dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
         }}
       />
       <Visual.ButtonGroupContainer>
-        {getMoveType === undefined && (
+        {/* {getMoveType === undefined && (
           <Description.Container>
             <Description.Box>
               <strong>Q 이사종류 어떻게 구분하나요?</strong>
@@ -350,44 +391,43 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
               </ul>
             </Description.Box>
           </Description.Container>
-        )}
-        <HouseTitle selectMoveType={getMoveType}>
+        )} */}
+        {/* <HouseTitle selectMoveType={getMoveType}>
           <strong>거주자 2명이상, 투룸 이상의 짐량</strong>
-        </HouseTitle>
-        <Description.InfoType
-          style={{ marginBottom: 0 }}
-          selectMoveType={getMoveType}
-        >
+        </HouseTitle> */}
+        {/* <Description.InfoType style={{ marginBottom: 0 }} selectMoveType={getMoveType}>
           <p>빌딩, 공장, 상가 등 짐량 1톤 트럭 초과</p>
-        </Description.InfoType>
-        <MoveInput type={getMoveType} style={{ marginTop: 30 }} />
+        </Description.InfoType> */}
+        <MoveInput type={getMoveType} style={{ marginTop: 30 }} formValidations={formValidations} />
       </Visual.ButtonGroupContainer>
       <>
         <Terms.Container selectMoveType={getMoveType !== undefined}>
-          <Checkbox
-            label="보관이사 필요"
-            checked={getIsMoveStore}
-            onChange={() =>
-              dispatch(formActions.setIsMoveStore(!getIsMoveStore))
-            }
-          />
+          <Checkbox label="보관이사 필요" checked={getIsMoveStore} onChange={() => dispatch(formActions.setIsMoveStore(!getIsMoveStore))} />
+          <div onClick={() => setInfoVisible(true)} style={{ position: 'relative', height: 24, display: 'flex', alignItems: 'center' }}>
+            <Question color={colors.gray33} />
+            <Terms.LevelInfoBox visible={infoVisible}>
+              <Terms.Arrow />
+              업체가 출발일과 도착일 사이에 일정기간 이삿짐을 보관합니다. <br /> 견적이 달라질 수 있습니다.
+            </Terms.LevelInfoBox>
+            <Terms.LevelInfoWrapper
+              visible={infoVisible}
+              onClick={(e) => {
+                e.stopPropagation()
+                setInfoVisible(false)
+              }}
+            />
+          </div>
         </Terms.Container>
         <Terms.SubmitContainer selectMoveType={getMoveType !== undefined}>
           <div className="text">
             <p>
-              내 조건에 맞는 업체<strong>(최대 3개)</strong>에{" "}
-              <br className="mobile-enter" />
+              내 조건에 맞는 업체<strong>(최대 3개)</strong>에 <br className="mobile-enter" />
               비용산정을 위한 <strong>무료 견적상담</strong>을 신청합니다
             </p>
           </div>
           <div id="dsl_move_button_requests_1">
             {/******* AUTO MATCH *******/}
-            <Button
-              theme="primary"
-              bold
-              border
-              onClick={() => handleRequestClick("curation")}
-            >
+            <Button theme="primary" bold border onClick={() => handleRequestClick('curation')}>
               추천업체 바로 신청하기
             </Button>
             {/* {getMoveType !== 'oneroom' && (
@@ -396,24 +436,11 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
           </div>
         </Terms.SubmitContainer>
       </>
-      <NoticePopup
-        visible={isVerifySuccess}
-        footerButton
-        border
-        onClose={() => setIsVerifySuccess(!isVerifySuccess)}
-      />
-      <TermsModal
-        visible={visibleTerms}
-        onClose={() => setVisibleTerms(!visibleTerms)}
-      />
-      <OneroomNoticePopup
-        visible={visibleOneroom}
-        footerButton
-        border
-        onClose={() => setVisibleOneroom(!visibleOneroom)}
-      />
+      <NoticePopup visible={isVerifySuccess} footerButton border onClose={() => setIsVerifySuccess(!isVerifySuccess)} />
+      <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
+      <OneroomNoticePopup visible={visibleOneroom} footerButton border onClose={() => setVisibleOneroom(!visibleOneroom)} />
     </Visual.Section>
-  );
-};
+  )
+}
 
-export default MoveForm;
+export default MoveForm

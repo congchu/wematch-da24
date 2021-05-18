@@ -81,6 +81,7 @@ const initialState: FormState = {
         mkt_agree: false,
         agent_id: '',
         memo: '',
+        auto_match: true,
     },
     selectedSubmitType: null,
     /* submittedForm */

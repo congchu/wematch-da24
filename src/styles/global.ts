@@ -10,7 +10,7 @@ export default createGlobalStyle`
   }
   body {
     min-width:320px;
-    font-family: 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
+    font-family: 'Noto Sans KR', 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
     font-size: 14px;
     background-color: white;
     font-weight: normal;

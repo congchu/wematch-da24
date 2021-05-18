@@ -145,7 +145,8 @@ export function* setFormSaga()  {
         mkt_agree: agree.marketing,
         distance: getJuso.distance,
         agent_id: cookie ? queryString.parse(cookie).agentid : '',
-        memo: contents
+        memo: contents,
+        auto_match: true
     }
 
     yield put(actions.setFormData(formData))
