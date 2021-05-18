@@ -110,10 +110,10 @@ const Description = {
 const Terms = {
   Container: styled.div<{ selectMoveType: boolean }>`
     position: relative;
-    display: flex;
+    display: ${(props) => (props.selectMoveType ? 'flex' : 'none')};
     margin-bottom: 14px;
     align-items: center;
-    margin-top: 14px;
+    margin-top: 24px;
     svg {
       margin-left: 4px;
     }
@@ -201,8 +201,8 @@ const Terms = {
     position: absolute;
     display: ${({ visible }) => (visible ? 'flex' : 'none')};
     align-items: center;
-    top: -20px;
-    right: 15px;
+    left: 35px;
+    top: -17px;
     width: 160px;
     padding: 11px;
     background-color: rgba(0, 0, 0, 0.75);
@@ -401,9 +401,9 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
         <MoveInput type={getMoveType} style={{ marginTop: 30 }} formValidations={formValidations} />
       </Visual.ButtonGroupContainer>
       <>
-        <Terms.Container selectMoveType={true}>
+        <Terms.Container selectMoveType={getMoveType !== undefined}>
           <Checkbox label="보관이사 필요" checked={getIsMoveStore} onChange={() => dispatch(formActions.setIsMoveStore(!getIsMoveStore))} />
-          <div onClick={() => setInfoVisible(true)}>
+          <div onClick={() => setInfoVisible(true)} style={{ position: 'relative', height: 24, display: 'flex', alignItems: 'center' }}>
             <Question color={colors.gray33} />
             <Terms.LevelInfoBox visible={infoVisible}>
               <Terms.Arrow />

@@ -97,9 +97,9 @@ const ButtonGroup: React.FC<Props> = (props) => {
   const getMoveType = useSelector(formSelector.getType)
 
   const groups: GroupProp[] = [
-    { type: 'house', value: '2인 이상 거주', subValue: '아파트·빌라 주택 등' },
-    { type: 'oneroom', value: '1인 거주', subValue: '원룸·투룸 오피스텔 등' },
-    { type: 'office', value: '사무실', subValue: '빌딩·공장 상가 등' }
+    { type: 'house', value: '2인 이상 거주', subValue: '아파트 · 빌라 주택 등' },
+    { type: 'oneroom', value: '1인 거주', subValue: '원룸 · 투룸 오피스텔 등' },
+    { type: 'office', value: '사무실', subValue: '빌딩 · 공장 상가 등' }
   ]
 
   const isDesktop = useMedia({
@@ -160,11 +160,27 @@ const ButtonGroup: React.FC<Props> = (props) => {
           }}>
           <div>
             <span>{group.value}</span>
-            <span>
-              {renderSubValue?.[idx]?.[0]}
-              <br />
-              {`${renderSubValue?.[idx]?.[1]} ${renderSubValue?.[idx]?.[2]}`}
-            </span>
+            {group.type === 'house' && (
+              <span>
+                아파트 &middot; 빌라
+                <br />
+                주택 등
+              </span>
+            )}
+            {group.type === 'oneroom' && (
+              <span>
+                원룸 &middot; 투룸
+                <br />
+                오피스텔 등
+              </span>
+            )}
+            {group.type === 'office' && (
+              <span>
+                빌딩 &middot; 공장
+                <br />
+                상가 등
+              </span>
+            )}
           </div>
           {group.type === getMoveType && <S.Arrow />}
         </S.Button>

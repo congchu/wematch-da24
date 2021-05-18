@@ -83,6 +83,10 @@ const S = {
     font-size: 16px;
     line-height: 28px;
     border-radius: 4px;
+    &::placeholder {
+      color: ${colors.gray88};
+      /* letter-spacing: -1px; */
+    }
   `
 }
 
@@ -162,7 +166,7 @@ const MoveInput: React.FC<Props> = (props) => {
       CD6: getMoveTypeText()
     })
 
-    dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
+    dispatch(formActions.setMoveDate([date.date.format('YYYY.MM.DD')]))
     debounceSelectDate()
   }
 
@@ -271,7 +275,7 @@ const MoveInput: React.FC<Props> = (props) => {
     [getMoveFloor]
   )
 
-  const renderAddressValue = useCallback((type: 'start' | 'end') => (getJuso.type?.start === 'road' ? getJuso[type]?.roadAddr : getJuso[type]?.jibunAddr), [getJuso])
+  const renderAddressValue = useCallback((type: 'start' | 'end') => (getJuso.type?.[type] === 'road' ? getJuso[type]?.roadAddr : getJuso[type]?.jibunAddr), [getJuso])
 
   return (
     <S.Container id="dsl_move_input_terms_1" {...restProps} type={type}>
@@ -283,7 +287,7 @@ const MoveInput: React.FC<Props> = (props) => {
           <S.Title>출발지 주소</S.Title>
           <InputBox icon={'search'} placeHolder={'주소 검색'} value={renderAddressValue('start')} onClick={toggleStartAddress} style={{ marginBottom: '8px' }} error={formValidations.includes(EFormError.START_ADDRESS)} />
           {/* <Input theme="default" border readOnly placeholder="출발지" rootStyle={{ width: '100%' }} onClick={toggleStartAddress} value={getJuso.type?.start === 'road' ? getJuso.start?.roadAddr : getJuso.start?.jibunAddr} style={{ backgroundColor: 'transparent' }} icon="search" /> */}
-          <InputBox icon={'down'} placeHolder={'층수 검색'} value={renderFloor('start')} onClick={toggleStartFloor} error={formValidations.includes(EFormError.START_FLOOR)} />
+          <InputBox icon={'down'} placeHolder={'층수 선택'} value={renderFloor('start')} onClick={toggleStartFloor} error={formValidations.includes(EFormError.START_FLOOR)} />
           {/* <Input theme="default" border readOnly icon="down" placeholder="층수 선택" rootStyle={{ width: '100%' }} onClick={toggleStartFloor} value={renderFloor('start')} style={{ backgroundColor: 'transparent' }} /> */}
         </div>
 
@@ -291,7 +295,7 @@ const MoveInput: React.FC<Props> = (props) => {
           <S.Title>도착지 주소</S.Title>
           <InputBox icon={'search'} placeHolder={'주소 검색'} value={renderAddressValue('end')} onClick={toggleEndAddress} style={{ marginBottom: '8px' }} error={formValidations.includes(EFormError.END_ADDRESS)} />
           {/* <Input theme="default" border readOnly placeholder="도착지" rootStyle={{ width: '100%' }} onClick={toggleEndAddress} value={getJuso.type?.end === 'road' ? getJuso.end?.roadAddr : getJuso.end?.jibunAddr} style={{ backgroundColor: 'transparent' }} icon="search" /> */}
-          <InputBox icon={'down'} placeHolder={'층수 검색'} value={renderFloor('end')} onClick={toggleEndFloor} error={formValidations.includes(EFormError.END_FLOOR)} />
+          <InputBox icon={'down'} placeHolder={'층수 선택'} value={renderFloor('end')} onClick={toggleEndFloor} error={formValidations.includes(EFormError.END_FLOOR)} />
           {/* <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: '100%' }} onClick={toggleEndFloor} value={getMoveFloor.end ? getMoveFloor.end + '층' : getMoveFloor.end} style={{ backgroundColor: 'transparent' }} /> */}
         </div>
 
