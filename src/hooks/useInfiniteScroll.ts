@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
+import {throttle} from 'lodash';
 
-// const useInfiniteScroll = (callback: () => void) => {
 const useInfiniteScroll = (callback: () => void): [boolean, React.Dispatch<boolean>] => {
     const [isFetching, setIsFetching] = useState<boolean>(false);
 
@@ -14,11 +14,17 @@ const useInfiniteScroll = (callback: () => void): [boolean, React.Dispatch<boole
         callback();
     }, [isFetching]);
 
-    function handleScroll() {
-        if (document.documentElement.scrollTop !== 0 && document.documentElement.scrollTop + document.documentElement.clientHeight === document.documentElement.scrollHeight) {
+    const handleScroll = throttle(() => {
+        const element = document.scrollingElement || document.documentElement
+
+        const scrollTop = element.scrollTop || 0
+        const clientHeight = document.documentElement.clientHeight || 0
+        const scrollHeight = document.documentElement.scrollHeight || 0
+
+        if ((scrollTop + clientHeight) >= (scrollHeight - 10)) {
             setIsFetching(true)
         }
-    }
+    }, 500)
     return [isFetching, setIsFetching];
 };
 
