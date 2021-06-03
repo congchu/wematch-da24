@@ -15,16 +15,16 @@ const useInfiniteScroll = (callback: () => void): [boolean, React.Dispatch<boole
     }, [isFetching]);
 
     const handleScroll = throttle(() => {
-        const element = document.scrollingElement || document.documentElement
-
-        const scrollTop = element.scrollTop || 0
+        // const scrollTop = element.scrollTop || 0
+        // 일부 기기에서(아이폰) body: hidden 때문에 scrollTop이 0 으로 계산됨.
+        const scrollTop = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop)
         const clientHeight = document.documentElement.clientHeight || 0
         const scrollHeight = document.documentElement.scrollHeight || 0
 
-        if ((scrollTop + clientHeight) >= (scrollHeight - 10)) {
+        if ((scrollTop + clientHeight) >= (scrollHeight - 250)) {
             setIsFetching(true)
         }
-    }, 500)
+    }, 300)
     return [isFetching, setIsFetching];
 };
 
