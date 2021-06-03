@@ -28,7 +28,7 @@ const MyConsult = () => {
     })
 
     const handleLogout = () => {
-        // dispatch(userActions.signOut()); // location href 처리로 리덕스 데이터 갱신됨 
+        // dispatch(userActions.signOut()); // location href 처리로 리덕스 데이터 갱신됨
         deleteCookie('x-wematch-token');
         onMessageHandler({
             action: 'clearData'
@@ -71,7 +71,7 @@ const MyConsult = () => {
                         <strong>쉽고, 빠르게 이용하기</strong>
                         <p>최초 1회만 번호인증을 하시면 무료 견적상담 및 내 신청내역 기능을 자유롭게 이용하실 수 있어요!</p>
                     </LoginWrapper>
-                    <Button theme="primary" border={true} bold={true} onClick={handleCertifyButtonClick} id={'dsl_myrequests_gate_button'}>인증하기</Button>               
+                    <Button theme="primary" border={true} bold={true} onClick={handleCertifyButtonClick} id={'dsl_myrequests_gate_button'}>인증하기</Button>
                 </LoginContent>
                 <BottomNav />
             </Container>
@@ -98,7 +98,8 @@ const MyConsult = () => {
                         </ContentSubTitle>
                         <ContentList>
                             {
-                                clean_orders.length === 0 ? <FindCard title="입주/이사청소" link={CLEAN_URL} /> :
+                                // clean_orders.length === 0 ? <FindCard title="입주/이사청소" link={CLEAN_URL} /> :
+                                clean_orders.length === 0 ? <FindCard title="입주/이사청소" link='https://landing-da24.wematch.com/clean-multi/' /> :
                                     clean_orders.map((order: IOrder) => <ConsultCard handleSelectConsult={() => handleSelectConsult(order)} key={order.idx} category={'clean'} link={'/myrequest/detail'} categoryTitle={order.type} dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')} dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')} />)
                             }
                         </ContentList>
