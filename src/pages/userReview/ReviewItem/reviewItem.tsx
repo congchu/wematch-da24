@@ -210,8 +210,6 @@ interface Props {
     reply?: string | React.ReactNode | null;
 }
 
-
-
 export default function ReviewItem({ adminid,partnerName, userId, created_at, star, professional, kind, price, reviewContents, reply }: Props) {
 
     const history = useHistory()
@@ -228,7 +226,7 @@ export default function ReviewItem({ adminid,partnerName, userId, created_at, st
 
     const getColorForGrade = (star: number) => {
         const starAvg = star / 20 ; //100점만점
-        if(starAvg > 4) return "1672f7"
+        if (starAvg > 4) return "1672f7"
         else if (starAvg > 3) return "00b6ed"
         else if (starAvg > 2) return "ffae2c"
         else if (starAvg > 1) return  "fa6e3c"
@@ -238,7 +236,7 @@ export default function ReviewItem({ adminid,partnerName, userId, created_at, st
     // Grade = 'verygood' | 'good' | 'normal' | 'bad' | 'verybad';
     /* 임시 :  API response 에서 Grade 기준으로 => 추후, 해당 api 맞춰 확인필요 */
     const convertGradeToStar = (grade: Grade) => {
-        if( grade === 'verygood') return 5
+        if (grade === 'verygood') return 5
         else if (grade === 'good') return 4
         else if (grade === 'normal') return 3
         else if (grade === 'bad') return 2
@@ -246,7 +244,7 @@ export default function ReviewItem({ adminid,partnerName, userId, created_at, st
         else return 0
     }
 
-    const dateCutter = ( longDate: string) => {
+    const dateCutter = (longDate: string) => {
         let onlyDate = longDate.split('T')
         let dateArr = onlyDate[0].split('-')
         let year =  dateArr[0].substring(2,4)
