@@ -6,7 +6,10 @@ import { DownArrow, UpArrow } from 'components/Icon'
 
 import { getCreatedAt } from 'lib/time'
 import * as colors from 'styles/colors'
-import { Grade } from 'types/partner';
+import {Grade, Level} from 'types/partner';
+import SLevelLabel from "../../Icon/generated/SLevelLabel";
+import PrevIcon from "../../wematch-ui/Icon/generated/Previous";
+import {useHistory} from "react-router-dom";
 
 const S = {
 	Container: styled.div`
@@ -38,6 +41,7 @@ const S = {
 	Wrap: styled.div`
 		margin:0 24px 24px;
 		border-top:1px solid #d7dbe2;
+		padding-top:27px;
 		@media screen and (min-width: 768px) {
 			width:608px;
 			margin:0 auto 24px;
@@ -47,7 +51,6 @@ const S = {
 		}
 	`,
 	UserInfo: styled.div`
-		padding-top:27px;
 		strong{
 			font-size:14px;
 			font-weight:600;
@@ -181,6 +184,29 @@ const S = {
 			line-height:22px;
 		}
 	`,
+	PartnerName:styled.div`
+      display: block;
+      position: relative;
+      padding-bottom: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.8px;
+      cursor: pointer;
+      @media screen and (min-width: 768px){
+        padding-bottom: 18px;
+      }
+
+      svg {
+        position: absolute;
+        transform: rotate(-0.5turn);
+        top: 0;
+        right: 0;
+        width: 12px;
+        height: 16px;
+        background-position: 0 -379px;
+        -webkit-background-size: 22px 570px;
+        background-size: 22px 570px;
+      }`
 }
 
 interface Props {
@@ -192,9 +218,12 @@ interface Props {
 	kind: Grade;
 	price: Grade;
 	star: number;
+	partnerName?: string;
+	level?: Level;
 }
 
-const Review = ({ id, created_at, memo, reply, professional, kind, price, star }: Props) => {
+const Review = ({ id, created_at, memo, reply, professional, kind, price, star, partnerName, level }: Props) => {
+	const history = useHistory()
 	const isDesktop = useMedia({
 		minWidth: 1200,
 	})
@@ -242,6 +271,13 @@ const Review = ({ id, created_at, memo, reply, professional, kind, price, star }
 
 	return (
 		<S.Wrap>
+			{level === 'S' && (<SLevelLabel />)}
+			{partnerName && (
+				<S.PartnerName onClick={() => history.push(`/comment/${id}`)}>
+					{partnerName}
+					<PrevIcon size={16} />
+				</S.PartnerName>
+			)}
 			<S.UserInfo>
 				<strong>고객번호 {id}</strong>
 				<span>{getCreatedAt(created_at)}</span>
