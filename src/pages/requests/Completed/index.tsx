@@ -432,7 +432,8 @@ export default function Completed() {
         })
         resolve(null);
       })
-      pl.then(() => window.location.href = `${CLEAN_URL}`)
+      // pl.then(() => window.location.href = `${CLEAN_URL}`)
+      pl.then(() => window.location.href = 'https://landing-da24.wematch.com/clean-multi/')
     }
   }, [msg, data])
 
@@ -571,7 +572,8 @@ export default function Completed() {
           </S.MoveInfo>
         </Collapse>
       </S.ContentsWrap>
-      <S.Box href={CLEAN_URL}>
+      {/*<S.Box href={CLEAN_URL}>*/}
+      <S.Box href="https://landing-da24.wematch.com/clean-multi/">
         <img
           className="left"
           src={require("assets/images/components/Completed/home.svg")}
