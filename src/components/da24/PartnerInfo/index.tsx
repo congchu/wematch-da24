@@ -236,9 +236,7 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 						: (
 							<div>
 								{adminname.charAt(0)}
-
 								<S.Blur />
-								{adminname.charAt(adminname.length -1)}
 							</div>
 						)
 					}

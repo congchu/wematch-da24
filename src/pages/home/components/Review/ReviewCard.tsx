@@ -132,7 +132,6 @@ const ReviewCard = ({partnerName, userId, created_at, grade, price, kind, profes
                     <S.PartnerName>
                         {partnerName.charAt(0)}
                         <S.Blur/>
-                        {partnerName.charAt(partnerName.length -1)}
                     </S.PartnerName>
                     {/*<S.OverallGrade gradeColor={gradeBadge(grade)}><span>{grade}</span></S.OverallGrade>*/}
                 </S.FirstLine>
