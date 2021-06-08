@@ -85,9 +85,15 @@ const S = {
     -webkit-box-orient:vertical;
     word-wrap:break-word;
     
-    div {
+    div:first-child {
     	display: flex;
     	align-items: center;
+    }
+    div:last-child {
+    	margin-top: 5px;
+    	font-size: 12px;
+    	font-weight: normal;
+    	color: ${colors.gray88};
     }
 	`,
 	Info: styled.div`
@@ -234,10 +240,13 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 					{pathname === 'requests'
 						? adminname
 						: (
-							<div>
-								{adminname.charAt(0)}
-								<S.Blur />
-							</div>
+							<>
+								<div>
+									{adminname.charAt(0)}
+									<S.Blur />
+								</div>
+								<div>업체명은 견적 신청한 업체만 공개됩니다.</div>
+							</>
 						)
 					}
 				</S.PartnerWord>
