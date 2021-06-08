@@ -100,10 +100,7 @@ const MyConsult = () => {
               <span>&nbsp; &#124; &nbsp;입주/이사청소</span>
             </ContentSubTitle>
             <ContentList>
-              {// clean_orders.length === 0 ? <FindCard title="입주/이사청소" link={CLEAN_URL} /> :
-              clean_orders.length === 0 ? (
-                <FindCard title="입주/이사청소" link="https://landing-da24.wematch.com/clean-multi/" />
-              ) : (
+              {clean_orders.length === 0 ? <FindCard title="입주/이사청소" link={CLEAN_URL} /> : (
                 clean_orders.map((order: IOrder) => (
                   <ConsultCard
                     handleSelectConsult={() => handleSelectConsult(order)}
