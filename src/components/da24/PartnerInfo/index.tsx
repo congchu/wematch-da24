@@ -154,9 +154,10 @@ const S = {
 	`,
 	Blur: styled.div`
       width: 78px;
-      height: 16px;
+      height: 25px;
       border-radius: 34px;
       background-color: ${lineDeco};
+      margin: 0 2px;
     `,
 	Description: styled.div`
 		div:last-child{
@@ -235,6 +236,7 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 						: (
 							<div>
 								{adminname.charAt(0)}
+
 								<S.Blur />
 								{adminname.charAt(adminname.length -1)}
 							</div>

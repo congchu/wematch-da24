@@ -162,7 +162,7 @@ const S = {
 			margin-left:4px;
 			vertical-align:top;
 		}
-		@media screen and (min-width:768px) {
+		@media screen and (min-width:768px) {어
 			margin-top:32px;
 		}
 		@media screen and (min-width:1200px) {

@@ -498,7 +498,7 @@ export default function Completed() {
           <S.TopTitle>
             <em>이사업체 매칭</em> 완료 <br />
             <span>
-            업체에서2시간 이상 연락이 없다면 보내드린 <br />알림톡/문자의 업체 전화번호로 먼저 전화해보세요!
+            업체에서 2시간 이상 연락이 없다면 보내드린 <br />알림톡/문자의 업체 전화번호로 먼저 전화해보세요!
           </span>
           </S.TopTitle>
           <ProcessBar/>
@@ -537,7 +537,7 @@ export default function Completed() {
                   history.push(`/requests/completed/${list.adminid}`);
                 }}
               >
-                {`업체 정보 자세히보기 (후기 ${list.feedback_cnt})`}
+                {`업체 정보 자세히 보기 (후기 ${list.feedback_cnt}개)`}
               </S.LinkCompany>
             </S.Card>
           ))}
