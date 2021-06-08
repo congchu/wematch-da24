@@ -347,7 +347,8 @@ const MyConsultDetail = () => {
                   CD8: `${list.level}등급`
                 })
               }}>
-                <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
+                {/*<em>{list.feedback_cnt}</em> 명의 고객 평가 확인*/}
+                {`업체 정보 자세히 보기 (후기 ${list.feedback_cnt}개)`}
               </S.LinkCompany>
             </S.Card>
           ))}

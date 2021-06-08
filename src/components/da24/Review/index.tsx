@@ -50,16 +50,17 @@ const S = {
 			width:656px;
 		}
 	`,
+	InfoWrap: styled.div`
+		display: flex;
+		justify-content: space-between;
+	`,
 	UserInfo: styled.div`
-		strong{
-			font-size:14px;
-			font-weight:600;
-			letter-spacing:-0.5px;
-		}
-		span{
-			float:right;
-			font-size:14px;
-			color:${colors.gray66};
+		display: flex;
+		font-size:14px;
+		color:${colors.gray66};
+		p {
+			width: 1px;
+			margin: 0 7px;
 		}
 	`,
 	Grade: styled.div`
@@ -140,12 +141,12 @@ const S = {
 	`,
 	Review: styled.div``,
 	ReviewText: styled.p`
-		display:-webkit-box;
+	display:-webkit-box;
     overflow:hidden;
     width:100%;
     margin-top:12px;
-		font-size:15px;
-    font-weight:500;
+	font-size:15px;
+    font-weight:400;
     line-height:24px;
     //text-overflow:ellipsis;
     //-webkit-line-clamp:2;
@@ -153,6 +154,8 @@ const S = {
     word-wrap:break-word;
 	`,
 	MoreReview: styled.button`
+		display: flex;
+		align-items: center;
 		margin-top:7px;
 		cursor:pointer;
 		svg{
@@ -220,9 +223,10 @@ interface Props {
 	star: number;
 	partnerName?: string;
 	level?: Level;
+	partner?: string;
 }
 
-const Review = ({ id, created_at, memo, reply, professional, kind, price, star, partnerName, level }: Props) => {
+const Review = ({ id, created_at, memo, reply, professional, kind, price, star, partnerName, level, partner }: Props) => {
 	const history = useHistory()
 	const isDesktop = useMedia({
 		minWidth: 1200,
@@ -273,19 +277,22 @@ const Review = ({ id, created_at, memo, reply, professional, kind, price, star, 
 		<S.Wrap>
 			{level === 'S' && (<SLevelLabel />)}
 			{partnerName && (
-				<S.PartnerName onClick={() => history.push(`/comment/${id}`)}>
+				<S.PartnerName onClick={() => {partner && history.push(`/comment/${partner}`)}}>
 					{partnerName}
 					<PrevIcon size={16} />
 				</S.PartnerName>
 			)}
-			<S.UserInfo>
-				<strong>고객번호 {id}</strong>
-				<span>{getCreatedAt(created_at)}</span>
-			</S.UserInfo>
-			<S.Grade>
+			<S.InfoWrap>
 				<S.StarFill star={star}>
 					<span className="fill"></span>
 				</S.StarFill>
+				<S.UserInfo>
+					<strong>고객번호 {id}</strong>
+					<p> | </p>
+					<span>{getCreatedAt(created_at)}</span>
+				</S.UserInfo>
+			</S.InfoWrap>
+			<S.Grade>
 				<S.Emotion>
 					<ul>
 						<li>

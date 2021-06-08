@@ -37,6 +37,7 @@ import dayjs from "dayjs";
 import NewLevelN from "../../../components/Icon/generated/NewLevelN";
 import NewLevelA from "../../../components/Icon/generated/NewLevelA";
 import NewLevelS from "../../../components/Icon/generated/NewLevelS";
+import {Level} from "../../../types/partner";
 
 
 const S = {
@@ -205,7 +206,7 @@ const S = {
     overflow: hidden;
     float: left;
     width: 76%;
-    margin: 7px 0 0 10px;
+    margin-left:10px;
     font-size: 16px;
     font-weight: 700;
     white-space: nowrap;
@@ -235,7 +236,6 @@ const S = {
   `,
   LinkCompany: styled.a`
     display: block;
-    margin-top: 20px;
     font-size: 14px;
     text-align: center;
     color: ${colors.pointBlue};
@@ -453,6 +453,17 @@ export default function Completed() {
     }
   }, [msg, data])
 
+  const compileLevelText = (level:Level) => {
+    switch (level) {
+      case "S":
+        return '최고 등급의 검증된 파트너 업체'
+      case "NEW":
+        return '의욕적인 신규 파트너 업체'
+      default:
+        return "믿을 수 있는 우수 파트너 업체"
+
+    }
+  };
   const userRequestInfo: {
     contact: string;
     movingDate: string;
@@ -506,7 +517,7 @@ export default function Completed() {
                 {(list.level !== "NEW" && list.level !== "S") && <NewLevelA/>}
                 <S.CompanyTitle>
                   {list.adminname} <br />
-                  <span>{list.level_text}</span>
+                  <span>{compileLevelText(list.level)}</span>
                 </S.CompanyTitle>
               </S.ListBox>
               <S.HorizontalBar/>

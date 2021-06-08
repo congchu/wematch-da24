@@ -88,7 +88,7 @@ export default function UserReviewPage() {
                             getCommentList.data.map((comment, index) => {
                                 return (
                                     <Review key={index} id={comment.id} created_at={comment.created_at} professional={comment.professional} partnerName={comment.area + "" + "이사업체"}
-                                            kind={comment.kind} price={comment.price} memo={comment.memo} reply={comment.reply} star={comment.star} level={comment.level}/>
+                                            kind={comment.kind} price={comment.price} memo={comment.memo} reply={comment.reply} star={comment.star} level={comment.level} partner={comment.partner}/>
                                 )})
                         )}
                     </div>
