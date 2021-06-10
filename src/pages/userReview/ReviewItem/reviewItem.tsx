@@ -5,8 +5,9 @@ import styled from 'styled-components'
 import PrevIcon from 'components/wematch-ui/Icon/generated/Previous'
 import Enter from 'components/Icon/generated/Enter'
 
-import {Grade} from 'types/partner'
+import {Grade, Level} from 'types/partner'
 import * as colors from 'styles/colors'
+import SLevelLabel from "../../../components/Icon/generated/SLevelLabel";
 
 const S = {
     Container: styled.div`
@@ -103,10 +104,15 @@ const S = {
       }
     `,
     StarContainer: styled.div`
-        display: inline-block;
+        display: block;
+        font-weight: normal;
+        font-size: 14px;
         p {
-          font-size: inherit;
           display: inline-block;
+        }
+        em {
+          margin-left: 4px;
+          color: #0070FF;
         }
       @media screen and (max-width: 356px){
         overflow: hidden;
@@ -208,9 +214,10 @@ interface Props {
     professional: Grade;
     reviewContents: string | React.ReactNode | null;
     reply?: string | React.ReactNode | null;
+    level: Level;
 }
 
-export default function ReviewItem({ adminid,partnerName, userId, created_at, star, professional, kind, price, reviewContents, reply }: Props) {
+export default function ReviewItem({ adminid,partnerName, userId, created_at, star, professional, kind, price, reviewContents, reply, level }: Props) {
 
     const history = useHistory()
 
@@ -253,33 +260,30 @@ export default function ReviewItem({ adminid,partnerName, userId, created_at, st
 
     return (
         <S.Container>
+            {level === 'S' && <SLevelLabel />}
             <S.PartnerName onClick={() => history.push(`/comment/${adminid}`)}>
                 {partnerName}
                 <PrevIcon size={16} />
             </S.PartnerName>
             <S.Grade>
-                <S.OverallGrade gradeColor={getColorForGrade(star)}>종합평<span>{convertStarToGrade(star)}</span></S.OverallGrade>
+                <S.StarFill star={5}>
+                    <span className="fill"/>
+                </S.StarFill>
+                <S.Reviewer><p>{userId}님 | {dateCutter(created_at)}</p></S.Reviewer>
                 <S.StarDiv>
                     <S.StarContainer>
-                        <p>가격도</p>
-                        <S.StarFill star={convertGradeToStar(price)}>
-                            <span className="fill"/>
-                        </S.StarFill>
+                        <p>전문성</p>
+                        <em>최고에요</em>
                     </S.StarContainer>
                     <S.StarContainer>
                         <p>친절도</p>
-                        <S.StarFill star={convertGradeToStar(kind)}>
-                            <span className="fill"/>
-                        </S.StarFill>
+                        <em>좋아요</em>
                     </S.StarContainer>
                     <S.StarContainer>
-                        <p>전문성</p>
-                        <S.StarFill star={convertGradeToStar(professional)}>
-                            <span className="fill"/>
-                        </S.StarFill>
+                        <p>가격도</p>
+                        <em>최고에요</em>
                     </S.StarContainer>
                 </S.StarDiv>
-                <S.Reviewer><p>{userId}님 | {dateCutter(created_at)}</p></S.Reviewer>
             </S.Grade>
             <S.Review><pre>{reviewContents}</pre></S.Review>
             {reply && (

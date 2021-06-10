@@ -3,15 +3,17 @@ import styled from 'styled-components'
 import {useMedia} from 'react-use-media'
 
 import LevelModal from 'components/Modal/LevelModal'
-import LevelIcon from 'components/LevelIcon'
-import NewPartner from 'components/common/NewPartner'
-import { Question } from 'components/Icon'
 
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
-import { Level, LevelText } from 'types/partner'
+import { Level } from 'types/partner'
 import {commaInNumbers} from 'lib/numberUtil'
 import { isEmpty } from 'lodash'
+import NewLevelN from "components/Icon/generated/NewLevelN";
+import NewLevelS from "components/Icon/generated/NewLevelS";
+import NewLevelOther from "components/Icon/generated/NewLevelOther";
+import {useRouter} from "hooks/useRouter";
+import {lineDeco} from "styles/colors";
 
 const S = {
 	Container: styled.div`
@@ -79,6 +81,17 @@ const S = {
     -webkit-line-clamp:2;
     -webkit-box-orient:vertical;
     word-wrap:break-word;
+    
+    div:first-child {
+    	display: flex;
+    	align-items: center;
+    }
+    div:last-child {
+    	margin-top: 5px;
+    	font-size: 12px;
+    	font-weight: normal;
+    	color: ${colors.gray88};
+    }
 	`,
 	Info: styled.div`
 		overflow:visible;
@@ -103,6 +116,12 @@ const S = {
   		box-shadow:0 3px 20px 0 rgba(220, 220, 220, 0.7);
  	 	background-color:${colors.white};
 		text-align:center;
+		div {
+			display: flex;
+			height: 100%;
+			align-items: center;
+			justify-content: center;
+		}
 		span{
 			display:block;
 			padding-top:17px;
@@ -136,6 +155,13 @@ const S = {
 			margin-right:1%;
 		}
 	`,
+	Blur: styled.div`
+      width: 78px;
+      height: 25px;
+      border-radius: 34px;
+      background-color: ${lineDeco};
+      margin: 0 2px;
+    `,
 	Description: styled.div`
 		div:last-child{
 			margin-bottom:-4px;
@@ -195,28 +221,39 @@ interface Props {
 
 
 const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition=''}: Props) => {
+	const router = useRouter();
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
 	const isMobile = useMedia({
 		maxWidth: 767,
 	})
 
+	const pathname = router.location.pathname.split('/')[1];
+
 	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
-
-
 	return (
 		<>
 			<S.Wrap>
-				<S.LevelDescription>{LevelText[level]}</S.LevelDescription>
-				<S.Level>{level === 'NEW' ? '등급산정중' : `고객평가 ${level}등급`}</S.Level>
-				<S.PartnerWord>{title}</S.PartnerWord>
-				{level === 'NEW'
-					? <NewPartner showQuestionIcon={true}/>
-					: <S.Info>
-						<S.Card onClick={toggleVisibleLevel} id="dsl_booking_detail_info">
-						<span>평가등급
-							<Question width={16} height={16} />
-						</span>
-							<LevelIcon level={level}/>
+				<S.PartnerWord>
+					{pathname === 'requests'
+						? adminname
+						: (
+							<>
+								<div>
+									{adminname.charAt(0)}
+									<S.Blur />
+								</div>
+								<div>업체명은 견적 신청한 업체만 공개됩니다.</div>
+							</>
+						)
+					}
+				</S.PartnerWord>
+					<S.Info>
+						<S.Card id="dsl_booking_detail_info">
+							<div>
+								{level === "NEW" && <NewLevelN />}
+								{level === "S" && <NewLevelS/>}
+								{(level !== "NEW" && level !== "S") && <NewLevelOther/>}
+							</div>
 						</S.Card>
 						<S.Card>
 							<span>고객선택</span>
@@ -227,10 +264,9 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 							<em>{experience || 1}<p> 년</p></em>
 						</S.Card>
 					</S.Info>
-				}
 				<S.Description>
 					<S.Option>
-						<strong>사장님 한마디({adminname})</strong>
+						<strong>사장님 한마디</strong>
 						<p>{description.length !== 0 ? description : values.DEFAULT_TEXT}</p>
 					</S.Option>
 					{!isEmpty(keywords) &&

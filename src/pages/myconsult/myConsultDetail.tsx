@@ -15,10 +15,15 @@ import { Link, useHistory } from 'react-router-dom';
 import ToastPopup from 'components/wematch-ui/ToastPopup';
 import { dataLayer } from 'lib/dataLayerUtil';
 import { IPartnerDetail } from 'types/partner';
+import Card from "../partner/Cart/component/Card";
+import NewLevelN from "../../components/Icon/generated/NewLevelN";
+import NewLevelS from "../../components/Icon/generated/NewLevelS";
+import NewLevelOther from "../../components/Icon/generated/NewLevelOther";
 
 
 const S = {
   Container: styled.div`
+    background-color: #FAFAFA;
     padding-top: 56px;
       
       @media screen and (min-width: 768px) {
@@ -26,7 +31,9 @@ const S = {
       }
   `,
   TopContents: styled.div`
-      padding: 16px 0 8px;
+      padding: 16px 0 25px;
+      background-color: white;
+      border: 0.5px solid ${colors.lineDefault};
       @media screen and (max-width: 320px) {
         padding: 40px 0 0;
       }
@@ -78,7 +85,6 @@ const S = {
   TitleWrap: styled.div`
       overflow: hidden;
       padding-top: 32px;
-      border-bottom: 1px solid #EBEEF2;
 
       svg {
         float: right;
@@ -92,7 +98,7 @@ const S = {
       display: block;
       float: left;
       padding-bottom: 10px;
-      font-size: 16px;
+      font-size: 22px;
       font-weight: 700;
       line-height: 24px;
 
@@ -113,6 +119,14 @@ const S = {
         margin-right: 4px;
       }
     `,
+  Card:  styled.li`
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.06);
+    background-color: ${colors.white};
+    padding: 16px;
+    margin: 16px 0;
+    box-sizing: border-box;
+  `,
   LevelInfoBox: styled.div<{ visible: boolean }>`
       display: ${props => (props.visible ? 'block' : 'none')};
       position: absolute;
@@ -140,10 +154,7 @@ const S = {
       }
     `,
   CompanyList: styled.ul`
-      li {
-        overflow: hidden;
-        padding: 20px 0 9px;
-      }
+     
     `,
   ListBox: styled.div`
       overflow: hidden;
@@ -184,21 +195,14 @@ const S = {
     `,
   LinkCompany: styled(Link)`
       display: block;
-      margin-top: 20px;
-      padding: 12px 0;
-      border: 1px solid #D7DBE2;
-      border-radius: 6px;
-      font-size: 14px;
-      text-align: center;
-      @media screen and (max-width: 320px) {
-        margin-top: 12px;
-        font-size: 13px;
-      }
-
-      em {
-        font-weight: 700;
-        color: #1672F7;
-      }
+    margin-top: 20px;
+    font-size: 14px;
+    text-align: center;
+    color: ${colors.pointBlue};
+    @media screen and (max-width: 320px) {
+      margin-top: 12px;
+      font-size: 13px;
+    }
     `,
   MoveInfo: styled.ul`
       padding: 21px 0 6px;
@@ -208,17 +212,23 @@ const S = {
         margin-bottom: 15px;
       }
     `,
+  HorizontalBar: styled.div`
+    width: 100%;
+    height: 1px;
+    background-color: ${colors.lineDefault};
+    margin: 16px 0;
+  `,
   MoveText: styled.p`
       float: left;
       width: 27%;
       padding-top: 3px;
-      font-size: 15px;
+      font-size: 16px;
       color: ${colors.gray88};
     `,
   MoveSubtext: styled.p`
       float: left;
       width: 73%;
-      font-size: 15px;
+      font-size: 16px;
       color: #333;
       line-height: 22px;
     `,
@@ -312,27 +322,21 @@ const MyConsultDetail = () => {
       </S.TopContents>
       <S.ContentsWrap>
         <S.TitleWrap>
-          <S.BoxTitle>업체 정보</S.BoxTitle>
-          <S.LevelInfo onClick={toggleInfoBox}><img src={require('assets/images/info-gray02.svg')} alt="icon" />소비자평가등급이란?</S.LevelInfo>
+          <S.BoxTitle>매칭업체 정보</S.BoxTitle>
         </S.TitleWrap>
-        <S.LevelInfoBox visible={infoVisible}>
-          <Triangle />
-          이용 고객이 평가한 내용으로 산출한 빅 데이터 등급입니다.
-        </S.LevelInfoBox>
         <S.CompanyList>
           {selectedOrder?.partners.map((list: IPartnerDetail, index: number, arr: IPartnerDetail[]) => (
-            <li key={index}>
+            <S.Card key={index}>
               <S.ListBox>
-                {list.level === 'NEW' && <LevelN />}
-                {list.level === 'S' && <LevelS />}
-                {list.level === 'A' && <LevelA />}
-                {list.level === 'B' && <LevelB />}
-                {list.level === 'C' && <LevelC />}
+                {list.level === "NEW" && <NewLevelN />}
+                {list.level === "S" && <NewLevelS/>}
+                {(list.level !== "NEW" && list.level !== "S") && <NewLevelOther/>}
                 <S.CompanyTitle>
                   {list.adminname} <br />
                   <span>{list.level_text}</span>
                 </S.CompanyTitle>
               </S.ListBox>
+              <S.HorizontalBar />
               <S.LinkCompany to={`/requests/completed/${list.adminid}`} onClick={() => {
                 dataLayer({
                   event: 'myrequest_detail',
@@ -343,9 +347,10 @@ const MyConsultDetail = () => {
                   CD8: `${list.level}등급`
                 })
               }}>
-                <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
+                {/*<em>{list.feedback_cnt}</em> 명의 고객 평가 확인*/}
+                {`업체 정보 자세히 보기 (후기 ${list.feedback_cnt}개)`}
               </S.LinkCompany>
-            </li>
+            </S.Card>
           ))}
         </S.CompanyList>
         <S.TitleWrap onClick={() => setExpand(!expand)} className="toggle">

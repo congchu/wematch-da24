@@ -193,6 +193,7 @@ const S = {
 
 const PartnerImg = {
     WrapImg: styled.div`
+        margin-top: 56px;
 		@media screen and (min-width:1200px) {
 			position:relative;
 			width:720px;
@@ -389,7 +390,7 @@ const PartnerDetailForCompleted = () => {
         if (getReviewList.data.length < 5) {
             return (
                 <S.ReviewPreview>
-                    <img src={require(`assets/images/review_${isMobile ? 'm' : 'pc'}.png`)} alt='review_img'/>
+                    <img src={require(`assets/images/review_${isMobile ? 'm' : 'pc'}.svg`)} alt='review_img'/>
                 </S.ReviewPreview>
             )
         }

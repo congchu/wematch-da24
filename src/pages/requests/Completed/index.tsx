@@ -34,6 +34,10 @@ import { whatDay } from "lib/dateUtil";
 import * as sentry from "@sentry/react";
 import { Severity } from "@sentry/react";
 import dayjs from "dayjs";
+import NewLevelN from "../../../components/Icon/generated/NewLevelN";
+import NewLevelOther from "../../../components/Icon/generated/NewLevelOther";
+import NewLevelS from "../../../components/Icon/generated/NewLevelS";
+import {Level} from "../../../types/partner";
 
 
 const S = {
@@ -103,6 +107,7 @@ const S = {
       line-height: 20px;
       margin-bottom: 24px;
     }
+    
     @media screen and (min-width: 768px) {
       width: 720px;
       margin: 15px auto 0;
@@ -128,7 +133,7 @@ const S = {
     display: block;
     float: left;
     padding-bottom: 10px;
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 700;
     line-height: 24px;
 
@@ -176,10 +181,15 @@ const S = {
   `,
   CompanyList: styled.ul`
     margin-bottom: 66px;
-    li {
-      overflow: hidden;
-      padding: 20px 0 9px;
-    }
+    
+  `,
+  Card: styled.li`
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.06);
+    background-color: ${colors.white};
+    padding: 16px;
+    margin: 16px 0;
+    box-sizing: border-box;
   `,
   ListBox: styled.div`
     overflow: hidden;
@@ -196,7 +206,7 @@ const S = {
     overflow: hidden;
     float: left;
     width: 76%;
-    margin: 7px 0 0 10px;
+    margin-left:10px;
     font-size: 16px;
     font-weight: 700;
     white-space: nowrap;
@@ -204,11 +214,11 @@ const S = {
 
     span {
       display: inline-block;
-      margin-top: 12px;
+      margin-top: 4px;
       font-size: 14px;
       font-weight: 400;
       @media screen and (max-width: 320px) {
-        margin-top: 6px;
+        margin-top: 4px;
         font-size: 12px;
       }
     }
@@ -218,23 +228,20 @@ const S = {
       font-size: 15px;
     }
   `,
+  HorizontalBar: styled.div`
+    width: 100%;
+    height: 1px;
+    background-color: ${colors.lineDefault};
+    margin: 16px 0;
+  `,
   LinkCompany: styled.a`
-    background-color:${colors.white};
     display: block;
-    margin-top: 20px;
-    padding: 12px 0;
-    border: 1px solid #d7dbe2;
-    border-radius: 6px;
     font-size: 14px;
     text-align: center;
+    color: ${colors.pointBlue};
     @media screen and (max-width: 320px) {
       margin-top: 12px;
       font-size: 13px;
-    }
-
-    em {
-      font-weight: 700;
-      color: #1672f7;
     }
   `,
   MoveInfo: styled.ul`
@@ -249,13 +256,13 @@ const S = {
     float: left;
     width: 27%;
     padding-top: 3px;
-    font-size: 15px;
+    font-size: 16px;
     color: ${colors.gray88};
   `,
   MoveSubtext: styled.p`
     float: left;
     width: 73%;
-    font-size: 15px;
+    font-size: 16px;
     color: #333;
     line-height: 22px;
   `,
@@ -361,6 +368,7 @@ export default function Completed() {
   const isDesktop = useMedia({
     minWidth: 1200,
   });
+
   const [infoVisible, setInfoVisible] = useState(false);
   const [expand, setExpand] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
@@ -444,6 +452,17 @@ export default function Completed() {
     }
   }, [msg, data])
 
+  const compileLevelText = (level:Level) => {
+    switch (level) {
+      case "S":
+        return '최고 등급의 검증된 파트너 업체'
+      case "NEW":
+        return '의욕적인 신규 파트너 업체'
+      default:
+        return "믿을 수 있는 우수 파트너 업체"
+
+    }
+  };
   const userRequestInfo: {
     contact: string;
     movingDate: string;
@@ -478,8 +497,7 @@ export default function Completed() {
           <S.TopTitle>
             <em>이사업체 매칭</em> 완료 <br />
             <span>
-            업체에서 연락이 없다면 먼저 전화해주세요!
-            <br /> 전화번호를 문자로 보내드립니다.
+            업체에서 2시간 이상 연락이 없다면 보내드린 <br />알림톡/문자의 업체 전화번호로 먼저 전화해보세요!
           </span>
           </S.TopTitle>
           <ProcessBar/>
@@ -488,28 +506,20 @@ export default function Completed() {
       <S.ContentsWrap>
         <S.TitleWrap>
           <S.BoxTitle>매칭 업체 정보</S.BoxTitle>
-          <S.LevelInfo onClick={toggleInfoBox}>
-            <em>소비자평가등급이란?</em><Question/>
-          </S.LevelInfo>
         </S.TitleWrap>
-        <S.LevelInfoBox visible={infoVisible}>
-          <Triangle />
-          이용 고객이 평가한 내용으로 산출한 빅 데이터 등급입니다.
-        </S.LevelInfoBox>
         <S.CompanyList>
           {data?.partners.map((list, index, arr) => (
-            <li key={index}>
+            <S.Card key={index}>
               <S.ListBox>
-                {list.level === "NEW" && <LevelN />}
-                {list.level === "S" && <LevelS />}
-                {list.level === "A" && <LevelA />}
-                {list.level === "B" && <LevelB />}
-                {list.level === "C" && <LevelC />}
+                {list.level === "NEW" && <NewLevelN />}
+                {list.level === "S" && <NewLevelS/>}
+                {(list.level !== "NEW" && list.level !== "S") && <NewLevelOther/>}
                 <S.CompanyTitle>
                   {list.adminname} <br />
-                  <span>{list.level_text}</span>
+                  <span>{compileLevelText(list.level)}</span>
                 </S.CompanyTitle>
               </S.ListBox>
+              <S.HorizontalBar/>
               <S.LinkCompany
                 onClick={() => {
                   dataLayer({
@@ -526,9 +536,9 @@ export default function Completed() {
                   history.push(`/requests/completed/${list.adminid}`);
                 }}
               >
-                <em>{list.feedback_cnt}</em> 명의 고객 평가 확인
+                {`업체 정보 자세히 보기 (후기 ${list.feedback_cnt}개)`}
               </S.LinkCompany>
-            </li>
+            </S.Card>
           ))}
         </S.CompanyList>
         <S.TitleWrap onClick={() => setExpand(!expand)} className="toggle">

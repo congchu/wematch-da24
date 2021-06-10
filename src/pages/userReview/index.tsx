@@ -11,7 +11,7 @@ import * as partnerSelector from 'store/partner/selectors'
 import * as values from 'constants/values'
 import ReviewSkeleton from 'components/common/Skeleton/reviewSkeleton'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
-
+import Review from 'components/da24/Review';
 const S = {
     Container: styled.div`
         margin-top: 0px;
@@ -87,12 +87,9 @@ export default function UserReviewPage() {
                         {getCommentList.loading ? <ReviewSkeleton/> : (
                             getCommentList.data.map((comment, index) => {
                                 return (
-                                    <ReviewItem key={index} adminid={comment.partner} partnerName={comment.area + " " + comment.level  + "등급 업체"}
-                                                userId={comment.id*7} created_at={comment.created_at}
-                                                star={comment.star} price={comment.price} kind={comment.kind} professional={comment.professional}
-                                                reviewContents={comment.memo} reply={comment.reply}/>
-                                )
-                            })
+                                    <Review key={index} id={comment.id} created_at={comment.created_at} professional={comment.professional} partnerName={comment.area + "" + "이사업체"}
+                                            kind={comment.kind} price={comment.price} memo={comment.memo} reply={comment.reply} star={comment.star} level={comment.level} partner={comment.partner}/>
+                                )})
                         )}
                     </div>
                 </S.Container>
