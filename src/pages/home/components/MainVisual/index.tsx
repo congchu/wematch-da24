@@ -192,26 +192,6 @@ function MainVisual() {
                     </div>
                 </Slide>
             </SwiperSlide>
-            <SwiperSlide>
-                <Slide image="main_visual_03" onClick={() => {
-                    dataLayer({
-                        event: 'header_banner',
-                        category: '다이사_메인_상단배너_1',
-                        action: '허위후기/광고 없이 진짜 데이터로 고르자',
-                        label: '4'
-                    })
-                    router.history.push('/banner/grade')
-                }}>
-                    <div className="wrapper">
-                        <span>
-                            누적 평가수&nbsp;
-                            <strong>{countUp}</strong>
-                        </span>
-                        <p dangerouslySetInnerHTML={{ __html: "<strong>허위후기/광고 없이</strong><br />진짜 데이터로 고르자" }} />
-                        <a>자세히</a>
-                    </div>
-                </Slide>
-            </SwiperSlide>
         </CustomSwiper>
     )
 }

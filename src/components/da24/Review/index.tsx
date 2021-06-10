@@ -6,7 +6,10 @@ import { DownArrow, UpArrow } from 'components/Icon'
 
 import { getCreatedAt } from 'lib/time'
 import * as colors from 'styles/colors'
-import { Grade } from 'types/partner';
+import {Grade, Level} from 'types/partner';
+import SLevelLabel from "../../Icon/generated/SLevelLabel";
+import PrevIcon from "../../wematch-ui/Icon/generated/Previous";
+import {useHistory} from "react-router-dom";
 
 const S = {
 	Container: styled.div`
@@ -38,6 +41,7 @@ const S = {
 	Wrap: styled.div`
 		margin:0 24px 24px;
 		border-top:1px solid #d7dbe2;
+		padding-top:27px;
 		@media screen and (min-width: 768px) {
 			width:608px;
 			margin:0 auto 24px;
@@ -46,17 +50,17 @@ const S = {
 			width:656px;
 		}
 	`,
+	InfoWrap: styled.div`
+		display: flex;
+		justify-content: space-between;
+	`,
 	UserInfo: styled.div`
-		padding-top:27px;
-		strong{
-			font-size:14px;
-			font-weight:600;
-			letter-spacing:-0.5px;
-		}
-		span{
-			float:right;
-			font-size:14px;
-			color:${colors.gray66};
+		display: flex;
+		font-size:14px;
+		color:${colors.gray66};
+		p {
+			width: 1px;
+			margin: 0 7px;
 		}
 	`,
 	Grade: styled.div`
@@ -137,12 +141,12 @@ const S = {
 	`,
 	Review: styled.div``,
 	ReviewText: styled.p`
-		display:-webkit-box;
+	display:-webkit-box;
     overflow:hidden;
     width:100%;
     margin-top:12px;
-		font-size:15px;
-    font-weight:500;
+	font-size:15px;
+    font-weight:400;
     line-height:24px;
     //text-overflow:ellipsis;
     //-webkit-line-clamp:2;
@@ -150,13 +154,15 @@ const S = {
     word-wrap:break-word;
 	`,
 	MoreReview: styled.button`
+		display: flex;
+		align-items: center;
 		margin-top:7px;
 		cursor:pointer;
 		svg{
 			margin-left:4px;
 			vertical-align:top;
 		}
-		@media screen and (min-width:768px) {
+		@media screen and (min-width:768px) {어
 			margin-top:32px;
 		}
 		@media screen and (min-width:1200px) {
@@ -181,6 +187,29 @@ const S = {
 			line-height:22px;
 		}
 	`,
+	PartnerName:styled.div`
+      display: block;
+      position: relative;
+      padding-bottom: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.8px;
+      cursor: pointer;
+      @media screen and (min-width: 768px){
+        padding-bottom: 18px;
+      }
+
+      svg {
+        position: absolute;
+        transform: rotate(-0.5turn);
+        top: 0;
+        right: 0;
+        width: 12px;
+        height: 16px;
+        background-position: 0 -379px;
+        -webkit-background-size: 22px 570px;
+        background-size: 22px 570px;
+      }`
 }
 
 interface Props {
@@ -192,9 +221,13 @@ interface Props {
 	kind: Grade;
 	price: Grade;
 	star: number;
+	partnerName?: string;
+	level?: Level;
+	partner?: string;
 }
 
-const Review = ({ id, created_at, memo, reply, professional, kind, price, star }: Props) => {
+const Review = ({ id, created_at, memo, reply, professional, kind, price, star, partnerName, level, partner }: Props) => {
+	const history = useHistory()
 	const isDesktop = useMedia({
 		minWidth: 1200,
 	})
@@ -242,14 +275,24 @@ const Review = ({ id, created_at, memo, reply, professional, kind, price, star }
 
 	return (
 		<S.Wrap>
-			<S.UserInfo>
-				<strong>고객번호 {id}</strong>
-				<span>{getCreatedAt(created_at)}</span>
-			</S.UserInfo>
-			<S.Grade>
+			{level === 'S' && (<SLevelLabel />)}
+			{partnerName && (
+				<S.PartnerName onClick={() => {partner && history.push(`/comment/${partner}`)}}>
+					{partnerName}
+					<PrevIcon size={16} />
+				</S.PartnerName>
+			)}
+			<S.InfoWrap>
 				<S.StarFill star={star}>
 					<span className="fill"></span>
 				</S.StarFill>
+				<S.UserInfo>
+					<strong>고객번호 {id}</strong>
+					<p> | </p>
+					<span>{getCreatedAt(created_at)}</span>
+				</S.UserInfo>
+			</S.InfoWrap>
+			<S.Grade>
 				<S.Emotion>
 					<ul>
 						<li>

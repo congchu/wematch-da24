@@ -6,7 +6,7 @@ const S = {
     Card: styled.div`
       margin-left: 13px;
       width: 312px;
-      height: 210px;
+      height: 234px;
       border: 1px solid ${lineDeco};
       box-sizing: border-box;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -19,14 +19,22 @@ const S = {
       display: block;
     `,
     FirstLine: styled.div`
-      display: inline-block;
+      display: flex;
       font-size: 15px;
     `,
     PartnerName: styled.div`
+      display: flex;
+      padding-bottom: 10px;
+      font-weight: 700;
+      line-height: 22px;
+      align-items: center;
+    `,
+    PartnerArea: styled.div`
       display: inline-block;
       padding-bottom: 10px;
       font-weight: 700;
       line-height: 22px;
+      margin-right: 4px;
     `,
     OverallGrade: styled.div<{gradeColor: string}>`
       display: inline-block;
@@ -45,33 +53,45 @@ const S = {
         text-align: center;
       }
     `,
+    Blur: styled.div`
+      width: 78px;
+      height: 16px;
+      border-radius: 34px;
+      background-color: ${lineDeco};
+    `,
     StarDiv: styled.div`
       display: inline-block;
-      font-size: 12px;
     `,
     StarContainer: styled.div`
+        font-size: 13px;
         display: inline-block;
+        margin-right: 8px;
         p {
           display: inline-block;
+          margin-right: 2px;
+        }
+        span {
+          color: #0070FF;
         }
       @media screen and (max-width: 356px){
         overflow: hidden;
       }
     `,
     StarFill: styled.span<{star: number}>`
-        margin: 0 6px -2px 4px;
-		display: inline-block;
+		display: block;
+		margin-top: 10px;
+		margin-bottom: 5px;
     	z-index: 5;
-		width: 60px;
-    	height: 12px;
+		width: 80px;
+    	height: 16px;
 		background: url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/icon/star.svg) no-repeat 0 0;
-        background-size: 60px;
+        background-size: 80px;
 		.fill{
 			display: block;
 			width: ${props => props.star && props.star * 20}%;
-			height:10px;
+			height:16px;
 			background: url(https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/icon/starfill.svg) no-repeat 0 0;
-            background-size: 60px;
+            background-size: 80px;
 		}
 	`,
     Contents: styled.div`
@@ -95,44 +115,41 @@ interface Props {
     userId: number; // 고객번호 (-님)
     created_at: string; // 게시일
     grade: '최고' | '매우 만족' | string; // 종합평
-    price: number //가격
-    kind: number; //친절
-    professional: number; //전문
+    price: string //가격
+    kind: string; //친절
+    professional: string; //전문
     reviewContents: string;
+    partnerArea: string;
 }
 
-const ReviewCard = ({partnerName, userId, created_at, grade, price, kind, professional, reviewContents}: Props) => {
-    const gradeBadge = (grade: string) => {
-        if (grade === '최고') return '#1672f7'
-        else if (grade === '매우 만족') return '#00b6ed'
-        else return '#fa3c3c'
-    }
+const ReviewCard = ({partnerName, userId, created_at, grade, price, kind, professional, reviewContents, partnerArea}: Props) => {
 
     return(
         <S.Card>
             <S.Container>
                 <S.FirstLine>
-                    <S.PartnerName>{partnerName}</S.PartnerName>
-                    <S.OverallGrade gradeColor={gradeBadge(grade)}><span>{grade}</span></S.OverallGrade>
+                    <S.PartnerArea>{partnerArea}</S.PartnerArea>
+                    <S.PartnerName>
+                        {partnerName.charAt(0)}
+                        <S.Blur/>
+                    </S.PartnerName>
+                    {/*<S.OverallGrade gradeColor={gradeBadge(grade)}><span>{grade}</span></S.OverallGrade>*/}
                 </S.FirstLine>
+                <S.StarFill star={5}>
+                    <span className="fill"/>
+                </S.StarFill>
                 <S.StarDiv>
                     <S.StarContainer>
-                        <p>가격</p>
-                        <S.StarFill star={price}>
-                            <span className="fill"/>
-                        </S.StarFill>
+                        <p>전문성</p>
+                        <span>{professional}</span>
                     </S.StarContainer>
                     <S.StarContainer>
-                        <p>친절</p>
-                        <S.StarFill star={kind}>
-                            <span className="fill"/>
-                        </S.StarFill>
+                        <p>친절도</p>
+                        <span>{kind}</span>
                     </S.StarContainer>
                     <S.StarContainer>
-                        <p>전문</p>
-                        <S.StarFill star={professional}>
-                            <span className="fill"/>
-                        </S.StarFill>
+                        <p>가격도</p>
+                        <span>{price}</span>
                     </S.StarContainer>
                 </S.StarDiv>
                 <S.Contents>{reviewContents}</S.Contents>

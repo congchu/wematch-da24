@@ -16,7 +16,7 @@ const S = {
     ListContainer: styled.ul`
       margin: 0 8px 0 5px;
       padding: 24px 0 0 20px;
-      list-style: dash;
+      list-style: none;
       position: relative;
       font-weight: bold;
       .point{
