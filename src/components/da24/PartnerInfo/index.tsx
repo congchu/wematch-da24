@@ -3,18 +3,15 @@ import styled from 'styled-components'
 import {useMedia} from 'react-use-media'
 
 import LevelModal from 'components/Modal/LevelModal'
-import LevelIcon from 'components/LevelIcon'
-import NewPartner from 'components/common/NewPartner'
-import { Question } from 'components/Icon'
 
 import * as colors from 'styles/colors'
 import * as values from 'constants/values'
-import { Level, LevelText } from 'types/partner'
+import { Level } from 'types/partner'
 import {commaInNumbers} from 'lib/numberUtil'
 import { isEmpty } from 'lodash'
-import NewLevelN from "../../Icon/generated/NewLevelN";
-import NewLevelS from "../../Icon/generated/NewLevelS";
-import NewLevelA from "../../Icon/generated/NewLevelA";
+import NewLevelN from "components/Icon/generated/NewLevelN";
+import NewLevelS from "components/Icon/generated/NewLevelS";
+import NewLevelOther from "components/Icon/generated/NewLevelOther";
 import {useRouter} from "hooks/useRouter";
 import {lineDeco} from "styles/colors";
 
@@ -255,7 +252,7 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 							<div>
 								{level === "NEW" && <NewLevelN />}
 								{level === "S" && <NewLevelS/>}
-								{(level !== "NEW" && level !== "S") && <NewLevelA/>}
+								{(level !== "NEW" && level !== "S") && <NewLevelOther/>}
 							</div>
 						</S.Card>
 						<S.Card>

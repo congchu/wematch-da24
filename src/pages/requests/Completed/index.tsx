@@ -35,7 +35,7 @@ import * as sentry from "@sentry/react";
 import { Severity } from "@sentry/react";
 import dayjs from "dayjs";
 import NewLevelN from "../../../components/Icon/generated/NewLevelN";
-import NewLevelA from "../../../components/Icon/generated/NewLevelA";
+import NewLevelOther from "../../../components/Icon/generated/NewLevelOther";
 import NewLevelS from "../../../components/Icon/generated/NewLevelS";
 import {Level} from "../../../types/partner";
 
@@ -514,7 +514,7 @@ export default function Completed() {
               <S.ListBox>
                 {list.level === "NEW" && <NewLevelN />}
                 {list.level === "S" && <NewLevelS/>}
-                {(list.level !== "NEW" && list.level !== "S") && <NewLevelA/>}
+                {(list.level !== "NEW" && list.level !== "S") && <NewLevelOther/>}
                 <S.CompanyTitle>
                   {list.adminname} <br />
                   <span>{compileLevelText(list.level)}</span>

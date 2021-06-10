@@ -18,7 +18,7 @@ import { IPartnerDetail } from 'types/partner';
 import Card from "../partner/Cart/component/Card";
 import NewLevelN from "../../components/Icon/generated/NewLevelN";
 import NewLevelS from "../../components/Icon/generated/NewLevelS";
-import NewLevelA from "../../components/Icon/generated/NewLevelA";
+import NewLevelOther from "../../components/Icon/generated/NewLevelOther";
 
 
 const S = {
@@ -330,7 +330,7 @@ const MyConsultDetail = () => {
               <S.ListBox>
                 {list.level === "NEW" && <NewLevelN />}
                 {list.level === "S" && <NewLevelS/>}
-                {(list.level !== "NEW" && list.level !== "S") && <NewLevelA/>}
+                {(list.level !== "NEW" && list.level !== "S") && <NewLevelOther/>}
                 <S.CompanyTitle>
                   {list.adminname} <br />
                   <span>{list.level_text}</span>
