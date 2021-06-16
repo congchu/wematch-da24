@@ -158,15 +158,17 @@ const MoveInput: React.FC<Props> = (props) => {
       return
     }
 
+    dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
+    const selectedDate = date.date.format('YYYY-MM-DD')
+
     dataLayer({
       event: 'input_info',
       category: '다이사_메인_입력창_1',
-      label: getMoveDate[0],
+      label: selectedDate,
       action: '이사날짜',
       CD6: getMoveTypeText()
     })
 
-    dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
     debounceSelectDate()
   }
 
