@@ -152,6 +152,7 @@ const AddressModal: React.FC<Props> = (props) => {
     const getAddressList = useSelector(commonSelector.getAddressList)
     const [road, setRoad] = useState<string>('')
     const [currPage, setCurrPage] = useState(1)
+    // const currPage = useRef(1)
     const inputRef = useRef<HTMLInputElement | null>(null)
     const isMobile = useMedia({
         maxWidth: 767,
@@ -179,6 +180,7 @@ const AddressModal: React.FC<Props> = (props) => {
 
     const handleOnChange = (address: string) => {
         setRoad(address);
+        setCurrPage(1)
     }
 
     const handleOnReset = () => {
@@ -245,8 +247,10 @@ const AddressModal: React.FC<Props> = (props) => {
                             style={{padding: '0 24px'}}
                             loading={getAddressList.loading}
                             onMoreAddresses={() => {
-                                setCurrPage(currPage + 1)
+                                //
                                 if (getAddressList.hasMore && !getAddressList.loading) {
+                                    setCurrPage(currPage + 1)
+                                    console.log(currPage)
                                     dispatch(commonActions.fetchAddressMoreListAsync.request({
                                         keyword: road,
                                         currPage,

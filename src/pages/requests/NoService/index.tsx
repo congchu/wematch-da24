@@ -158,10 +158,12 @@ export default function NoService() {
     }
 
     const getDong = (dongType: 'start' | 'end') => {
+        const detail = dongType === 'start' ? 'detailStart' : 'detailEnd'
+
         if (getJuso.type[dongType] === 'jibun') {
-            return last(getAddress[dongType].split(' '))
+            return getAddress[dongType] + getAddress[detail]
         }
-        return getJuso[dongType]?.emdNm
+        return getJuso[dongType]?.roadAddr
     }
 
     useEffect(() => {
@@ -170,7 +172,7 @@ export default function NoService() {
                 event: 'complete',
                 category: '업체없음',
                 action: '업체없음',
-                label: `${getDong('start')}_${getDong('end')}`,
+                label: `${getDong('start')}-${getDong('end')}`,
                 CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
                 CD12: '바로매칭',
             })

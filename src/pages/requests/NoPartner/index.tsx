@@ -29,6 +29,7 @@ import { events } from 'lib/appsflyer'
 import { isExceedDiffDay } from 'lib/dateUtil'
 import {debounce} from "lodash";
 import {showToast} from "../../../components/common/Toast";
+import * as commonSelector from "store/common/selectors";
 
 
 const S = {
@@ -184,6 +185,7 @@ export default function NoPartner() {
     const getFormData = useSelector(formSelector.getFormData)
     const getAgree = useSelector(formSelector.getAgree)
     const { user } = useSelector(userSelector.getUser)
+    const getJuso = useSelector(commonSelector.getJuso)
 
     const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar');
     const [cookies, setCookie] = useCookies(['report'])
@@ -256,13 +258,22 @@ export default function NoPartner() {
         contents: getContents
     }
 
+    const getDong = (dongType: 'start' | 'end') => {
+        const detail = dongType === 'start' ? 'detailStart' : 'detailEnd'
+
+        if (getJuso.type[dongType] === 'jibun') {
+            return getAddress[dongType] + getAddress[detail]
+        }
+        return getJuso[dongType]?.roadAddr
+    }
+
     useEffect(() => {
         if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
           dataLayer({
             event: 'complete',
             category: '업체마감',
             action: '업체마감',
-            label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
+            label: `${getDong('start')}-${getDong('end')}`,
             CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
             CD12: '바로매칭',
           })
