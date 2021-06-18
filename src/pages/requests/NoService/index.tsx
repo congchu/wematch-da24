@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
 import styled from 'styled-components'
-import last from 'lodash/last'
 import ReactPixel from 'react-facebook-pixel'
 import { useCookies } from 'react-cookie'
 
 import MainHeader from 'components/common/MainHeader'
-import NavHeader from 'components/common/NavHeader'
 import AreaIcon from 'components/Icon/generated/AreaIcon'
 import Kakao from 'components/Icon/generated/Kakao_fit'
 
@@ -157,14 +155,12 @@ export default function NoService() {
         window.location.href = `${MOVE_URL}`
     }
 
-    const getDong = (dongType: 'start' | 'end') => {
-        const detail = dongType === 'start' ? 'detailStart' : 'detailEnd'
-
+    const getDong = useCallback((dongType: 'start' | 'end') => {
         if (getJuso.type[dongType] === 'jibun') {
-            return getAddress[dongType] + getAddress[detail]
+            return getJuso.start?.jibunAddr.replace(/ /g, '-')
         }
-        return getJuso[dongType]?.roadAddr
-    }
+        return getJuso[dongType]?.roadAddr?.replace(/ /g, '-')
+    }, [])
 
     useEffect(() => {
         if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
@@ -172,7 +168,7 @@ export default function NoService() {
                 event: 'complete',
                 category: '업체없음',
                 action: '업체없음',
-                label: `${getDong('start')}-${getDong('end')}`,
+                label: `${getDong('start')}_${getDong('end')}`,
                 CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
                 CD12: '바로매칭',
             })

@@ -258,14 +258,12 @@ export default function NoPartner() {
         contents: getContents
     }
 
-    const getDong = (dongType: 'start' | 'end') => {
-        const detail = dongType === 'start' ? 'detailStart' : 'detailEnd'
-
+    const getDong = useCallback((dongType: 'start' | 'end') => {
         if (getJuso.type[dongType] === 'jibun') {
-            return getAddress[dongType] + getAddress[detail]
+            return getJuso.start?.jibunAddr.replace(/ /g, '-')
         }
-        return getJuso[dongType]?.roadAddr
-    }
+        return getJuso[dongType]?.roadAddr?.replace(/ /g, '-')
+    }, [])
 
     useEffect(() => {
         if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
@@ -273,7 +271,7 @@ export default function NoPartner() {
             event: 'complete',
             category: '업체마감',
             action: '업체마감',
-            label: `${getDong('start')}-${getDong('end')}`,
+            label: `${getDong('start')}_${getDong('end')}`,
             CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
             CD12: '바로매칭',
           })
