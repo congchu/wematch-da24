@@ -363,7 +363,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
   return (
     <Visual.Section>
       <Visual.Container>
-        <p>이사 조건 선택하고</p>
+        <p>이사 종류 선택하고</p>
         <strong>잘하는 이사업체 찾아보세요!</strong>
       </Visual.Container>
       <ButtonGroup

@@ -75,6 +75,8 @@ export default createReducer<CommonState, Actions>(initialState)
     .handleAction(actions.fetchCompletedMoveIdx.success, (state, action) => ({...state, completedMove: { loading: false, data: action.payload, error: false }}))
     .handleAction(actions.fetchCompletedMoveIdx.failure, (state, action) => ({...state, completedMove: { loading: false, data: null, error: true }}))
     .handleAction(actions.resetAll, (state) => ({ ...state, ...initialState }))
+    .handleAction(actions.resetCompletedMove, (state) => ({ ...state, completedMove: initialState.completedMove }))
     .handleAction(actions.resetAddressList, (state) => ({ ...state, addressList: initialState.addressList }))
     .handleAction(actions.setDeviceId, (state, action) => ({...state, deviceId: action.payload}))
     .handleAction(actions.setJuso, (state, action) => ({ ...state, juso: action.payload }))
+

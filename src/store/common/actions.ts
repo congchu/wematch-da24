@@ -37,3 +37,4 @@ export const setJuso = createAction('SET_JUSO')<{ start: types.Juso | null, end:
 
 export const resetAddressList = createAction('RESET_ADDRESS_LIST')()
 export const resetAll = createAction('RESET_ALL')()
+export const resetCompletedMove = createAction('RESET_COMPLETED_MOVE')()
