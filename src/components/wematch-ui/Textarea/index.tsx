@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { gray33, gray88, lineDefault, grayBg } from 'styles/colors'
 
 interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  initialHeight?: number;
-  autoExtend?: boolean;
+  initialHeight?: number
+  autoExtend?: boolean
 }
 
 const S = {
@@ -12,8 +12,10 @@ const S = {
     width: 100%;
     border: 1px solid ${lineDefault};
     background-color: ${grayBg};
+    border-radius: 6px;
   `,
-  Textarea: styled.textarea<{height: number}>`
+  Textarea: styled.textarea<{ height: number }>`
+    font-family: 'Noto Sans KR', 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
     border: none;
     background-image: none;
     background-color: transparent;
@@ -41,16 +43,11 @@ const S = {
     &::placeholder {
       color: ${gray88};
     }
-  `,
+  `
 }
 
 export function Textarea(props: Props) {
-  const {
-    className,
-    initialHeight = 120,
-    autoExtend = false,
-    ...restProps
-  } = props
+  const { className, initialHeight = 120, autoExtend = false, ...restProps } = props
 
   const textarea = React.useRef<HTMLTextAreaElement>(null)
 

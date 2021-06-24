@@ -37,3 +37,4 @@ export const submitFormAsync = createAsyncAction(
 
 export const setSubmitType = createAction('SET_SUBMIT_TYPE')<'curation' | 'select'>()
 export const fetchMoveData = createAction('FETCH_MOVE_DATA')();
+export const resetFormData = createAction('RESET_FORM_DATA')();

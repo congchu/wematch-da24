@@ -132,3 +132,4 @@ export default createReducer<FormState, Actions>(initialState)
         ...state, submittedForm: { data: action.payload, loading: false, report: true }
     }))
     .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state,  submittedForm: { ...state.submittedForm, loading: false, report: false } }))
+    .handleAction(actions.resetFormData, (state) => ({ ...state, formData: initialState.formData }))

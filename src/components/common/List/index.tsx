@@ -118,7 +118,6 @@ const List: React.FC<Props> = (props) => {
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
-
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 

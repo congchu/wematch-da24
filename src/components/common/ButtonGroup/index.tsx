@@ -61,7 +61,7 @@ const S = {
         -webkit-tap-highlight-color: transparent;
         span {
             display: block;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             color: ${(props) => (props.active ? colors.white : colors.pointBlue)};
             letter-spacing: -1.5px;
@@ -71,7 +71,7 @@ const S = {
                 font-size: 14px;
                 font-weight: normal;
                 line-height: 21px;
-                margin-top: 8px;
+                margin-top: 4px;
             }
         }
         &:last-child {
@@ -97,9 +97,9 @@ const ButtonGroup: React.FC<Props> = (props) => {
   const getMoveType = useSelector(formSelector.getType)
 
   const groups: GroupProp[] = [
-    { type: 'house', value: '2인 이상 거주', subValue: '아파트 · 빌라 주택 등' },
-    { type: 'oneroom', value: '1인 거주', subValue: '원룸 · 투룸 오피스텔 등' },
-    { type: 'office', value: '사무실', subValue: '빌딩 · 공장 상가 등' }
+    { type: 'house', value: '가정이사', subValue: '아파트 · 빌라 주택 등' },
+    { type: 'oneroom', value: '원룸이사', subValue: '원룸 · 투룸 오피스텔 등' },
+    { type: 'office', value: '사무실이사', subValue: '빌딩 · 공장 상가 등' }
   ]
 
   const isDesktop = useMedia({

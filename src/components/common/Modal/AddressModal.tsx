@@ -151,11 +151,12 @@ const AddressModal: React.FC<Props> = (props) => {
     const headerRef = useRef<HTMLDivElement | null>(null)
     const getAddressList = useSelector(commonSelector.getAddressList)
     const [road, setRoad] = useState<string>('')
-    const [currPage, setCurrPage] = useState(1)
+    // const [currPage, setCurrPage] = useState(1)
     const inputRef = useRef<HTMLInputElement | null>(null)
     const isMobile = useMedia({
         maxWidth: 767,
     })
+    const currPage = useRef(1)
 
     useEffect(() => {
         return () => {
@@ -168,7 +169,7 @@ const AddressModal: React.FC<Props> = (props) => {
         if(road.length > 1) {
             dispatch(commonActions.fetchAddressListAsync.request({
                 keyword: road,
-                currPage: 1,
+                currPage: currPage.current,
                 cntPerPage: CNT_PER_PAGE
             }))
         }
@@ -179,6 +180,7 @@ const AddressModal: React.FC<Props> = (props) => {
 
     const handleOnChange = (address: string) => {
         setRoad(address);
+        currPage.current = 1
     }
 
     const handleOnReset = () => {
@@ -245,11 +247,11 @@ const AddressModal: React.FC<Props> = (props) => {
                             style={{padding: '0 24px'}}
                             loading={getAddressList.loading}
                             onMoreAddresses={() => {
-                                setCurrPage(currPage + 1)
                                 if (getAddressList.hasMore && !getAddressList.loading) {
+                                    currPage.current++;
                                     dispatch(commonActions.fetchAddressMoreListAsync.request({
                                         keyword: road,
-                                        currPage,
+                                        currPage: currPage.current,
                                         cntPerPage: CNT_PER_PAGE
                                     }))
                                 }

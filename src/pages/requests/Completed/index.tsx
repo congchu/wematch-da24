@@ -420,6 +420,12 @@ export default function Completed() {
     }
   }, [data, loading, error, msg]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(commonActions.resetCompletedMove());
+    }
+  }, [])
+
   const handleCleanConfirm = useCallback(() => {
     if(data !== null) {
       const pl = new Promise((resolve) => {

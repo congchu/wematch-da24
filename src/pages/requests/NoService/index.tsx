@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMedia } from 'react-use-media'
 import styled from 'styled-components'
-import last from 'lodash/last'
 import ReactPixel from 'react-facebook-pixel'
 import { useCookies } from 'react-cookie'
 
 import MainHeader from 'components/common/MainHeader'
-import NavHeader from 'components/common/NavHeader'
 import AreaIcon from 'components/Icon/generated/AreaIcon'
 import Kakao from 'components/Icon/generated/Kakao_fit'
 
-import * as formSelectors from 'store/form/selectors'
+import * as commonSelector from "store/common/selectors";
 import * as formActions from 'store/form/actions'
-import * as formSelector from 'store/form/selectors'
+import * as formSelectors from 'store/form/selectors'
 import { FormState } from 'store/form/reducers'
 
 import { MOVE_URL } from 'constants/env'
@@ -127,16 +125,17 @@ export default function NoService() {
     const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
     const history = useHistory();
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
-    const getMoveType = useSelector(formSelector.getType)
-    const getMoveDate = useSelector(formSelector.getDate)
-    const getAddress = useSelector(formSelector.getAddress)
-    const getFloor = useSelector(formSelector.getFloor)
-    const getName = useSelector(formSelector.getName)
-    const getPhone = useSelector(formSelector.getPhone)
-    const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
-    const getContents = useSelector(formSelector.getContents)
-    const getFormData = useSelector(formSelector.getFormData)
-    const getAgree = useSelector(formSelector.getAgree)
+    const getMoveType = useSelector(formSelectors.getType)
+    const getMoveDate = useSelector(formSelectors.getDate)
+    const getAddress = useSelector(formSelectors.getAddress)
+    const getFloor = useSelector(formSelectors.getFloor)
+    const getName = useSelector(formSelectors.getName)
+    const getPhone = useSelector(formSelectors.getPhone)
+    const getIsMoveStore = useSelector(formSelectors.getIsMoveStore)
+    const getContents = useSelector(formSelectors.getContents)
+    const getFormData = useSelector(formSelectors.getFormData)
+    const getAgree = useSelector(formSelectors.getAgree)
+    const getJuso = useSelector(commonSelector.getJuso)
 
     const formState: FormState = {
         type: getMoveType,
@@ -156,13 +155,20 @@ export default function NoService() {
         window.location.href = `${MOVE_URL}`
     }
 
+    const getDong = useCallback((dongType: 'start' | 'end') => {
+        if (getJuso.type[dongType] === 'jibun') {
+            return getJuso.start?.jibunAddr.replace(/ /g, '-')
+        }
+        return getJuso[dongType]?.roadAddr?.replace(/ /g, '-')
+    }, [])
+
     useEffect(() => {
         if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
             dataLayer({
                 event: 'complete',
                 category: '업체없음',
                 action: '업체없음',
-                label: `${last(getAddress.start.split(' '))}_${last(getAddress.end.split(' '))}`,
+                label: `${getDong('start')}_${getDong('end')}`,
                 CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
                 CD12: '바로매칭',
             })
