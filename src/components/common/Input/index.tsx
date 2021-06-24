@@ -22,7 +22,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 type ThemeProps = 'default' | 'primary'
 type BorderProp = boolean
-type IconProps = 'search' | 'down'
+type IconProps = 'search' | 'down' | 'space'
 
 const S = {
   Container: Styled.div`
@@ -33,6 +33,14 @@ const S = {
           position: absolute;
           right: 15px;
           bottom: 26px;
+        }
+
+        span {
+          position: absolute;
+          right: 20px;
+          bottom: 26px;
+          font-size: 16px;
+          color: colors.gray33;
         }
     `,
   StyledInput: Styled.input<{ theme: ThemeProps; border: BorderProp }>`
@@ -98,6 +106,7 @@ const Input: React.FC<InputProps> = (props) => {
       <S.StyledInput theme={theme} border={border} disabled={disabled} {...restProps} ref={inputRef} />
       {icon === 'search' && <Icon.Search size={22} />}
       {icon === 'down' && <Icon.Down size={22} />}
+      {icon === 'space' && <span>평</span>}
     </S.Container>
   )
 }

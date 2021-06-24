@@ -80,7 +80,7 @@ const CleanDetailInfo = () => {
         <Title>청소지</Title>
         <InputBox icon={'search'} placeHolder={'주소 검색'} value={renderAddressValue()} onClick={() => setVisibleAddressModal(true)} />
         <InputBox icon={'down'} placeHolder={'거주형태 선택'} value={livingTypeItem.find((item) => item.key === livingType)?.value} onClick={() => setVisibleLivingSelectorModal(true)} />
-        <Input type={'number'} theme={'default'} placeholder={'평형 입력 ex)24'} border style={{ backgroundColor: 'transparent', fontSize: 16 }} onChange={(e) => setHouseSpace(e.target.value)} value={houseSpace} />
+        <Input icon={'space'} type={'number'} theme={'default'} placeholder={'평형 입력 ex)24'} border style={{ backgroundColor: 'transparent', fontSize: 16 }} onChange={(e) => setHouseSpace(e.target.value)} value={houseSpace} />
       </Section>
       <Section>
         <Title>옵션 선택</Title>
@@ -118,11 +118,16 @@ const CleanDetailInfo = () => {
 export default CleanDetailInfo
 
 const Container = styled.div`
+  padding-bottom: 150px;
   section + section {
     margin-top: 40px;
   }
   section > div {
     margin-top: 8px;
+  }
+
+  @media (min-width: 768px) {
+    padding-bottom: 0;
   }
 `
 
