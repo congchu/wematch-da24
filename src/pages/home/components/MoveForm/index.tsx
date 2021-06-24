@@ -399,8 +399,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
         {/* <Description.InfoType style={{ marginBottom: 0 }} selectMoveType={getMoveType}>
           <p>빌딩, 공장, 상가 등 짐량 1톤 트럭 초과</p>
         </Description.InfoType> */}
-        {/* <MoveInput type={getMoveType} style={{ marginTop: 30 }} formValidations={formValidations} /> */}
-        <CleanDetailInfo />
+        <MoveInput type={getMoveType} style={{ marginTop: 30 }} formValidations={formValidations} />
       </Visual.ButtonGroupContainer>
       <>
         <Terms.Container selectMoveType={getMoveType !== undefined}>
