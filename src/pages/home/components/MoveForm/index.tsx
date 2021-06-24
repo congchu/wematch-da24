@@ -25,6 +25,7 @@ import useHashToggle from 'hooks/useHashToggle'
 import { useHistory } from 'react-router-dom'
 import { ESignInCase } from 'store/user/types'
 import { Question } from 'components/Icon'
+import CleanDetailInfo from 'pages/clean/components/cleanDetailInfo'
 
 const Visual = {
   Section: styled.section`
@@ -398,7 +399,8 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
         {/* <Description.InfoType style={{ marginBottom: 0 }} selectMoveType={getMoveType}>
           <p>빌딩, 공장, 상가 등 짐량 1톤 트럭 초과</p>
         </Description.InfoType> */}
-        <MoveInput type={getMoveType} style={{ marginTop: 30 }} formValidations={formValidations} />
+        {/* <MoveInput type={getMoveType} style={{ marginTop: 30 }} formValidations={formValidations} /> */}
+        <CleanDetailInfo />
       </Visual.ButtonGroupContainer>
       <>
         <Terms.Container selectMoveType={getMoveType !== undefined}>
