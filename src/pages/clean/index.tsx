@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {useMedia} from "react-use-media";
 import {useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {Button, CardButton, Icons} from '@wematch/wematch-ui'
+import {Button, StepProgressBar} from '@wematch/wematch-ui'
 
 import useMultiStep from "hooks/useMultiStep";
 
@@ -33,6 +33,7 @@ const Clean = () => {
       {isDesktop ? <MainHeader /> : <NavHeader title="청소 종류 선택"/>}
       <CleanWrapper>
         {isDesktop && <Title>청소 종류 선택</Title>}
+        <StepProgressBar steps={[{status: 'done' }, {status: 'doing'}]} pointColor={colors.pointBlue}/>
         {steps[step]}
         <ButtonGroup>
           {isDesktop && <Button theme={"default"} label="이전" className={"first-button"}/>}
@@ -61,7 +62,7 @@ const Title = styled.h1`
   line-height: 36px;
   color: ${colors.gray33};
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 24px;
 `;
 const ButtonGroup = styled.div`
   display: flex;
