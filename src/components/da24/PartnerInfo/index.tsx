@@ -14,6 +14,7 @@ import NewLevelS from "components/Icon/generated/NewLevelS";
 import NewLevelOther from "components/Icon/generated/NewLevelOther";
 import {useRouter} from "hooks/useRouter";
 import {lineDeco} from "styles/colors";
+import TermsModal from "../../Modal/TermsModal";
 
 const S = {
 	Container: styled.div`
@@ -70,28 +71,28 @@ const S = {
 		color:${colors.pointBlue}
 	`,
 	PartnerWord: styled.p`
-    display:-webkit-box;
-    overflow:hidden;
-    width:100%;
-    margin-top:10px;
+		display:-webkit-box;
+		overflow:hidden;
+		width:100%;
+		margin-top:10px;
 		font-size:24px;
-    font-weight:700;
-    line-height:30px;
-    text-overflow:ellipsis;
-    -webkit-line-clamp:2;
-    -webkit-box-orient:vertical;
-    word-wrap:break-word;
-    
-    div:first-child {
-    	display: flex;
-    	align-items: center;
-    }
-    div:last-child {
-    	margin-top: 5px;
-    	font-size: 12px;
-    	font-weight: normal;
-    	color: ${colors.gray88};
-    }
+		font-weight:700;
+		line-height:30px;
+		text-overflow:ellipsis;
+		-webkit-line-clamp:2;
+		-webkit-box-orient:vertical;
+		word-wrap:break-word;
+		
+		div:first-child {
+			display: flex;
+			align-items: center;
+		}
+		div:last-child {
+			margin-top: 5px;
+			font-size: 12px;
+			font-weight: normal;
+			color: ${colors.gray88};
+		}
 	`,
 	Info: styled.div`
 		overflow:visible;
@@ -105,6 +106,34 @@ const S = {
 		}
 		@media screen and (min-width:768px) {
 			margin:35px 0 48px;
+		}
+	`,
+	Box: styled.div`
+		background: #F5F7F9;
+		border-radius: 8px;
+		padding: 16px;
+		font-style: normal;
+		letter-spacing: -1px;
+		margin-bottom: 40px;
+		span {
+			display: block;
+			font-weight: bold;
+			font-size: 13px;
+			line-height: 19px;
+			color: #666666;
+			margin-bottom: 7px;
+		}
+		p {
+			font-weight: normal;
+			font-size: 14px;
+			line-height: 20px;
+			letter-spacing: -1px;
+			color: #333333;
+		}
+		@media screen and (max-width: 768px) {
+			.hide {
+				display: none;
+			}
 		}
 	`,
 	Card: styled.div`
@@ -247,23 +276,27 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 						)
 					}
 				</S.PartnerWord>
-					<S.Info>
-						<S.Card id="dsl_booking_detail_info">
-							<div>
-								{level === "NEW" && <NewLevelN />}
-								{level === "S" && <NewLevelS/>}
-								{(level !== "NEW" && level !== "S") && <NewLevelOther/>}
-							</div>
-						</S.Card>
-						<S.Card>
-							<span>고객선택</span>
-							<em>{pick_cnt ? commaInNumbers(pick_cnt): 0}<p> 회</p></em>
-						</S.Card>
-						<S.Card>
-							<span>경력년차</span>
-							<em>{experience || 1}<p> 년</p></em>
-						</S.Card>
-					</S.Info>
+				<S.Info>
+					<S.Card id="dsl_booking_detail_info">
+						<div>
+							{level === "NEW" && <NewLevelN />}
+							{level === "S" && <NewLevelS/>}
+							{(level !== "NEW" && level !== "S") && <NewLevelOther/>}
+						</div>
+					</S.Card>
+					<S.Card>
+						<span>고객선택</span>
+						<em>{pick_cnt ? commaInNumbers(pick_cnt): 0}<p> 회</p></em>
+					</S.Card>
+					<S.Card>
+						<span>경력년차</span>
+						<em>{experience || 1}<p> 년</p></em>
+					</S.Card>
+				</S.Info>
+				<S.Box>
+					<span>위매치 신규 파트너</span>
+					<p>최근에 파트너가 된 업체로 의욕적인 서비스를 기대할 수 있습니다.<br className='hide' /> 통계적으로 신규 파트너 업체의 이사 만족도 평가는 우수 등급과 같거나 보다 높습니다.</p>
+				</S.Box>
 				<S.Description>
 					<S.Option>
 						<strong>사장님 한마디</strong>
