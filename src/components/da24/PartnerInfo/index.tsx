@@ -293,10 +293,12 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 						<em>{experience || 1}<p> 년</p></em>
 					</S.Card>
 				</S.Info>
-				<S.Box>
-					<span>위매치 신규 파트너</span>
-					<p>최근에 파트너가 된 업체로 의욕적인 서비스를 기대할 수 있습니다.<br className='hide' /> 통계적으로 신규 파트너 업체의 이사 만족도 평가는 우수 등급과 같거나 보다 높습니다.</p>
-				</S.Box>
+				{level === "NEW" && (
+					<S.Box>
+						<span>위매치 신규 파트너</span>
+						<p>최근에 파트너가 된 업체로 의욕적인 서비스를 기대할 수 있습니다.<br className='hide' /> 통계적으로 신규 파트너 업체의 이사 만족도 평가는 우수 등급과 같거나 보다 높습니다.</p>
+					</S.Box>
+				)}
 				<S.Description>
 					<S.Option>
 						<strong>사장님 한마디</strong>
