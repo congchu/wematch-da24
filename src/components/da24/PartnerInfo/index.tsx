@@ -107,6 +107,19 @@ const S = {
 			margin:35px 0 48px;
 		}
 	`,
+	NewPartnerInfo: styled.div`
+		padding: 16px;
+		background-color: ${colors.boxBg};
+		border-radius: 8px;
+		font-size: 14px;
+		margin-bottom: 40px;
+		
+		p {
+			color: ${colors.gray66};
+			font-weight: bold;
+			margin-bottom: 7px;
+		}
+	`,
 	Card: styled.div`
 		float:left;
 		width:32%;
@@ -264,21 +277,28 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 							<em>{experience || 1}<p> 년</p></em>
 						</S.Card>
 					</S.Info>
+					{level === "NEW" && (
+						<S.NewPartnerInfo>
+							<p>위매치 신규 파트너</p>
+							<div>최근에 파트너가 된 업체로 의욕적인 서비스를 기대할 수 있습니다. 통계적으로 신규 파트너 업체의 이사 만족도 평가는 우수 등급과 같거나 보다 높습니다.</div>
+						</S.NewPartnerInfo>
+					)}
 				<S.Description>
 					<S.Option>
 						<strong>사장님 한마디</strong>
 						<p>{description.length !== 0 ? description : values.DEFAULT_TEXT}</p>
 					</S.Option>
 					{!isEmpty(keywords) &&
-					<S.Option>
-						<strong>고객이 많이 언급한 키워드</strong>
-						<ul>
-							{keywords.map((list, index) => (
-								<li key={index}>{list}</li>
-							))}
-						</ul>
-					</S.Option>
-					}
+						keywords[0].length > 0 && (
+						<S.Option>
+							<strong>고객이 많이 언급한 키워드</strong>
+							<ul>
+								{keywords.map((list, index) => (
+									<li key={index}>{list}</li>
+								))}
+							</ul>
+						</S.Option>
+					)}
 					{addition.length > 0 && (
 						<S.Option>
 							<strong>추가 가능 옵션</strong>
