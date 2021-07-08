@@ -18,11 +18,11 @@ function NewLevelOther({ width=56, height=56, fill='none', ...props }: React.SVG
         fillRule="evenodd"
         clipRule="evenodd"
         d="M0 28c0 15.464 12.536 28 28 28s28-12.536 28-28S43.464 0 28 0 0 12.536 0 28zm48 0c0 11.046-8.954 20-20 20S8 39.046 8 28 16.954 8 28 8s20 8.954 20 20z"
-        fill="url(#prefix__paint0_linear)"
+        fill="url(#prefix__paint0_linear_O)"
       />
       <defs>
         <linearGradient
-          id="prefix__paint0_linear"
+          id="prefix__paint0_linear_O"
           x1={28.87}
           y1={0}
           x2={28.87}
