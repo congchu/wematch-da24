@@ -1,29 +1,28 @@
-import {useState} from 'react';
+import { useState } from 'react'
 
 interface useMultiStepProps {
-  steps: any;
-};
+  steps: any
+}
 
-const useMultiStep = ({steps}: useMultiStepProps) => {
-  const [step, setStep] = useState(0);
-  const maxStep = steps.length -1;
+const useMultiStep = ({ steps }: useMultiStepProps) => {
+  const [step, setStep] = useState(0)
+  const maxStep = steps.length - 1
 
   const nextStep = () => {
     if (step === maxStep) {
-      return;
+      return
     }
 
+    setStep(step + 1)
+  }
 
-    setStep(step + 1);
-  };
-
-  const prevStep  = () => {
+  const prevStep = () => {
     if (step === 0) {
-      return;
+      return
     }
 
-    setStep(step -1)
-  };
+    setStep(step - 1)
+  }
 
   return {
     step,
@@ -31,6 +30,6 @@ const useMultiStep = ({steps}: useMultiStepProps) => {
     prevStep,
     nextStep
   }
-};
+}
 
 export default useMultiStep

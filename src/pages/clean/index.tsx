@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useMedia } from 'react-use-media'
 import { useHistory } from 'react-router-dom'
@@ -19,11 +19,18 @@ const Clean = () => {
     minWidth: 1200
   })
 
+  const [selectedCleanType, setSelectCleanType] = useState<'입주청소' | '거주청소' | null>(null)
+
   const history = useHistory()
   const dispatch = useDispatch()
 
+  const handleSelectCleanType = (type: '입주청소' | '거주청소') => {
+    console.log(type)
+    setSelectCleanType(type)
+  }
+
   // component 추기
-  const steps = [<CleanType />, <CleanDetailInfo />]
+  const steps = [<CleanType handleSelectCleanType={handleSelectCleanType} selectedCleanType={selectedCleanType} />, <CleanDetailInfo />]
 
   const { step, nextStep, prevStep } = useMultiStep({ steps: steps })
 
@@ -32,7 +39,7 @@ const Clean = () => {
     <div>
       {isDesktop ? <MainHeader /> : <NavHeader title="청소 종류 선택" />}
       <CleanWrapper>
-        {isDesktop && <Title>청소 종류 선택</Title>}
+        {isDesktop && <Title>청소 종류 선택</Title>}``
         <StepProgressBar steps={[{ status: 'done' }, { status: 'doing' }]} pointColor={colors.pointBlue} />
         {steps[step]}
         <ButtonGroup>
