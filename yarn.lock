@@ -3459,10 +3459,10 @@
     text-table "^0.2.0"
     webpack-log "^1.1.2"
 
-"@wematch/wematch-ui@0.0.26":
-  version "0.0.26"
-  resolved "https://registry.yarnpkg.com/@wematch/wematch-ui/-/wematch-ui-0.0.26.tgz#22f59ee23c8348180dd34ec444db3154b236362e"
-  integrity sha512-6BNWp9mcG4+1cN9hWcSGWvbGojT1RuvtsgROEYP5A0QZqIdfl6YygwDNL+Ws4/bu7lgCOM1mspzoZB6y83ffXA==
+"@wematch/wematch-ui@^0.0.29":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@wematch/wematch-ui/-/wematch-ui-0.0.29.tgz#1431d54f9e0b42c4f5cfd70af9a0691973550fcc"
+  integrity sha512-SgcQnVQ0M5cEHyB8TCPCniXIZD3ZIFOzfCykfxXmahchfY8tOYp9NHNvvgO7xcYk3U0ltcOljHK2odm79jHoJg==
 
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
