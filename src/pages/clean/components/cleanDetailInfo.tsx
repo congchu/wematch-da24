@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import Input from 'components/common/Input'
 import AddressModal from 'components/common/Modal/AddressModal'
 import CalendarModal from 'components/common/Modal/CalendarModal'
@@ -9,47 +10,49 @@ import { CALENDAR_MAX_DAYS } from 'constants/values'
 import useHashToggle from 'hooks/useHashToggle'
 import { isExceedDiffDay } from 'lib/dateUtil'
 import { debounce } from 'lodash'
-import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCleanAddress, setCleanDate, setCleanMemo, setHouseSpace, setLivingType } from 'store/clean/actions'
+import * as cleanSelector from 'store/clean/selectors'
 import { Juso, JusoType } from 'store/common/types'
 import styled from 'styled-components'
 import * as colors from 'styles/colors'
 
-const livingTypeItem = [
-  { key: 'apartment', value: '아파트' },
-  { key: 'house', value: '주택/빌라' },
-  { key: 'oneroom', value: '원룸/오피스텔(9평이하)' }
-]
-
-const optionItems = ['줄눈시공', '피톤치드', '마루코팅', '식기세척기', '매트리스', '냉장고(단문)', '냉장고(양문)', '전기오븐', '김치냉장고']
-
 const CleanDetailInfo = () => {
-  const [date, setDate] = useState<string[] | undefined>(undefined)
+  const livingTypeItem = [
+    { key: 'apartment', value: '아파트' },
+    { key: 'house', value: '주택/빌라' },
+    { key: 'oneroom', value: '원룸/오피스텔(9평이하)' }
+  ]
+  const optionItems = ['줄눈시공', '피톤치드', '마루코팅', '식기세척기', '매트리스', '냉장고(단문)', '냉장고(양문)', '전기오븐', '김치냉장고']
+  const dispatch = useDispatch()
+  const date = useSelector(cleanSelector.getCleanDate)
+  const address = useSelector(cleanSelector.getCleanAddress)
+  const addressType = useSelector(cleanSelector.getCleanAddressType)
+  const livingType = useSelector(cleanSelector.getCleanLivingType)
+  const houseSpace = useSelector(cleanSelector.getCleanHouseSpace)
+  const selectOptionItem = useSelector(cleanSelector.getCleanSelectOptionItem)
+  const cleanMemo = useSelector(cleanSelector.getCleanMemo)
+
   const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar')
   const [visibleAddressModal, setVisibleAddressModal] = useHashToggle('#address')
   const [visibleLivingSelectorModal, setVisibleLivingSelectorModal] = useHashToggle('#living-type')
-  const [address, setAddress] = useState<Juso | null>(null)
-  const [addressType, setAddressType] = useState<JusoType | null>(null)
-  const [livingType, setLivingType] = useState('')
-  const [houseSpace, setHouseSpace] = useState('')
-  const [selectOptionItem, setSelectOptionItem] = useState<string[]>([])
-  const [cleanMemo, setCleanMemo] = useState('')
 
   const onSelectDate = (date: CalendarDate) => {
     if (isExceedDiffDay(date, CALENDAR_MAX_DAYS)) {
-      alert(`이사업체조회는 내일부터 최장${CALENDAR_MAX_DAYS}일까지만 비교가 가능합니다.`)
+      alert(`청소업체조회는 내일부터 최장${CALENDAR_MAX_DAYS}일까지만 비교가 가능합니다.`)
       return
     }
 
-    setDate([date.date.format('YYYY-MM-DD')])
+    dispatch(setCleanDate([date.date.format('YYYY-MM-DD')]))
 
     debounceSelectDate()
   }
 
   const handleClickOptionItem = (option: string) => {
     if (selectOptionItem.includes(option)) {
-      setSelectOptionItem(selectOptionItem.filter((_option) => _option !== option))
+      dispatch(setCleanSelectOptionItem(selectOptionItem.filter((_option) => _option !== option)))
     } else {
-      setSelectOptionItem([...selectOptionItem, option])
+      dispatch(setCleanSelectOptionItem([...selectOptionItem, option]))
     }
   }
 
@@ -57,10 +60,21 @@ const CleanDetailInfo = () => {
     setVisibleCalendarModal(false)
   }, 300)
 
-  const handleSelectAddress = (juso: Juso, jusoType: JusoType) => {
-    setAddress(juso)
-    setAddressType(jusoType)
+  const handleSelectAddress = (address: Juso, addressType: JusoType) => {
+    dispatch(setCleanAddress({ address, addressType }))
     setVisibleAddressModal(!visibleAddressModal)
+  }
+
+  const handleHouseInput = (space: string) => {
+    dispatch(setHouseSpace(space))
+  }
+
+  const handleCleanMemo = (memo: string) => {
+    dispatch(setCleanMemo(memo))
+  }
+
+  const handleLivingType = (type: string) => {
+    dispatch(setLivingType(type))
   }
 
   const renderAddressValue = () => {
@@ -80,12 +94,12 @@ const CleanDetailInfo = () => {
         <Title>청소지</Title>
         <InputBox icon={'search'} placeHolder={'주소 검색'} value={renderAddressValue()} onClick={() => setVisibleAddressModal(true)} />
         <InputBox icon={'down'} placeHolder={'거주형태 선택'} value={livingTypeItem.find((item) => item.key === livingType)?.value} onClick={() => setVisibleLivingSelectorModal(true)} />
-        <Input icon={'space'} type={'number'} theme={'default'} placeholder={'평형 입력 ex)24'} border style={{ backgroundColor: 'transparent', fontSize: 16 }} onChange={(e) => setHouseSpace(e.target.value)} value={houseSpace} />
+        <Input icon={'space'} type={'number'} theme={'default'} placeholder={'평형 입력 ex)24'} border style={{ backgroundColor: 'transparent', fontSize: 16 }} onChange={(e) => handleHouseInput(e.target.value)} value={houseSpace} />
       </Section>
       <Section>
         <Title>옵션 선택</Title>
         <OptionGroups>
-          <OptionItem key={'option-not-selected'} selected={selectOptionItem.length === 0} onClick={() => setSelectOptionItem([])}>
+          <OptionItem key={'option-not-selected'} selected={selectOptionItem.length === 0} onClick={() => dispatch(setCleanSelectOptionItem([]))}>
             옵션없음
           </OptionItem>
           {optionItems.map((optionItem) => (
@@ -97,9 +111,7 @@ const CleanDetailInfo = () => {
       </Section>
       <Section>
         <Title>업체 전달 메모</Title>
-        <Textarea placeholder={'업체 전달 메모 작성(선택)'} onChange={(e) => setCleanMemo(e.target.value)}>
-          {cleanMemo}
-        </Textarea>
+        <Textarea value={cleanMemo} placeholder={'업체 전달 메모 작성(선택)'} onChange={(e) => handleCleanMemo(e.target.value)} />
       </Section>
       <CalendarModal visible={visibleCalendarModal} title="청소" onClose={() => setVisibleCalendarModal(false)} onSelect={onSelectDate} selected={date} />
       <AddressModal
@@ -110,7 +122,7 @@ const CleanDetailInfo = () => {
         onClick={() => setVisibleAddressModal(!visibleAddressModal)}
         onSelect={handleSelectAddress}
       />
-      <Select visible={visibleLivingSelectorModal} items={livingTypeItem} onOverlayClose={() => setVisibleLivingSelectorModal(false)} onClose={() => setVisibleLivingSelectorModal(false)} onSelect={(data: string) => setLivingType(data)} headerTitle="거주형태 선택" />
+      <Select visible={visibleLivingSelectorModal} items={livingTypeItem} onOverlayClose={() => setVisibleLivingSelectorModal(false)} onClose={() => setVisibleLivingSelectorModal(false)} onSelect={(data: string) => handleLivingType(data)} headerTitle="거주형태 선택" />
     </Container>
   )
 }
@@ -161,3 +173,6 @@ const OptionItem = styled.div<{ selected: boolean }>`
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 `
+function setCleanSelectOptionItem(arg0: string[]): any {
+  throw new Error('Function not implemented.')
+}

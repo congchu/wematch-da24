@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { deleteCookie, setCookie } from 'lib/cookie'
 import { all, call, put, select, takeEvery, takeLeading } from 'redux-saga/effects'
 import * as formActions from 'store/form/actions'
+import * as cleanActions from 'store/clean/actions'
 import { setAgree } from 'store/form/actions'
 import { ActionType } from 'typesafe-actions'
 import * as actions from './actions'
@@ -180,6 +181,9 @@ export function* signInAfterFlowSaga() {
       break
     case ESignInCase.ERROR:
       yield put(push('/myrequest'))
+      break
+    case ESignInCase.CLEAN:
+      yield put(cleanActions.fetchCleanAutoMatch.request())
       break
     default:
       yield put(goBack())

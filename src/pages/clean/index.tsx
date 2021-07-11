@@ -1,50 +1,77 @@
-import React, { useState } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { useMedia } from 'react-use-media'
-import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, StepProgressBar } from '@wematch/wematch-ui'
-
+import * as userSelector from 'store/user/selectors'
 import useMultiStep from 'hooks/useMultiStep'
-
 import CleanType from './step/cleanType'
 import MainHeader from 'components/common/MainHeader'
 import NavHeader from 'components/common/NavHeader'
-
 import * as colors from 'styles/colors'
 import CleanDetailInfo from './components/cleanDetailInfo'
+import * as userActions from 'store/user/actions'
+import * as cleanActions from 'store/clean/actions'
+import * as cleanSelector from 'store/clean/selectors'
+import { useHistory } from 'react-router-dom'
+import { ESignInCase } from 'store/user/types'
 
 const Clean = () => {
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const { user } = useSelector(userSelector.getUser)
+  const cleanType = useSelector(cleanSelector.getCleanType)
+  const date = useSelector(cleanSelector.getCleanDate)
+  const address = useSelector(cleanSelector.getCleanAddress)
+  const livingType = useSelector(cleanSelector.getCleanLivingType)
+  const houseSpace = useSelector(cleanSelector.getCleanHouseSpace)
   const isDesktop = useMedia({
     minWidth: 1200
   })
 
-  const [selectedCleanType, setSelectCleanType] = useState<'입주청소' | '거주청소' | null>(null)
-
-  const history = useHistory()
-  const dispatch = useDispatch()
-
-  const handleSelectCleanType = (type: '입주청소' | '거주청소') => {
-    console.log(type)
-    setSelectCleanType(type)
-  }
-
-  // component 추기
-  const steps = [<CleanType handleSelectCleanType={handleSelectCleanType} selectedCleanType={selectedCleanType} />, <CleanDetailInfo />]
+  const steps = [<CleanType />, <CleanDetailInfo />]
 
   const { step, nextStep, prevStep } = useMultiStep({ steps: steps })
 
-  console.log(step)
+  const progressSteps: { status: 'doing' | 'done' | 'todo' }[] = useMemo(() => {
+    if (step === 0) {
+      return [{ status: 'doing' }, { status: 'todo' }]
+    } else {
+      return [{ status: 'done' }, { status: 'doing' }]
+    }
+  }, [step])
+
+  const fetchCleanAutoMatch = () => {
+    if (!user) {
+      dispatch(userActions.signIn({ prevPage: ESignInCase.CLEAN }))
+      history.push('/login')
+    } else {
+      dispatch(cleanActions.fetchCleanAutoMatch.request())
+    }
+  }
+
+  const handleNextStep = () => {
+    if (step === 0 && cleanType) {
+      nextStep()
+    }
+
+    if (step === 1 && date && address && livingType && houseSpace) {
+      fetchCleanAutoMatch()
+    }
+  }
+
+  const isCleanMatch = date && address && livingType && houseSpace
+
   return (
     <div>
       {isDesktop ? <MainHeader /> : <NavHeader title="청소 종류 선택" />}
       <CleanWrapper>
-        {isDesktop && <Title>청소 종류 선택</Title>}``
-        <StepProgressBar steps={[{ status: 'done' }, { status: 'doing' }]} pointColor={colors.pointBlue} />
+        {isDesktop && <Title>청소 종류 선택</Title>}
+        <StepProgressBar steps={progressSteps} pointColor={colors.pointBlue} />
         {steps[step]}
         <ButtonGroup>
-          {isDesktop && <Button theme={'default'} label="이전" className={'first-button'} />}
-          <Button theme={'primary'} onClick={nextStep} label="다음" />
+          {isDesktop && <Button theme={'default'} label="이전" className={'first-button'} onClick={prevStep} />}
+          {step < steps.length - 1 ? <Button theme={cleanType ? 'primary' : 'disabled'} onClick={handleNextStep} label="다음" /> : <Button theme={isCleanMatch ? 'primary' : 'disabled'} onClick={handleNextStep} label="추천업체 바로 신청하기" />}
         </ButtonGroup>
       </CleanWrapper>
     </div>
@@ -55,8 +82,7 @@ export default Clean
 
 const CleanWrapper = styled.div`
   position: relative;
-  padding: 0 24px;
-  margin-top: 56px;
+  padding: 80px 24px 0 24px;
 
   @media screen and (min-width: 1200px) {
     padding: 70px 240px;
