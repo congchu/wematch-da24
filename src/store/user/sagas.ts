@@ -37,10 +37,11 @@ const COOKIE_OPTIONS =
 
 export function* fetchUserConsultSaga(action: ActionType<typeof actions.fetchUserConsultAsync.request>) {
   try {
+    const { token } = yield select(userSelector.getUser)
     const { name, phone } = action.payload
     const numbers = [phone.slice(0, 3), phone.slice(3, 7), phone.slice(7)]
 
-    const { data } = yield call(requests.getUserConsult, name, numbers)
+    const { data } = yield call(requests.getUserConsult, name, numbers, token)
 
     const orders = data.orders.reduce(
       (acc: any, cur: IOrder) => {
@@ -68,6 +69,7 @@ export function* fetchUserConsultSaga(action: ActionType<typeof actions.fetchUse
     )
   } catch (e) {
     yield put(actions.fetchUserConsultAsync.failure())
+    yield put(push('/error'))
     sentry.captureMessage('내 신청내역 조회 실패', {
       level: Severity.Error
     })
