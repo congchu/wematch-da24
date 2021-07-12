@@ -5,11 +5,9 @@ import axios from 'axios'
 import { API_URL } from 'constants/env'
 
 export const getUserConsult = async (name: string, phone: string[], token: string) => {
-  const query = `?name=${name}&phone1=${phone[0]}&phone2=${phone[1]}&phone3=${phone[2]}`
-
   const { data } = await bookingApi.request({
     method: 'GET',
-    url: `/user/orders${query}`,
+    url: `/user/orders`,
     headers: {
       'x-wematch-token': token
     }
