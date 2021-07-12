@@ -11,7 +11,7 @@ import useHashToggle from 'hooks/useHashToggle'
 import { isExceedDiffDay } from 'lib/dateUtil'
 import { debounce } from 'lodash'
 import { useDispatch, useSelector } from 'react-redux'
-import { setCleanAddress, setCleanDate, setCleanMemo, setHouseSpace, setLivingType } from 'store/clean/actions'
+import { setCleanAddress, setCleanDate, setCleanMemo, setHouseSpace, setLivingType, setSelectOptionItem } from 'store/clean/actions'
 import * as cleanSelector from 'store/clean/selectors'
 import { Juso, JusoType } from 'store/common/types'
 import styled from 'styled-components'
@@ -50,9 +50,9 @@ const CleanDetailInfo = () => {
 
   const handleClickOptionItem = (option: string) => {
     if (selectOptionItem.includes(option)) {
-      dispatch(setCleanSelectOptionItem(selectOptionItem.filter((_option) => _option !== option)))
+      dispatch(setSelectOptionItem(selectOptionItem.filter((_option) => _option !== option)))
     } else {
-      dispatch(setCleanSelectOptionItem([...selectOptionItem, option]))
+      dispatch(setSelectOptionItem([...selectOptionItem, option]))
     }
   }
 
@@ -99,7 +99,7 @@ const CleanDetailInfo = () => {
       <Section>
         <Title>옵션 선택</Title>
         <OptionGroups>
-          <OptionItem key={'option-not-selected'} selected={selectOptionItem.length === 0} onClick={() => dispatch(setCleanSelectOptionItem([]))}>
+          <OptionItem key={'option-not-selected'} selected={selectOptionItem.length === 0} onClick={() => dispatch(setSelectOptionItem([]))}>
             옵션없음
           </OptionItem>
           {optionItems.map((optionItem) => (
@@ -173,6 +173,3 @@ const OptionItem = styled.div<{ selected: boolean }>`
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 `
-function setCleanSelectOptionItem(arg0: string[]): any {
-  throw new Error('Function not implemented.')
-}

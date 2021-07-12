@@ -36,7 +36,7 @@ import MoveEstimation from './pages/checklist/components/moveEstimation'
 import CleanEstimation from './pages/checklist/components/cleanEstimation'
 import MovePrep from './pages/checklist/components/movePrep'
 import CleanCheck from './pages/checklist/components/cleanCheck'
-import CleanPage from 'pages/clean';
+import CleanPage from 'pages/clean'
 
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'

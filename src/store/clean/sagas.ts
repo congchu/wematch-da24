@@ -7,6 +7,7 @@ import { getCleanForm } from './selectors'
 import { RequestCleanAuthMatchData } from './types'
 import { fetchCleanAutoMatch } from './actions'
 import { getCookie } from 'lib/cookie'
+import { push } from 'connected-react-router'
 
 export function* fetchCleanAutoMatchSaga() {
   try {
@@ -41,6 +42,7 @@ export function* fetchCleanAutoMatchSaga() {
       memo: form.cleanMemo
     }
     const data = yield call(requests.submitClean, body)
+    yield put(push('/completed'))
     yield put(fetchCleanAutoMatch.success(data))
   } catch (e) {
     yield put(fetchCleanAutoMatch.failure())
