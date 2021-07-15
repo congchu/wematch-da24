@@ -13,3 +13,4 @@ export const getCleanSelectOptionItem = createSelector(getCleanState, ({ form })
 export const getCleanMemo = createSelector(getCleanState, ({ form }) => form.cleanMemo)
 
 export const getCleanForm = createSelector(getCleanState, ({ form }) => form)
+export const getCleanMatchData = createSelector(getCleanState, ({ result }) => result)

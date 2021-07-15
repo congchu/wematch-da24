@@ -46,7 +46,7 @@ const Clean = () => {
       dispatch(userActions.signIn({ prevPage: ESignInCase.CLEAN }))
       history.push('/login')
     } else {
-      dispatch(cleanActions.fetchCleanAutoMatch.request())
+      history.push('/completed?serviceType=clean')
     }
   }
 

@@ -14,3 +14,5 @@ export const setCleanMemo = createAction('SET_CLEAN_MEMO')<string>()
 export const setResetCleanFormData = createAction('SET_RESET_CLEAN_FORM_DATA')()
 
 export const fetchCleanAutoMatch = createAsyncAction('FETCH_CLEAN_AUTO_MATCH_REQUEST', 'FETCH_CLEAN_AUTO_MATCH_SUCCESS', 'FETCH_CLEAN_AUTO_MATCH_FAILURE')<undefined, ResponseCleanAutoMatch, undefined>()
+
+export const resetCleanForm = createAction('RESET_CLEAN_FORM')()

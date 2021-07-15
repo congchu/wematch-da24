@@ -1,3 +1,5 @@
+import { IPartnerDetail, Level } from 'types/partner'
+
 export interface RequestCleanAuthMatchData {
   clean_date: string
   clean_type: string
@@ -20,15 +22,6 @@ export interface RequestCleanAuthMatchData {
 export interface ResponseCleanAutoMatch {
   type: string
   result: string
-  match_list: {
-    adminname: string
-    adminid: string
-    experience: string
-    pick_cnt: number
-    feedback_cnt: number
-    level: string
-    level_text: string
-    status: string
-  }[]
+  match_list: IPartnerDetail[]
   inquiry_idx: string
 }

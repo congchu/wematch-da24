@@ -315,13 +315,14 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
     })
 
     selectedSubmitType.current = submitType
+
     dispatch(formActions.setSubmitType(submitType))
 
     if (!user) {
       dispatch(userActions.signIn({ prevPage: ESignInCase.FORM }))
       history.push('/login')
     } else {
-      dispatch(formActions.fetchMoveData())
+      dispatch(formActions.setMoveData())
     }
   }
 

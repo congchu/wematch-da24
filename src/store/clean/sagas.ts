@@ -1,17 +1,17 @@
 import { phoneSplit } from 'components/wematch-ui/utils/form'
-import { all, call, put, select } from 'redux-saga/effects'
+import { all, call, put, select, takeEvery } from 'redux-saga/effects'
 import queryString from 'query-string'
 import { getUser } from 'store/user/selectors'
 import * as requests from './requests'
+import * as actions from './actions'
 import { getCleanForm } from './selectors'
 import { RequestCleanAuthMatchData } from './types'
 import { fetchCleanAutoMatch } from './actions'
 import { getCookie } from 'lib/cookie'
-import { push } from 'connected-react-router'
 
 export function* fetchCleanAutoMatchSaga() {
   try {
-    const { user } = yield select(getUser)
+    const { user, token } = yield select(getUser)
     const form = yield select(getCleanForm)
     const { phone1, phone2, phone3 } = phoneSplit(user.tel)
     const cookie = getCookie('0dj38gepoekf98234aplyadmin')
@@ -24,7 +24,7 @@ export function* fetchCleanAutoMatchSaga() {
     }
 
     const body: RequestCleanAuthMatchData = {
-      clean_date: form.date,
+      clean_date: form.date[0],
       clean_type: form.type,
       house_type: form.livingType,
       pyeong: form.houseSpace,
@@ -41,14 +41,14 @@ export function* fetchCleanAutoMatchSaga() {
       clean_option: form.selectOptionItem,
       memo: form.cleanMemo
     }
-    const data = yield call(requests.submitClean, body)
-    yield put(push('/completed'))
-    yield put(fetchCleanAutoMatch.success(data))
+    const data = yield call(requests.submitClean, body, token)
+    yield put(fetchCleanAutoMatch.success(data.data))
   } catch (e) {
+    console.log(e)
     yield put(fetchCleanAutoMatch.failure())
   }
 }
 
 export default function*() {
-  yield all([])
+  yield all([takeEvery(actions.fetchCleanAutoMatch.request, fetchCleanAutoMatchSaga)])
 }

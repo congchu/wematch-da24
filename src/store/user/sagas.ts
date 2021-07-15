@@ -1,4 +1,4 @@
-import { goBack, push } from 'connected-react-router'
+import { goBack, push, replace } from 'connected-react-router'
 import dayjs from 'dayjs'
 import { deleteCookie, setCookie } from 'lib/cookie'
 import { all, call, put, select, takeEvery, takeLeading } from 'redux-saga/effects'
@@ -179,13 +179,13 @@ export function* signInAfterFlowSaga() {
   const { prevPage } = yield select(userSelector.getUser)
   switch (prevPage) {
     case ESignInCase.FORM:
-      yield put(formActions.fetchMoveData())
+      yield put(replace('/completed?serviceType=move'))
       break
     case ESignInCase.ERROR:
       yield put(push('/myrequest'))
       break
     case ESignInCase.CLEAN:
-      yield put(cleanActions.fetchCleanAutoMatch.request())
+      yield put(replace('/completed?serviceType=clean'))
       break
     default:
       yield put(goBack())
