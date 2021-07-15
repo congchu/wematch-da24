@@ -13,6 +13,9 @@ import {ContactFormData} from 'types/backoffice'
 import * as backofficeActions from 'store/backoffice/actions'
 import * as backofficeSelector from 'store/backoffice/selectors'
 import {debounce} from 'lodash'
+import * as userSelector from "../../store/user/selectors";
+import queryString from "query-string";
+import {useLocation} from "react-router-dom";
 
 const S = {
     Container: styled.div``,
@@ -96,14 +99,17 @@ const S = {
 }
 
 const Category = [
-    { key: '이사', value: '이사' },
-    { key: '청소', value: '청소' },
-    { key: '이사+청소', value: '이사+청소' },
+    { id: 'move', key: '이사', value: '이사' },
+    { id: 'clean', key: '청소', value: '청소' },
+    { id: 'all', key: '이사+청소', value: '이사+청소' },
 ]
 
 const Type = [
-    { key: '개인적인 궁금한 것', value: '개인적인 궁금한 것' },
-    { key: '기타', value: '기타' }
+    { id: 'notify', key: '가능업체 알림 요청', value: '가능업체 알림 요청' },
+    { id: 'cancel', key: '접수 취소', value: '접수 취소' },
+    { id: 'complain', key: '이사업체 불만', value: '이사업체 불만' },
+    { id: 'error', key: '서비스 오류', value: '서비스 오류' },
+    { id: 'etc', key: '기타 문의', value: '기타 문의' },
 ]
 
 function ContactPage() {
@@ -122,6 +128,8 @@ function ContactPage() {
     const [contactType, setContactType] = useState<string>('');
     const [serviceType, setServiceType] = useState<string>('');
     const [completed, setCompleted] = useState<boolean>(false);
+    const { user } = useSelector(userSelector.getUser)
+    const location = useLocation();
 
     const initObj = {
         contact_type: contactType,
@@ -130,6 +138,8 @@ function ContactPage() {
         contents: contents,
         service_type: serviceType,
     }
+    const serviceTypeQuery = queryString.parse(location.search).service as string;
+    const contactTypeQuery = queryString.parse(location.search).contact as string
 
     const selectContactType = (data: string ) => {
         setContactType(data)
@@ -137,6 +147,36 @@ function ContactPage() {
     const selectServiceType = (data:string) => {
         setServiceType(data)
     }
+
+    const setServiceTypeQuery = (key: string) => {
+        const item = Category.find((item) => item.id === key)
+        if (item) {
+            setServiceType(item.key)
+        }
+    }
+
+    const setContactTypeQuery = (key: string) => {
+        const item = Type.find((item) => item.id === key)
+        if (item) {
+            setContactType(item.key)
+        }
+    }
+
+    useEffect(() => {
+      if (user) {
+          setName(user.name)
+          setTel(user.tel)
+      }
+    }, [user])
+
+    useEffect(() => {
+        if (contactTypeQuery) {
+            setContactTypeQuery(contactTypeQuery)
+        }
+        if (serviceTypeQuery) {
+            setServiceTypeQuery(serviceTypeQuery)
+        }
+    }, [])
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -188,21 +228,20 @@ function ContactPage() {
                        onChange = {(e)=> {setTel(e.target.value)}}
                 />
                 <Input theme = "default" border readOnly icon="down"
-                       placeholder = "공통" rootStyle={{}}
-                       style = {{ fontSize: "16px", color: colors.black,
-                       }}
+                       placeholder = "서비스 종류" rootStyle={{}}
+                       style = {{ fontSize: "16px", color: colors.black }}
                        onClick = {toggleCategory}
                        value = { serviceType }
                 />
                 <Input theme = "default"
                        border readOnly icon = "down"
-                       placeholder = "문의형태" rootStyle={{}}
+                       placeholder = "문의 종류" rootStyle={{}}
                        style = {{ fontSize: "16px", color: colors.black}}
                        onClick = { toggleType }
                        value = { contactType }
                 />
                 <S.TextContainer>
-                    <S.Textarea placeholder="문의내용"
+                    <S.Textarea placeholder="문의 내용"
                                 style={{ fontSize: "16px"}}
                                 value={contents}
                                 onChange={(e)=> {setContents(e.target.value)}}
