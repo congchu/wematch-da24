@@ -90,23 +90,22 @@ const S = {
       margin-left: -13px;
     }
   `,
-  TopTitle: styled.p`
+  TopTitle: styled.div`
     margin: 15px auto 0;
     font-size: 20px;
     text-align: center;
-    border-bottom: 1px solid #ebeef2;
     
     em {
       font-weight: 700;
     }
 
-    span {
-      display: inline-block;
-      margin-top: 14px;
-      font-size: 14px;
-      line-height: 20px;
-      margin-bottom: 24px;
-    }
+    //span {
+    //  display: inline-block;
+    //  margin-top: 14px;
+    //  font-size: 14px;
+    //  line-height: 20px;
+    //  margin-bottom: 24px;
+    //}
     
     @media screen and (min-width: 768px) {
       width: 720px;
@@ -115,6 +114,16 @@ const S = {
     @media screen and (min-width: 1200px) {
       font-size: 24px;
     }
+  `,
+  TopBox: styled.div`
+    text-align: center;
+    border-radius: 6px;
+    color: ${colors.gray33};
+    background-color: ${colors.grayBg};
+    padding: 24px 22px; 
+    margin-top: 17px;
+    font-size: 14px;
+    letter-spacing: -1px;
   `,
   TitleWrap: styled.div`
     overflow: hidden;
@@ -502,9 +511,10 @@ export default function Completed() {
           </S.Icon>
           <S.TopTitle>
             <em>이사업체 매칭</em> 완료 <br />
-            <span>
-            업체에서 2시간 이상 연락이 없다면 보내드린 <br />알림톡/문자의 업체 전화번호로 먼저 전화해보세요!
-          </span>
+            <S.TopBox>
+              <p>3개 업체 미만 매칭된 경우  24시간 내 <em>가능업체 발생 시 알림톡</em>으로 안내드리겠습니다.</p>
+              <p style={{ marginTop: 16 }}>업체에서 2시간 이상 연락이 없다면 보내드린 알림톡/문자의 업체 전화번호로 먼저 전화해보세요!</p>
+            </S.TopBox>
           </S.TopTitle>
           <ProcessBar/>
         </S.TopContents>
