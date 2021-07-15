@@ -18,3 +18,7 @@ export const whatDay = (targetDate?: string): string => {
 export const formatDateDash2Dot = (orgDate: string): string => {
     return orgDate.replace(/-/g, '.')
 }
+
+export const formatDateKor = (date: string) => {
+    return dayjs(date).format('M월 DD일')
+}
