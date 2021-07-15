@@ -317,8 +317,9 @@ export default function NoPartner() {
           <S.Contents>
             <SoldOut />
             <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>
-            <S.LinkAlarm id='dsl_a_alarm_noPartner' href="https://pf.kakao.com/_Ppsxexd/chat"
-              target="_blank">가능업체발생 시 알림 신청하기</S.LinkAlarm>
+            {/*<S.LinkAlarm id='dsl_a_alarm_noPartner' href="https://pf.kakao.com/_Ppsxexd/chat"*/}
+            {/*  target="_blank">가능업체발생 시 알림 신청하기</S.LinkAlarm>*/}
+              <S.LinkAlarm id='dsl_a_alarm_noPartner' onClick={() => history.push('/contact?service=move&contact=notify')}>가능업체발생 시 알림 신청하기</S.LinkAlarm>
           </S.Contents>
           <S.ChangeDate>
             <S.DateTitle>다른 날짜에 이사가 가능하신가요?</S.DateTitle>
