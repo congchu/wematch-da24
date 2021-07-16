@@ -1,5 +1,6 @@
 import dayjs from "dayjs"
 import {CalendarDate} from "components/wematch-ui/utils/date"
+import { isEmpty } from 'lodash'
 
 export const isExceedDiffDay = (date: CalendarDate, maxDays: number) => {
     const today = dayjs().add(-1, 'day');
@@ -20,5 +21,8 @@ export const formatDateDash2Dot = (orgDate: string): string => {
 }
 
 export const formatDateKor = (date: string) => {
+    if (isEmpty(date)) {
+        return dayjs(new Date()).format('M월 DD일')
+    }
     return dayjs(date).format('M월 DD일')
 }
