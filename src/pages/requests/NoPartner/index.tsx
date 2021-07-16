@@ -100,6 +100,7 @@ const S = {
       em {
         font-weight: bold;
       }
+    }
     `,
   Title: styled.strong`
       display: inline-block;

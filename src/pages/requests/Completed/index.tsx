@@ -106,11 +106,12 @@ const S = {
     //  line-height: 20px;
     //  margin-bottom: 24px;
     //}
-    
+
     @media screen and (min-width: 768px) {
       width: 720px;
       margin: 15px auto 0;
     }
+    
     @media screen and (min-width: 1200px) {
       font-size: 24px;
     }
@@ -512,8 +513,8 @@ export default function Completed() {
           <S.TopTitle>
             <em>이사업체 매칭</em> 완료 <br />
             <S.TopBox>
-              <p>3개 업체 미만 매칭된 경우  24시간 내 <em>가능업체 발생 시 알림톡</em>으로 안내드리겠습니다.</p>
-              <p style={{ marginTop: 16 }}>업체에서 2시간 이상 연락이 없다면 보내드린 알림톡/문자의 업체 전화번호로 먼저 전화해보세요!</p>
+              <p>3개 업체 미만 매칭된 경우  24시간 내 <br /> <em>가능업체 발생 시 알림톡</em>으로 안내드리겠습니다.</p>
+              <p style={{ marginTop: 16 }}>업체에서 2시간 이상 연락이 없다면 보내드린 <br /> 알림톡/문자의 업체 전화번호로 먼저 전화해보세요!</p>
             </S.TopBox>
           </S.TopTitle>
           <ProcessBar/>
