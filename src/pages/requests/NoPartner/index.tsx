@@ -346,7 +346,7 @@ export default function NoPartner() {
           <S.Contents>
             <SoldOut />
             <S.TitleContainer>
-                <p><em>{formatDateKor(getMoveDate[0])}</em>에 고객이 많아 <br /> 이사가 가능한 업체를 찾는 중입니다.</p> <br />
+                <p><em>{formatDateKor(getFormData.moving_date)}</em>에 고객이 많아 <br /> 이사가 가능한 업체를 찾는 중입니다.</p> <br />
                 <p>가능 업체 발생 시 상담원이 <br /> 안내 드릴 예정입니다. (최대 2일)</p>
             </S.TitleContainer>
 
