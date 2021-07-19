@@ -1,11 +1,8 @@
 import Collapse from 'components/base/Collapse';
-import { LevelA, LevelB, LevelC, LevelN, LevelS, Triangle } from 'components/Icon';
-import { Down, Info, Up } from 'components/wematch-ui/Icon';
-import { MOVE_URL } from 'constants/env';
+import { Down, Up } from 'components/wematch-ui/Icon';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import * as colors from 'styles/colors';
-import * as userActions from 'store/user/actions';
 import * as userSelector from 'store/user/selectors';
 import { useSelector } from 'react-redux';
 import { Previous } from 'components/wematch-ui/Icon'
@@ -301,6 +298,17 @@ const MyConsultDetail = () => {
     }
   }, [selectedOrder]);
 
+  const selectOrderType = () => {
+    if (selectedOrder) {
+      if (selectedOrder.type === '가정이사' || selectedOrder.type === '원룸이사') {
+        return selectedOrder.type
+      } else {
+        return '청소업체'
+      }
+    }
+
+    return ''
+  };
   return (
     <S.Container>
       {isDesktop ? <MainHeader isFixed={true} border={true} /> : (
@@ -308,7 +316,7 @@ const MyConsultDetail = () => {
           <div className="icon" onClick={() => history.goBack()}>
             <Previous size={16} color={colors.black} />
           </div>
-          <h1>{`${selectedOrder ? selectedOrder.type : ''} 신청내역`}</h1>
+          <h1>{`${selectOrderType()} 신청내역`}</h1>
         </Header>
       )}
       <S.TopContents>
@@ -316,7 +324,7 @@ const MyConsultDetail = () => {
           <img src={require('assets/images/white_list.svg')} alt="icon" />
         </S.Icon>
         <S.TopTitle>
-          <em>{selectedOrder?.type}</em> 신청내역 <br />
+          <em>{selectOrderType()}</em> 신청내역 <br />
           <span>업체에서 연락이 없다면 먼저 전화해주세요!<br /> 전화번호를 문자로 보내드립니다.</span>
         </S.TopTitle>
       </S.TopContents>

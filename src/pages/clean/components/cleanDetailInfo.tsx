@@ -113,7 +113,7 @@ const CleanDetailInfo = () => {
         <Title>업체 전달 메모</Title>
         <Textarea value={cleanMemo} placeholder={'업체 전달 메모 작성(선택)'} onChange={(e) => handleCleanMemo(e.target.value)} />
       </Section>
-      <CalendarModal visible={visibleCalendarModal} title="청소" onClose={() => setVisibleCalendarModal(false)} onSelect={onSelectDate} selected={date} />
+      <CalendarModal visible={visibleCalendarModal} title="청소" onClose={() => setVisibleCalendarModal(false)} onSelect={onSelectDate} selected={date} serviceType={'clean'}/>
       <AddressModal
         visible={visibleAddressModal}
         title={'청소지를 검색해주세요'}

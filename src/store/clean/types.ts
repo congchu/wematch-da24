@@ -14,7 +14,7 @@ export interface RequestCleanAuthMatchData {
   phone2: string
   phone3: string
   mkt_agree: boolean
-  agent_id: string | string[] | null
+  agent_id?: string | string[] | null | undefined
   clean_option?: string[]
   memo?: string
 }

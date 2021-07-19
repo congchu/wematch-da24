@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import last from 'lodash/last'
 import ReactPixel from 'react-facebook-pixel'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
+import {Link, useHistory, useLocation} from 'react-router-dom'
 import { useMedia } from 'react-use-media'
 import useHashToggle from 'hooks/useHashToggle'
 import { useCookies } from 'react-cookie'
@@ -30,6 +30,7 @@ import { isExceedDiffDay } from 'lib/dateUtil'
 import {debounce} from "lodash";
 import {showToast} from "../../../components/common/Toast";
 import * as commonSelector from "store/common/selectors";
+import {useRouter} from "../../../hooks/useRouter";
 
 
 const S = {
@@ -172,7 +173,10 @@ export default function NoPartner() {
 
     const dispatch = useDispatch()
     const history = useHistory()
+    const location = useLocation();
 
+    const params = new URLSearchParams(location.search)
+    const serviceType = params.get('serviceType')
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
     const getMoveType = useSelector(formSelector.getType)
     const getMoveDate = useSelector(formSelector.getDate)
@@ -190,6 +194,7 @@ export default function NoPartner() {
     const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar');
     const [cookies, setCookie] = useCookies(['report'])
     const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
+
 
     const getMoveTypeText = useCallback(() => {
         if (getMoveType === 'house') {
@@ -326,7 +331,7 @@ export default function NoPartner() {
             <Input theme="default" border readOnly placeholder="이사예정일"
               onClick={() => setVisibleCalendarModal(true)} value={getMoveDate}
               style={{ backgroundColor: "transparent" }} rootStyle={{width: '100%'}} icon={'down'}/>
-            <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?"
+            <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?" serviceType={'moving'}
               onClose={toggleCalendarCancel}
               onConfirm={toggleCalendarConfirm} onSelect={onSelectDate}
               selected={getMoveDate} />

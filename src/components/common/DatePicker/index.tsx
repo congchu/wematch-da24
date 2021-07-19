@@ -127,10 +127,11 @@ interface Props {
   rangeEndDate?: Dayjs | Date
   disabledDate?: (date: Date) => boolean
   title?: string
+  serviceType: 'moving' | 'clean'
 }
 
 const DatePicker: React.FC<Props> = (props) => {
-  const { currentDate, onSelect, disabledDate, selected = [], rangeStartDate, rangeEndDate, title = '이사' } = props
+  const { currentDate, onSelect, disabledDate, selected = [], rangeStartDate, rangeEndDate, title = '이사', serviceType } = props
 
   const initialDate = (() => {
     if (currentDate) {
@@ -164,7 +165,7 @@ const DatePicker: React.FC<Props> = (props) => {
       return (
         <div key={index}>
           <S.CalendarHeader>{`${currentDateValue.year()}년 ${currentDateValue.month() + 1 + index}월`}</S.CalendarHeader>
-          <Calendar currentDate={date} onSelect={onSelect} disabledDate={disabledDateWithRange} selected={selected} maxDate={maxDate} />
+          <Calendar currentDate={date} onSelect={onSelect} disabledDate={disabledDateWithRange} selected={selected} maxDate={maxDate} serviceType={serviceType}/>
         </div>
       )
     })
@@ -179,12 +180,14 @@ const DatePicker: React.FC<Props> = (props) => {
           </p>
           <p className="content">오늘부터 55일 이내 날짜에서만 {title}업체 견적신청이 가능해요.</p>
         </S.Info>
-        <S.Toast>
-          <div>
-            <Dot />
-            <p>손 없는 날/금~토요일은 가격이 비쌀 수 있어요.</p>
-          </div>
-        </S.Toast>
+        {serviceType === 'moving' && (
+          <S.Toast>
+            <div>
+              <Dot />
+              <p>손 없는 날/금~토요일은 가격이 비쌀 수 있어요.</p>
+            </div>
+          </S.Toast>
+        )}
       </S.Wrapper>
     </S.Container>
   )

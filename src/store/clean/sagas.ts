@@ -8,6 +8,7 @@ import { getCleanForm } from './selectors'
 import { RequestCleanAuthMatchData } from './types'
 import { fetchCleanAutoMatch } from './actions'
 import { getCookie } from 'lib/cookie'
+import {push} from "connected-react-router";
 
 export function* fetchCleanAutoMatchSaga() {
   try {
@@ -42,7 +43,14 @@ export function* fetchCleanAutoMatchSaga() {
       memo: form.cleanMemo
     }
     const data = yield call(requests.submitClean, body, token)
-    yield put(fetchCleanAutoMatch.success(data.data))
+
+    if(data.result === 'no service') {
+      yield put(push('/requests/noservice'))
+    } else if (data.result === 'no partner') {
+      yield put(push('/requests/nopartner?serviceType=clean'))
+    } else {
+      yield put(fetchCleanAutoMatch.success(data.data))
+    }
   } catch (e) {
     console.log(e)
     yield put(fetchCleanAutoMatch.failure())

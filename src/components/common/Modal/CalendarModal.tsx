@@ -2,14 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
 
-import ModalTemplate from './ModalTemplate'
 import PopupTemplate from 'components/wematch-ui/PopupTemplate'
 import DatePicker from 'components/common/DatePicker'
 import { CalendarDate } from 'components/wematch-ui/utils/date'
-import Styled from 'styled-components'
 import * as colors from 'styles/colors'
 
 interface Props {
+  serviceType: 'moving' | 'clean'
   visible: boolean
   title: string
   onClose?: () => void
@@ -75,8 +74,7 @@ const S = {
 }
 
 const CalendarModal: React.FC<Props> = (props) => {
-  const { visible = false, title, onClose, onOverlayClose, onConfirm, onSelect, selected } = props
-  // const [selectedDates, setSelectedDates] = React.useState<string[]>([])
+  const { visible = false, title, onClose, onSelect, selected, serviceType } = props
 
   const rangeStartDate = React.useMemo(() => {
     return dayjs()
@@ -89,10 +87,6 @@ const CalendarModal: React.FC<Props> = (props) => {
   const disabledDate = (date: Date) => {
     return false
   }
-
-  // const onSelect = (date: CalendarDate) => {
-  //     setSelectedDates([date.date.format()])
-  // }
 
   return (
     <PopupTemplate visible={visible} onClose={onClose}>
@@ -129,7 +123,7 @@ const CalendarModal: React.FC<Props> = (props) => {
             </S.Days>
           </S.DaysContainer>
         </S.Header>
-        <DatePicker currentDate={new Date()} rangeStartDate={rangeStartDate} rangeEndDate={rangeEndDate} onSelect={onSelect} selected={selected} disabledDate={disabledDate} title={title} />
+        <DatePicker currentDate={new Date()} rangeStartDate={rangeStartDate} rangeEndDate={rangeEndDate} onSelect={onSelect} selected={selected} disabledDate={disabledDate} title={title} serviceType={serviceType}/>
       </S.Container>
     </PopupTemplate>
   )

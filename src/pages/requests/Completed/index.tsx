@@ -3,13 +3,13 @@ import styled from 'styled-components'
 import ReactPixel from 'react-facebook-pixel'
 import { useMedia } from 'react-use-media'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { useRouter } from 'hooks/useRouter'
 
 import MainHeader from 'components/common/MainHeader'
 import Collapse from 'components/base/Collapse'
-import { Down, Up, Info } from 'components/wematch-ui/Icon'
-import { Triangle, Check, LevelA, LevelB, LevelC, LevelN, LevelS, Question } from 'components/Icon'
+import { Down, Up } from 'components/wematch-ui/Icon'
+import { Check } from 'components/Icon'
 import ProcessBar from './processBar'
 import NewModal from 'components/NewModalTemplate'
 import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton'
@@ -22,17 +22,15 @@ import * as cleanSelector from 'store/clean/selectors'
 import * as moveActions from 'store/form/actions'
 import * as moveSelector from 'store/form/selectors'
 import * as colors from 'styles/colors'
-import { MOVE_URL, CLEAN_URL } from 'constants/env'
+import { CLEAN_URL } from 'constants/env'
 import { dataLayer } from 'lib/dataLayerUtil'
 import { events } from 'lib/appsflyer'
 import { whatDay } from 'lib/dateUtil'
-import * as sentry from '@sentry/react'
-import { Severity } from '@sentry/react'
 import dayjs from 'dayjs'
-import NewLevelN from '../../../components/Icon/generated/NewLevelN'
-import NewLevelOther from '../../../components/Icon/generated/NewLevelOther'
-import NewLevelS from '../../../components/Icon/generated/NewLevelS'
-import { Level } from '../../../types/partner'
+import NewLevelN from 'components/Icon/generated/NewLevelN'
+import NewLevelOther from 'components/Icon/generated/NewLevelOther'
+import NewLevelS from 'components/Icon/generated/NewLevelS'
+import { Level } from 'types/partner'
 import { getUser } from 'store/user/selectors'
 import { phoneSplit } from 'components/wematch-ui/utils/form'
 
@@ -623,6 +621,8 @@ export default function Completed() {
     return <ResponsiveSkeleton />
   }
 
+  console.log('companyListData:',companyListData);
+
   return (
     <S.Container>
       {isDesktop && <MainHeader />}
@@ -673,7 +673,6 @@ export default function Completed() {
                     category: msg !== 'true' ? '매칭완료' : '매칭완료페이지_업체정보',
                     action: '고객평가_확인',
                     label: `${arr.length}_${index + 1}`,
-                    // CD6: data.type,
                     CD6: `${data?.type === '가정이사' ? '가정' : '사무실'}`
                   })
                   /* 페이지 재접속시 이전상태 초기화 */
@@ -683,6 +682,7 @@ export default function Completed() {
                 {`업체 정보 자세히 보기 (후기 ${list.feedback_cnt}개)`}
               </S.LinkCompany>
             </S.Card>
+
           ))}
         </S.CompanyList>
         <S.TitleWrap onClick={() => setExpand(!expand)} className="toggle">
