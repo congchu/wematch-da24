@@ -621,9 +621,6 @@ export default function Completed() {
   if (loading || firstLoading || cleanLoading || moveLoading) {
     return <ResponsiveSkeleton />
   }
-
-  console.log('companyListData:',companyListData);
-
   return (
     <S.Container>
       {isDesktop && <MainHeader />}
@@ -683,7 +680,6 @@ export default function Completed() {
                 {`업체 정보 자세히 보기 (후기 ${list.feedback_cnt}개)`}
               </S.LinkCompany>
             </S.Card>
-
           ))}
         </S.CompanyList>
         <S.TitleWrap onClick={() => setExpand(!expand)} className="toggle">
