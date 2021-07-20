@@ -502,6 +502,7 @@ export default function Completed() {
   }
 
   const companyListData = useMemo(() => {
+    console.log('cleanData:',cleanData)
     if (inquiry_idx) {
       return data?.partners
     }

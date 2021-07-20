@@ -6,9 +6,10 @@ import PopupTemplate from 'components/wematch-ui/PopupTemplate'
 import DatePicker from 'components/common/DatePicker'
 import { CalendarDate } from 'components/wematch-ui/utils/date'
 import * as colors from 'styles/colors'
+import { IServiceType } from 'types/partner'
 
 interface Props {
-  serviceType: 'moving' | 'clean'
+  serviceType: IServiceType
   visible: boolean
   title: string
   onClose?: () => void

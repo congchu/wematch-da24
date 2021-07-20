@@ -8,6 +8,7 @@ import { CalendarDate, getCurrentMonthDays } from 'components/wematch-ui/utils/d
 import { Next } from 'components/wematch-ui/Icon'
 
 import * as colors from 'styles/colors'
+import { IServiceType } from 'types/partner'
 
 /**
  * 2020.06.08 Ryan
@@ -127,7 +128,7 @@ interface Props {
   rangeEndDate?: Dayjs | Date
   disabledDate?: (date: Date) => boolean
   title?: string
-  serviceType: 'moving' | 'clean'
+  serviceType: IServiceType
 }
 
 const DatePicker: React.FC<Props> = (props) => {
@@ -180,7 +181,7 @@ const DatePicker: React.FC<Props> = (props) => {
           </p>
           <p className="content">오늘부터 55일 이내 날짜에서만 {title}업체 견적신청이 가능해요.</p>
         </S.Info>
-        {serviceType === 'moving' && (
+        {serviceType === 'move' && (
           <S.Toast>
             <div>
               <Dot />

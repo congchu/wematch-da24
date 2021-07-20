@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import last from 'lodash/last'
 import ReactPixel from 'react-facebook-pixel'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
@@ -9,7 +8,6 @@ import useHashToggle from 'hooks/useHashToggle'
 import { useCookies } from 'react-cookie'
 
 import MainHeader from 'components/common/MainHeader'
-import NavHeader from 'components/common/NavHeader'
 import Input from 'components/common/Input'
 import { SoldOut } from 'components/Icon'
 import CalendarModal from 'components/common/Modal/CalendarModal'
@@ -23,14 +21,12 @@ import * as userSelector from 'store/user/selectors'
 import {FormState} from 'store/form/reducers'
 
 import { CALENDAR_MAX_DAYS } from 'constants/values';
-import { MOVE_URL } from 'constants/env'
 import { dataLayer } from 'lib/dataLayerUtil'
 import { events } from 'lib/appsflyer'
 import { isExceedDiffDay } from 'lib/dateUtil'
 import {debounce} from "lodash";
-import {showToast} from "../../../components/common/Toast";
+import {showToast} from "components/common/Toast";
 import * as commonSelector from "store/common/selectors";
-import {useRouter} from "../../../hooks/useRouter";
 
 
 const S = {
@@ -172,11 +168,12 @@ export default function NoPartner() {
     })
 
     const dispatch = useDispatch()
-    const history = useHistory()
     const location = useLocation();
 
+
     const params = new URLSearchParams(location.search)
-    const serviceType = params.get('serviceType')
+    const serviceType = params.get('serviceType') || 'move'
+
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
     const getMoveType = useSelector(formSelector.getType)
     const getMoveDate = useSelector(formSelector.getDate)
@@ -331,7 +328,8 @@ export default function NoPartner() {
             <Input theme="default" border readOnly placeholder="이사예정일"
               onClick={() => setVisibleCalendarModal(true)} value={getMoveDate}
               style={{ backgroundColor: "transparent" }} rootStyle={{width: '100%'}} icon={'down'}/>
-            <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?" serviceType={'moving'}
+            <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?"
+                           serviceType={serviceType === 'clean' ? 'clean' : 'move'}
               onClose={toggleCalendarCancel}
               onConfirm={toggleCalendarConfirm} onSelect={onSelectDate}
               selected={getMoveDate} />
