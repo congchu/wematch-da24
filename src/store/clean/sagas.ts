@@ -54,6 +54,7 @@ export function* fetchCleanAutoMatchSaga() {
   } catch (e) {
     console.log(e)
     yield put(fetchCleanAutoMatch.failure())
+    yield put(push('/error'))
   }
 }
 
