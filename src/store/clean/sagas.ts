@@ -8,7 +8,7 @@ import { getCleanForm } from './selectors'
 import { RequestCleanAuthMatchData } from './types'
 import { fetchCleanAutoMatch } from './actions'
 import { getCookie } from 'lib/cookie'
-import {push} from "connected-react-router";
+import { push } from 'connected-react-router'
 
 export function* fetchCleanAutoMatchSaga() {
   try {
@@ -44,12 +44,12 @@ export function* fetchCleanAutoMatchSaga() {
     }
     const data = yield call(requests.submitClean, body, token)
 
-    if(data.result === 'no service') {
+    if (data.result === 'no service') {
       yield put(push('/requests/noservice'))
     } else if (data.result === 'no partner') {
       yield put(push('/requests/nopartner?serviceType=clean'))
     } else {
-      yield put(fetchCleanAutoMatch.success(data.data))
+      yield put(fetchCleanAutoMatch.success(data))
     }
   } catch (e) {
     console.log(e)
