@@ -6,10 +6,11 @@ import { Link, useHistory, useLocation } from 'react-router-dom'
 import { useMedia } from 'react-use-media'
 import useHashToggle from 'hooks/useHashToggle'
 import { useCookies } from 'react-cookie'
+import {Button} from '@wematch/wematch-ui'
 
 import MainHeader from 'components/common/MainHeader'
 import Input from 'components/common/Input'
-import { SoldOut } from 'components/Icon'
+import { IconSad, SoldOut } from 'components/Icon'
 import CalendarModal from 'components/common/Modal/CalendarModal'
 import { CalendarDate } from 'components/wematch-ui/utils/date'
 
@@ -17,6 +18,8 @@ import * as formActions from 'store/form/actions'
 import * as formSelectors from 'store/form/selectors'
 import * as formSelector from 'store/form/selectors'
 import * as userSelector from 'store/user/selectors'
+import * as commonSelector from 'store/common/selectors'
+import * as cleanSelector from 'store/clean/selectors'
 import { FormState } from 'store/form/reducers'
 
 import { CALENDAR_MAX_DAYS } from 'constants/values'
@@ -26,9 +29,8 @@ import { events } from 'lib/appsflyer'
 import { isExceedDiffDay } from 'lib/dateUtil'
 import { debounce } from 'lodash'
 import { showToast } from 'components/common/Toast'
-import * as commonSelector from 'store/common/selectors'
 import { setCleanDate } from 'store/clean/actions'
-import * as cleanSelector from 'store/clean/selectors'
+import * as colors from 'styles/colors'
 
 const S = {
   Header: styled.header`
@@ -70,6 +72,7 @@ const S = {
     margin-top: 56px;
     text-align: center;
     letter-spacing: -0.5px;
+    padding: 24px;
     svg {
       display: block;
       margin: 0 auto;
@@ -95,6 +98,26 @@ const S = {
       margin-top: 6px;
       font-size: 15px;
     }
+  `,
+
+  CleanTitle: styled.p`
+    font-size: 16px;
+    font-weight: 700;
+    color: ${colors.gray33};
+    margin: 35px 0;
+  `,
+  SubTitle: styled.p`
+    font-size: 16px;
+    font-weight: 400;
+    color: ${colors.gray33};
+  `,
+  ButtonWrapper: styled.div`
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 24px;
+    box-sizing: border-box;
   `,
   Subtext: styled.p`
     font-size: 14px;
@@ -186,8 +209,8 @@ export default function NoPartner() {
   const { user } = useSelector(userSelector.getUser)
   const getJuso = useSelector(commonSelector.getJuso)
   const { type: cleanType, date: cleanDate, address: cleanAddress } = useSelector(cleanSelector.getCleanForm)
-    const serviceType = params.get('serviceType') || 'move'
-    const params = new URLSearchParams(location.search)
+  const params = new URLSearchParams(location.search)
+  const serviceType = params.get('serviceType') === 'clean' ? 'clean' : 'move'
 
   const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar')
   const [cookies, setCookie] = useCookies(['report'])
@@ -322,23 +345,42 @@ export default function NoPartner() {
         </S.Header>
       )}
       <S.Contents>
-        <SoldOut />
-        <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>
-        <S.LinkAlarm id="dsl_a_alarm_noPartner" href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">
-          가능업체발생 시 알림 신청하기
-        </S.LinkAlarm>
+        {serviceType === 'move'
+          ? (
+            <>
+              <SoldOut />
+              <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>
+              <S.LinkAlarm id="dsl_a_alarm_noPartner" href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">
+              가능업체발생 시 알림 신청하기
+              </S.LinkAlarm>
+            </>
+          )
+
+          : (
+            <>
+              <IconSad width={80} height={64}/>
+              <S.CleanTitle>오늘 가능한 업체가 모두 마감되었습니다.</S.CleanTitle>
+              <S.SubTitle>고객센터(T. 1522-2483)로 연락주시면 <br/>신속히 업체를 찾아드리겠습니다.</S.SubTitle>
+              <S.ButtonWrapper>
+                <Button theme={'primary'} label={'홈으로 돌아가기'} isRound={true} onClick={() => history.push('/')}/>
+              </S.ButtonWrapper>
+            </>
+          )}
+
       </S.Contents>
-      <S.ChangeDate>
-        <S.DateTitle>다른 날짜에 이사가 가능하신가요?</S.DateTitle>
-        <S.Subtext>
-          *실제 이사가 가능한 날짜만 선택해주세요! <br /> 날짜에 따라 이사 비용이 변동될 수 있습니다.
-        </S.Subtext>
-        <Input theme="default" border readOnly placeholder="이사예정일" onClick={() => setVisibleCalendarModal(true)} value={getMoveDate} style={{ backgroundColor: 'transparent' }} rootStyle={{ width: '100%' }} icon={'down'} />
-        <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?" serviceType={serviceType === 'clean' ? 'clean' : 'move'} onClose={toggleCalendarCancel} onConfirm={toggleCalendarConfirm} onSelect={onSelectDate} selected={getMoveDate} />
-        <S.DateSelect id="dsl_button_retry" onClick={handleSubmit}>
-          변경한 날짜로 업체 추천 받기
-        </S.DateSelect>
-      </S.ChangeDate>
+      {serviceType === 'move' && (
+        <S.ChangeDate>
+          <S.DateTitle>다른 날짜에 이사가 가능하신가요?</S.DateTitle>
+          <S.Subtext>
+            *실제 이사가 가능한 날짜만 선택해주세요! <br /> 날짜에 따라 이사 비용이 변동될 수 있습니다.
+          </S.Subtext>
+          <Input theme="default" border readOnly placeholder="이사예정일" onClick={() => setVisibleCalendarModal(true)} value={getMoveDate} style={{ backgroundColor: 'transparent' }} rootStyle={{ width: '100%' }} icon={'down'} />
+          <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?" serviceType={serviceType} onClose={toggleCalendarCancel} onConfirm={toggleCalendarConfirm} onSelect={onSelectDate} selected={getMoveDate} />
+          <S.DateSelect id="dsl_button_retry" onClick={handleSubmit}>
+            변경한 날짜로 업체 추천 받기
+          </S.DateSelect>
+        </S.ChangeDate>
+      )}
     </S.Container>
   )
 }
