@@ -168,8 +168,9 @@ export default function NoPartner() {
     minWidth: 1200
   })
 
-  const dispatch = useDispatch()
-  const location = useLocation()
+    const dispatch = useDispatch()
+    const location = useLocation();
+    const history = useHistory();
 
   const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
   const getMoveType = useSelector(formSelector.getType)
@@ -185,9 +186,8 @@ export default function NoPartner() {
   const { user } = useSelector(userSelector.getUser)
   const getJuso = useSelector(commonSelector.getJuso)
   const { type: cleanType, date: cleanDate, address: cleanAddress } = useSelector(cleanSelector.getCleanForm)
-  const history = useHistory()
-  const params = new URLSearchParams(location.search)
-  const serviceType = params.get('serviceType') || 'move'
+    const serviceType = params.get('serviceType') || 'move'
+    const params = new URLSearchParams(location.search)
 
   const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar')
   const [cookies, setCookie] = useCookies(['report'])
