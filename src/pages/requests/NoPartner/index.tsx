@@ -19,7 +19,7 @@ import * as formSelector from 'store/form/selectors'
 import * as userSelector from 'store/user/selectors'
 import { FormState } from 'store/form/reducers'
 
-import { CALENDAR_MAX_DAYS } from 'constants/values';
+import { CALENDAR_MAX_DAYS } from 'constants/values'
 import { MOVE_URL } from 'constants/env'
 import { dataLayer } from 'lib/dataLayerUtil'
 import { events } from 'lib/appsflyer'
@@ -168,8 +168,8 @@ export default function NoPartner() {
     minWidth: 1200
   })
 
-    const dispatch = useDispatch()
-    const location = useLocation();
+  const dispatch = useDispatch()
+  const location = useLocation()
 
   const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
   const getMoveType = useSelector(formSelector.getType)
@@ -185,8 +185,9 @@ export default function NoPartner() {
   const { user } = useSelector(userSelector.getUser)
   const getJuso = useSelector(commonSelector.getJuso)
   const { type: cleanType, date: cleanDate, address: cleanAddress } = useSelector(cleanSelector.getCleanForm)
-    const serviceType = params.get('serviceType') || 'move'
-    const params = new URLSearchParams(location.search)
+  const history = useHistory()
+  const params = new URLSearchParams(location.search)
+  const serviceType = params.get('serviceType') || 'move'
 
   const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar')
   const [cookies, setCookie] = useCookies(['report'])
@@ -309,28 +310,35 @@ export default function NoPartner() {
     // }
   }, [getSubmittedForm])
 
-    return (
-        <S.Container>
-          {isDesktop ? <MainHeader /> : <S.Header><Link to="/"><span>위매치</span></Link></S.Header>}
-          <S.Contents>
-            <SoldOut />
-            <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>
-            <S.LinkAlarm id='dsl_a_alarm_noPartner' href="https://pf.kakao.com/_Ppsxexd/chat"
-              target="_blank">가능업체발생 시 알림 신청하기</S.LinkAlarm>
-          </S.Contents>
-          <S.ChangeDate>
-            <S.DateTitle>다른 날짜에 이사가 가능하신가요?</S.DateTitle>
-            <S.Subtext>*실제 이사가 가능한 날짜만 선택해주세요! <br/> 날짜에 따라 이사 비용이 변동될 수 있습니다.</S.Subtext>
-            <Input theme="default" border readOnly placeholder="이사예정일"
-              onClick={() => setVisibleCalendarModal(true)} value={getMoveDate}
-              style={{ backgroundColor: "transparent" }} rootStyle={{width: '100%'}} icon={'down'}/>
-            <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?"
-                           serviceType={serviceType === 'clean' ? 'clean' : 'move'}
-              onClose={toggleCalendarCancel}
-              onConfirm={toggleCalendarConfirm} onSelect={onSelectDate}
-              selected={getMoveDate} />
-            <S.DateSelect id='dsl_button_retry' onClick={handleSubmit}>변경한 날짜로 업체 추천 받기</S.DateSelect>
-          </S.ChangeDate>
-        </S.Container>
-    )
+  return (
+    <S.Container>
+      {isDesktop ? (
+        <MainHeader />
+      ) : (
+        <S.Header>
+          <Link to="/">
+            <span>위매치</span>
+          </Link>
+        </S.Header>
+      )}
+      <S.Contents>
+        <SoldOut />
+        <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>
+        <S.LinkAlarm id="dsl_a_alarm_noPartner" href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">
+          가능업체발생 시 알림 신청하기
+        </S.LinkAlarm>
+      </S.Contents>
+      <S.ChangeDate>
+        <S.DateTitle>다른 날짜에 이사가 가능하신가요?</S.DateTitle>
+        <S.Subtext>
+          *실제 이사가 가능한 날짜만 선택해주세요! <br /> 날짜에 따라 이사 비용이 변동될 수 있습니다.
+        </S.Subtext>
+        <Input theme="default" border readOnly placeholder="이사예정일" onClick={() => setVisibleCalendarModal(true)} value={getMoveDate} style={{ backgroundColor: 'transparent' }} rootStyle={{ width: '100%' }} icon={'down'} />
+        <CalendarModal visible={visibleCalendarModal} title="이사 예정일이 언제세요?" serviceType={serviceType === 'clean' ? 'clean' : 'move'} onClose={toggleCalendarCancel} onConfirm={toggleCalendarConfirm} onSelect={onSelectDate} selected={getMoveDate} />
+        <S.DateSelect id="dsl_button_retry" onClick={handleSubmit}>
+          변경한 날짜로 업체 추천 받기
+        </S.DateSelect>
+      </S.ChangeDate>
+    </S.Container>
+  )
 }
