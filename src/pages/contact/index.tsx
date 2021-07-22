@@ -65,7 +65,7 @@ const S = {
         outline: none;
         background-color: transparent;
         letter-spacing: -1px;
-        height: 110px;
+        height: 135px;
         font-size: 16px;
         line-height: 28px;
         border-radius: 4px;
@@ -185,6 +185,8 @@ function ContactPage() {
     useEffect(()=>{
         if(every(initObj)){
             setCompleted(true)
+        } else {
+            setCompleted(false)
         }
     },[name, contactType, tel, contents, serviceType])
 
@@ -241,10 +243,10 @@ function ContactPage() {
                        value = { contactType }
                 />
                 <S.TextContainer>
-                    <S.Textarea placeholder="문의 내용"
-                                style={{ fontSize: "16px"}}
-                                value={contents}
-                                onChange={(e)=> {setContents(e.target.value)}}
+                    <S.Textarea placeholder="업체 관련 문의 시&#13;&#10;반드시 업체명과 구체적인 내용을 적어주세요! &#13;&#10;ex) 접수 취소 시, &#13;&#10;- 취소할 업체명 (필수)&#13;&#10;- 취소 사유 (필수)"
+                        style={{ fontSize: "16px"}}
+                        value={contents}
+                        onChange={(e)=> {setContents(e.target.value)}}
                     />
                 </S.TextContainer>
             </S.Form>
