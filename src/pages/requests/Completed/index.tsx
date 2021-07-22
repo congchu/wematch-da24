@@ -364,6 +364,8 @@ const S = {
   `
 }
 
+type ServiceType = 'move' | 'clean'
+
 export default function Completed() {
   const moveForm = useSelector(moveSelector.getFormData)
   const cleanForm = useSelector(cleanSelector.getCleanForm)
@@ -389,7 +391,7 @@ export default function Completed() {
   } = useRouter()
   const params = new URLSearchParams(location.search)
   const inquiry_idx = params.get('inquiry_idx')
-  const serviceType = params.get('serviceType')
+  const serviceType = params.get('serviceType') === 'clean' ? 'clean' : 'move'
 
   const togglePopup = () => {
     setShowPopup(!showPopup)
@@ -483,6 +485,8 @@ export default function Completed() {
       })
       pl.then(() => (window.location.href = `${CLEAN_URL}`))
     }
+
+    history.push('/clean');
   }, [msg, data])
 
   const handleCleanCancel = useCallback(() => {
@@ -492,6 +496,7 @@ export default function Completed() {
           event: 'msg_complete',
           category: msg ? '매칭완료메시지_크로스셀' : '매칭완료_크로스셀',
           action: '입주청소찾기',
+
           label: '다음에',
           CD6: `${data.type === '가정이사' ? '가정' : '사무실'}`
         })
@@ -499,6 +504,8 @@ export default function Completed() {
       })
       pl.then(() => togglePopup())
     }
+
+    history.push('/');
   }, [msg, data])
 
   const compileLevelText = (level: Level) => {
@@ -512,8 +519,15 @@ export default function Completed() {
     }
   }
 
+  const handleSubmit = () => {
+    if(serviceType === 'move') {
+      setShowPopup(!showPopup)
+    } else if (serviceType === 'clean') {
+      history.push('/myrequest')
+    }
+  };
+
   const companyListData = useMemo(() => {
-    console.log('cleanData:',cleanData)
     if (inquiry_idx) {
       return data?.partners
     }
@@ -714,8 +728,10 @@ export default function Completed() {
           <img className="right" src={require('assets/images/components/Completed/right.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사" />
         </S.Box>
       )}
-      <S.Button onClick={() => setShowPopup(!showPopup)}>신청 정보 확인완료</S.Button>
-      <NewModal visible={showPopup} title={'입주청소 찾기'} content={'입주청소도 필요하세요?'} confirmText={'바로 찾기'} cancelText={'다음에'} confirmClick={handleCleanConfirm} cancelClick={handleCleanCancel} />
+      <S.Button onClick={() => handleSubmit()}>신청 정보 확인완료</S.Button>
+      {serviceType === 'move' && (
+        <NewModal visible={showPopup} title={'입주청소 찾기'} content={'입주청소도 필요하세요?'} confirmText={'바로 찾기'} cancelText={'다음에'} confirmClick={handleCleanConfirm} cancelClick={handleCleanCancel} />
+      )}
       <NewModal visible={sessionVisible} title={'정보 만료'} content={'현재 페이지의 정보가 만료되었습니다. 다시 조회해 주세요.'} confirmClick={() => history.push('/')} confirmText={'홈으로 가기'} />
     </S.Container>
   )
