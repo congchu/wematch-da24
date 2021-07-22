@@ -88,25 +88,37 @@ const S = {
     margin: 15px auto 0;
     font-size: 20px;
     text-align: center;
-    border-bottom: 1px solid #ebeef2;
+    /* border-bottom: 1px solid #ebeef2; */
+
+    div {
+      background: #f7f8fa;
+      border-radius: 6px;
+      font-size: 14px;
+      padding: 24px;
+      margin-top: 16px;
+      p {
+        padding-bottom: 16px;
+
+        span {
+          font-weight: bold;
+        }
+      }
+    }
+    span {
+      display: inline-block;
+      font-size: 14px;
+      line-height: 20px;
+    }
 
     em {
       font-weight: 700;
-    }
-
-    span {
-      display: inline-block;
-      margin-top: 14px;
-      font-size: 14px;
-      line-height: 20px;
-      margin-bottom: 24px;
     }
 
     @media screen and (min-width: 768px) {
       width: 720px;
       margin: 15px auto 0;
     }
-    
+
     @media screen and (min-width: 1200px) {
       font-size: 24px;
     }
@@ -116,7 +128,7 @@ const S = {
     border-radius: 6px;
     color: ${colors.gray33};
     background-color: ${colors.grayBg};
-    padding: 24px 22px; 
+    padding: 24px 22px;
     margin-top: 17px;
     font-size: 14px;
     letter-spacing: -1px;
@@ -364,6 +376,8 @@ const S = {
   `
 }
 
+type ServiceType = 'move' | 'clean'
+
 export default function Completed() {
   const moveForm = useSelector(moveSelector.getFormData)
   const cleanForm = useSelector(cleanSelector.getCleanForm)
@@ -389,7 +403,7 @@ export default function Completed() {
   } = useRouter()
   const params = new URLSearchParams(location.search)
   const inquiry_idx = params.get('inquiry_idx')
-  const serviceType = params.get('serviceType')
+  const serviceType = params.get('serviceType') === 'clean' ? 'clean' : 'move'
 
   const togglePopup = () => {
     setShowPopup(!showPopup)
@@ -483,6 +497,8 @@ export default function Completed() {
       })
       pl.then(() => (window.location.href = `${CLEAN_URL}`))
     }
+
+    history.push('/clean')
   }, [msg, data])
 
   const handleCleanCancel = useCallback(() => {
@@ -492,6 +508,7 @@ export default function Completed() {
           event: 'msg_complete',
           category: msg ? '매칭완료메시지_크로스셀' : '매칭완료_크로스셀',
           action: '입주청소찾기',
+
           label: '다음에',
           CD6: `${data.type === '가정이사' ? '가정' : '사무실'}`
         })
@@ -499,6 +516,8 @@ export default function Completed() {
       })
       pl.then(() => togglePopup())
     }
+
+    history.push('/')
   }, [msg, data])
 
   const compileLevelText = (level: Level) => {
@@ -512,8 +531,16 @@ export default function Completed() {
     }
   }
 
+  const handleSubmit = () => {
+    if (serviceType === 'move') {
+      setShowPopup(!showPopup)
+    } else if (serviceType === 'clean') {
+      history.push('/myrequest')
+    }
+  }
+
   const companyListData = useMemo(() => {
-    console.log('cleanData:',cleanData)
+    console.log('cleanData:', cleanData)
     if (inquiry_idx) {
       return data?.partners
     }
@@ -640,20 +667,28 @@ export default function Completed() {
           <S.Icon>
             <Check fill={'#fff'} />
           </S.Icon>
-          <S.TopTitle>
+          <S.TopTitle style={{ paddingBottom: serviceType !== 'clean' ? 0 : '24px' }}>
             <em>{serviceType !== 'clean' && !cleanType ? `이사업체` : `청소업체`}</em> 매칭완료 <br />
-            {serviceType !== 'clean' && !cleanType ? (
-              <span>
-                업체에서 2시간 이상 연락이 없다면 보내드린 <br />
-                알림톡/문자의 업체 전화번호로 먼저 전화해보세요!
-              </span>
-            ) : (
-              <span>
-                업체에서 연락이 없다면 아래 번호로 문의해주세요!
-                <br />
-                (고객센터 1522-2483)
-              </span>
-            )}
+            <div>
+              {serviceType !== 'clean' && !cleanType ? (
+                <>
+                  <p>
+                    3개 업체 미만 매칭된 경우 24시간 내<br />
+                    <span>가능업체 발생 시 알림톡</span>으로 안내드리겠습니다.
+                  </p>
+                  <span>
+                    업체에서 2시간 이상 연락이 없다면 보내드린 <br />
+                    알림톡/문자의 업체 전화번호로 먼저 전화해보세요!
+                  </span>
+                </>
+              ) : (
+                <span>
+                  업체에서 2시간 이상 연락이 없다면 보내드린
+                  <br />
+                  알림톡/문자의 업체 전화번호로 먼저 전화해보세요!
+                </span>
+              )}
+            </div>
           </S.TopTitle>
           {serviceType !== 'clean' && !cleanType && <ProcessBar />}
         </S.TopContents>
@@ -714,8 +749,8 @@ export default function Completed() {
           <img className="right" src={require('assets/images/components/Completed/right.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사" />
         </S.Box>
       )}
-      <S.Button onClick={() => setShowPopup(!showPopup)}>신청 정보 확인완료</S.Button>
-      <NewModal visible={showPopup} title={'입주청소 찾기'} content={'입주청소도 필요하세요?'} confirmText={'바로 찾기'} cancelText={'다음에'} confirmClick={handleCleanConfirm} cancelClick={handleCleanCancel} />
+      <S.Button onClick={() => handleSubmit()}>신청 정보 확인완료</S.Button>
+      {serviceType === 'move' && <NewModal visible={showPopup} title={'입주청소 찾기'} content={'입주청소도 필요하세요?'} confirmText={'바로 찾기'} cancelText={'다음에'} confirmClick={handleCleanConfirm} cancelClick={handleCleanCancel} />}
       <NewModal visible={sessionVisible} title={'정보 만료'} content={'현재 페이지의 정보가 만료되었습니다. 다시 조회해 주세요.'} confirmClick={() => history.push('/')} confirmText={'홈으로 가기'} />
     </S.Container>
   )
