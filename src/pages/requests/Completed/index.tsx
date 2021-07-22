@@ -84,7 +84,7 @@ const S = {
       margin-left: -13px;
     }
   `,
-  TopTitle: styled.p`
+  TopTitle: styled.div`
     margin: 15px auto 0;
     font-size: 20px;
     text-align: center;
@@ -106,9 +106,20 @@ const S = {
       width: 720px;
       margin: 15px auto 0;
     }
+    
     @media screen and (min-width: 1200px) {
       font-size: 24px;
     }
+  `,
+  TopBox: styled.div`
+    text-align: center;
+    border-radius: 6px;
+    color: ${colors.gray33};
+    background-color: ${colors.grayBg};
+    padding: 24px 22px; 
+    margin-top: 17px;
+    font-size: 14px;
+    letter-spacing: -1px;
   `,
   TitleWrap: styled.div`
     overflow: hidden;

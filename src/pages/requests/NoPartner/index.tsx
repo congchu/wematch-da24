@@ -66,7 +66,9 @@ const S = {
     }
   `,
   Container: styled.div`
+    position: relative;
     padding-bottom: 24px;
+    height: calc(100vh - 55px);
   `,
   Contents: styled.div`
     margin-top: 56px;
