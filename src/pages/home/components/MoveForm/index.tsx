@@ -25,6 +25,7 @@ import useHashToggle from 'hooks/useHashToggle'
 import { useHistory } from 'react-router-dom'
 import { ESignInCase } from 'store/user/types'
 import { Question } from 'components/Icon'
+import CleanDetailInfo from 'pages/clean/components/cleanDetailInfo'
 
 const Visual = {
   Section: styled.section`
@@ -314,13 +315,14 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
     })
 
     selectedSubmitType.current = submitType
+
     dispatch(formActions.setSubmitType(submitType))
 
     if (!user) {
       dispatch(userActions.signIn({ prevPage: ESignInCase.FORM }))
       history.push('/login')
     } else {
-      dispatch(formActions.fetchMoveData())
+      dispatch(formActions.setMoveData())
     }
   }
 

@@ -3,18 +3,17 @@ import Styled from 'styled-components'
 import dayjs from 'dayjs'
 
 import { Truck } from 'components/Icon'
-import {useRouter} from 'hooks/useRouter'
+import { useRouter } from 'hooks/useRouter'
 
 import * as colors from 'styles/colors'
-import * as commonTypes from "store/common/types"
-import {useDispatch, useSelector} from "react-redux";
-import * as commonSelector from "store/common/selectors";
-import * as partnerActions from "store/partner/actions";
-import {useMedia} from "react-use-media";
-
+import * as commonTypes from 'store/common/types'
+import { useDispatch, useSelector } from 'react-redux'
+import * as commonSelector from 'store/common/selectors'
+import * as partnerActions from 'store/partner/actions'
+import { useMedia } from 'react-use-media'
 
 const S = {
-		TypeSet: Styled.div`
+  TypeSet: Styled.div`
 			position: fixed;
 			width: 100%;
 			background:${colors.grayBg};
@@ -26,7 +25,7 @@ const S = {
             	top: 72px;
         	}	
 		`,
-		BoxSet: Styled.div`
+  BoxSet: Styled.div`
 			padding:19px 24px;
 			.type{
 				font-size:16px;
@@ -41,7 +40,7 @@ const S = {
 				padding:21px 24px 17px;
 			}
 		`,
-		ReSelect: Styled.a`
+  ReSelect: Styled.a`
 			display:inline-block;
 			float:right;
 			font-size:16px;
@@ -51,7 +50,7 @@ const S = {
 				margin-left:16px;
 			}
 		`,
-		CompareList: Styled.span`
+  CompareList: Styled.span`
 			display:none;
 			position:relative;
 			float:right;
@@ -63,7 +62,7 @@ const S = {
 				display:inline-block;
 			}
 		`,
-		Count: Styled.span`
+  Count: Styled.span`
 			display:inline-block;
 			position:absolute;
 			top:-9px;
@@ -80,40 +79,43 @@ const S = {
 }
 
 interface Props {
-	count: number;
-	formData: commonTypes.RequestUserInfoInsert
+  count: number
+  formData: commonTypes.RequestUserInfoInsert
 }
 
-const SetType:React.FC<Props> = ({count, formData}) => {
-	const router = useRouter()
-	const dispatch = useDispatch()
-	const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
-	const {dong, moving_type, moving_date} = formData
+const SetType: React.FC<Props> = ({ count, formData }) => {
+  const router = useRouter()
+  const dispatch = useDispatch()
+  const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
+  const { dong, moving_type, moving_date } = formData
 
-	if (!getMoveIdxData.idx) {
-		return <></>
-	}
+  if (!getMoveIdxData.idx) {
+    return <></>
+  }
 
-	return (
-		<S.TypeSet>
-			<S.BoxSet>
-				<span className="type">{moving_type}이사 / </span>
-				<span className="type">{dayjs(moving_date).format('MM.DD')} / </span>
-				<span className="type">{dong}</span>
-				<S.ReSelect onClick={() => {
-					dispatch(partnerActions.cartReset())
-					dispatch(partnerActions.partnerListReset())
-					router.history.push('/')}
-				} id="dsl_booking_list_date">
-					날짜변경
-				</S.ReSelect>
-				<S.CompareList onClick={() => router.push(`/partner/cart?idx=${getMoveIdxData.idx}`)}>선택한 업체비교함
-					<Truck width={22} height={15} color={colors.black}/>
-					{count > 0 && <S.Count>{count}</S.Count>}
-				</S.CompareList>
-			</S.BoxSet>
-		</S.TypeSet>
-	)
+  return (
+    <S.TypeSet>
+      <S.BoxSet>
+        <span className="type">{moving_type}이사 / </span>
+        <span className="type">{dayjs(moving_date).format('MM.DD')} / </span>
+        <span className="type">{dong}</span>
+        <S.ReSelect
+          onClick={() => {
+            dispatch(partnerActions.cartReset())
+            dispatch(partnerActions.partnerListReset())
+            router.history.push('/')
+          }}
+          id="dsl_booking_list_date">
+          날짜변경
+        </S.ReSelect>
+        <S.CompareList onClick={() => router.push(`/partner/cart?idx=${getMoveIdxData.idx}`)}>
+          선택한 업체비교함
+          <Truck width={22} height={15} color={colors.black} />
+          {count > 0 && <S.Count>{count}</S.Count>}
+        </S.CompareList>
+      </S.BoxSet>
+    </S.TypeSet>
+  )
 }
 
 export default SetType

@@ -108,6 +108,18 @@ const S = {
 			margin:35px 0 48px;
 		}
 	`,
+	NewPartnerInfo: styled.div`
+		padding: 16px;
+		background-color: ${colors.boxBg};
+		border-radius: 8px;
+		font-size: 14px;
+		margin-bottom: 40px;
+		
+		p {
+			color: ${colors.gray66};
+			font-weight: bold;
+			margin-bottom: 7px;
+		}`,
 	Box: styled.div`
 		background: #F5F7F9;
 		border-radius: 8px;
@@ -134,8 +146,8 @@ const S = {
 			.hide {
 				display: none;
 			}
-		}
-	`,
+		}`
+		,
 	Card: styled.div`
 		float:left;
 		width:32%;
@@ -305,15 +317,16 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 						<p>{description.length !== 0 ? description : values.DEFAULT_TEXT}</p>
 					</S.Option>
 					{!isEmpty(keywords) &&
-					<S.Option>
-						<strong>고객이 많이 언급한 키워드</strong>
-						<ul>
-							{keywords.map((list, index) => (
-								<li key={index}>{list}</li>
-							))}
-						</ul>
-					</S.Option>
-					}
+						keywords[0].length > 0 && (
+						<S.Option>
+							<strong>고객이 많이 언급한 키워드</strong>
+							<ul>
+								{keywords.map((list, index) => (
+									<li key={index}>{list}</li>
+								))}
+							</ul>
+						</S.Option>
+					)}
 					{addition.length > 0 && (
 						<S.Option>
 							<strong>추가 가능 옵션</strong>

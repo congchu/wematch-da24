@@ -36,6 +36,7 @@ import MoveEstimation from './pages/checklist/components/moveEstimation'
 import CleanEstimation from './pages/checklist/components/cleanEstimation'
 import MovePrep from './pages/checklist/components/movePrep'
 import CleanCheck from './pages/checklist/components/cleanCheck'
+import CleanPage from 'pages/clean'
 
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
@@ -149,14 +150,13 @@ function AppRoute() {
         <Route exact path="/checklist/cleanestimation" component={CleanEstimation} />
         <Route exact path="/checklist/moveprep" component={MovePrep} />
         <Route exact path="/checklist/cleancheck" component={CleanCheck} />
-
         <Route exact path="/partner/list" component={PartnerList} />
         <Route exact path="/partner/detail/:adminId" component={PartnerDetail} />
         <Route exact path="/partner/cart" component={PartnerCart} />
         <Route exact path="/banner/intro" component={Intro} />
         <Route exact path="/banner/customer" component={Customer} />
         <Route exact path="/banner/grade" component={Grade} />
-        <Route exact path="/completed/:inquiry_idx" component={CompletedPage} />
+        <Route exact path="/completed" component={CompletedPage} />
         <Route exact path="/myrequest" component={MyConsult} />
         <Route exact path="/myrequest/detail" component={MyConsultDetail} />
         <Route exact path="/terms" component={Terms} />
@@ -165,6 +165,7 @@ function AppRoute() {
         <Route exact path={['/requests/completed/:adminId', '/comment/:adminId']} component={RequestPartnerDetail} />
         <Route exact path="/error" component={ErrorService} />
         <Route exact path="/login" render={(props) => (wematchToken ? <Redirect to={{ pathname: '/' }} /> : <Login />)} />
+        <Route exact path="/clean" component={CleanPage} />
         <Route component={NotFound} />
       </Switch>
     )

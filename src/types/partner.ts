@@ -1,6 +1,8 @@
 export type Level = 'S' | 'A' | 'B' | 'C' | 'NEW' ;
 export type Grade = 'verygood' | 'good' | 'normal' | 'bad' | 'verybad';
 
+export type IServiceType = 'move' | 'clean';
+
 export type IPartnerList = {
   description: string;
   experience: number;

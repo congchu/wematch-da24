@@ -17,7 +17,10 @@ import { FormState } from 'store/form/reducers'
 import { MOVE_URL } from 'constants/env'
 import { dataLayer } from 'lib/dataLayerUtil'
 import { events } from 'lib/appsflyer'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
+import { IconSad } from '../../../components/Icon'
+import { Button } from '@wematch/wematch-ui'
+import * as colors from '../../../styles/colors'
 
 const S = {
     Header: styled.header`
@@ -56,7 +59,8 @@ const S = {
     Contents: styled.div`
       margin-top: 120px;
       text-align: center;
-
+      padding: 24px;
+        
       svg {
         display: block;
         margin: 0 auto;
@@ -74,6 +78,25 @@ const S = {
       margin-top: 20px;
       font-size: 16px;
       line-height: 22px;
+    `,
+    CleanTitle: styled.p`
+      font-size: 16px;
+      font-weight: 700;
+      color: ${colors.gray33};
+      margin: 35px 0;
+    `,
+    SubTitle: styled.p`
+      font-size: 16px;
+      font-weight: 400;
+      color: ${colors.gray33};
+    `,
+    ButtonWrapper: styled.div`
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 24px;
+      box-sizing: border-box;
     `,
     Subtext: styled.p`
       margin-top: 10px;
@@ -121,9 +144,11 @@ export default function NoService() {
     })
 
     const dispatch = useDispatch()
+    const history = useHistory()
+    const location = useLocation()
+
     const [cookies, setCookie] = useCookies(['report'])
     const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
-    const history = useHistory();
     const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
     const getMoveType = useSelector(formSelectors.getType)
     const getMoveDate = useSelector(formSelectors.getDate)
@@ -137,6 +162,9 @@ export default function NoService() {
     const getAgree = useSelector(formSelectors.getAgree)
     const getJuso = useSelector(commonSelector.getJuso)
 
+    const params = new URLSearchParams(location.search)
+    const serviceType = params.get('serviceType') === 'clean' ? 'clean' : 'move'
+
     const formState: FormState = {
         type: getMoveType,
         date: getMoveDate,
@@ -149,10 +177,6 @@ export default function NoService() {
         phone: getPhone,
         submittedForm: getSubmittedForm,
         contents: getContents
-    }
-
-    const goHome = () => {
-        window.location.href = `${MOVE_URL}`
     }
 
     const getDong = useCallback((dongType: 'start' | 'end') => {
@@ -210,14 +234,31 @@ export default function NoService() {
             {/* {isDesktop ? <MainHeader/> : <NavHeader title="" onPreviousButtonClick={goHome}/>} */}
             {isDesktop ? <MainHeader /> : <S.Header><Link to="/"><span>위매치</span></Link></S.Header>}
             <S.Contents>
-                <AreaIcon />
-                <S.Title>해당 지역은 서비스 준비 중입니다.</S.Title>
-                <S.Subtext>빠른 시일 내 이용 가능하도록<br />최선을 다하겠습니다.</S.Subtext>
+                {serviceType === 'move'
+                  ? (
+                    <>
+                        <AreaIcon />
+                        <S.Title>해당 지역은 서비스 준비 중입니다.</S.Title>
+                        <S.Subtext>빠른 시일 내 이용 가능하도록<br />최선을 다하겠습니다.</S.Subtext>
+                    </>
+                  )
+                  : (
+                    <>
+                        <IconSad width={80} height={64}/>
+                        <S.CleanTitle>선택지역은 서비스 준비중입니다.</S.CleanTitle>
+                        <S.SubTitle>빠른 시일 내 이용 가능하도록<br/> 최선을 다하겠습니다.</S.SubTitle>
+                        <S.ButtonWrapper>
+                            <Button theme={'primary'} label={'홈으로 돌아가기'} isRound={true} onClick={() => history.push('/')}/>
+                        </S.ButtonWrapper>
+                    </>
+                  )}
             </S.Contents>
-            <S.LinkAlarm id='dsl_a_alarm_noService' href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">
-                <Kakao />
-                <span>가능업체 알림 신청</span>
-            </S.LinkAlarm>
+            {serviceType === 'move' && (
+              <S.LinkAlarm id='dsl_a_alarm_noService' href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">
+                  <Kakao />
+                  <span>가능업체 알림 신청</span>
+              </S.LinkAlarm>
+            )}
         </S.Container>
     )
 }

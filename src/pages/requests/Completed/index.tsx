@@ -1,48 +1,42 @@
-import React, { useEffect, useState, useCallback  } from "react";
-import styled from "styled-components";
-import ReactPixel from "react-facebook-pixel";
-import { useMedia } from "react-use-media";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
-import { useRouter } from "hooks/useRouter";
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import styled from 'styled-components'
+import ReactPixel from 'react-facebook-pixel'
+import { useMedia } from 'react-use-media'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useLocation } from 'react-router-dom'
+import { useRouter } from 'hooks/useRouter'
 
-import MainHeader from "components/common/MainHeader";
-import Collapse from "components/base/Collapse";
-import { Down, Up, Info } from "components/wematch-ui/Icon";
-import {
-  Triangle,
-  Check,
-  LevelA,
-  LevelB,
-  LevelC,
-  LevelN,
-  LevelS, Question,
-} from "components/Icon";
-import ProcessBar from "./processBar";
-import NewModal from "components/NewModalTemplate";
-import ResponsiveSkeleton from "components/common/Skeleton/responsiveSkeleton";
+import MainHeader from 'components/common/MainHeader'
+import Collapse from 'components/base/Collapse'
+import { Down, Up } from 'components/wematch-ui/Icon'
+import { Check } from 'components/Icon'
+import ProcessBar from './processBar'
+import NewModal from 'components/NewModalTemplate'
+import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton'
 
-import * as commonSelector from "store/common/selectors";
-import * as commonActions from "store/common/actions";
-import * as partnerActions from "store/partner/actions";
-
-import * as colors from "styles/colors";
-import { MOVE_URL, CLEAN_URL } from "constants/env";
-import { dataLayer } from "lib/dataLayerUtil";
-import { events } from "lib/appsflyer";
-import { whatDay } from "lib/dateUtil";
-import * as sentry from "@sentry/react";
-import { Severity } from "@sentry/react";
-import dayjs from "dayjs";
-import NewLevelN from "../../../components/Icon/generated/NewLevelN";
-import NewLevelOther from "../../../components/Icon/generated/NewLevelOther";
-import NewLevelS from "../../../components/Icon/generated/NewLevelS";
-import {Level} from "../../../types/partner";
-
+import * as commonSelector from 'store/common/selectors'
+import * as commonActions from 'store/common/actions'
+import * as partnerActions from 'store/partner/actions'
+import * as cleanActions from 'store/clean/actions'
+import * as cleanSelector from 'store/clean/selectors'
+import * as moveActions from 'store/form/actions'
+import * as moveSelector from 'store/form/selectors'
+import * as colors from 'styles/colors'
+import { CLEAN_URL } from 'constants/env'
+import { dataLayer } from 'lib/dataLayerUtil'
+import { events } from 'lib/appsflyer'
+import { whatDay } from 'lib/dateUtil'
+import dayjs from 'dayjs'
+import NewLevelN from 'components/Icon/generated/NewLevelN'
+import NewLevelOther from 'components/Icon/generated/NewLevelOther'
+import NewLevelS from 'components/Icon/generated/NewLevelS'
+import { Level } from 'types/partner'
+import { getUser } from 'store/user/selectors'
+import { phoneSplit } from 'components/wematch-ui/utils/form'
 
 const S = {
   Container: styled.div`
-    background-color: #FAFAFA;
+    background-color: #fafafa;
     padding-bottom: 56px;
     @media screen and (min-width: 1200px) {
       padding-bottom: 106px;
@@ -94,18 +88,19 @@ const S = {
     margin: 15px auto 0;
     font-size: 20px;
     text-align: center;
-    
+    border-bottom: 1px solid #ebeef2;
+
     em {
       font-weight: 700;
     }
 
-    //span {
-    //  display: inline-block;
-    //  margin-top: 14px;
-    //  font-size: 14px;
-    //  line-height: 20px;
-    //  margin-bottom: 24px;
-    //}
+    span {
+      display: inline-block;
+      margin-top: 14px;
+      font-size: 14px;
+      line-height: 20px;
+      margin-bottom: 24px;
+    }
 
     @media screen and (min-width: 768px) {
       width: 720px;
@@ -164,7 +159,7 @@ const S = {
     }
   `,
   LevelInfoBox: styled.div<{ visible: boolean }>`
-    display: ${(props) => (props.visible ? "block" : "none")};
+    display: ${(props) => (props.visible ? 'block' : 'none')};
     position: absolute;
     top: 64px;
     right: 24px;
@@ -191,7 +186,6 @@ const S = {
   `,
   CompanyList: styled.ul`
     margin-bottom: 66px;
-    
   `,
   Card: styled.li`
     border-radius: 10px;
@@ -203,7 +197,7 @@ const S = {
   `,
   ListBox: styled.div`
     overflow: hidden;
-    
+
     svg {
       float: left;
       @media screen and (max-width: 320px) {
@@ -216,7 +210,7 @@ const S = {
     overflow: hidden;
     float: left;
     width: 76%;
-    margin-left:10px;
+    margin-left: 10px;
     font-size: 16px;
     font-weight: 700;
     white-space: nowrap;
@@ -367,157 +361,301 @@ const S = {
       width: 720px;
       margin: 0 auto 30px;
     }
-  `,
-};
+  `
+}
 
 export default function Completed() {
-  const { data, loading, error } = useSelector(commonSelector.getCompletedData);
-  const dispatch = useDispatch();
-  const history = useHistory();
-
+  const moveForm = useSelector(moveSelector.getFormData)
+  const cleanForm = useSelector(cleanSelector.getCleanForm)
+  const { start: moveStartAddr, end: moveEndAddr, type: moveAddrType } = useSelector(commonSelector.getJuso)
+  const { moving_type } = useSelector(moveSelector.getFormData)
+  const { type: cleanType } = useSelector(cleanSelector.getCleanForm)
+  const { data, loading, error } = useSelector(commonSelector.getCompletedData)
+  const { data: cleanData, loading: cleanLoading } = useSelector(cleanSelector.getCleanMatchData)
+  const { data: moveData, loading: moveLoading } = useSelector(moveSelector.getSubmittedForm)
+  const { user } = useSelector(getUser)
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const location = useLocation()
   const isDesktop = useMedia({
-    minWidth: 1200,
-  });
-
-  const [infoVisible, setInfoVisible] = useState(false);
-  const [expand, setExpand] = useState(true);
-  const [showPopup, setShowPopup] = useState(false);
-  const { inquiry_idx } = useParams<{ inquiry_idx: string }>();
-  const [firstLoading, setFirstLoading] = useState(true);
+    minWidth: 1200
+  })
+  const [sessionVisible, setSessionVisible] = useState(false)
+  const [expand, setExpand] = useState(true)
+  const [showPopup, setShowPopup] = useState(false)
+  const [firstLoading, setFirstLoading] = useState(true)
   const {
-    query: { msg },
-  } = useRouter();
-  const toggleInfoBox = () => {
-    setInfoVisible(!infoVisible);
-  };
+    query: { msg }
+  } = useRouter()
+  const params = new URLSearchParams(location.search)
+  const inquiry_idx = params.get('inquiry_idx')
+  const serviceType = params.get('serviceType')
 
   const togglePopup = () => {
-    setShowPopup(!showPopup);
-    history.push("/myrequest");
-  };
+    setShowPopup(!showPopup)
+    history.push('/myrequest')
+  }
 
   useEffect(() => {
-    if (loading) {
-      setFirstLoading(false);
+    if (loading || cleanLoading || moveLoading) {
+      setFirstLoading(false)
     }
-  }, [loading]);
+  }, [loading, cleanLoading, moveLoading])
 
   useEffect(() => {
-    dispatch(commonActions.fetchCompletedMoveIdx.request({ inquiry_idx }));
-  }, [dispatch, inquiry_idx]);
+    if (serviceType === 'clean' && !cleanType) {
+      setFirstLoading(false)
+      setSessionVisible(true)
+    } else if (serviceType === 'move' && !moving_type) {
+      setFirstLoading(false)
+      setSessionVisible(true)
+    }
+  }, [serviceType, cleanType, moving_type, error])
 
   useEffect(() => {
-    if (data !== null && !loading && !error && msg !== "true") {
+    const params = new URLSearchParams(location.search)
+    const inquiry_idx = params.get('inquiry_idx')
+    const serviceType = params.get('serviceType')
+
+    if (inquiry_idx) {
+      dispatch(commonActions.fetchCompletedMoveIdx.request({ inquiry_idx }))
+      return
+    }
+
+    if (!user) {
+      history.replace('/')
+      return
+    }
+
+    if (serviceType === 'clean' && cleanType) {
+      dispatch(cleanActions.fetchCleanAutoMatch.request())
+      return
+    }
+
+    if (serviceType === 'move' && moving_type) {
+      dispatch(moveActions.fetchMoveData())
+    }
+  }, [dispatch, location, history, user, cleanType, moving_type])
+
+  useEffect(() => {
+    if (data !== null && !loading && !error && msg !== 'true') {
       dataLayer({
-        event: "complete",
-        category: "매칭완료",
+        event: 'complete',
+        category: '매칭완료',
         action: `매칭완료_${data?.partners?.length}`,
         label: `${data?.start_address?.replace(/ /g, '-')}층_${data?.end_address?.replace(/ /g, '-')}층`,
-        CD6: `${data.type === "가정이사" ? "가정" : "사무실"}`,
-        CD12: "바로매칭",
-      });
+        CD6: `${data.type === '가정이사' ? '가정' : '사무실'}`,
+        CD12: '바로매칭'
+      })
 
       events({
-        action: "app_move_done",
-      });
-      ReactPixel.fbq("track", "Purchase");
+        action: 'app_move_done'
+      })
+      ReactPixel.fbq('track', 'Purchase')
 
-      TenpingScript.SendConversion();
+      TenpingScript.SendConversion()
 
-      gtag("event", "conversion", {
-        send_to: "AW-862163644/CmzdCIej6G0QvKWOmwM",
-      });
+      gtag('event', 'conversion', {
+        send_to: 'AW-862163644/CmzdCIej6G0QvKWOmwM'
+      })
     }
-  }, [data, loading, error, msg]);
+  }, [data, loading, error, msg])
 
   useEffect(() => {
     return () => {
-      dispatch(commonActions.resetCompletedMove());
+      dispatch(commonActions.resetCompletedMove())
+      dispatch(moveActions.resetFormData())
+      dispatch(cleanActions.resetCleanForm())
     }
-  }, [])
+  }, [dispatch])
 
   const handleCleanConfirm = useCallback(() => {
-    if(data !== null) {
+    if (data !== null) {
       const pl = new Promise((resolve) => {
         dataLayer({
-          event: "msg_complete",
+          event: 'msg_complete',
           category: msg ? '매칭완료메시지_크로스셀' : '매칭완료_크로스셀',
           action: '입주청소찾기',
           label: '바로찾기',
-          CD6: `${data.type === "가정이사" ? "가정" : "사무실"}`,
+          CD6: `${data.type === '가정이사' ? '가정' : '사무실'}`
         })
-        resolve(null);
+        resolve(null)
       })
-      pl.then(() => window.location.href = `${CLEAN_URL}`)
+      pl.then(() => (window.location.href = `${CLEAN_URL}`))
     }
   }, [msg, data])
 
   const handleCleanCancel = useCallback(() => {
-    if(data !== null) {
+    if (data !== null) {
       const pl = new Promise((resolve) => {
         dataLayer({
-          event: "msg_complete",
+          event: 'msg_complete',
           category: msg ? '매칭완료메시지_크로스셀' : '매칭완료_크로스셀',
           action: '입주청소찾기',
           label: '다음에',
-          CD6: `${data.type === "가정이사" ? "가정" : "사무실"}`,
+          CD6: `${data.type === '가정이사' ? '가정' : '사무실'}`
         })
-        resolve(null);
+        resolve(null)
       })
       pl.then(() => togglePopup())
     }
   }, [msg, data])
 
-  const compileLevelText = (level:Level) => {
+  const compileLevelText = (level: Level) => {
     switch (level) {
-      case "S":
+      case 'S':
         return '최고 등급의 검증된 파트너 업체'
-      case "NEW":
+      case 'NEW':
         return '의욕적인 신규 파트너 업체'
       default:
-        return "믿을 수 있는 우수 파트너 업체"
-
+        return '믿을 수 있는 우수 파트너 업체'
     }
-  };
-  const userRequestInfo: {
-    contact: string;
-    movingDate: string;
-    movingType: string;
-    startAddr: string;
-    endAddr: string;
-    memo: string;
-  } = {
-    // contact: '(' + data?.name + ') ' + validatePhone(getPhone, true),
-    contact: `(${data?.name}) ${data?.phone_number}`,
-    movingDate: `(${whatDay(data?.moving_date)}) ${dayjs(
-      data?.moving_date
-    ).format("YYYY.MM.DD")}`,
-    movingType: `${data?.type}`,
-    startAddr: `${data?.start_address}층`,
-    endAddr: `${data?.end_address}층`,
-    memo: `${data?.memo}`,
-  };
-
-  if (loading || firstLoading) {
-    return <ResponsiveSkeleton />;
   }
 
+  const companyListData = useMemo(() => {
+    console.log('cleanData:',cleanData)
+    if (inquiry_idx) {
+      return data?.partners
+    }
+
+    if (serviceType === 'move') {
+      return moveData?.match_list
+    } else if (serviceType === 'clean') {
+      return cleanData?.match_list
+    }
+  }, [inquiry_idx, serviceType, data, cleanData, moveData])
+
+  const renderMoveUserInfo = ({ contact, movingDate, movingType, startAddr, endAddr, memo }: { contact: string; movingDate: string; movingType: string; startAddr: string; endAddr: string; memo: string }) => (
+    <S.MoveInfo>
+      <li>
+        <S.MoveText>연락처</S.MoveText>
+        <S.MoveSubtext>{contact}</S.MoveSubtext>
+      </li>
+      <li>
+        <S.MoveText>이사날짜</S.MoveText>
+        <S.MoveSubtext>{movingDate}</S.MoveSubtext>
+      </li>
+      <li>
+        <S.MoveText>이사 종류</S.MoveText>
+        <S.MoveSubtext>{movingType}</S.MoveSubtext>
+      </li>
+      <li>
+        <S.MoveText>출발지</S.MoveText>
+        <S.MoveSubtext>{startAddr}</S.MoveSubtext>
+      </li>
+      <li>
+        <S.MoveText>도착지</S.MoveText>
+        <S.MoveSubtext>{endAddr}</S.MoveSubtext>
+      </li>
+      {memo !== '' ? (
+        <li>
+          <S.MoveText>전달메모</S.MoveText>
+          <S.MoveSubtext>{memo}</S.MoveSubtext>
+        </li>
+      ) : (
+        <></>
+      )}
+    </S.MoveInfo>
+  )
+
+  const renderCleanUserInfo = ({ contact, cleaningDate, cleanAddr, memo }: { contact: string; cleaningDate: string; cleanAddr?: string; memo: string }) => (
+    <S.MoveInfo>
+      <li>
+        <S.MoveText>연락처</S.MoveText>
+        <S.MoveSubtext>{contact}</S.MoveSubtext>
+      </li>
+      <li>
+        <S.MoveText>청소날짜</S.MoveText>
+        <S.MoveSubtext>{cleaningDate}</S.MoveSubtext>
+      </li>
+      <li>
+        <S.MoveText>청소지</S.MoveText>
+        <S.MoveSubtext>{cleanAddr}</S.MoveSubtext>
+      </li>
+      <li>
+        <S.MoveText>요청사항</S.MoveText>
+        <S.MoveSubtext>{memo}</S.MoveSubtext>
+      </li>
+    </S.MoveInfo>
+  )
+
+  const renderUserInfo = () => {
+    let userInfo
+    if (inquiry_idx && data !== null) {
+      if (data.type.includes('이사')) {
+        userInfo = {
+          contact: `(${data?.name}) ${data?.phone_number}`,
+          movingDate: `(${whatDay(data?.moving_date)}) ${dayjs(data?.moving_date).format('YYYY.MM.DD')}`,
+          movingType: `${data?.type}`,
+          startAddr: `${data?.start_address}층`,
+          endAddr: `${data?.end_address}층`,
+          memo: `${data?.memo}`
+        }
+
+        return renderMoveUserInfo({ ...userInfo })
+      } else {
+        userInfo = {
+          contact: `(${data?.name}) ${data?.phone_number}`,
+          cleaningDate: `(${whatDay(data?.moving_date)}) ${dayjs(data?.moving_date).format('YYYY.MM.DD')}`,
+          cleanAddr: `${data?.start_address}층`,
+          memo: `${data?.memo}`
+        }
+
+        return renderCleanUserInfo({ ...userInfo })
+      }
+    }
+
+    if (serviceType === 'move' && moving_type) {
+      userInfo = {
+        contact: `(${moveForm.name}) ${moveForm.phone1}-${moveForm.phone2}-${moveForm.phone3}`,
+        movingDate: `(${whatDay(moveForm.moving_date)}) ${moveForm.moving_date}`,
+        movingType: `${moveForm.moving_type}`,
+        startAddr: moveAddrType.start === 'road' ? `${moveStartAddr?.roadAddr}` : `${moveStartAddr?.jibunAddr}`,
+        endAddr: moveAddrType.start === 'road' ? `${moveEndAddr?.roadAddr}` : `${moveEndAddr?.jibunAddr}`,
+        memo: `${moveForm.memo}`
+      }
+
+      return renderMoveUserInfo({ ...userInfo })
+    } else if (serviceType === 'clean' && cleanType && user !== null) {
+      const { phone1, phone2, phone3 } = phoneSplit(user.tel)
+      userInfo = {
+        contact: `(${user?.name}) ${phone1}-${phone2}-${phone3}`,
+        cleaningDate: cleanForm.date[0],
+        cleanAddr: cleanForm.addressType === 'road' ? cleanForm.address?.roadAddr : cleanForm.address?.jibunAddr,
+        memo: cleanForm.cleanMemo
+      }
+
+      return renderCleanUserInfo({ ...userInfo })
+    }
+  }
+
+  if (loading || firstLoading || cleanLoading || moveLoading) {
+    return <ResponsiveSkeleton />
+  }
   return (
     <S.Container>
       {isDesktop && <MainHeader />}
       <S.TopContainer>
         <S.TopContents>
           <S.Icon>
-            <Check fill={"#fff"} />
+            <Check fill={'#fff'} />
           </S.Icon>
           <S.TopTitle>
-            <em>이사업체 매칭</em> 완료 <br />
-            <S.TopBox>
-              <p>3개 업체 미만 매칭된 경우  24시간 내 <br /> <em>가능업체 발생 시 알림톡</em>으로 안내드리겠습니다.</p>
-              <p style={{ marginTop: 16 }}>업체에서 2시간 이상 연락이 없다면 보내드린 <br /> 알림톡/문자의 업체 전화번호로 먼저 전화해보세요!</p>
-            </S.TopBox>
+            <em>{serviceType !== 'clean' && !cleanType ? `이사업체` : `청소업체`}</em> 매칭완료 <br />
+            {serviceType !== 'clean' && !cleanType ? (
+              <span>
+                업체에서 2시간 이상 연락이 없다면 보내드린 <br />
+                알림톡/문자의 업체 전화번호로 먼저 전화해보세요!
+              </span>
+            ) : (
+              <span>
+                업체에서 연락이 없다면 아래 번호로 문의해주세요!
+                <br />
+                (고객센터 1522-2483)
+              </span>
+            )}
           </S.TopTitle>
-          <ProcessBar/>
+          {serviceType !== 'clean' && !cleanType && <ProcessBar />}
         </S.TopContents>
       </S.TopContainer>
       <S.ContentsWrap>
@@ -525,34 +663,31 @@ export default function Completed() {
           <S.BoxTitle>매칭 업체 정보</S.BoxTitle>
         </S.TitleWrap>
         <S.CompanyList>
-          {data?.partners.map((list, index, arr) => (
+          {companyListData?.map((list, index, arr) => (
             <S.Card key={index}>
               <S.ListBox>
-                {list.level === "NEW" && <NewLevelN />}
-                {list.level === "S" && <NewLevelS/>}
-                {(list.level !== "NEW" && list.level !== "S") && <NewLevelOther/>}
+                {list.level === 'NEW' && <NewLevelN />}
+                {list.level === 'S' && <NewLevelS />}
+                {list.level !== 'NEW' && list.level !== 'S' && <NewLevelOther />}
                 <S.CompanyTitle>
                   {list.adminname} <br />
                   <span>{compileLevelText(list.level)}</span>
                 </S.CompanyTitle>
               </S.ListBox>
-              <S.HorizontalBar/>
+              <S.HorizontalBar />
               <S.LinkCompany
                 onClick={() => {
                   dataLayer({
-                    event: msg !== "true" ? "complete" : "msg_complete",
-                    category:
-                      msg !== "true" ? "매칭완료" : "매칭완료페이지_업체정보",
-                    action: "고객평가_확인",
+                    event: msg !== 'true' ? 'complete' : 'msg_complete',
+                    category: msg !== 'true' ? '매칭완료' : '매칭완료페이지_업체정보',
+                    action: '고객평가_확인',
                     label: `${arr.length}_${index + 1}`,
-                    // CD6: data.type,
-                    CD6: `${data.type === "가정이사" ? "가정" : "사무실"}`,
-                  });
+                    CD6: `${data?.type === '가정이사' ? '가정' : '사무실'}`
+                  })
                   /* 페이지 재접속시 이전상태 초기화 */
-                  dispatch(partnerActions.detailReset());
-                  history.push(`/requests/completed/${list.adminid}`);
-                }}
-              >
+                  dispatch(partnerActions.detailReset())
+                  history.push(`/requests/completed/${list.adminid}`)
+                }}>
                 {`업체 정보 자세히 보기 (후기 ${list.feedback_cnt}개)`}
               </S.LinkCompany>
             </S.Card>
@@ -560,85 +695,28 @@ export default function Completed() {
         </S.CompanyList>
         <S.TitleWrap onClick={() => setExpand(!expand)} className="toggle">
           <S.BoxTitle>내 신청 정보</S.BoxTitle>
-          {expand ? (
-            <Up style={{ marginTop: 6 }} />
-          ) : (
-            <Down style={{ marginTop: 6 }} />
-          )}
+          {expand ? <Up style={{ marginTop: 6 }} /> : <Down style={{ marginTop: 6 }} />}
         </S.TitleWrap>
-        <Collapse expand={expand}>
-          <S.MoveInfo>
-            <li>
-              <S.MoveText>연락처</S.MoveText>
-              <S.MoveSubtext>{userRequestInfo.contact}</S.MoveSubtext>
-            </li>
-            <li>
-              <S.MoveText>이사날짜</S.MoveText>
-              <S.MoveSubtext>{userRequestInfo.movingDate}</S.MoveSubtext>
-            </li>
-            <li>
-              <S.MoveText>이사 종류</S.MoveText>
-              <S.MoveSubtext>{userRequestInfo.movingType}</S.MoveSubtext>
-            </li>
-            <li>
-              <S.MoveText>출발지</S.MoveText>
-              <S.MoveSubtext>{userRequestInfo.startAddr}</S.MoveSubtext>
-            </li>
-            <li>
-              <S.MoveText>도착지</S.MoveText>
-              <S.MoveSubtext>{userRequestInfo.endAddr}</S.MoveSubtext>
-            </li>
-            {userRequestInfo.memo !== "" ? (
-              <li>
-                <S.MoveText>전달메모</S.MoveText>
-                <S.MoveSubtext>{userRequestInfo.memo}</S.MoveSubtext>
-              </li>
-            ) : (
-              <></>
-            )}
-          </S.MoveInfo>
-        </Collapse>
+        <Collapse expand={expand}>{renderUserInfo()}</Collapse>
       </S.ContentsWrap>
-      <S.Box href={CLEAN_URL}>
-        <img
-          className="left"
-          src={require("assets/images/components/Completed/home.svg")}
-          alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사"
-        />
-        <div>
-          <h3 className="title">
-            {data?.end_address
-              .split(" ")
-              .slice(0, -1)
-              .pop()}
-          </h3>
-          <p className="desc">잘하는 입주청소 업체 찾기</p>
-        </div>
-        <img
-          className="right"
-          src={require("assets/images/components/Completed/right.svg")}
-          alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사"
-        />
-      </S.Box>
-      <S.Button onClick={() => setShowPopup(!showPopup)}>
-        신청 정보 확인완료
-      </S.Button>
-      <NewModal
-        visible={showPopup}
-        title={"입주청소 찾기"}
-        content={"입주청소도 필요하세요?"}
-        confirmText={"바로 찾기"}
-        cancelText={"다음에"}
-        confirmClick={handleCleanConfirm}
-        cancelClick={handleCleanCancel}
-      />
-      <NewModal
-        visible={error}
-        title={"정보 만료"}
-        content={"현재 페이지의 정보가 만료되었습니다. 다시 조회해 주세요."}
-        confirmClick={() => history.push("/")}
-        confirmText={"홈으로 가기"}
-      />
+      {serviceType !== 'clean' && !cleanType && (
+        <S.Box href={CLEAN_URL}>
+          <img className="left" src={require('assets/images/components/Completed/home.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사" />
+          <div>
+            <h3 className="title">
+              {data?.end_address
+                .split(' ')
+                .slice(0, -1)
+                .pop()}
+            </h3>
+            <p className="desc">잘하는 입주청소 업체 찾기</p>
+          </div>
+          <img className="right" src={require('assets/images/components/Completed/right.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사" />
+        </S.Box>
+      )}
+      <S.Button onClick={() => setShowPopup(!showPopup)}>신청 정보 확인완료</S.Button>
+      <NewModal visible={showPopup} title={'입주청소 찾기'} content={'입주청소도 필요하세요?'} confirmText={'바로 찾기'} cancelText={'다음에'} confirmClick={handleCleanConfirm} cancelClick={handleCleanCancel} />
+      <NewModal visible={sessionVisible} title={'정보 만료'} content={'현재 페이지의 정보가 만료되었습니다. 다시 조회해 주세요.'} confirmClick={() => history.push('/')} confirmText={'홈으로 가기'} />
     </S.Container>
-  );
+  )
 }

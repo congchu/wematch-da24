@@ -9,6 +9,7 @@ import { CALENDAR_MAX_DAYS } from 'constants/values'
 import * as colors from 'styles/colors'
 
 interface Props extends Omit<React.TableHTMLAttributes<HTMLTableElement>, 'onSelect'> {
+    serviceType: 'move' | 'clean'
     maxDate: Dayjs | Date;
     currentDate: Dayjs;
     selected: string[];
@@ -130,6 +131,7 @@ function Day(props: DayProps) {
 
 export default function Calendar(props: Props) {
     const {
+        serviceType,
         maxDate,
         currentDate,
         selected,
@@ -185,7 +187,7 @@ export default function Calendar(props: Props) {
                                                 {isSelected(day)}
                                                 {day.date.date()}
                                             </Day>
-                                            {(isLuckyDay && day.type === 'current' && disabledDate && !disabledDate(day.date.toDate())) && <Dot/>}
+                                            {(isLuckyDay && day.type === 'current' && disabledDate && !disabledDate(day.date.toDate())) && serviceType === 'move' && <Dot/>}
                                         </div>
                                     </td>
                                 )
