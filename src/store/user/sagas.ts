@@ -179,7 +179,7 @@ export function* signInAfterFlowSaga() {
   const { prevPage } = yield select(userSelector.getUser)
   switch (prevPage) {
     case ESignInCase.FORM:
-      yield put(replace('/completed?serviceType=move'))
+      yield put(formActions.setMoveData())
       break
     case ESignInCase.ERROR:
       yield put(push('/myrequest'))
