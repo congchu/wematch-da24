@@ -45,7 +45,7 @@ export function* fetchCleanAutoMatchSaga() {
     const data = yield call(requests.submitClean, body, token)
 
     if (data.result === 'no service') {
-      yield put(push('/requests/noservice'))
+      yield put(push('/requests/noservice?serviceType=clean'))
     } else if (data.result === 'no partner') {
       yield put(push('/requests/nopartner?serviceType=clean'))
     } else {
