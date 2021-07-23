@@ -64,7 +64,7 @@ const Clean = () => {
 
   return (
     <div>
-      {isDesktop ? <MainHeader /> : <NavHeader title="청소 종류 선택" />}
+      {isDesktop ? <MainHeader /> : <NavHeader title="청소 조건 입력" />}
       <CleanWrapper>
         {isDesktop && <Title>청소 종류 선택</Title>}
         <StepProgressBar steps={progressSteps} pointColor={colors.pointBlue} />
