@@ -19,9 +19,9 @@ import * as colors from 'styles/colors'
 
 const CleanDetailInfo = () => {
   const livingTypeItem = [
-    { key: 'apartment', value: '아파트' },
-    { key: 'house', value: '주택/빌라' },
-    { key: 'oneroom', value: '원룸/오피스텔(9평이하)' }
+    { key: '아파트', value: '아파트' },
+    { key: '주택/빌라', value: '주택/빌라' },
+    { key: '원룸/오피스텔(9평이하)', value: '원룸/오피스텔(9평이하)' }
   ]
   const optionItems = ['줄눈시공', '피톤치드', '마루코팅', '식기세척기', '매트리스', '냉장고(단문)', '냉장고(양문)', '전기오븐', '김치냉장고']
   const dispatch = useDispatch()
