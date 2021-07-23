@@ -28,7 +28,7 @@ export function* fetchCleanAutoMatchSaga() {
       clean_date: form.date[0],
       clean_type: form.type,
       house_type: form.livingType,
-      pyeong: form.houseSpace,
+      pyeong: Number(form.houseSpace) || 0,
       sido: form.address.siNm,
       gugun: form.address.sggNm,
       dong: form.address.emdNm,

@@ -66,7 +66,12 @@ const CleanDetailInfo = () => {
   }
 
   const handleHouseInput = (space: string) => {
-    dispatch(setHouseSpace(space))
+    const parseSpace = Number(space)
+    if (Number.isInteger(parseSpace) && parseSpace > 0 && parseSpace < 1000) {
+      dispatch(setHouseSpace(parseSpace))
+    } else if(space === '') {
+      dispatch(setHouseSpace(0))
+    }
   }
 
   const handleCleanMemo = (memo: string) => {
@@ -94,7 +99,7 @@ const CleanDetailInfo = () => {
         <Title>청소지</Title>
         <InputBox icon={'search'} placeHolder={'주소 검색'} value={renderAddressValue()} onClick={() => setVisibleAddressModal(true)} />
         <InputBox icon={'down'} placeHolder={'거주형태 선택'} value={livingTypeItem.find((item) => item.key === livingType)?.value} onClick={() => setVisibleLivingSelectorModal(true)} />
-        <Input icon={'space'} type={'number'} theme={'default'} placeholder={'평형 입력 ex)24'} border style={{ backgroundColor: 'transparent', fontSize: 16, paddingRight: 40 }} onChange={(e) => handleHouseInput(e.target.value)} value={houseSpace} pattern="\d*" />
+        <Input icon={'space'} type={'number'} theme={'default'} placeholder={'평형 입력 ex)24'} border style={{ backgroundColor: 'transparent', fontSize: 16, paddingRight: 40 }} onChange={(e) => handleHouseInput(e.target.value)} value={houseSpace > 0 ? houseSpace : ''} pattern="\d*" />
       </Section>
       <Section>
         <Title>옵션 선택</Title>

@@ -11,7 +11,7 @@ export interface CleanState {
     address: Juso | null
     addressType: JusoType | null
     livingType: string
-    houseSpace: string
+    houseSpace: number
     selectOptionItem: string[]
     cleanMemo: string
   }
@@ -29,7 +29,7 @@ const initialState: CleanState = {
     address: null,
     addressType: null,
     livingType: '',
-    houseSpace: '',
+    houseSpace: 0,
     selectOptionItem: [],
     cleanMemo: ''
   },
