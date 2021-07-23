@@ -167,7 +167,7 @@ const OptionItem = styled.div<{ selected: boolean }>`
   width: 100%;
   height: 46px;
   color: ${({ selected }) => (selected ? '#1672F7' : colors.gray88)};
-  border: 1px solid ${({ selected }) => (selected ? '#1672F7' : colors.gray88)};
+  border: 1px solid ${({ selected }) => (selected ? '#1672F7' : '#D7DBE2')};
   border-radius: 6px;
   box-sizing: border-box;
   cursor: pointer;
