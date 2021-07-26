@@ -55,6 +55,7 @@ export type IPartnerDetailForCompleted = {
     addition?: string;
     profile_img: string;
     keywords: string[];
+    service_type: 'clean' | 'move'
 }
 
 export type IReview = {

@@ -30,7 +30,7 @@ const S = {
     }
   `,
   Header: styled.header`
-    border-bottom: 1px solid ${colors.lineDefault};
+    border-bottom: 0.5px solid ${colors.lineDefault};
     padding-right: 24px;
     padding-left: 24px;
     padding-top: 16px;
@@ -40,10 +40,17 @@ const S = {
     font-weight: bold;
     font-size: 20px;
     line-height: 30px;
+    padding-bottom: 8px;
+  `,
+  SubTitle: styled.div`
+    color: #E9687F;
+    font-size: 14px;
     padding-bottom: 16px;
   `,
   DaysContainer: styled.div`
     width: 100%;
+    background: ${colors.white};
+    border-bottom: 0.5px solid ${colors.lineDefault};
   `,
   Days: styled.table`
     width: 100%;
@@ -53,6 +60,8 @@ const S = {
     letter-spacing: -1px;
     padding-bottom: 14px;
     tr {
+      padding: 0 24px;
+      box-sizing: border-box;
       justify-content: space-between;
       width: 100%;
       display: flex;
@@ -63,7 +72,7 @@ const S = {
       height: 23px;
       font-size: 15px;
       color: ${colors.gray66};
-
+      padding: 16px 0;
       div {
         display: flex;
         flex-direction: column;
@@ -71,7 +80,7 @@ const S = {
         position: relative;
       }
     }
-  `
+  `,
 }
 
 const CalendarModal: React.FC<Props> = (props) => {
@@ -94,36 +103,37 @@ const CalendarModal: React.FC<Props> = (props) => {
       <S.Container>
         <S.Header>
           <S.Title>{title} 날짜를 선택해주세요</S.Title>
-          <S.DaysContainer>
-            <S.Days>
-              <tbody>
-                <tr>
-                  <td>
-                    <div>일</div>
-                  </td>
-                  <td>
-                    <div>월</div>
-                  </td>
-                  <td>
-                    <div>화</div>
-                  </td>
-                  <td>
-                    <div>수</div>
-                  </td>
-                  <td>
-                    <div>목</div>
-                  </td>
-                  <td>
-                    <div>금</div>
-                  </td>
-                  <td>
-                    <div>토</div>
-                  </td>
-                </tr>
-              </tbody>
-            </S.Days>
-          </S.DaysContainer>
+          <S.SubTitle>실제 {serviceType === 'move' ? '이사' : '청소'} 날짜가 아닌 경우 정확한 견적이 불가능합니다.</S.SubTitle>
         </S.Header>
+        <S.DaysContainer>
+          <S.Days>
+            <tbody>
+            <tr>
+              <td>
+                <div>일</div>
+              </td>
+              <td>
+                <div>월</div>
+              </td>
+              <td>
+                <div>화</div>
+              </td>
+              <td>
+                <div>수</div>
+              </td>
+              <td>
+                <div>목</div>
+              </td>
+              <td>
+                <div>금</div>
+              </td>
+              <td>
+                <div>토</div>
+              </td>
+            </tr>
+            </tbody>
+          </S.Days>
+        </S.DaysContainer>
         <DatePicker currentDate={new Date()} rangeStartDate={rangeStartDate} rangeEndDate={rangeEndDate} onSelect={onSelect} selected={selected} disabledDate={disabledDate} title={title} serviceType={serviceType}/>
       </S.Container>
     </PopupTemplate>

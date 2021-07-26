@@ -400,7 +400,7 @@ const PartnerDetailForCompleted = () => {
                 {getReviewList.data.map((review, index) => {
                     return (
                         <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional}
-                               kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star}/>
+                               kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star} serviceType={getPartnerDetailCompleted?.data?.service_type}/>
                     )
                 })}
             </div>

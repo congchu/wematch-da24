@@ -270,7 +270,8 @@ const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywo
 
 	const pathname = router.location.pathname.split('/')[1];
 
-	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal)
+	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal);
+
 	return (
 		<>
 			<S.Wrap>
