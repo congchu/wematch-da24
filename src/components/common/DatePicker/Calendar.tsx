@@ -72,12 +72,14 @@ const Dot = styled.span`
 `
 
 const DayCell = styled.div<DayProps>`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 40px;
     height: 40px;
     font-size: 16px;
     text-align: center;
     cursor: pointer;
-    display: ${(({ type }) => type === 'current' ? 'inline-block' : 'none')};
     padding: 12px 0;
     box-sizing: border-box;
     color: ${({ type }) => type !== 'current' ? colors.lineEnd : colors.gray33};

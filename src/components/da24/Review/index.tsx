@@ -224,9 +224,10 @@ interface Props {
 	partnerName?: string;
 	level?: Level;
 	partner?: string;
+	serviceType?: 'clean' | 'move'
 }
 
-const Review = ({ id, created_at, memo, reply, professional, kind, price, star, partnerName, level, partner }: Props) => {
+const Review = ({ id, created_at, memo, reply, professional, kind, price, star, partnerName, level, partner, serviceType='move' }: Props) => {
 	const history = useHistory()
 	const isDesktop = useMedia({
 		minWidth: 1200,
@@ -289,7 +290,7 @@ const Review = ({ id, created_at, memo, reply, professional, kind, price, star, 
 				<S.UserInfo>
 					<strong>고객번호 {id}</strong>
 					<p> | </p>
-					<span>{getCreatedAt(created_at)}</span>
+					<span>{`${getCreatedAt(created_at)}달 내 ${serviceType === 'move' ? '이사' : '청소'}`}</span>
 				</S.UserInfo>
 			</S.InfoWrap>
 			<S.Grade>
@@ -327,7 +328,7 @@ const Review = ({ id, created_at, memo, reply, professional, kind, price, star, 
 			</S.Review>
 			{reply && (
 				<S.Answer>
-					<strong>이사업체 답변</strong>
+					<strong>{serviceType === 'move' ? '이사업체 답변' : '청소업체 답변'}</strong>
 					<p>{reply}</p>
 				</S.Answer>
 			)}

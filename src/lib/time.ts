@@ -6,9 +6,8 @@ export const getCreatedAt = (date: string | Date | Dayjs) => {
 
   const diffDay = now.diff(createdAt, 'day')
   if(diffDay < 330) {
-    return `${Math.ceil(diffDay / 30)}달 내 이사`
+    return Math.ceil(diffDay / 30)
   } else {
-    const diffYear = Math.floor(diffDay / 364) + 1
-    return `${diffYear}년 전 이사`
+    return Math.floor(diffDay / 364) + 1
   }
 }
