@@ -410,7 +410,6 @@ export default function Completed() {
 
   useEffect(() => {
     if (loading || cleanLoading || moveLoading) {
-      console.log('hihihihi')
       setFirstLoading(false)
     }
   }, [loading, cleanLoading, moveLoading])
@@ -498,14 +497,13 @@ export default function Completed() {
   }
 
   const companyListData = useMemo(() => {
-    console.log('cleanData:', cleanData)
-    if (inquiry_idx) {
+    if (inquiry_idx && data) {
       return data?.partners
     }
 
-    if (serviceType === 'move') {
+    if (serviceType === 'move' && moveData) {
       return moveData?.match_list
-    } else if (serviceType === 'clean') {
+    } else if (serviceType === 'clean' && cleanData) {
       return cleanData?.match_list
     }
   }, [inquiry_idx, serviceType, data, cleanData, moveData])

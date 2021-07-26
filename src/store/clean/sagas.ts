@@ -53,7 +53,6 @@ export function* fetchCleanAutoMatchSaga() {
       yield put(replace(`/completed?serviceType=clean&inquiry_idx=${data.inquiry_idx}`))
     }
   } catch (e) {
-    console.log(e)
     yield put(fetchCleanAutoMatch.failure())
     yield put(push('/error'))
   }
