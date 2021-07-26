@@ -24,7 +24,6 @@ import * as moveSelector from 'store/form/selectors'
 import * as colors from 'styles/colors'
 import { CLEAN_URL } from 'constants/env'
 import { dataLayer } from 'lib/dataLayerUtil'
-import { events } from 'lib/appsflyer'
 import { whatDay } from 'lib/dateUtil'
 import dayjs from 'dayjs'
 import NewLevelN from 'components/Icon/generated/NewLevelN'
@@ -384,7 +383,7 @@ export default function Completed() {
   const { start: moveStartAddr, end: moveEndAddr, type: moveAddrType } = useSelector(commonSelector.getJuso)
   const { moving_type } = useSelector(moveSelector.getFormData)
   const { type: cleanType } = useSelector(cleanSelector.getCleanForm)
-  const { data, loading, error } = useSelector(commonSelector.getCompletedData)
+  const { data, loading } = useSelector(commonSelector.getCompletedData)
   const { data: cleanData, loading: cleanLoading } = useSelector(cleanSelector.getCleanMatchData)
   const { data: moveData, loading: moveLoading } = useSelector(moveSelector.getSubmittedForm)
   const { user } = useSelector(getUser)
@@ -394,7 +393,6 @@ export default function Completed() {
   const isDesktop = useMedia({
     minWidth: 1200
   })
-  const [sessionVisible, setSessionVisible] = useState(false)
   const [expand, setExpand] = useState(true)
   const [showPopup, setShowPopup] = useState(false)
   const [firstLoading, setFirstLoading] = useState(true)
@@ -412,76 +410,36 @@ export default function Completed() {
 
   useEffect(() => {
     if (loading || cleanLoading || moveLoading) {
+      console.log('hihihihi')
       setFirstLoading(false)
     }
   }, [loading, cleanLoading, moveLoading])
 
   useEffect(() => {
-    if (serviceType === 'clean' && !cleanType) {
-      setFirstLoading(false)
-      setSessionVisible(true)
-    } else if (serviceType === 'move' && !moving_type) {
-      setFirstLoading(false)
-      setSessionVisible(true)
-    }
-  }, [serviceType, cleanType, moving_type, error])
+    const isPartnerList = moveData?.match_list?.length || cleanData?.match_list?.length || data?.partners?.length
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search)
-    const inquiry_idx = params.get('inquiry_idx')
-    const serviceType = params.get('serviceType')
-
-    if (inquiry_idx) {
+    if (inquiry_idx && !isPartnerList) {
       dispatch(commonActions.fetchCompletedMoveIdx.request({ inquiry_idx }))
       return
     }
 
-    if (!user) {
-      history.replace('/')
-      return
-    }
-
-    if (serviceType === 'clean' && cleanType) {
+    if (serviceType === 'clean' && cleanType && !isPartnerList) {
       dispatch(cleanActions.fetchCleanAutoMatch.request())
       return
     }
 
-    if (serviceType === 'move' && moving_type) {
-      dispatch(moveActions.fetchMoveData())
-    }
-  }, [dispatch, location, history, user, cleanType, moving_type])
-
-  useEffect(() => {
-    if (data !== null && !loading && !error && msg !== 'true') {
-      dataLayer({
-        event: 'complete',
-        category: '매칭완료',
-        action: `매칭완료_${data?.partners?.length}`,
-        label: `${data?.start_address?.replace(/ /g, '-')}층_${data?.end_address?.replace(/ /g, '-')}층`,
-        CD6: `${data.type === '가정이사' ? '가정' : '사무실'}`,
-        CD12: '바로매칭'
-      })
-
-      events({
-        action: 'app_move_done'
-      })
+    if (serviceType === 'move' && moving_type && !isPartnerList) {
       ReactPixel.fbq('track', 'Purchase')
-
-      TenpingScript.SendConversion()
-
-      gtag('event', 'conversion', {
-        send_to: 'AW-862163644/CmzdCIej6G0QvKWOmwM'
-      })
+      dispatch(moveActions.fetchMoveData())
+      return
     }
-  }, [data, loading, error, msg])
 
-  useEffect(() => {
-    return () => {
-      dispatch(commonActions.resetCompletedMove())
-      dispatch(moveActions.resetFormData())
-      dispatch(cleanActions.resetCleanForm())
+    if (isPartnerList) {
+      setFirstLoading(false)
+    } else {
+      history.replace('/notFound')
     }
-  }, [dispatch])
+  }, [dispatch, history, cleanType, moving_type, data, cleanData, moveData, inquiry_idx, serviceType])
 
   const handleCleanConfirm = useCallback(() => {
     if (data !== null) {
@@ -499,7 +457,7 @@ export default function Completed() {
     }
 
     history.push('/clean')
-  }, [msg, data])
+  }, [msg, data, history])
 
   const handleCleanCancel = useCallback(() => {
     if (data !== null) {
@@ -751,7 +709,6 @@ export default function Completed() {
       )}
       <S.Button onClick={() => handleSubmit()}>신청 정보 확인완료</S.Button>
       {serviceType === 'move' && <NewModal visible={showPopup} title={'입주청소 찾기'} content={'입주청소도 필요하세요?'} confirmText={'바로 찾기'} cancelText={'다음에'} confirmClick={handleCleanConfirm} cancelClick={handleCleanCancel} />}
-      <NewModal visible={sessionVisible} title={'정보 만료'} content={'현재 페이지의 정보가 만료되었습니다. 다시 조회해 주세요.'} confirmClick={() => history.push('/')} confirmText={'홈으로 가기'} />
     </S.Container>
   )
 }

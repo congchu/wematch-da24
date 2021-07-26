@@ -166,6 +166,7 @@ function AppRoute() {
         <Route exact path="/error" component={ErrorService} />
         <Route exact path="/login" render={(props) => (wematchToken ? <Redirect to={{ pathname: '/' }} /> : <Login />)} />
         <Route exact path="/clean" component={CleanPage} />
+        <Route exact path="/notfound" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
     )

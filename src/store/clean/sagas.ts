@@ -8,7 +8,7 @@ import { getCleanForm } from './selectors'
 import { RequestCleanAuthMatchData } from './types'
 import { fetchCleanAutoMatch } from './actions'
 import { getCookie } from 'lib/cookie'
-import { push } from 'connected-react-router'
+import { push, replace } from 'connected-react-router'
 
 export function* fetchCleanAutoMatchSaga() {
   try {
@@ -50,6 +50,7 @@ export function* fetchCleanAutoMatchSaga() {
       yield put(push('/requests/nopartner?serviceType=clean'))
     } else {
       yield put(fetchCleanAutoMatch.success(data))
+      yield put(replace(`/completed?serviceType=clean&inquiry_idx=${data.inquiry_idx}`))
     }
   } catch (e) {
     console.log(e)

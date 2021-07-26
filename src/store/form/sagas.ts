@@ -23,6 +23,7 @@ import { dataLayer } from 'lib/dataLayerUtil'
 import * as sentry from '@sentry/react'
 import { Severity } from '@sentry/react'
 import { useCallback } from 'react'
+import { events } from 'lib/appsflyer'
 
 export function* setJusoSaga() {
   const getJuso = yield select(commonSelector.getJuso)
@@ -196,6 +197,27 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
     if (data?.result === ESubmittedFormResult.Success) {
       // yield put(push(`/completed?${data.inquiry_idx}`))
       // yield put(push(`/requests/completed`))
+
+      dataLayer({
+        event: 'complete',
+        category: '매칭완료',
+        action: `매칭완료_${data?.partners?.length}`,
+        label: `${data?.start_address?.replace(/ /g, '-')}층_${data?.end_address?.replace(/ /g, '-')}층`,
+        CD6: `${data.type === '가정이사' ? '가정' : '사무실'}`,
+        CD12: '바로매칭'
+      })
+
+      events({
+        action: 'app_move_done'
+      })
+
+      TenpingScript.SendConversion()
+
+      gtag('event', 'conversion', {
+        send_to: 'AW-862163644/CmzdCIej6G0QvKWOmwM'
+      })
+
+      yield put(replace(`/completed?serviceType=move&inquiry_idx=${data.inquiry_idx}`))
     } else if (data?.result === ESubmittedFormResult.NoPartner) {
       yield put(push('/requests/nopartner?serviceType=move'))
     } else if (data?.result === ESubmittedFormResult.NoService) {
