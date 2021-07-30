@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: checkout v2
         uses: actions/checkout@v2
-      - env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Install Dependence
         run: yarn install
+      - env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Build Dev
         run: build:dev
       - name: Deploy To s3
