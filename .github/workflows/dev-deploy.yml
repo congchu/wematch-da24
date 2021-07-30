@@ -23,4 +23,4 @@ jobs:
           aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
-            build s3://da24-user-web-dev.com
+            build s3://da24-user-web-dev
