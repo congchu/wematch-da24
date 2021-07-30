@@ -41,11 +41,29 @@ const Slide = styled.div<{image: string}>`
   color: ${gray33};
 
   padding: 20px;
-  
+
   .wrapper {
     max-width: 768px;
     width: 100%;
     margin: 0 auto;
+    .title {
+        font-size: 18px;
+        line-height: 26px;
+    }
+    .content {
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 35px;
+        color: #333333;
+    }
+    .button {
+        background: #154975;
+        color: #ffffff;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 11px;
+        padding: 5px 10px;
+    }
   }
   
   span {
@@ -81,7 +99,12 @@ const Slide = styled.div<{image: string}>`
     ${props => props.image && css`
       background-image: url(${require('assets/images/components/MainVisual/' + props.image + '_pc.jpg')});
     `};
+      
+     .hide {
+         display: none;
+     }
   }
+
   
   @media screen and (min-width: 1200px) {
     span {
@@ -92,7 +115,19 @@ const Slide = styled.div<{image: string}>`
     p {
       font-size: 36px;
       line-height: 52px;
-    } 
+    }
+
+    .wrapper {
+      .title, .content {
+          font-size: 36px;
+          line-height: 52px;
+      }
+      
+      .button {
+          font-size: 15px;
+          line-height: 22px;
+      }
+    }
   }
 `
 
@@ -137,8 +172,28 @@ function MainVisual() {
                     dataLayer({
                         event: 'header_banner',
                         category: '다이사_메인_상단배너_1',
-                        action: '잘하는 이사업체 1분만에 찾았다',
+                        action: '이벤트',
                         label: '1'
+                    })
+                    router.history.push('/notice')
+                }}>
+                    <div className="wrapper" style={{ marginTop: '-50px' }}>
+                        <span className="title">누워서 이사업체 찾기만 해도,</span>
+                        <p className="content" style={{ marginBottom: '20px' }}>
+                            이사지원금 <br className="hide" />
+                            최대 46만원!
+                        </p>
+                        <a className="button">이벤트 자세히</a>
+                    </div>
+                </Slide>
+            </SwiperSlide>
+            <SwiperSlide>
+                <Slide image="main_visual_02" onClick={() => {
+                    dataLayer({
+                        event: 'header_banner',
+                        category: '다이사_메인_상단배너_2',
+                        action: '잘하는 이사업체 1분만에 찾았다',
+                        label: '2'
                     })
                     router.history.push('/banner/intro')
                 }}>
@@ -152,31 +207,11 @@ function MainVisual() {
                     </div>
                 </Slide>
             </SwiperSlide>
-            {/*<SwiperSlide>*/}
-            {/*    <EventSlide image="mattress_event" onClick={() => {*/}
-            {/*        dataLayer({*/}
-            {/*            event: 'header_banner',*/}
-            {/*            category: '다이사_메인_상단배너_1',*/}
-            {/*            action: '이사 견적서 올리면, 매트리스 소독권 또는 편의점 상품권!',*/}
-            {/*            label: '2'*/}
-            {/*        })*/}
-            {/*        window.location.href = 'https://da24.wematch.com/notice.asp'*/}
-            {/*        // router.push('/notice')*/}
-            {/*    }}>*/}
-            {/*        <div className="wrapper">*/}
-            {/*            <span>놓칠 수 없는 혜택!</span>*/}
-            {/*            <p>*/}
-            {/*                이사 견적서 올리면, <br /><strong>무료 매트리스 소독권 증정!</strong>*/}
-            {/*            </p>*/}
-            {/*            <a>자세히</a>*/}
-            {/*        </div>*/}
-            {/*    </EventSlide>*/}
-            {/*</SwiperSlide>*/}
             <SwiperSlide>
-                <Slide image="main_visual_02" onClick={() => {
+                <Slide image="main_visual_03" onClick={() => {
                     dataLayer({
                         event: 'header_banner',
-                        category: '다이사_메인_상단배너_1',
+                        category: '다이사_메인_상단배너_3',
                         action: '혹시나 하고 이용했는데 대만족이에요',
                         label: '3'
                     })
