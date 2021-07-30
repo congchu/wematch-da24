@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Install Dependence
         run: yarn install
-      - name: Build Dev
+      - name: Build Prod
         run: build:prod
       - name: Deploy To s3
         env:
