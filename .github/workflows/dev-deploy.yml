@@ -14,11 +14,15 @@ jobs:
       - name: Setup npmrc
         run: echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN}}" > .npmrc
       - name: Install Dependence
-        run: yarn install
+        run:  yarn install
       - name: Build Dev
-        run: yarn build:dev
+        run: yarn build
       - name: Deploy To s3
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: aws s3 sync ./build s3://da24-user-web-dev --delete
+        run: |
+          aws s3 cp \
+            --recursive \
+            --region ap-northeast-2 \
+            build s3://da24-user-web-dev
