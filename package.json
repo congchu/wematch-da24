@@ -2,9 +2,6 @@
   "name": "da24booking-user-web",
   "version": "0.1.0",
   "private": true,
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@wematch/wematch-ui"
-  },
   "dependencies": {
     "@sentry/integrations": "6.2.3",
     "@sentry/react": "6.2.3",
