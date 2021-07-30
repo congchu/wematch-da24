@@ -99,10 +99,6 @@ const Slide = styled.div<{image: string}>`
     ${props => props.image && css`
       background-image: url(${require('assets/images/components/MainVisual/' + props.image + '_pc.jpg')});
     `};
-      
-     .hide {
-         display: none;
-     }
   }
 
   
@@ -180,8 +176,7 @@ function MainVisual() {
                     <div className="wrapper" style={{ marginTop: '-50px' }}>
                         <span className="title">누워서 이사업체 찾기만 해도,</span>
                         <p className="content" style={{ marginBottom: '20px' }}>
-                            이사지원금 <br className="hide" />
-                            최대 46만원!
+                            이사 지원금 최대 46만원!
                         </p>
                         <a className="button">이벤트 자세히</a>
                     </div>
