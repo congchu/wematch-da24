@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react'
-import styled, {css} from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
 import {useDispatch, useSelector} from "react-redux"
 import useHashToggle from 'hooks/useHashToggle'
 import {isEmpty, every} from 'lodash'
@@ -54,8 +54,16 @@ const S = {
         padding: 12px 16px;
         border: 1px solid ${colors.lineDefault};
         background-color: #f8f9fb;
-        border-radius: 4px  ;
-      
+        border-radius: 4px;
+        font-size: 16px;
+        line-height: 28px;
+        .placeholder {
+            position: absolute;
+            top: 0;
+            padding: 15px 2px;
+            color:#999;
+            opacity:1
+        }
     `,
     Textarea: styled.textarea`
         display: block;
@@ -65,11 +73,13 @@ const S = {
         outline: none;
         background-color: transparent;
         letter-spacing: -1px;
-        height: 110px;
+        height: 145px;
         font-size: 16px;
         line-height: 28px;
         border-radius: 4px;
         padding-left: 0px;
+        position: relative;
+        z-index: 1;
     `,
     Button: styled.button`
       display: block;
@@ -128,6 +138,7 @@ function ContactPage() {
     const [contactType, setContactType] = useState<string>('');
     const [serviceType, setServiceType] = useState<string>('');
     const [completed, setCompleted] = useState<boolean>(false);
+    const [contactVisible, setContactVisible] = useState<boolean>(false);
     const { user } = useSelector(userSelector.getUser)
     const location = useLocation();
 
@@ -185,6 +196,8 @@ function ContactPage() {
     useEffect(()=>{
         if(every(initObj)){
             setCompleted(true)
+        } else {
+            setCompleted(false)
         }
     },[name, contactType, tel, contents, serviceType])
 
@@ -210,6 +223,13 @@ function ContactPage() {
         }
     },[getContactStatus])
 
+    useEffect(() => {
+        if (isEmpty(contents)) {
+            setContactVisible(true)
+        } else {
+            setContactVisible(false)
+        }
+    }, [contents])
 
     return(
         <Layout title='문의하기'>
@@ -241,11 +261,17 @@ function ContactPage() {
                        value = { contactType }
                 />
                 <S.TextContainer>
-                    <S.Textarea placeholder="문의 내용"
-                                style={{ fontSize: "16px"}}
-                                value={contents}
-                                onChange={(e)=> {setContents(e.target.value)}}
+                    <S.Textarea style={{ fontSize: "16px" }}
+                        value={contents}
+                        onChange={(e)=> {setContents(e.target.value)}}
                     />
+                    {contactVisible && (<div className='placeholder'>
+                        업체 관련 문의 시 <br/>
+                        반드시 업체명과 구체적인 내용을 적어주세요! <br/>
+                        ex) 접수 취소 시, <br/>
+                        - 취소할 업체명 (필수) <br/>
+                        - 취소 사유 (필수)
+                    </div>)}
                 </S.TextContainer>
             </S.Form>
             <Select visible={visibleCategoryModal} items={Category} onOverlayClose={toggleCategory} onClose={toggleCategory} onSelect={selectServiceType}/>

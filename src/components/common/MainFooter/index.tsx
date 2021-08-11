@@ -48,7 +48,7 @@ const S = {
     display: inline-block;
     position: relative;
     margin-right: 22px;
-    &:after {
+    &:not(:last-child):after {
       content: '';
       height: 12px;
       width: 1px;
@@ -63,9 +63,10 @@ const S = {
       font-size: 13px;
       margin-right: 10px;
       line-height: 22px;
-      &:after {
-        display: none;
+      &:not(:last-child):after {
+          display: none;
       }
+      
       .down {
         margin-left: 2px;
       }
@@ -95,6 +96,7 @@ const S = {
     line-height: 24px;
     color: ${gray88};
     letter-spacing: -1px;
+    margin-top: 20px;    
     .mobile-enter {
       display: none;
     }
@@ -131,7 +133,7 @@ const S = {
     WrapSnsLinks: styled.div`
     position: absolute;
     right: 0;
-    top: 177px;
+    top: 200px;
     .mobile {
       display: none;
     }
@@ -275,14 +277,24 @@ export default function MainFooter() {
                     <S.ExternalLink className="companyInfo">
                         사업자정보
                     </S.ExternalLink>
-                    <S.PartnerCenter>
-                        <span>고객센터</span> 1522-2483 (평일 9시~18시)
-                    </S.PartnerCenter>
+                    <S.ExternalLink className="companyInfo">
+                        사업자정보
+                    </S.ExternalLink>
+                    <S.ExternalLink onClick={()=> router.push('/contact')}>
+                        문의하기
+                    </S.ExternalLink>
+                    <S.ExternalLink onClick={()=> router.push('/notice')}>
+                        {/*<S.ExternalLink onClick={()=> window.location.href = 'https://da24.wematch.com/notice.asp'}>*/}
+                        공지사항
+                    </S.ExternalLink>
+                    {/*<S.PartnerCenter>*/}
+                    {/*    <span>고객센터</span> 1522-2483 (평일 9시~18시)*/}
+                    {/*</S.PartnerCenter>*/}
                 </div>
                 <div className="mobile">
-                    <S.PartnerCenter>
-                        <span>고객센터</span> 1522-2483 (평일 9시~18시)
-                    </S.PartnerCenter><br />
+                    {/*<S.PartnerCenter>*/}
+                    {/*    <span>고객센터</span> 1522-2483 (평일 9시~18시)*/}
+                    {/*</S.PartnerCenter><br />*/}
                     <S.ExternalLink href="https://marketdesigners.com/" target="_blank">
                         회사소개
                     </S.ExternalLink>
@@ -291,7 +303,7 @@ export default function MainFooter() {
                     </S.ExternalLink><br />
                     <S.ExternalLink onClick={()=> router.push('/faq')}>
                     {/*<S.ExternalLink onClick={()=> window.location.href = 'https://da24.wematch.com/faq.asp'}>*/}
-                        자주묻는 질문
+                        자주 묻는 질문
                     </S.ExternalLink>
                     <S.ExternalLink onClick={()=> router.push('/contact')}>
                         문의하기
@@ -307,7 +319,7 @@ export default function MainFooter() {
                 </div>
                 <S.Description visible={visibleDescription}>
                     (주)마켓디자이너스 대표 김현영ㅣ서울시 강남구 테헤란로 518, 섬유센터 10층<br className="mobile-enter" /> 사업자등록번호 840-87-00656ㅣ통신판매업신고 제2017-서울강남-01493호<br />
-                    (주)다이사 대표 이성ㅣ서울 강남구 테헤란로20길 9 동궁빌딩 3층<br className="mobile-enter" /> 사업자등록번호 539-86-00313 <br />
+                    (주)다이사 대표 김현영ㅣ서울 강남구 테헤란로20길 9 동궁빌딩 3층<br className="mobile-enter" /> 사업자등록번호 539-86-00313 <br />
                     <span>
                         위매치는 통신판매중개자로서 거래당사자가 아니며, 입점회원사가 제공하는 서비스에<br className="mobile-enter" />대한 이행, 계약사항 및 분쟁에 책임지지 않습니다.<br className="desktop-enter" />
                         고객의 피드백을 수집하여 자동화된<br className="mobile-enter" /> 업체 등급 부여 및 후기 생성 관련 기술은 특허출원이 완료되었습니다.

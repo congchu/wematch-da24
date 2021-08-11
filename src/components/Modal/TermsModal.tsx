@@ -734,7 +734,7 @@ const TermsModal:React.FC<Props> = (props) => {
                             <ul><ul>
                                 <li>
                                     (1)개인정보 보호책임자<br />
-                                    성명 : 이성(대표)<br />
+                                    성명 : 김현영(대표)<br />
                                     연락처 : 1588-4993<br /><br />
                                 </li>
                                 <li>

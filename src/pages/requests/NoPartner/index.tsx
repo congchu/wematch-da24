@@ -26,7 +26,7 @@ import { CALENDAR_MAX_DAYS } from 'constants/values'
 import { MOVE_URL } from 'constants/env'
 import { dataLayer } from 'lib/dataLayerUtil'
 import { events } from 'lib/appsflyer'
-import { isExceedDiffDay } from 'lib/dateUtil'
+import { formatDateKor, isExceedDiffDay } from 'lib/dateUtil'
 import { debounce } from 'lodash'
 import { showToast } from 'components/common/Toast'
 import { setCleanDate } from 'store/clean/actions'
@@ -91,6 +91,16 @@ const S = {
       margin-top: 46px;
     }
   `,
+    TitleContainer: styled.div`
+      font-size: 16px;
+      line-height: 23px;
+      text-align: center;
+      padding: 30px 70px 0;
+      letter-spacing: -1px;
+      em {
+        font-weight: bold;
+      }
+    `,
   Title: styled.strong`
     display: inline-block;
     margin-top: 18px;
@@ -168,7 +178,7 @@ const S = {
     color: #fff;
     background: #1672f7;
     @media screen and (min-width: 1200px) {
-      margin: 22px 0 13px;
+      width: 720px;
     }
     @media screen and (max-width: 320px) {
       height: 50px;
@@ -185,7 +195,19 @@ const S = {
     text-decoration: underline;
     letter-spacing: -0.5px;
     cursor: pointer;
-  `
+  `,
+    BottomContainer: styled.div`
+      position: absolute;
+      bottom: 0;
+      left: 24px;
+      width: calc(100% - 48px);
+      @media screen and (min-width: 1200px) {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 740px;
+      }
+    `
 }
 
 export default function NoPartner() {
@@ -351,10 +373,14 @@ export default function NoPartner() {
           ? (
             <>
               <SoldOut />
-              <S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>
-              <S.LinkAlarm id="dsl_a_alarm_noPartner" href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">
-              가능업체발생 시 알림 신청하기
-              </S.LinkAlarm>
+              {/*<S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>*/}
+              {/*<S.LinkAlarm id="dsl_a_alarm_noPartner" href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">*/}
+              {/*가능업체발생 시 알림 신청하기*/}
+              {/*</S.LinkAlarm>*/}
+              <S.TitleContainer>
+                <p><em>{formatDateKor(getFormData.moving_date)}</em>에 고객이 많아 <br /> 이사가 가능한 업체를 찾는 중입니다.</p> <br />
+                <p>가능 업체 발생 시 상담원이 <br /> 안내 드릴 예정입니다. (최대 2일)</p>
+              </S.TitleContainer>
             </>
           )
 
