@@ -396,19 +396,22 @@ export default function NoPartner() {
           )}
 
       </S.Contents>
-      {serviceType === 'move' && (
-        <S.ChangeDate>
-          <S.DateTitle>다른 날짜에 이사가 가능하신가요?</S.DateTitle>
-          <S.Subtext>
-            *실제 이사가 가능한 날짜만 선택해주세요! <br /> 날짜에 따라 이사 비용이 변동될 수 있습니다.
-          </S.Subtext>
-          <Input theme="default" border readOnly placeholder="이사예정일" onClick={() => setVisibleCalendarModal(true)} value={getMoveDate} style={{ backgroundColor: 'transparent' }} rootStyle={{ width: '100%' }} icon={'down'} />
-          <CalendarModal visible={visibleCalendarModal} title="이사" serviceType={serviceType} onClose={toggleCalendarCancel} onConfirm={toggleCalendarConfirm} onSelect={onSelectDate} selected={getMoveDate} />
-          <S.DateSelect id="dsl_button_retry" onClick={handleSubmit}>
-            변경한 날짜로 업체 추천 받기
-          </S.DateSelect>
-        </S.ChangeDate>
-      )}
+      {/*{serviceType === 'move' && (*/}
+      {/*  <S.ChangeDate>*/}
+      {/*    <S.DateTitle>다른 날짜에 이사가 가능하신가요?</S.DateTitle>*/}
+      {/*    <S.Subtext>*/}
+      {/*      *실제 이사가 가능한 날짜만 선택해주세요! <br /> 날짜에 따라 이사 비용이 변동될 수 있습니다.*/}
+      {/*    </S.Subtext>*/}
+      {/*    <Input theme="default" border readOnly placeholder="이사예정일" onClick={() => setVisibleCalendarModal(true)} value={getMoveDate} style={{ backgroundColor: 'transparent' }} rootStyle={{ width: '100%' }} icon={'down'} />*/}
+      {/*    <CalendarModal visible={visibleCalendarModal} title="이사" serviceType={serviceType} onClose={toggleCalendarCancel} onConfirm={toggleCalendarConfirm} onSelect={onSelectDate} selected={getMoveDate} />*/}
+      {/*    <S.DateSelect id="dsl_button_retry" onClick={handleSubmit}>*/}
+      {/*      변경한 날짜로 업체 추천 받기*/}
+      {/*    </S.DateSelect>*/}
+      {/*  </S.ChangeDate>*/}
+      {/*)}*/}
+      <S.BottomContainer>
+        <S.DateSelect onClick={() => history.push('/')}>홈으로 돌아가기</S.DateSelect>
+      </S.BottomContainer>
     </S.Container>
   )
 }
