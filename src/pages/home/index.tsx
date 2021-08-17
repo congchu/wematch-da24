@@ -89,6 +89,11 @@ const Home: React.FC<RouteComponentProps> = ({ location }) => {
       setCookie("0dj38gepoekf98234aplyadmin", `agentid=${mda}`, options);
     }
 
+    const lncd = queryString.parse(location.search).lncd || "";
+    if (lncd) {
+      setCookie('lncd', `${lncd}`)
+    }
+
     // if (9 <= Number(dayjs().format('H')) && 18 >= Number(dayjs().format('H'))) {
     //     setCallDisabled(true);
     // }

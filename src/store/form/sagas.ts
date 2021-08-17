@@ -24,6 +24,8 @@ import * as sentry from '@sentry/react'
 import { Severity } from '@sentry/react'
 import { useCallback } from 'react'
 import { events } from 'lib/appsflyer'
+import axios from 'axios'
+import { LOCAL_ENV } from '../../constants/env'
 
 export function* setJusoSaga() {
   const getJuso = yield select(commonSelector.getJuso)
@@ -185,18 +187,38 @@ export function* setFormSaga() {
   yield put(push('/completed?serviceType=move'))
 }
 
+type Dbdbdeep_Type = { lncd: string; name: string; tel: string; dt: string }
+function* fetchDbdbdeep({ lncd, name, tel, dt }: Dbdbdeep_Type) {
+  try {
+    yield axios.get('')
+  } catch (e) {
+    // 예외처리 안함
+  }
+}
+
 export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsync.request>) {
   try {
     // 디버깅용
     sentry.setExtra('submitFormSaga', {
       payload: action.payload.formData
     })
-
+    const lncd = getCookie('lncd')
     const data = yield call(requests.submitForm, action.payload.formData)
     yield put(actions.submitFormAsync.success(data))
     if (data?.result === ESubmittedFormResult.Success) {
       // yield put(push(`/completed?${data.inquiry_idx}`))
       // yield put(push(`/requests/completed`))
+      // if (lncd && LOCAL_ENV === 'PROD') {
+      if (lncd) {
+        const tel = action.payload.formData.phone1 + '-' + action.payload.formData.phone2 + '-' + action.payload.formData.phone3
+
+        yield call(fetchDbdbdeep, {
+          lncd,
+          name: encodeURI(action.payload.formData.name),
+          tel: encodeURI(tel),
+          dt: encodeURI(action.payload.formData.moving_date)
+        })
+      }
 
       dataLayer({
         event: 'complete',
