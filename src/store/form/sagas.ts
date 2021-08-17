@@ -190,7 +190,8 @@ export function* setFormSaga() {
 type Dbdbdeep_Type = { lncd: string; name: string; tel: string; dt: string }
 function* fetchDbdbdeep({ lncd, name, tel, dt }: Dbdbdeep_Type) {
   try {
-    yield axios.get('')
+    // 위매치 lncd=S00265403KC05548106K
+    yield axios.get(`http://dbdbdeep.com/site19/gate/da24/join.php?lncd=${lncd}&name=${encodeURI(name)}&tel=${encodeURI(tel)}&dt=${encodeURI(dt)}`)
   } catch (e) {
     // 예외처리 안함
   }
