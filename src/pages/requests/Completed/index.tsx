@@ -452,7 +452,7 @@ export default function Completed() {
         })
         resolve(null)
       })
-      pl.then(() => (window.location.href = `${CLEAN_URL}`))
+      pl.then(() => (window.location.href = `/clean`))
     }
 
     history.push('/clean')
@@ -691,7 +691,7 @@ export default function Completed() {
         <Collapse expand={expand}>{renderUserInfo()}</Collapse>
       </S.ContentsWrap>
       {serviceType !== 'clean' && !cleanType && (
-        <S.Box href={CLEAN_URL}>
+        <S.Box href={'/clean'}>
           <img className="left" src={require('assets/images/components/Completed/home.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사" />
           <div>
             <h3 className="title">
