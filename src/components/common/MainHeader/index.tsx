@@ -27,7 +27,8 @@ const MainHeader = ({ isFixed = false, border = false }: Props) => {
               <a href={constants.MOVE_URL}>이사</a>
             </li>
             <li className={location.pathname.includes('clean') ? 'on' : ''}>
-              <a href={constants.CLEAN_URL}>청소</a>
+              <Link to="/clean">청소</Link>
+              {/* <a href={constants.CLEAN_URL}>청소</a> */}
             </li>
             {/*<li><a href={constants.INTERIOR_URL}>인테리어</a></li>*/}
           </S.Categories>
