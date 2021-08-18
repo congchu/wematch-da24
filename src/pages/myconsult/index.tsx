@@ -19,7 +19,6 @@ import { get } from 'lodash'
 import { onMessageHandler } from 'lib/MessageUtil'
 import { CLEAN_URL, LOCAL_ENV, MOVE_URL } from 'constants/env'
 
-
 const MyConsult = () => {
   const history = useHistory()
   const dispatch = useDispatch()
@@ -101,7 +100,9 @@ const MyConsult = () => {
               <span>&nbsp; &#124; &nbsp;입주/이사청소</span>
             </ContentSubTitle>
             <ContentList>
-              {clean_orders.length === 0 ? <FindCard title="입주/이사청소" link={CLEAN_URL} /> : (
+              {clean_orders.length === 0 ? (
+                <FindCard title="입주/이사청소" link={'/clean'} />
+              ) : (
                 clean_orders.map((order: IOrder) => (
                   <ConsultCard
                     handleSelectConsult={() => handleSelectConsult(order)}
@@ -123,7 +124,7 @@ const MyConsult = () => {
             </ContentSubTitle>
             <ContentList>
               {move_orders.length === 0 ? (
-                <FindCard title="이사" link={MOVE_URL} />
+                <FindCard title="이사" link={'/'} />
               ) : (
                 move_orders.map((order: IOrder) => (
                   <ConsultCard
