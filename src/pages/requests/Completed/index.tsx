@@ -32,6 +32,10 @@ import NewLevelS from 'components/Icon/generated/NewLevelS'
 import { Level } from 'types/partner'
 import { getUser } from 'store/user/selectors'
 import { phoneSplit } from 'components/wematch-ui/utils/form'
+import * as formSelector from '../../../store/form/selectors'
+import { getCookie } from '../../../lib/cookie'
+import * as userActions from '../../../store/user/actions'
+import * as formActions from '../../../store/form/actions'
 
 const S = {
   Container: styled.div`
@@ -372,7 +376,10 @@ const S = {
       width: 720px;
       margin: 0 auto 30px;
     }
-  `
+  `,
+  IFrame: styled.iframe`
+    display: none;
+  `,
 }
 
 type ServiceType = 'move' | 'clean'
@@ -380,6 +387,7 @@ type ServiceType = 'move' | 'clean'
 export default function Completed() {
   const moveForm = useSelector(moveSelector.getFormData)
   const cleanForm = useSelector(cleanSelector.getCleanForm)
+  const getDbdbDeep = useSelector(formSelector.getDbdbDeep)
   const { start: moveStartAddr, end: moveEndAddr, type: moveAddrType } = useSelector(commonSelector.getJuso)
   const { moving_type } = useSelector(moveSelector.getFormData)
   const { type: cleanType } = useSelector(cleanSelector.getCleanForm)
@@ -402,11 +410,19 @@ export default function Completed() {
   const params = new URLSearchParams(location.search)
   const inquiry_idx = params.get('inquiry_idx')
   const serviceType = params.get('serviceType') === 'clean' ? 'clean' : 'move'
+  const lncd = getCookie('lncd')
 
   const togglePopup = () => {
     setShowPopup(!showPopup)
     history.push('/myrequest')
   }
+
+  // 접수 성공 후 한번만 호출
+  useEffect(() => {
+    return () => {
+      dispatch(formActions.setDbdbdepp(false))
+    }
+  }, [])
 
   useEffect(() => {
     if (loading || cleanLoading || moveLoading) {
@@ -707,6 +723,7 @@ export default function Completed() {
       )}
       <S.Button onClick={() => handleSubmit()}>신청 정보 확인완료</S.Button>
       {serviceType === 'move' && <NewModal visible={showPopup} title={'입주청소 찾기'} content={'입주청소도 필요하세요?'} confirmText={'바로 찾기'} cancelText={'다음에'} confirmClick={handleCleanConfirm} cancelClick={handleCleanCancel} />}
+      {getDbdbDeep && <S.IFrame src={`http://dbdbdeep.com/site19/gate/da24/join.php?lncd=${lncd}&name=${encodeURIComponent(moveForm.name)}&tel=${encodeURIComponent(moveForm.phone1 + '-' + moveForm.phone2 + '-' +moveForm.phone3)}&dt=${encodeURIComponent(moveForm.moving_date)}`} />}
     </S.Container>
   )
 }

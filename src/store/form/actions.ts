@@ -2,6 +2,7 @@ import { createAction, createAsyncAction } from 'typesafe-actions'
 import * as types from 'store/common/types'
 import { SubmittedForm } from 'store/form/types'
 import { FormState } from './reducers'
+import { boolean } from '@storybook/addon-knobs'
 
 export type MoveTypeProp = 'house' | 'oneroom' | 'office' | undefined
 
@@ -35,3 +36,4 @@ export const setSubmitType = createAction('SET_SUBMIT_TYPE')<'curation' | 'selec
 export const fetchMoveData = createAction('FETCH_MOVE_DATA')()
 export const resetFormData = createAction('RESET_FORM_DATA')()
 export const setMoveData = createAction('SET_MOVE_DATA')()
+export const setDbdbdepp = createAction('SET_DBDBDEEP')<boolean>()

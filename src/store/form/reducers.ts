@@ -34,7 +34,8 @@ export interface FormState {
     data: SubmittedForm | undefined
     loading: boolean
     report: boolean
-  }
+  },
+  callDbdbDepp?: boolean
 }
 
 const initialState: FormState = {
@@ -89,7 +90,8 @@ const initialState: FormState = {
     data: undefined,
     loading: false,
     report: false
-  }
+  },
+  callDbdbDepp: false
 }
 
 export default createReducer<FormState, Actions>(initialState)
@@ -130,3 +132,4 @@ export default createReducer<FormState, Actions>(initialState)
   }))
   .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state, submittedForm: { ...state.submittedForm, loading: false, report: false } }))
   .handleAction(actions.resetFormData, (state) => ({ ...state, formData: initialState.formData }))
+  .handleAction(actions.setDbdbdepp, (state, action) => ({ ...state, callDbdbDepp: action.payload }))
