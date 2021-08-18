@@ -84,7 +84,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://dbdbdeep.com",
   "devDependencies": {
     "@babel/core": "^7.10.1",
     "@storybook/addon-actions": "^5.3.19",
