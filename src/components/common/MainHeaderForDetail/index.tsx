@@ -22,7 +22,7 @@ const MainHeaderForDetail = ({}: Props) => {
                 <a href={constants.MOVE_URL}>이사</a>
               </li>
               <li>
-                <Link to="/clean">청소</Link>
+                <a href="/clean">청소</a>
               </li>
               {/* <li><a href={constants.CLEAN_URL}>청소</a></li> */}
               {/*<li><a href={constants.INTERIOR_URL}>인테리어</a></li>*/}

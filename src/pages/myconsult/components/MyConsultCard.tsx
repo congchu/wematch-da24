@@ -9,7 +9,7 @@ interface IFindCardProps {
 }
 
 const FindCard: React.FC<IFindCardProps> = ({ title, link = '/' }) => (
-  <FindCardContainer to={link}>
+  <FindCardContainer href={link}>
     <PlusIconWrapper>
       <img src={require('assets/images/plus.svg')} alt="icon" />
     </PlusIconWrapper>
@@ -54,7 +54,7 @@ const ConsultCard: React.FC<IConsultCard> = ({ category, categoryTitle, dateOfRe
 
 export { FindCard, ConsultCard }
 
-const FindCardContainer = styled(Link)`
+const FindCardContainer = styled.a`
   display: flex;
   align-items: center;
   width: 100%;
