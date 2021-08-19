@@ -55,6 +55,7 @@ import { ESignInCase } from 'store/user/types'
 import useReceiveMessage from 'hooks/useReceiveMessage'
 import ToastTestPage from './components/common/Toast/ToastTestPage'
 import { LOCAL_ENV } from 'constants/env'
+import Template from 'pages/requests/Completed/template'
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -157,6 +158,7 @@ function AppRoute() {
         <Route exact path="/banner/customer" component={Customer} />
         <Route exact path="/banner/grade" component={Grade} />
         <Route exact path="/completed" component={CompletedPage} />
+        <Route exact path="/completed/:inquiry_idx" component={Template} />
         <Route exact path="/myrequest" component={MyConsult} />
         <Route exact path="/myrequest/detail" component={MyConsultDetail} />
         <Route exact path="/terms" component={Terms} />

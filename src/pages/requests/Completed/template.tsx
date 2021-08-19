@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
-import ReactPixel from 'react-facebook-pixel'
 import { useMedia } from 'react-use-media'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
@@ -17,12 +16,7 @@ import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton'
 import * as commonSelector from 'store/common/selectors'
 import * as commonActions from 'store/common/actions'
 import * as partnerActions from 'store/partner/actions'
-import * as cleanActions from 'store/clean/actions'
-import * as cleanSelector from 'store/clean/selectors'
-import * as moveActions from 'store/form/actions'
-import * as moveSelector from 'store/form/selectors'
 import * as colors from 'styles/colors'
-import { CLEAN_URL } from 'constants/env'
 import { dataLayer } from 'lib/dataLayerUtil'
 import { whatDay } from 'lib/dateUtil'
 import dayjs from 'dayjs'
@@ -30,13 +24,9 @@ import NewLevelN from 'components/Icon/generated/NewLevelN'
 import NewLevelOther from 'components/Icon/generated/NewLevelOther'
 import NewLevelS from 'components/Icon/generated/NewLevelS'
 import { Level } from 'types/partner'
-import { getUser } from 'store/user/selectors'
-import { phoneSplit } from 'components/wematch-ui/utils/form'
 import * as formSelector from '../../../store/form/selectors'
 import { getCookie } from '../../../lib/cookie'
-import * as userActions from '../../../store/user/actions'
 import * as formActions from '../../../store/form/actions'
-import { maskingName, maskingPhone } from 'lib/stringUtil'
 
 const S = {
   Container: styled.div`
@@ -385,17 +375,9 @@ const S = {
 
 type ServiceType = 'move' | 'clean'
 
-export default function Completed() {
-  const moveForm = useSelector(moveSelector.getFormData)
-  const cleanForm = useSelector(cleanSelector.getCleanForm)
+export default function Template() {
   const getDbdbDeep = useSelector(formSelector.getDbdbDeep)
-  const { start: moveStartAddr, end: moveEndAddr, type: moveAddrType } = useSelector(commonSelector.getJuso)
-  const { moving_type } = useSelector(moveSelector.getFormData)
-  const { type: cleanType } = useSelector(cleanSelector.getCleanForm)
   const { data, loading } = useSelector(commonSelector.getCompletedData)
-  const { data: cleanData, loading: cleanLoading } = useSelector(cleanSelector.getCleanMatchData)
-  const { data: moveData, loading: moveLoading } = useSelector(moveSelector.getSubmittedForm)
-  const { user } = useSelector(getUser)
   const dispatch = useDispatch()
   const history = useHistory()
   const location = useLocation()
@@ -409,7 +391,7 @@ export default function Completed() {
     query: { msg }
   } = useRouter()
   const params = new URLSearchParams(location.search)
-  const inquiry_idx = params.get('inquiry_idx')
+  const { inquiry_idx } = useParams<{ inquiry_idx: string }>()
   const serviceType = params.get('serviceType') === 'clean' ? 'clean' : 'move'
   const lncd = getCookie('lncd')
 
@@ -426,27 +408,16 @@ export default function Completed() {
   }, [])
 
   useEffect(() => {
-    if (loading || cleanLoading || moveLoading) {
+    if (loading) {
       setFirstLoading(false)
     }
-  }, [loading, cleanLoading, moveLoading])
+  }, [loading])
 
   useEffect(() => {
-    const isPartnerList = moveData?.match_list?.length || cleanData?.match_list?.length || data?.partners?.length
+    const isPartnerList = data?.partners?.length
 
     if (inquiry_idx && !isPartnerList) {
       dispatch(commonActions.fetchCompletedMoveIdx.request({ inquiry_idx }))
-      return
-    }
-
-    if (serviceType === 'clean' && cleanType && !isPartnerList) {
-      dispatch(cleanActions.fetchCleanAutoMatch.request())
-      return
-    }
-
-    if (serviceType === 'move' && moving_type && !isPartnerList) {
-      ReactPixel.fbq('track', 'Purchase')
-      dispatch(moveActions.fetchMoveData())
       return
     }
 
@@ -455,7 +426,7 @@ export default function Completed() {
     } else {
       history.replace('/notFound')
     }
-  }, [dispatch, history, cleanType, moving_type, data, cleanData, moveData, inquiry_idx, serviceType])
+  }, [dispatch, history, data, inquiry_idx, serviceType])
 
   const handleCleanConfirm = useCallback(() => {
     if (data !== null) {
@@ -506,9 +477,9 @@ export default function Completed() {
   }
 
   const handleSubmit = () => {
-    if (serviceType === 'move') {
+    if (!data?.type.includes('청소')) {
       setShowPopup(!showPopup)
-    } else if (serviceType === 'clean') {
+    } else {
       history.push('/myrequest')
     }
   }
@@ -517,13 +488,7 @@ export default function Completed() {
     if (inquiry_idx && data) {
       return data?.partners
     }
-
-    if (serviceType === 'move' && moveData) {
-      return moveData?.match_list
-    } else if (serviceType === 'clean' && cleanData) {
-      return cleanData?.match_list
-    }
-  }, [inquiry_idx, serviceType, data, cleanData, moveData])
+  }, [inquiry_idx, data])
 
   const renderMoveUserInfo = ({ contact, movingDate, movingType, startAddr, endAddr, memo }: { contact: string; movingDate: string; movingType: string; startAddr: string; endAddr: string; memo: string }) => (
     <S.MoveInfo>
@@ -604,32 +569,9 @@ export default function Completed() {
         return renderCleanUserInfo({ ...userInfo })
       }
     }
-
-    if (serviceType === 'move' && moving_type) {
-      userInfo = {
-        contact: `(${moveForm.name}) ${moveForm.phone1}-${moveForm.phone2}-${moveForm.phone3}`,
-        movingDate: `(${whatDay(moveForm.moving_date)}) ${moveForm.moving_date}`,
-        movingType: `${moveForm.moving_type}`,
-        startAddr: moveAddrType.start === 'road' ? `${moveStartAddr?.roadAddr}` : `${moveStartAddr?.jibunAddr}`,
-        endAddr: moveAddrType.start === 'road' ? `${moveEndAddr?.roadAddr}` : `${moveEndAddr?.jibunAddr}`,
-        memo: `${moveForm.memo}`
-      }
-
-      return renderMoveUserInfo({ ...userInfo })
-    } else if (serviceType === 'clean' && cleanType && user !== null) {
-      const { phone1, phone2, phone3 } = phoneSplit(user.tel)
-      userInfo = {
-        contact: `(${user?.name}) ${phone1}-${phone2}-${phone3}`,
-        cleaningDate: cleanForm.date[0],
-        cleanAddr: cleanForm.addressType === 'road' ? cleanForm.address?.roadAddr : cleanForm.address?.jibunAddr,
-        memo: cleanForm.cleanMemo
-      }
-
-      return renderCleanUserInfo({ ...userInfo })
-    }
   }
 
-  if (loading || firstLoading || cleanLoading || moveLoading) {
+  if (loading || firstLoading) {
     return <ResponsiveSkeleton />
   }
   return (
@@ -640,10 +582,10 @@ export default function Completed() {
           <S.Icon>
             <Check fill={'#fff'} />
           </S.Icon>
-          <S.TopTitle style={{ paddingBottom: serviceType !== 'clean' ? 0 : '24px' }}>
-            <em>{serviceType !== 'clean' && !cleanType ? `이사업체` : `청소업체`}</em> 매칭완료 <br />
+          <S.TopTitle style={{ paddingBottom: !data?.type.includes('청소') ? 0 : '24px' }}>
+            <em>{!data?.type.includes('청소') ? `이사업체` : `청소업체`}</em> 매칭완료 <br />
             <div>
-              {serviceType !== 'clean' && !cleanType ? (
+              {!data?.type.includes('청소') ? (
                 <>
                   <p>
                     3개 업체 미만 매칭된 경우 24시간 내<br />
@@ -663,7 +605,7 @@ export default function Completed() {
               )}
             </div>
           </S.TopTitle>
-          {serviceType !== 'clean' && !cleanType && <ProcessBar />}
+          {!data?.type.includes('청소') && <ProcessBar />}
         </S.TopContents>
       </S.TopContainer>
       <S.ContentsWrap>
@@ -707,7 +649,7 @@ export default function Completed() {
         </S.TitleWrap>
         <Collapse expand={expand}>{renderUserInfo()}</Collapse>
       </S.ContentsWrap>
-      {serviceType !== 'clean' && !cleanType && (
+      {!data?.type.includes('청소') && (
         <S.Box href={'/clean'}>
           <img className="left" src={require('assets/images/components/Completed/home.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사" />
           <div>
@@ -723,14 +665,14 @@ export default function Completed() {
         </S.Box>
       )}
       <S.Button onClick={() => handleSubmit()}>신청 정보 확인완료</S.Button>
-      {serviceType === 'move' && <NewModal visible={showPopup} title={'입주청소 찾기'} content={'입주청소도 필요하세요?'} confirmText={'바로 찾기'} cancelText={'다음에'} confirmClick={handleCleanConfirm} cancelClick={handleCleanCancel} />}
-      {getDbdbDeep && (
+      {!data?.type.includes('청소') && <NewModal visible={showPopup} title={'입주청소 찾기'} content={'입주청소도 필요하세요?'} confirmText={'바로 찾기'} cancelText={'다음에'} confirmClick={handleCleanConfirm} cancelClick={handleCleanCancel} />}
+      {/* {getDbdbDeep && (
         <S.IFrame
           src={`http://dbdbdeep.com/site19/gate/da24/join.php?lncd=${lncd}&name=${encodeURIComponent(maskingName(moveForm.name))}&tel=${encodeURIComponent(moveForm.phone1 + '-' + maskingPhone(moveForm.phone2) + '-' + maskingPhone(moveForm.phone3))}&dt=${encodeURIComponent(
             moveForm.moving_date
           )}`}
         />
-      )}
+      )} */}
     </S.Container>
   )
 }

@@ -56,6 +56,7 @@ export function* fetchCompletedMoveSaga(action: ActionType<typeof actions.fetchC
     yield put(actions.fetchCompletedMoveIdx.success(data))
   } catch (e) {
     yield put(actions.fetchCompletedMoveIdx.failure())
+    yield put(push('/error'))
   }
 }
 
