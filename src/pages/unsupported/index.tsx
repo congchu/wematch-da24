@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import useUserAgent from 'hooks/useUserAgent'
 import * as colors from 'styles/colors'
@@ -96,10 +97,12 @@ const S = {
 
 export default function UnSupported() {
     const { isIE } = useUserAgent()
+    const location = useLocation()
     // ie redirection to edge
     useEffect(() => {
         if (isIE) {
-            window.open('microsoft-edge:https://da24.wematch.com', '_blank')
+            window.open(`microsoft-edge:https://wematch.com${location.search}`, '_blank')
+            // window.open('microsoft-edge:https://da24.wematch.com', '_blank')
 
             // setTimeout(function() {
             //     window.opener='self'
