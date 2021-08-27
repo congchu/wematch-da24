@@ -6,7 +6,7 @@ import { Link, useHistory, useLocation } from 'react-router-dom'
 import { useMedia } from 'react-use-media'
 import useHashToggle from 'hooks/useHashToggle'
 import { useCookies } from 'react-cookie'
-import {Button} from '@wematch/wematch-ui'
+import { Button } from '@wematch/wematch-ui'
 
 import MainHeader from 'components/common/MainHeader'
 import Input from 'components/common/Input'
@@ -31,6 +31,7 @@ import { debounce } from 'lodash'
 import { showToast } from 'components/common/Toast'
 import { setCleanDate } from 'store/clean/actions'
 import * as colors from 'styles/colors'
+import dayjs from 'dayjs'
 
 const S = {
   Header: styled.header`
@@ -91,16 +92,16 @@ const S = {
       margin-top: 46px;
     }
   `,
-    TitleContainer: styled.div`
-      font-size: 16px;
-      line-height: 23px;
-      text-align: center;
-      padding: 30px 70px 0;
-      letter-spacing: -1px;
-      em {
-        font-weight: bold;
-      }
-    `,
+  TitleContainer: styled.div`
+    font-size: 16px;
+    line-height: 23px;
+    text-align: center;
+    padding: 30px 70px 0;
+    letter-spacing: -1px;
+    em {
+      font-weight: bold;
+    }
+  `,
   Title: styled.strong`
     display: inline-block;
     margin-top: 18px;
@@ -196,18 +197,18 @@ const S = {
     letter-spacing: -0.5px;
     cursor: pointer;
   `,
-    BottomContainer: styled.div`
+  BottomContainer: styled.div`
+    position: absolute;
+    bottom: 0;
+    left: 24px;
+    width: calc(100% - 48px);
+    @media screen and (min-width: 1200px) {
       position: absolute;
-      bottom: 0;
-      left: 24px;
-      width: calc(100% - 48px);
-      @media screen and (min-width: 1200px) {
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 740px;
-      }
-    `
+      left: 50%;
+      transform: translateX(-50%);
+      width: 740px;
+    }
+  `
 }
 
 export default function NoPartner() {
@@ -215,27 +216,18 @@ export default function NoPartner() {
     minWidth: 1200
   })
 
-    const dispatch = useDispatch()
-    const location = useLocation();
-    const history = useHistory();
+  const dispatch = useDispatch()
+  const location = useLocation()
+  const history = useHistory()
 
   const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
   const getMoveType = useSelector(formSelector.getType)
   const getMoveDate = useSelector(formSelector.getDate)
-  const getAddress = useSelector(formSelector.getAddress)
-  const getFloor = useSelector(formSelector.getFloor)
-  const getName = useSelector(formSelector.getName)
-  const getPhone = useSelector(formSelector.getPhone)
-  const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
-  const getContents = useSelector(formSelector.getContents)
   const getFormData = useSelector(formSelector.getFormData)
-  const getAgree = useSelector(formSelector.getAgree)
-  const { user } = useSelector(userSelector.getUser)
   const getJuso = useSelector(commonSelector.getJuso)
-  const { type: cleanType, date: cleanDate, address: cleanAddress } = useSelector(cleanSelector.getCleanForm)
+  const cleanFormData = useSelector(cleanSelector.getCleanForm)
   const params = new URLSearchParams(location.search)
   const serviceType = params.get('serviceType') === 'clean' ? 'clean' : 'move'
-
   const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar')
   const [cookies, setCookie] = useCookies(['report'])
   const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
@@ -306,20 +298,6 @@ export default function NoPartner() {
     debounceSelectDate()
   }
 
-  const formState: FormState = {
-    type: getMoveType,
-    date: getMoveDate,
-    address: getAddress,
-    agree: getAgree,
-    floor: getFloor,
-    formData: getFormData,
-    isMoveStore: getIsMoveStore,
-    name: getName,
-    phone: getPhone,
-    submittedForm: getSubmittedForm,
-    contents: getContents
-  }
-
   const getDong = useCallback((dongType: 'start' | 'end') => {
     if (getJuso.type[dongType] === 'jibun') {
       return getJuso.start?.jibunAddr.replace(/ /g, '-')
@@ -328,23 +306,36 @@ export default function NoPartner() {
   }, [])
 
   useEffect(() => {
-    if (getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
-      dataLayer({
-        event: 'complete',
-        category: '업체마감',
-        action: '업체마감',
-        label: `${getDong('start')}_${getDong('end')}`,
-        CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
-        CD12: '바로매칭'
+    try {
+      if (serviceType === 'move' && getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
+        dataLayer({
+          event: 'complete',
+          category: '업체마감',
+          action: '업체마감',
+          label: `${getDong('start')}_${getDong('end')}`,
+          CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
+          CD12: '바로매칭'
+        })
+        ReactPixel.fbq('track', 'Purchase')
+
+        gtag('event', 'conversion', { send_to: 'AW-862163644/CmzdCIej6G0QvKWOmwM' })
+      } else if (serviceType === 'clean') {
+        dataLayer({
+          event: 'clean_done',
+          category: '청소_마감고객',
+          action: `${cleanFormData.type}`,
+          label: `${dayjs(cleanFormData.date[0]).format('MM_DD')}`,
+          CD16: `${cleanFormData.addressType === 'road' ? cleanFormData.address?.roadAddrPart1.replace(/ /g, '') : cleanFormData.address?.jibunAddr.replace(/ /g, '')}`,
+          CD17: `${cleanFormData.livingType.replace(/\/|\([^)]*\)/g, '')}`,
+          CD18: `${cleanFormData.houseSpace}`,
+          CD19: `${cleanFormData.selectOptionItem.join(',')}`
+        })
+      }
+
+      events({
+        action: 'app_move_nopartner'
       })
-      ReactPixel.fbq('track', 'Purchase')
-
-      gtag('event', 'conversion', { send_to: 'AW-862163644/CmzdCIej6G0QvKWOmwM' })
-    }
-
-    events({
-      action: 'app_move_nopartner'
-    })
+    } catch {}
   }, [])
 
   useEffect(() => {
@@ -369,32 +360,33 @@ export default function NoPartner() {
         </S.Header>
       )}
       <S.Contents>
-        {serviceType === 'move'
-          ? (
-            <>
-              <SoldOut />
-              {/*<S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>*/}
-              {/*<S.LinkAlarm id="dsl_a_alarm_noPartner" href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">*/}
-              {/*가능업체발생 시 알림 신청하기*/}
-              {/*</S.LinkAlarm>*/}
-              <S.TitleContainer>
-                <p><em>{formatDateKor(getFormData.moving_date)}</em>에 고객이 많아 <br /> 이사가 가능한 업체를 찾는 중입니다.</p> <br />
-                <p>가능 업체 발생 시 상담원이 <br /> 안내 드릴 예정입니다. (최대 2일)</p>
-              </S.TitleContainer>
-            </>
-          )
-
-          : (
-            <>
-              <IconSad width={80} height={64}/>
-              <S.CleanTitle>오늘 가능한 업체가 모두 마감되었습니다.</S.CleanTitle>
-              <S.SubTitle>고객센터(T. 1522-2483)로 연락주시면 <br/>신속히 업체를 찾아드리겠습니다.</S.SubTitle>
-              <S.ButtonWrapper>
-                <Button theme={'primary'} label={'홈으로 돌아가기'} isRound={true} onClick={() => history.push('/')}/>
-              </S.ButtonWrapper>
-            </>
-          )}
-
+        {serviceType === 'move' ? (
+          <>
+            <SoldOut />
+            {/*<S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>*/}
+            {/*<S.LinkAlarm id="dsl_a_alarm_noPartner" href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">*/}
+            {/*가능업체발생 시 알림 신청하기*/}
+            {/*</S.LinkAlarm>*/}
+            <S.TitleContainer>
+              <p>
+                <em>{formatDateKor(getFormData.moving_date)}</em>에 고객이 많아 <br /> 이사가 가능한 업체를 찾는 중입니다.
+              </p>{' '}
+              <br />
+              <p>
+                가능 업체 발생 시 상담원이 <br /> 안내 드릴 예정입니다. (최대 2일)
+              </p>
+            </S.TitleContainer>
+          </>
+        ) : (
+          <>
+            <IconSad width={80} height={64} />
+            <S.CleanTitle>오늘 가능한 업체가 모두 마감되었습니다.</S.CleanTitle>
+            <S.SubTitle>
+              고객센터(T. 1522-2483)로 연락주시면 <br />
+              신속히 업체를 찾아드리겠습니다.
+            </S.SubTitle>
+          </>
+        )}
       </S.Contents>
       {/*{serviceType === 'move' && (*/}
       {/*  <S.ChangeDate>*/}
@@ -409,9 +401,12 @@ export default function NoPartner() {
       {/*    </S.DateSelect>*/}
       {/*  </S.ChangeDate>*/}
       {/*)}*/}
-      <S.BottomContainer>
+      <S.ButtonWrapper>
+        <Button theme={'primary'} label={'홈으로 돌아가기'} isRound={true} onClick={() => history.push('/')} />
+      </S.ButtonWrapper>
+      {/* <S.BottomContainer>
         <S.DateSelect onClick={() => history.push('/')}>홈으로 돌아가기</S.DateSelect>
-      </S.BottomContainer>
+      </S.BottomContainer> */}
     </S.Container>
   )
 }
