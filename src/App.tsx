@@ -132,7 +132,7 @@ function AppRoute() {
     return (
       <Switch>
         <Route exact path="/unsupported" component={UnSupported} />
-        <Redirect path="/" to="/unsupported" />
+        <Redirect path="/" to={`/unsupported${location.search}`} />
       </Switch>
     )
   } else {

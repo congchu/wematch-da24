@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import ReactPixel from 'react-facebook-pixel'
 import { useMedia } from 'react-use-media'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { useRouter } from 'hooks/useRouter'
 
 import MainHeader from 'components/common/MainHeader'
@@ -494,6 +494,10 @@ export default function Completed() {
     history.push('/')
   }, [msg, data])
 
+  const handleOnLoad = useCallback(() => {
+    // 없으면 응답값이 안올때가 있음.
+  }, [getDbdbDeep])
+
   const compileLevelText = (level: Level) => {
     switch (level) {
       case 'S':
@@ -723,14 +727,8 @@ export default function Completed() {
         </S.Box>
       )}
       <S.Button onClick={() => handleSubmit()}>신청 정보 확인완료</S.Button>
-      {serviceType === 'move' && <NewModal visible={showPopup} title={'입주청소 찾기'} content={'입주청소도 필요하세요?'} confirmText={'바로 찾기'} cancelText={'다음에'} confirmClick={handleCleanConfirm} cancelClick={handleCleanCancel} />}
-      {getDbdbDeep && (
-        <S.IFrame
-          src={`http://dbdbdeep.com/site19/gate/da24/join.php?lncd=${lncd}&name=${encodeURIComponent(maskingName(moveForm.name))}&tel=${encodeURIComponent(moveForm.phone1 + '-' + maskingPhone(moveForm.phone2) + '-' + maskingPhone(moveForm.phone3))}&dt=${encodeURIComponent(
-            moveForm.moving_date
-          )}`}
-        />
-      )}
+      {serviceType=== 'move' && <NewModal visible={showPopup} title={'입주청소 찾기'} content={'입주청소도 필요하세요?'} confirmText={'바로 찾기'} cancelText={'다음에'} confirmClick={handleCleanConfirm} cancelClick={handleCleanCancel} />}
+      {getDbdbDeep && <S.IFrame src={`https://dbdbdeep.com/site19/gate/da24/join.php?lncd=${lncd}&name=${encodeURIComponent(maskingName(moveForm.name))}&tel=${encodeURIComponent(moveForm.phone1 + '-' + maskingPhone(moveForm.phone2) + '-' + maskingPhone(moveForm.phone3))}&dt=${encodeURIComponent(moveForm.moving_date)}`} onLoad={handleOnLoad}/>}
     </S.Container>
   )
 }
