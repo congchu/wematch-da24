@@ -387,7 +387,7 @@ const PartnerDetailForCompleted = () => {
 
     /* Review */
     const review = () => {
-        if (getReviewList.data.length < 5) {
+        if (getReviewList.data.length < 1) {
             return (
                 <S.ReviewPreview>
                     <img src={require(`assets/images/review_${isMobile ? 'm' : 'pc'}.svg`)} alt='review_img'/>
@@ -412,7 +412,7 @@ const PartnerDetailForCompleted = () => {
         <S.Container>
             {getPartnerDetailCompleted.data && (
                 <>
-                    {isDesktop ? <MainHeaderForDetail/> : <NavHeader title="이사업체 상세 정보"/>}
+                    {isDesktop ? <MainHeaderForDetail/> : <NavHeader title={getPartnerDetailCompleted?.data?.service_type === "move" ? '이사업체 상세 정보' : '청소업체 상세 정보'}/>}
                     {partnerImage()}
                     <S.PartnerInfoContainer>
                         <PartnerInfo title={getPartnerDetailCompleted.data.title ? getPartnerDetailCompleted.data.title : values.DEFAULT_TEXT} level={getPartnerDetailCompleted.data.level} pick_cnt={getPartnerDetailCompleted.data.pick_cnt}
