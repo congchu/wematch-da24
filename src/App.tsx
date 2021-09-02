@@ -56,6 +56,7 @@ import useReceiveMessage from 'hooks/useReceiveMessage'
 import ToastTestPage from './components/common/Toast/ToastTestPage'
 import { LOCAL_ENV } from 'constants/env'
 import Template from 'pages/requests/Completed/template'
+import FeedbackPage from 'pages/feedback'
 
 SwiperCore.use([Pagination, Autoplay])
 
@@ -169,6 +170,7 @@ function AppRoute() {
         <Route exact path="/login" render={(props) => (wematchToken ? <Redirect to={{ pathname: '/' }} /> : <Login />)} />
         <Route exact path="/clean" component={CleanPage} />
         <Route exact path="/notfound" component={NotFound} />
+        <Route exact path="/feedback" component={FeedbackPage} />
         <Route component={NotFound} />
       </Switch>
     )
