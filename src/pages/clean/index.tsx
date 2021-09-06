@@ -71,7 +71,7 @@ const Clean = () => {
         {steps[step]}
         <ButtonGroup>
           {isDesktop && <Button theme={'default'} label="이전" className={'first-button'} onClick={prevStep} />}
-          {step < steps.length - 1 ? <Button theme={cleanType ? 'primary' : 'disabled'} onClick={handleNextStep} label="다음" /> : <Button theme={isCleanMatch ? 'primary' : 'disabled'} onClick={handleNextStep} label="추천업체 바로 신청하기" />}
+          {step < steps.length - 1 ? <Button theme={cleanType ? 'primary' : 'disabled'} onClick={handleNextStep} label="다음" /> : <Button theme={isCleanMatch ? 'primary' : 'disabled'} onClick={handleNextStep} label="무료 전화견적 신청하기" />}
         </ButtonGroup>
       </CleanWrapper>
     </div>
