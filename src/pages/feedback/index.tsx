@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux'
 import { fetchPartnerEstimate, fetchPartnerFeedback } from 'store/common/actions'
 import ResponseFeedback from './components/ResponseFeedback'
 import EstimateForm from './components/EstimateForm'
+import Skeleton from 'components/common/Skeleton/skeleton'
 
 interface IResponsePartnerData {
   partners: { partner_id: string; partner_name: string }[]
@@ -47,7 +48,23 @@ export default function FeedbackPage() {
   }
 
   if (!data) {
-    return <div>loading</div>
+    return (
+      <Container style={{ padding: '24px', boxSizing: 'border-box', position: 'relative' }}>
+        <Skeleton style={{ width: '120px', height: '20px' }} animated />
+        <Skeleton style={{ width: '120px', height: '20px', marginTop: '24px' }} animated />
+        <Skeleton style={{ width: '100px', height: '20px', marginTop: '8px' }} animated />
+        <Skeleton style={{ width: '248px', height: '12px', marginTop: '24px' }} animated />
+        <Skeleton style={{ width: '248px', height: '12px', marginTop: '8px' }} animated />
+        <Skeleton style={{ width: '197px', height: '14px', marginTop: '24px' }} animated />
+        <Divider style={{ margin: '24px 0' }} />
+        <Skeleton style={{ width: '312px', height: '20px' }} animated />
+        <Skeleton style={{ width: '50px', height: '14px', marginTop: '24px' }} animated />
+        <Skeleton style={{ width: '75px', height: '14px', marginTop: '24px' }} animated />
+        <div style={{ left: '24px', right: '24px', position: 'absolute', bottom: '24px' }}>
+          <Skeleton style={{ width: '100%', height: '56px', borderRadius: '6px' }} animated />
+        </div>
+      </Container>
+    )
   }
 
   const components = [
@@ -116,4 +133,10 @@ const Logo = styled.h1`
     align-self: center;
     padding-left: 0;
   }
+`
+
+const Divider = styled.div`
+  width: 100%;
+  height: 0px;
+  border-bottom: 1px solid #ebeef2;
 `
