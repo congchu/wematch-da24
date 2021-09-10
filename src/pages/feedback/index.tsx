@@ -28,11 +28,11 @@ export default function FeedbackPage() {
   const idx = params.get('idx')
   const serviceType = params.get('serviceType')
 
-  if (!idx) {
-    history.replace('/error')
+  if (!idx || !serviceType) {
+    history.replace('/notfound')
   }
 
-  const { data, error } = useSWRImmutable(`/feedback/matched-partners?idx=${idx}`, fetcher)
+  const { data, error } = useSWRImmutable(idx ? `/feedback/matched-partners?idx=${idx}` : null, fetcher)
 
   const onSubmitFeedback = (form: IRequestFeedbackForm) => {
     dispatch(fetchPartnerFeedback(form))
