@@ -18,6 +18,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   /** 최상단 스타일 custom */
   rootStyle?: React.CSSProperties
   inputRef?: React.RefObject<HTMLInputElement>
+  unit?: string
 }
 
 type ThemeProps = 'default' | 'primary'
@@ -99,7 +100,7 @@ const S = {
 }
 
 const Input: React.FC<InputProps> = (props) => {
-  const { theme = 'default', border = false, icon, disabled, rootStyle, inputRef, ...restProps } = props
+  const { theme = 'default', border = false, icon, disabled, rootStyle, inputRef, unit, ...restProps } = props
 
   return (
     <S.Container style={rootStyle}>
@@ -107,6 +108,7 @@ const Input: React.FC<InputProps> = (props) => {
       {icon === 'search' && <Icon.Search size={22} />}
       {icon === 'down' && <Icon.Down size={22} />}
       {icon === 'space' && <span>평</span>}
+      {unit && <span>{unit}</span>}
     </S.Container>
   )
 }

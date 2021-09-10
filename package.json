@@ -48,6 +48,7 @@
     "reselect": "4.0.0",
     "styled-components": "5.1.1",
     "swiper": "^6.3.4",
+    "swr": "^1.0.0",
     "typesafe-actions": "5.1.0",
     "typescript": "3.8.2"
   },

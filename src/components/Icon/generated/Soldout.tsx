@@ -1,15 +1,9 @@
 import * as React from 'react'
 
-function SvgComponent({ width=100, height=100, fill='none', ...props }: React.SVGProps<SVGSVGElement>) {
+function SvgComponent({ width = 100, height = 100, fill = 'none', ...props }: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg width={width} height={height} viewBox="0 0 100 100"
-      fill="fill" {...props}>
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M19.5 84.5a9 9 0 100-18 9 9 0 000 18zm42 0a9 9 0 100-18 9 9 0 000 18z"
-        fill="#EBEEF2"
-      />
+    <svg width={width} height={height} viewBox="0 0 100 100" fill="fill" {...props}>
+      <path fillRule="evenodd" clipRule="evenodd" d="M19.5 84.5a9 9 0 100-18 9 9 0 000 18zm42 0a9 9 0 100-18 9 9 0 000 18z" fill="#EBEEF2" />
       <path
         fillRule="evenodd"
         clipRule="evenodd"

@@ -1,5 +1,5 @@
 import { push } from 'connected-react-router'
-import { call, put, all, takeEvery } from 'redux-saga/effects'
+import { call, put, all, takeEvery, takeLatest } from 'redux-saga/effects'
 import { ActionType } from 'typesafe-actions'
 import { showToast } from 'components/common/Toast'
 
@@ -60,11 +60,25 @@ export function* fetchCompletedMoveSaga(action: ActionType<typeof actions.fetchC
   }
 }
 
+function* fetchFeedbackIdxSaga(action: ActionType<typeof actions.fetchPartnerFeedback>) {
+  try {
+    const data = yield call(requests.postPartnerFeedback, action.payload)
+  } catch (e) {}
+}
+
+function* fetchEstimateIdxSaga(action: ActionType<typeof actions.fetchPartnerEstimate>) {
+  try {
+    const data = yield call(requests.postEstimateFeedback, action.payload)
+  } catch (e) {}
+}
+
 export default function*() {
   yield all([
     takeEvery(actions.fetchAddressListAsync.request, fetchAddressListSaga),
     takeEvery(actions.fetchAddressMoreListAsync.request, fetchAddressListMoreSaga),
     takeEvery(actions.fetchMoveIdx.request, fetchMoveIdxSaga),
-    takeEvery(actions.fetchCompletedMoveIdx.request, fetchCompletedMoveSaga)
+    takeEvery(actions.fetchCompletedMoveIdx.request, fetchCompletedMoveSaga),
+    takeLatest(actions.fetchPartnerFeedback, fetchFeedbackIdxSaga),
+    takeLatest(actions.fetchPartnerEstimate, fetchEstimateIdxSaga)
   ])
 }

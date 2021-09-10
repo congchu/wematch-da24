@@ -130,3 +130,32 @@ export interface ResponseDistanceType {
   data: string
   error: string
 }
+
+export interface IRequestFeedbackForm {
+  idx: string
+  partner_id: string // 업체 id. 기억 안남일 시에는 "NOMEMORY" 사용
+  service_type: 'move' | 'clean' // 서비스 타입. 이사인 경우 "move", 청소인 경우 "clean"
+  professionalism_score: number // 전문성 점수, 매우 불만족~매우 만족(1~5)
+  kindness_score: number // 친절도 점수, 매우 불만족~매우 만족(1~5)
+  price_score: number // 가격만족도 점수, 매우 불만족~매우 만족(1~5)
+  price: number // 총 비용. 단위: 원
+  extra_price: number // 추가 발생 비용. 단위: 원
+  advice_to_others: string // 이 업체 선택을 고민하는 고객에게 한마디
+  publish_agree: boolean // 평가 공개 여부
+  use_next_time: boolean // 위매치를 다음에 이용할 의향
+}
+export interface EstimatePartnerForm {
+  partner_id: string
+  professionalism_score: number
+  kindness_score: number
+  price_score: number
+  advice_to_others: string
+}
+export interface RequestEstimateForm {
+  idx: string
+  estimated_partners: EstimatePartnerForm[]
+  not_estimated_partners: {
+    partner_id: string
+  }[]
+  use_next_time: boolean
+}
