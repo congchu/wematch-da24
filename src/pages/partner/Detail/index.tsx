@@ -466,7 +466,7 @@ const PartnerDetail = () => {
 
     /* Review */
     const review = () => {
-        if (getReviewList.data.length < 5) {
+        if (getReviewList.data.length < 1) {
             return (
                 <S.ReviewPreview>
                     <img src={require(`assets/images/review_${isMobile ? 'm' : 'pc'}.png`)} alt='review_img'/>

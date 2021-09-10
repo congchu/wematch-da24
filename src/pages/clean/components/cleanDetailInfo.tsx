@@ -69,7 +69,7 @@ const CleanDetailInfo = () => {
     const parseSpace = Number(space)
     if (Number.isInteger(parseSpace) && parseSpace > 0 && parseSpace < 1000) {
       dispatch(setHouseSpace(parseSpace))
-    } else if(space === '') {
+    } else if (space === '') {
       dispatch(setHouseSpace(0))
     }
   }
@@ -117,6 +117,7 @@ const CleanDetailInfo = () => {
       <Section>
         <Title>업체 전달 메모</Title>
         <Textarea value={cleanMemo} placeholder={'업체 전달 메모 작성(선택)'} onChange={(e) => handleCleanMemo(e.target.value)} />
+        <InfoText>*무료 전화견적 신청 시 최대 3개 업체와 매칭됩니다.</InfoText>
       </Section>
       <CalendarModal visible={visibleCalendarModal} title="청소" onClose={() => setVisibleCalendarModal(false)} onSelect={onSelectDate} selected={date} serviceType={'clean'} />
       <AddressModal
@@ -177,4 +178,10 @@ const OptionItem = styled.div<{ selected: boolean }>`
   box-sizing: border-box;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+`
+const InfoText = styled.span`
+  display: block;
+  font-size: 16px;
+  color: ${colors.gray33};
+  margin-top: 20px;
 `
