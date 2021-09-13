@@ -185,7 +185,7 @@ export function* signInAfterFlowSaga() {
       yield put(push('/myrequest'))
       break
     case ESignInCase.CLEAN:
-      yield put(replace('/completed?serviceType=clean'))
+      yield put(replace('/completed?service_type=clean'))
       break
     default:
       yield put(goBack())

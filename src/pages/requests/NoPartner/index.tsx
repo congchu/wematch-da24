@@ -227,7 +227,7 @@ export default function NoPartner() {
   const getJuso = useSelector(commonSelector.getJuso)
   const cleanFormData = useSelector(cleanSelector.getCleanForm)
   const params = new URLSearchParams(location.search)
-  const serviceType = params.get('serviceType') === 'clean' ? 'clean' : 'move'
+  const serviceType = params.get('service_type') === 'clean' ? 'clean' : 'move'
   const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar')
   const [cookies, setCookie] = useCookies(['report'])
   const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
@@ -252,9 +252,9 @@ export default function NoPartner() {
 
     // dispatch(formActions.submitFormAsync.request({ formData: { uuid: user?.uuid, ...getFormData } }))
     if (serviceType === 'move') {
-      history.replace('/completed?serviceType=move')
+      history.replace('/completed?service_type=move')
     } else {
-      history.replace('/completed?serviceType=clean')
+      history.replace('/completed?service_type=clean')
     }
   }
 

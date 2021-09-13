@@ -185,7 +185,7 @@ export function* setFormSaga() {
     )
   })
 
-  yield put(push('/completed?serviceType=move'))
+  yield put(push('/completed?service_type=move'))
 }
 
 // type Dbdbdeep_Type = { lncd: string; name: string; tel: string; dt: string }
@@ -234,9 +234,9 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
         send_to: 'AW-862163644/CmzdCIej6G0QvKWOmwM'
       })
 
-      yield put(replace(`/completed?serviceType=move&inquiry_idx=${data.inquiry_idx}`))
+      yield put(replace(`/completed?service_type=move&inquiry_idx=${data.inquiry_idx}`))
     } else if (data?.result === ESubmittedFormResult.NoPartner) {
-      yield put(push('/requests/nopartner?serviceType=move'))
+      yield put(push('/requests/nopartner?service_type=move'))
     } else if (data?.result === ESubmittedFormResult.NoService) {
       yield put(push('/requests/noservice'))
     }

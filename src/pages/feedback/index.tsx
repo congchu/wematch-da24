@@ -27,7 +27,7 @@ export default function FeedbackPage() {
   const [isSurvey, setIsSurvey] = useState<boolean | null>(null)
   const params = new URLSearchParams(location.search)
   const idx = params.get('idx')
-  const serviceType = params.get('serviceType')
+  const serviceType = params.get('service_type')
 
   if (!idx || !serviceType) {
     history.replace('/notfound')

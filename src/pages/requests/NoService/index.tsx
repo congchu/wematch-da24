@@ -165,7 +165,7 @@ export default function NoService() {
   const cleanFormData = useSelector(cleanSelector.getCleanForm)
 
   const params = new URLSearchParams(location.search)
-  const serviceType = params.get('serviceType') === 'clean' ? 'clean' : 'move'
+  const serviceType = params.get('service_type') === 'clean' ? 'clean' : 'move'
 
   const formState: FormState = {
     type: getMoveType,

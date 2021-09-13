@@ -392,7 +392,7 @@ export default function Template() {
   } = useRouter()
   const params = new URLSearchParams(location.search)
   const { inquiry_idx } = useParams<{ inquiry_idx: string }>()
-  const serviceType = params.get('serviceType') === 'clean' ? 'clean' : 'move'
+  const serviceType = params.get('service_type') === 'clean' ? 'clean' : 'move'
   const lncd = getCookie('lncd')
 
   const togglePopup = () => {
