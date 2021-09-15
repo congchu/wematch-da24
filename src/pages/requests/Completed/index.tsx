@@ -615,7 +615,7 @@ export default function Completed() {
         movingDate: `(${whatDay(moveForm.moving_date)}) ${moveForm.moving_date}`,
         movingType: `${moveForm.moving_type}`,
         startAddr: moveAddrType.start === 'road' ? `${moveStartAddr?.roadAddr}` : `${moveStartAddr?.jibunAddr}`,
-        endAddr: moveAddrType.start === 'road' ? `${moveEndAddr?.roadAddr}` : `${moveEndAddr?.jibunAddr}`,
+        endAddr: moveAddrType.end === 'road' ? `${moveEndAddr?.roadAddr}` : `${moveEndAddr?.jibunAddr}`,
         memo: `${moveForm.memo}`
       }
 

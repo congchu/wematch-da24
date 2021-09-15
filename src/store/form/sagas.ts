@@ -206,6 +206,7 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
     })
     const lncd = getCookie('lncd')
     const data = yield call(requests.submitForm, action.payload.formData)
+    const { start: moveStartAddr, end: moveEndAddr, type: moveAddrType } = yield select(commonSelector.getJuso)
     yield put(actions.submitFormAsync.success(data))
     if (data?.result === ESubmittedFormResult.Success) {
       // yield put(push(`/completed?${data.inquiry_idx}`))
@@ -215,12 +216,15 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
         yield put(actions.setDbdbdepp(true))
       }
 
+      const { moving_type } = action.payload.formData
+      const startAddress = moveAddrType.start === 'road' ? `${moveStartAddr?.roadAddr}` : `${moveStartAddr?.jibunAddr}`
+      const endAddress = moveAddrType.end === 'road' ? `${moveEndAddr?.roadAddr}` : `${moveEndAddr?.jibunAddr}`
       dataLayer({
         event: 'complete',
         category: '매칭완료',
-        action: `매칭완료_${data?.partners?.length}`,
-        label: `${data?.start_address?.replace(/ /g, '-')}층_${data?.end_address?.replace(/ /g, '-')}층`,
-        CD6: `${data.type === '가정이사' ? '가정' : '사무실'}`,
+        action: `매칭완료_${data?.match_list?.length}`,
+        label: `${startAddress.replace(/ /g, '-')}_${endAddress.replace(/ /g, '-')}`,
+        CD6: `${moving_type}`,
         CD12: '바로매칭'
       })
 
