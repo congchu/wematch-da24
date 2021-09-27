@@ -25,6 +25,7 @@ import * as colors from 'styles/colors'
 import { Icon } from 'components/wematch-ui'
 import InputBox from 'components/InputBox'
 import { EFormError } from '../MoveForm'
+import { replaceContentString } from 'lib/stringUtil'
 
 type MoveInputProps = {
   departAddress: string
@@ -87,6 +88,18 @@ const S = {
       color: ${colors.gray88};
       /* letter-spacing: -1px; */
     }
+  `,
+  ContentsWrapper: styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-top: 24px;
+
+    span {
+      margin-top: 4px;
+      font-size: 15px;
+      text-align: end;
+      color: ${colors.gray88};
+    }
   `
 }
 
@@ -100,6 +113,7 @@ const MoveInput: React.FC<Props> = (props) => {
   const getMoveAddress = useSelector(formSelector.getAddress)
   const getMoveFloor = useSelector(formSelector.getFloor)
   const getJuso = useSelector(commonSelector.getJuso)
+  const getContents = useSelector(formSelector.getContents)
 
   const floorItems = [
     { key: '1', value: '1층' },
@@ -301,19 +315,25 @@ const MoveInput: React.FC<Props> = (props) => {
           {/* <Input theme="default" border readOnly icon="down" placeholder="층수" rootStyle={{ width: '100%' }} onClick={toggleEndFloor} value={getMoveFloor.end ? getMoveFloor.end + '층' : getMoveFloor.end} style={{ backgroundColor: 'transparent' }} /> */}
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', marginTop: '24px' }}>
+        <S.ContentsWrapper>
           <S.Title>업체 전달 메모(선택)</S.Title>
           <S.TextContainer>
             <S.Textarea
               placeholder="업체에게 전달할 메모가 있다면 작성해 주세요."
+              value={getContents}
               onChange={(e) => {
-                dispatch(formActions.setContents(e.target.value))
+                if (e.target.value.length <= 500) {
+                  dispatch(formActions.setContents(replaceContentString(e.target.value)))
+                }
               }}
             />
           </S.TextContainer>
-        </div>
+          <span>
+            <span style={{ color: colors.gray33 }}>{`${getContents ? getContents.length : 0}`}</span>/500자
+          </span>
+        </S.ContentsWrapper>
       </S.Form>
-      <CalendarModal visible={visibleCalendarModal} title="이사" onClose={toggleCalendarCancel} onSelect={onSelectDate} selected={getMoveDate} serviceType={'move'}/>
+      <CalendarModal visible={visibleCalendarModal} title="이사" onClose={toggleCalendarCancel} onSelect={onSelectDate} selected={getMoveDate} serviceType={'move'} />
       <AddressModal visible={visibleStartAddressModal} title="출발지를 검색해주세요" onClose={toggleStartAddress} onConfirm={toggleStartAddress} onClick={toggleStartAddress} onSelect={onSelectStartAddress} />
       <Select visible={visibleStartFloorModal} items={floorItems} onOverlayClose={toggleStartFloor} onClose={toggleStartFloor} onSelect={onSelectStartFloorAddress} headerTitle="층수 선택" />
       <AddressModal visible={visibleEndAddressModal} title="도착지를 검색해주세요" onClose={toggleEndAddress} onConfirm={toggleEndAddress} onClick={toggleEndAddress} onSelect={onSelectEndAddress} />
