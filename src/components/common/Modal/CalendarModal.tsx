@@ -40,10 +40,10 @@ const S = {
     font-weight: bold;
     font-size: 20px;
     line-height: 30px;
-    padding-bottom: 8px;
+    padding-bottom: 16px;
   `,
   SubTitle: styled.div`
-    color: #E9687F;
+    color: #e9687f;
     font-size: 14px;
     padding-bottom: 16px;
   `,
@@ -80,7 +80,7 @@ const S = {
         position: relative;
       }
     }
-  `,
+  `
 }
 
 const CalendarModal: React.FC<Props> = (props) => {
@@ -103,38 +103,37 @@ const CalendarModal: React.FC<Props> = (props) => {
       <S.Container>
         <S.Header>
           <S.Title>{title} 날짜를 선택해주세요</S.Title>
-          <S.SubTitle>실제 {serviceType === 'move' ? '이사' : '청소'} 날짜가 아닌 경우 정확한 견적이 불가능합니다.</S.SubTitle>
         </S.Header>
         <S.DaysContainer>
           <S.Days>
             <tbody>
-            <tr>
-              <td>
-                <div>일</div>
-              </td>
-              <td>
-                <div>월</div>
-              </td>
-              <td>
-                <div>화</div>
-              </td>
-              <td>
-                <div>수</div>
-              </td>
-              <td>
-                <div>목</div>
-              </td>
-              <td>
-                <div>금</div>
-              </td>
-              <td>
-                <div>토</div>
-              </td>
-            </tr>
+              <tr>
+                <td>
+                  <div>일</div>
+                </td>
+                <td>
+                  <div>월</div>
+                </td>
+                <td>
+                  <div>화</div>
+                </td>
+                <td>
+                  <div>수</div>
+                </td>
+                <td>
+                  <div>목</div>
+                </td>
+                <td>
+                  <div>금</div>
+                </td>
+                <td>
+                  <div>토</div>
+                </td>
+              </tr>
             </tbody>
           </S.Days>
         </S.DaysContainer>
-        <DatePicker currentDate={new Date()} rangeStartDate={rangeStartDate} rangeEndDate={rangeEndDate} onSelect={onSelect} selected={selected} disabledDate={disabledDate} title={title} serviceType={serviceType}/>
+        <DatePicker currentDate={new Date()} rangeStartDate={rangeStartDate} rangeEndDate={rangeEndDate} onSelect={onSelect} selected={selected} disabledDate={disabledDate} title={title} serviceType={serviceType} />
       </S.Container>
     </PopupTemplate>
   )
