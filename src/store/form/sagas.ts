@@ -240,9 +240,9 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
 
       yield put(replace(`/completed?service_type=move&inquiry_idx=${data.inquiry_idx}`))
     } else if (data?.result === ESubmittedFormResult.NoPartner) {
-      yield put(push('/requests/nopartner?service_type=move'))
+      yield put(replace('/requests/nopartner?service_type=move'))
     } else if (data?.result === ESubmittedFormResult.NoService) {
-      yield put(push('/requests/noservice'))
+      yield put(replace('/requests/noservice'))
     }
   } catch (e) {
     yield put(actions.submitFormAsync.failure())

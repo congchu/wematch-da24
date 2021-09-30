@@ -232,72 +232,6 @@ export default function NoPartner() {
   const [cookies, setCookie] = useCookies(['report'])
   const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
 
-  const getMoveTypeText = useCallback(() => {
-    if (getMoveType === 'house') {
-      return '가정'
-    } else if (getMoveType === 'office') {
-      return '사무실'
-    }
-  }, [getMoveType])
-
-  const handleSubmit = () => {
-    if (serviceType === 'move' && !getSubmittedForm.data?.result) {
-      showToast({
-        message: '이사 정보가 존재하지 않습니다.',
-        type: 'error',
-        position: 'bottom'
-      })
-      return
-    }
-
-    // dispatch(formActions.submitFormAsync.request({ formData: { uuid: user?.uuid, ...getFormData } }))
-    if (serviceType === 'move') {
-      history.replace('/completed?service_type=move')
-    } else {
-      history.replace('/completed?service_type=clean')
-    }
-  }
-
-  const toggleCalendarCancel = () => {
-    setVisibleCalendarModal(!visibleCalendarModal)
-  }
-
-  const toggleCalendarConfirm = () => {
-    dataLayer({
-      event: 'input_info',
-      category: '다이사_메인_입력창_1',
-      label: getMoveDate[0],
-      action: '이사날짜',
-      CD6: getMoveTypeText()
-    })
-    setVisibleCalendarModal(!visibleCalendarModal)
-  }
-
-  const debounceSelectDate = debounce(() => {
-    setVisibleCalendarModal(!visibleCalendarModal)
-  }, 300)
-
-  const onSelectDate = (date: CalendarDate) => {
-    if (isExceedDiffDay(date, CALENDAR_MAX_DAYS)) {
-      alert(`${serviceType === 'move' ? '이사' : '청소'}업체조회는 내일부터 최장${CALENDAR_MAX_DAYS}일까지만 비교가 가능합니다.`)
-      return
-    }
-
-    if (serviceType === 'move') {
-      dispatch(formActions.setMoveDate([date.date.format('YYYY-MM-DD')]))
-      // dispatch(
-      //   formActions.setFormData({
-      //     ...getFormData,
-      //     moving_date: date.date.format('YYYY-MM-DD')
-      //   })
-      // )
-    } else if (serviceType === 'clean') {
-      dispatch(setCleanDate([date.date.format('YYYY-MM-DD')]))
-    }
-
-    debounceSelectDate()
-  }
-
   const getDong = useCallback((dongType: 'start' | 'end') => {
     if (getJuso.type[dongType] === 'jibun') {
       return getJuso.start?.jibunAddr.replace(/ /g, '-')
@@ -337,16 +271,6 @@ export default function NoPartner() {
       })
     } catch {}
   }, [])
-
-  // useEffect(() => {
-  //   if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
-  //     setIsCookie(true)
-  //     dispatch(formActions.submitFormAsync.success(cookies.report))
-  //   }
-  //   // if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
-  //   //   history.push('/myrequest')
-  //   // }
-  // }, [getSubmittedForm])
 
   return (
     <S.Container>

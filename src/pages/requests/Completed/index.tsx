@@ -434,6 +434,10 @@ export default function Completed() {
   useEffect(() => {
     const isPartnerList = moveData?.match_list?.length || cleanData?.match_list?.length || data?.partners?.length
 
+    if ((moveData && moveData?.result !== 'success') || (cleanData && cleanData?.result !== 'success')) {
+      return
+    }
+
     if (inquiry_idx && !isPartnerList) {
       dispatch(commonActions.fetchCompletedMoveIdx.request({ inquiry_idx }))
       return
