@@ -24,8 +24,11 @@
 # 외부 의존성 패키지 설치
 $ yarn install
 
-# localhost:3000으로 개발환경 빌드 및 실행
-$ yarn start
+# 개발 로컬환경 실행
+$ yarn start:dev
+
+# 실서버 로컬환경 실행
+$ yarn start:prod
 
 # 린트 체크
 $ yarn lint
@@ -170,20 +173,18 @@ DB schema와 유사한 단위로 구분되어 있으며, 대부분의 비동기 
 
 #### 개발 서버
 
-먼저 http://ec2-52-78-57-73.ap-northeast-2.compute.amazonaws.com/root/wematch_da24 권한이 필요.
+gihub action을 이용해서 자동배포 설정이 되어있습니다.
 
-```
-$ yarn build:dev
-```
+`dev` 브랜치에 push 후 저장소에서 action을 확인해서 배포가 완료되면
 
-빌드된 build/\* 파일 전부를 wematch_da24 developer 브랜치에 복사한 뒤에 push 한다.
-
-확인은 http://dev.da24.wematch.com/ 경로에서 한다.
+확인은 http://dev.da24.wematch.com/ 경로에서 하면됩니다.
 
 #### 운영 서버
 
-```
-$ yarn build:prod
-```
+gihub action을 이용해서 자동배포 설정이 되어있습니다.
 
-빌드된 build/\* 파일 전부를 zip로 복사하여, 배포자에게 전달한다.
+`master` 브랜치에 push 후 저장소에서 action을 확인해서 배포가 완료되면
+
+aws cloudfront에서 wematch url 설정으로 들어가 무효화 처리를 해주어야합니다.
+
+무효화 처리를 할땐 `/*` 형태로 작업을 만드시면 됩니다.

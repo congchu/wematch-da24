@@ -338,15 +338,15 @@ export default function NoPartner() {
     } catch {}
   }, [])
 
-  useEffect(() => {
-    if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
-      setIsCookie(true)
-      dispatch(formActions.submitFormAsync.success(cookies.report))
-    }
-    // if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
-    //   history.push('/myrequest')
-    // }
-  }, [getSubmittedForm])
+  // useEffect(() => {
+  //   if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
+  //     setIsCookie(true)
+  //     dispatch(formActions.submitFormAsync.success(cookies.report))
+  //   }
+  //   // if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
+  //   //   history.push('/myrequest')
+  //   // }
+  // }, [getSubmittedForm])
 
   return (
     <S.Container>
