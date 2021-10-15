@@ -15,6 +15,7 @@ interface GroupProp {
   type: 'house' | 'oneroom' | 'office' | undefined
   value: string | undefined
   subValue?: string
+  weight: string
 }
 
 interface Props {
@@ -36,7 +37,6 @@ const S = {
         display: flex;
         flex-direction: row;
         background-color: white;
-        height: 102px;
         ${({ direction }) =>
           direction === 'column' &&
           css`
@@ -49,7 +49,7 @@ const S = {
         height: 100%;
         background-color: ${(props) => (props.active ? colors.pointBlue : 'transparent')};
         user-select: none;
-        padding: 1rem 0;
+        padding: 14px 0;
         cursor: pointer;
         border: 1px solid #DCDFE6;
         border-radius: 6px;
@@ -64,19 +64,29 @@ const S = {
             font-size: 18px;
             font-weight: bold;
             color: ${(props) => (props.active ? colors.white : colors.pointBlue)};
-            letter-spacing: -1.5px;
+            letter-spacing: -1px;
 
-            &:last-child {
-                color: ${(props) => (props.active ? colors.white : colors.gray33)};
-                font-size: 14px;
-                font-weight: normal;
-                line-height: 21px;
-                margin-top: 4px;
+            &:nth-child(2) {
+              color: ${(props) => (props.active ? colors.white : colors.gray33)};
+              font-size: 14px;
+              font-weight: bold;
+              line-height: 21px;
+              margin-top: 4px;
             }
+            &:nth-child(3) {
+              color: ${(props) => (props.active ? colors.white : colors.gray66)};
+              font-size: 14px;
+              font-weight: normal;
+              line-height: 21px;
+              margin-top: 4px;
+          }
         }
         &:last-child {
             margin-right: 0;
         }
+      span{
+        white-space:pre-line;
+      }
         
     `,
   Arrow: Styled.div`
@@ -87,7 +97,7 @@ const S = {
     border-top: 12px solid ${colors.pointBlue};/* 화살표 */
     border-left: 13px solid transparent;
     border-right: 13px solid transparent;
-  `
+  `,
 }
 
 const ButtonGroup: React.FC<Props> = (props) => {
@@ -96,14 +106,14 @@ const ButtonGroup: React.FC<Props> = (props) => {
   const buttonRef = useRef<HTMLButtonElement | null>(null)
   const getMoveType = useSelector(formSelector.getType)
 
-  const groups: GroupProp[] = [
-    { type: 'house', value: '가정이사', subValue: '아파트 · 빌라 주택 등' },
-    { type: 'oneroom', value: '원룸이사', subValue: '원룸 · 투룸 오피스텔 등' },
-    { type: 'office', value: '사무실이사', subValue: '빌딩 · 공장 상가 등' }
+  const moveGroups: GroupProp[] = [
+    { type: 'house', value: '가정이사', subValue: '아파트 · 빌라\n주택 등', weight: '1톤 초과 짐량' },
+    { type: 'oneroom', value: '원룸이사', subValue: '원룸 · 투룸\n오피스텔 등', weight: '1톤 이내 짐량' },
+    { type: 'office', value: '사무실이사', subValue: '빌딩 · 공장\n상가 등', weight: '1톤 초과 짐량' },
   ]
 
   const isDesktop = useMedia({
-    minWidth: 1200
+    minWidth: 1200,
   })
 
   const scrollToButton = () => {
@@ -131,16 +141,14 @@ const ButtonGroup: React.FC<Props> = (props) => {
     if (scrollPosition !== window.pageYOffset) {
       window.scroll({
         top: scrollPosition,
-        behavior: 'smooth'
+        behavior: 'smooth',
       })
     }
   }
 
-  const renderSubValue = groups?.map((group) => group.subValue)?.map((value) => value?.split(' '))
-
   return (
     <S.Container id="dsl_move_tab_types_1" direction={direction} {...restProps}>
-      {groups.map((group: GroupProp, idx: number) => (
+      {moveGroups.map((group: GroupProp, idx: number) => (
         <S.Button
           key={idx}
           ref={buttonRef}
@@ -155,32 +163,13 @@ const ButtonGroup: React.FC<Props> = (props) => {
             }
             // 상단 status 폰트 색상을 강제로 바꾼다. (App에서 버그가 해결되면 삭제해도 된다.)
             onMessageHandler({
-              action: 'setBarStyle'
+              action: 'setBarStyle',
             })
           }}>
           <div>
             <span>{group.value}</span>
-            {group.type === 'house' && (
-              <span>
-                아파트 &middot; 빌라
-                <br />
-                주택 등
-              </span>
-            )}
-            {group.type === 'oneroom' && (
-              <span>
-                원룸 &middot; 투룸
-                <br />
-                오피스텔 등
-              </span>
-            )}
-            {group.type === 'office' && (
-              <span>
-                빌딩 &middot; 공장
-                <br />
-                상가 등
-              </span>
-            )}
+            <span>{group.weight}</span>
+            <span>{group.subValue}</span>
           </div>
           {group.type === getMoveType && <S.Arrow />}
         </S.Button>
