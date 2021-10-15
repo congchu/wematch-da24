@@ -97,7 +97,7 @@ const S = {
     border-top: 12px solid ${colors.pointBlue};/* 화살표 */
     border-left: 13px solid transparent;
     border-right: 13px solid transparent;
-  `
+  `,
 }
 
 const ButtonGroup: React.FC<Props> = (props) => {
@@ -113,7 +113,7 @@ const ButtonGroup: React.FC<Props> = (props) => {
   ]
 
   const isDesktop = useMedia({
-    minWidth: 1200
+    minWidth: 1200,
   })
 
   const scrollToButton = () => {
@@ -141,12 +141,10 @@ const ButtonGroup: React.FC<Props> = (props) => {
     if (scrollPosition !== window.pageYOffset) {
       window.scroll({
         top: scrollPosition,
-        behavior: 'smooth'
+        behavior: 'smooth',
       })
     }
   }
-
-  const renderSubValue = groups?.map((group) => group.subValue)?.map((value) => value?.split(' '))
 
   return (
     <S.Container id="dsl_move_tab_types_1" direction={direction} {...restProps}>
@@ -165,7 +163,7 @@ const ButtonGroup: React.FC<Props> = (props) => {
             }
             // 상단 status 폰트 색상을 강제로 바꾼다. (App에서 버그가 해결되면 삭제해도 된다.)
             onMessageHandler({
-              action: 'setBarStyle'
+              action: 'setBarStyle',
             })
           }}>
           <div>
