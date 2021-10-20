@@ -179,7 +179,7 @@ const DatePicker: React.FC<Props> = (props) => {
           <p className="title">
             <em>견적신청 가능 날짜</em>
           </p>
-          <p className="content">55일 이내 날짜에서만 {title}업체 견적신청 이 가능해요. (당일, 익일 이사 불가)</p>
+          <p className="content">55일 이내 날짜에서만 {title}업체 견적신청이 가능해요. (당일, 익일 이사 불가)</p>
         </S.Info>
         {serviceType === 'move' && (
           <S.Toast>
