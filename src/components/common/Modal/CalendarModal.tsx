@@ -87,7 +87,7 @@ const CalendarModal: React.FC<Props> = (props) => {
   const { visible = false, title, onClose, onSelect, selected, serviceType } = props
 
   const rangeStartDate = React.useMemo(() => {
-    return dayjs()
+    return serviceType === 'move' ? dayjs().add(1, 'day') : dayjs()
   }, [])
 
   const rangeEndDate = React.useMemo(() => {
