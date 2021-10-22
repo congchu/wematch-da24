@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
 
@@ -10,6 +10,7 @@ import { IServiceType } from 'types/partner'
 
 interface Props {
   serviceType: IServiceType
+  moveType?: string
   visible: boolean
   title: string
   onClose?: () => void
@@ -84,16 +85,17 @@ const S = {
 }
 
 const CalendarModal: React.FC<Props> = (props) => {
-  const { visible = false, title, onClose, onSelect, selected, serviceType } = props
+  const { visible = false, title, onClose, onSelect, selected, serviceType, moveType } = props
+  const [rangeStartDate, setRangeStartDate] = useState(dayjs())
+  const [rangeEndDate, setRangeEndDate] = useState(dayjs().add(55,'day'))
 
-  const rangeStartDate = React.useMemo(() => {
-    return serviceType === 'move' ? dayjs().add(1, 'day') : dayjs()
-  }, [])
-
-  const rangeEndDate = React.useMemo(() => {
-    const period = serviceType === 'move' ? 56 : 55
-    return dayjs().add(period, 'day')
-  }, [])
+  useEffect(() => {
+    // 가정이사, 사무실 이사는 익일 +1부터 55일간 예약 가능
+    if (moveType === 'house' || moveType === 'office') {
+      setRangeStartDate(rangeStartDate.add(1,'day'));
+      setRangeEndDate(rangeEndDate.add(1,'day'));
+    }
+  }, [moveType])
 
   const disabledDate = (date: Date) => {
     return false
