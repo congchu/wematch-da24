@@ -91,7 +91,8 @@ const CalendarModal: React.FC<Props> = (props) => {
   }, [])
 
   const rangeEndDate = React.useMemo(() => {
-    return dayjs().add(55, 'day')
+    const period = serviceType === 'move' ? 56 : 55
+    return dayjs().add(period, 'day')
   }, [])
 
   const disabledDate = (date: Date) => {
