@@ -298,17 +298,19 @@ const MyConsultDetail = () => {
     }
   }, [selectedOrder]);
 
+  
   const selectOrderType = () => {
     if (selectedOrder) {
-      if (selectedOrder.type === '가정이사' || selectedOrder.type === '원룸이사') {
+      if (selectedOrder.type.includes('이사')) {
         return selectedOrder.type
       } else {
         return '청소업체'
       }
+    } else {
+      return ''
     }
+  }
 
-    return ''
-  };
   return (
     <S.Container>
       {isDesktop ? <MainHeader isFixed={true} border={true} /> : (
