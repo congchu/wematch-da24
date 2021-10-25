@@ -92,8 +92,8 @@ const CalendarModal: React.FC<Props> = (props) => {
   useEffect(() => {
     // 가정이사, 사무실 이사는 익일 +1부터 55일간 예약 가능
     if (moveType === 'house' || moveType === 'office') {
-      setRangeStartDate(rangeStartDate.add(1,'day'));
-      setRangeEndDate(rangeEndDate.add(1,'day'));
+      setRangeStartDate(dayjs().add(1,'day'));
+      setRangeEndDate(dayjs().add(56,'day'));
     }
   }, [moveType])
 
