@@ -24,7 +24,7 @@ const CustomSwiper = styled(Swiper)`
   }
 `
 
-const Slide = styled.div<{image: string}>`
+const Slide = styled.div<{ image: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -128,102 +128,102 @@ const Slide = styled.div<{image: string}>`
 `
 
 function MainVisual() {
-    const router = useRouter()
+  const router = useRouter()
 
-    const numberWithComma = useCallback((value: number) => {
-        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    }, [])
+  const numberWithComma = useCallback((value: number) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  }, [])
 
-    const { countUp, reset, update } = useCountUp({
-        start: 0,
-        end: 5402531,
-        duration: 0.7,
-        formattingFn: (value: number) => numberWithComma(value)
-    })
+  const { countUp, reset, update } = useCountUp({
+    start: 0,
+    end: 5402531,
+    duration: 0.7,
+    formattingFn: (value: number) => numberWithComma(value)
+  })
 
-    const autoPlayOptions = {
-        delay: 4000
-    }
+  const autoPlayOptions = {
+    delay: 4000
+  }
 
-    return (
-        <CustomSwiper
-            id="dsl_move_banner_1"
-            slidesPerView={1}
-            pagination={{ clickable: true }}
-            onSlideChange={(e) => {
-                reset()
-                if (e.activeIndex === 1 || e.activeIndex === 4) {
-                    update(5402531)
-                } else if (e.activeIndex === 2) {
-                    update(1036351)
-                } else if (e.activeIndex === 0 || e.activeIndex === 3) {
-                    update(111267)
-                }
-            }}
-            loop={true}
-            autoplay={autoPlayOptions}
-        >
-            <SwiperSlide>
-                <Slide image="main_visual_01" onClick={() => {
-                    dataLayer({
-                        event: 'header_banner',
-                        category: '다이사_메인_상단배너_1',
-                        action: '이벤트',
-                        label: '1'
-                    })
-                    router.history.push('/notice')
-                }}>
-                    <div className="wrapper" style={{ marginTop: '-50px' }}>
-                        <span className="title">누워서 이사업체 찾기만 해도,</span>
-                        <p className="content" style={{ marginBottom: '20px' }}>
-                            이사 지원금 최대 46만원!
-                        </p>
-                        <a className="button">이벤트 자세히</a>
-                    </div>
-                </Slide>
-            </SwiperSlide>
-            <SwiperSlide>
-                <Slide image="main_visual_02" onClick={() => {
-                    dataLayer({
-                        event: 'header_banner',
-                        category: '다이사_메인_상단배너_2',
-                        action: '잘하는 이사업체 1분만에 찾았다',
-                        label: '2'
-                    })
-                    router.history.push('/banner/intro')
-                }}>
-                    <div className="wrapper">
-                        <span>
-                            누적 고객수&nbsp;
-                            <strong>{countUp}</strong>
-                        </span>
-                        <p dangerouslySetInnerHTML={{ __html: "잘하는 이사업체 <br /> <strong>1분만에 찾았다</strong>" }} />
-                        <a>자세히</a>
-                    </div>
-                </Slide>
-            </SwiperSlide>
-            <SwiperSlide>
-                <Slide image="main_visual_03" onClick={() => {
-                    dataLayer({
-                        event: 'header_banner',
-                        category: '다이사_메인_상단배너_3',
-                        action: '혹시나 하고 이용했는데 대만족이에요',
-                        label: '3'
-                    })
-                    router.history.push('/banner/customer')
-                }}>
-                    <div className="wrapper">
-                        <span>
-                            누적 매칭수&nbsp;
-                            <strong>{countUp}</strong>
-                        </span>
-                        <p dangerouslySetInnerHTML={{ __html: "“혹시나 하고 이용했는데 <br /> <strong>대만족</strong>이에요”" }} />
-                        <a>자세히</a>
-                    </div>
-                </Slide>
-            </SwiperSlide>
-        </CustomSwiper>
-    )
+  return (
+    <CustomSwiper
+      id="dsl_move_banner_1"
+      slidesPerView={1}
+      pagination={{ clickable: true }}
+      onSlideChange={(e) => {
+        reset()
+        if (e.activeIndex === 1 || e.activeIndex === 4) {
+          update(5402531)
+        } else if (e.activeIndex === 2) {
+          update(1036351)
+        } else if (e.activeIndex === 0 || e.activeIndex === 3) {
+          update(111267)
+        }
+      }}
+      loop={true}
+      autoplay={autoPlayOptions}
+    >
+      <SwiperSlide>
+        <Slide image="main_visual_01" onClick={() => {
+          dataLayer({
+            event: 'header_banner',
+            category: '다이사_메인_상단배너_1',
+            action: '이벤트',
+            label: '1'
+          })
+          router.history.push('/notice')
+        }}>
+          <div className="wrapper" style={{ marginTop: '-50px' }}>
+            <span className="title">누워서 이사업체 찾기만 해도,</span>
+            <p className="content" style={{ marginBottom: '20px' }}>
+              이사 지원금 최대 46만원!
+            </p>
+            <a className="button">이벤트 자세히</a>
+          </div>
+        </Slide>
+      </SwiperSlide>
+      <SwiperSlide>
+        <Slide image="main_visual_02" onClick={() => {
+          dataLayer({
+            event: 'header_banner',
+            category: '다이사_메인_상단배너_2',
+            action: '잘하는 이사업체 1분만에 찾았다',
+            label: '2'
+          })
+          router.history.push('/banner/intro')
+        }}>
+          <div className="wrapper">
+            <span>
+              누적 고객수&nbsp;
+              <strong>{countUp}</strong>
+            </span>
+            <p dangerouslySetInnerHTML={{ __html: "잘하는 이사업체 <br /> <strong>1분만에 찾았다</strong>" }} />
+            <a>자세히</a>
+          </div>
+        </Slide>
+      </SwiperSlide>
+      <SwiperSlide>
+        <Slide image="main_visual_03" onClick={() => {
+          dataLayer({
+            event: 'header_banner',
+            category: '다이사_메인_상단배너_3',
+            action: '혹시나 하고 이용했는데 대만족이에요',
+            label: '3'
+          })
+          router.history.push('/banner/customer')
+        }}>
+          <div className="wrapper">
+            <span>
+              누적 매칭수&nbsp;
+              <strong>{countUp}</strong>
+            </span>
+            <p dangerouslySetInnerHTML={{ __html: "“혹시나 하고 이용했는데 <br /> <strong>대만족</strong>이에요”" }} />
+            <a>자세히</a>
+          </div>
+        </Slide>
+      </SwiperSlide>
+    </CustomSwiper>
+  )
 }
 
 export default memo(MainVisual)
