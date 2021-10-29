@@ -11,6 +11,8 @@ import * as userActions from 'store/user/actions'
 import * as commonActions from 'store/common/actions'
 import * as userSelector from 'store/user/selectors'
 
+import 'styles/common.css'
+
 import Home from 'pages/home'
 import PartnerList from 'pages/partner/List/index'
 import PartnerDetail from 'pages/partner/Detail/index'

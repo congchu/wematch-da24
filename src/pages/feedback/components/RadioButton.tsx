@@ -1,6 +1,5 @@
-import React, { forwardRef, Ref, useState, memo } from 'react'
+import React, { forwardRef, Ref, useState, memo, InputHTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { InputHTMLAttributes } from 'react-router/node_modules/@types/react'
 import RadioChecked from 'components/Icon/generated/RadioChecked'
 
 interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
