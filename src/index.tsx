@@ -13,7 +13,9 @@ import ReactPixel from 'react-facebook-pixel'
 import { init as initSentry } from 'lib/sentry'
 
 // Sentry Init da24-user-web-**
-initSentry()
+if (process.env.NODE_ENV != 'development') {
+  initSentry()
+}
 
 //GTM init
 TagManager.initialize({

@@ -60,6 +60,7 @@
     "build:prod": "env-cmd -f .env.production react-scripts build",
     "build": "react-scripts build",
     "invalidate:dev": "aws --profile wematch cloudfront create-invalidation --distribution-id E3KG2OP5IVT9MB --paths '/*'",
+    "invalidate:prod": "aws --profile wematch  cloudfront create-invalidation --distribution-id E1RRCOG7M0GR9 --paths '/*'",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
