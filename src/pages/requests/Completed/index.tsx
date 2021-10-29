@@ -701,7 +701,7 @@ export default function Completed() {
                   }
                   dataLayer({
                     event: msg !== 'true' ? 'complete' : 'msg_complete',
-                    category: msg !== 'true' ? '매칭완료' : '매칭완료페이지_업체정보',
+                    category: msg !== 'true' ? '매칭완료' : '매칭완료메시지_업체정보',
                     action: '고객평가_확인',
                     label: `${arr.length}_${index + 1}`,
                     CD6: type
