@@ -693,12 +693,18 @@ export default function Completed() {
               <S.HorizontalBar />
               <S.LinkCompany
                 onClick={() => {
+                  let type = "사무실"
+                  if (data) {
+                    type = data.type === '가정이사' ? '가정' : '사무실';
+                  } else if (moveForm && moveForm.moving_type) {
+                    type = moveForm.moving_type
+                  }
                   dataLayer({
                     event: msg !== 'true' ? 'complete' : 'msg_complete',
                     category: msg !== 'true' ? '매칭완료' : '매칭완료페이지_업체정보',
                     action: '고객평가_확인',
                     label: `${arr.length}_${index + 1}`,
-                    CD6: `${data?.type === '가정이사' ? '가정' : '사무실'}`
+                    CD6: type
                   })
                   /* 페이지 재접속시 이전상태 초기화 */
                   dispatch(partnerActions.detailReset())
