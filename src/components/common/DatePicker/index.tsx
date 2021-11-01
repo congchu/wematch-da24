@@ -165,8 +165,8 @@ const DatePicker: React.FC<Props> = (props) => {
       let date = dayjs(new Date()).add(index, 'month')
       return (
         <div key={index}>
-          <S.CalendarHeader>{`${currentDateValue.year()}년 ${currentDateValue.month() + 1 + index}월`}</S.CalendarHeader>
-          <Calendar currentDate={date} onSelect={onSelect} disabledDate={disabledDateWithRange} selected={selected} maxDate={maxDate} serviceType={serviceType}/>
+          <S.CalendarHeader>{`${date.year()}년 ${date.month() + 1}월`}</S.CalendarHeader>
+          <Calendar currentDate={date} onSelect={onSelect} disabledDate={disabledDateWithRange} selected={selected} maxDate={maxDate} serviceType={serviceType} />
         </div>
       )
     })
