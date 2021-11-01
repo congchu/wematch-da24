@@ -43,7 +43,7 @@ const CleanSurveyBridge = () => {
         <StepProgressBar steps={progressSteps} pointColor={colors.pointBlue} />
         <div className="bg-etc5 ">
           <div className="w-max">
-            <Headline className="color-33 pb-16 px-24">나는 청소업체가,</Headline>
+            <Headline className="color-33 pb-16">나는 청소업체가,</Headline>
           </div>
 
           <main className={`bg-ect5 w-max  ${isDesktop ? 'pb-128' : 'pb-250'}`}>
