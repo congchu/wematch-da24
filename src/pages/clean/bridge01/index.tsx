@@ -1,12 +1,14 @@
 import React, { useMemo, useState, useEffect } from 'react'
-import styled from 'styled-components'
+import { useHistory } from 'react-router-dom'
 import { useMedia } from 'react-use-media'
+import styled from 'styled-components'
 import { Button, StepProgressBar } from '@wematch/wematch-ui'
+
+import * as colors from 'styles/colors'
 import MainHeader from 'components/common/MainHeader'
 import NavHeader from 'components/common/NavHeader'
-import * as colors from 'styles/colors'
 import { Title, Body, Headline } from 'components/base/Fonts'
-import { useHistory } from 'react-router-dom'
+
 
 const CleanSurveyBridge = () => {
   const history = useHistory()

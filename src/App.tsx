@@ -39,7 +39,7 @@ import CleanEstimation from './pages/checklist/components/cleanEstimation'
 import MovePrep from './pages/checklist/components/movePrep'
 import CleanCheck from './pages/checklist/components/cleanCheck'
 import CleanPage from 'pages/clean'
-import CleanBridge01 from 'pages/clean/bridge01'
+import CleanBridge01 from './pages/clean/bridge01'
 
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
