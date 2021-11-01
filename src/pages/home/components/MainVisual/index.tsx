@@ -64,6 +64,14 @@ const Slide = styled.div<{ image: string }>`
         font-size: 11px;
         padding: 5px 10px;
     }
+    .button-light {
+        background: #FFFFFF;
+        color: #045853;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 11px;
+        padding: 5px 10px;
+    }
   }
   
   span {
@@ -163,6 +171,25 @@ function MainVisual() {
       loop={true}
       autoplay={autoPlayOptions}
     >
+      <SwiperSlide>
+        <Slide image="main_visual_04" onClick={() => {
+          dataLayer({
+            event: 'header_banner',
+            category: '다이사_메인_상단배너_1',
+            action: '이벤트',
+            label: '1'
+          })
+          router.history.push('/notice')
+        }}>
+          <div className="wrapper" style={{ marginTop: '-50px', color: 'white' }}>
+            <span className="title">이사업체 매칭받기만 해도,</span>
+            <p className="content" style={{ marginBottom: '20px', color: 'white' }}>
+              6대 가전 고장시 <br />수리비 지원!
+            </p>
+            <a className="button-light">이벤트 자세히</a>
+          </div>
+        </Slide>
+      </SwiperSlide>
       <SwiperSlide>
         <Slide image="main_visual_01" onClick={() => {
           dataLayer({
