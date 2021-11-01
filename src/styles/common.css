@@ -1,0 +1,372 @@
+:root {
+  --color-main-1: #1672f7;
+  --color-main-2: #00b6ed;
+  --color-sub-1: #f1fe24;
+  --color-sub-2: #15d4cc;
+  --color-sub-3: #e9687f;
+  --color-text-1: #121212;
+  --color-text-2: #333333;
+  --color-text-3: #666666;
+  --color-text-4: #888888;
+  --color-etc-1: #c4c9d1;
+  --color-etc-2: #d7dbe2;
+  --color-etc-3: #ebeef2;
+  --color-etc-4: #f7f8fa;
+  --color-cmyk-1: #006cb5;
+  --color-cmyk-2: #ffd500;
+  --color-white: white;
+}
+
+.font-head {
+  font-family: 'Noto Sans KR', 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
+  font-size: 22px;
+  line-height: 32px;
+}
+.font-title {
+  font-family: 'Noto Sans KR', 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
+  font-size: 20px;
+  line-height: 29px;
+}
+.font-body1 {
+  font-family: 'Noto Sans KR', 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 23px;
+}
+.font-body2 {
+  font-family: 'Noto Sans KR', 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+}
+.font-caption {
+  font-family: 'Noto Sans KR', 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.font-button1 {
+  font-family: 'Noto Sans KR', 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
+  font-size: 18px;
+  line-height: 26px;
+}
+.font-button2 {
+  font-family: 'Noto Sans KR', 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
+  font-size: 16px;
+  line-height: 23px;
+}
+.font-button3 {
+  font-family: 'Noto Sans KR', 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.color-88 {
+  color: #888888;
+}
+.color-66 {
+  color: #666666;
+}
+.color-33 {
+  color: #333333;
+}
+
+.bg-ect1 {
+  background: #c4c9d1;
+}
+.bg-ect2 {
+  background: #d7dbe2;
+}
+.bg-ect3 {
+  background: #ebeef2;
+}
+.bg-ect4 {
+  background: #f7f8f4;
+}
+.bg-ect5 {
+  background: #fafafa;
+}
+.bg-white {
+  background: #ffffff;
+}
+
+/* padding */
+.p-8 {
+  padding: 8px;
+}
+.p-16 {
+  padding: 16px;
+}
+.p-24 {
+  padding: 24px;
+}
+.p-40 {
+  padding: 40px;
+}
+.p-72 {
+  padding: 72px;
+}
+
+.px-8 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.px-16 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.px-24 {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+.px-40 {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.px-72 {
+  padding-left: 72px;
+  padding-right: 72px;
+}
+
+.py-8 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.py-16 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.py-24 {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.py-40 {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.py-72 {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+.pt-8 {
+  padding-top: 8px;
+}
+.pt-16 {
+  padding-top: 16px;
+}
+.pt-24 {
+  padding-top: 24px;
+}
+.pt-40 {
+  padding-top: 40px;
+}
+.pt-72 {
+  padding-top: 72px;
+}
+
+.pb-8 {
+  padding-bottom: 8px;
+}
+.pb-16 {
+  padding-bottom: 16px;
+}
+.pb-24 {
+  padding-bottom: 24px;
+}
+.pb-40 {
+  padding-bottom: 40px;
+}
+.pb-72 {
+  padding-bottom: 72px;
+}
+
+.pl-8 {
+  padding-left: 8px;
+}
+.pl-16 {
+  padding-left: 16px;
+}
+.pl-24 {
+  padding-left: 24px;
+}
+.pl-40 {
+  padding-left: 40px;
+}
+.pl-72 {
+  padding-left: 72px;
+}
+
+.pr-8 {
+  padding-right: 8px;
+}
+.pl-16 {
+  padding-right: 16px;
+}
+.pl-24 {
+  padding-right: 24px;
+}
+.pl-40 {
+  padding-right: 40px;
+}
+.pl-72 {
+  padding-right: 72px;
+}
+/* Margin */
+.m-8 {
+  margin: 8px;
+}
+.m-16 {
+  margin: 16px;
+}
+.m-24 {
+  margin: 24px;
+}
+.m-40 {
+  margin: 40px;
+}
+.m-72 {
+  margin: 72px;
+}
+
+.mx-8 {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.mx-16 {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+.mx-24 {
+  margin-left: 24px;
+  margin-right: 24px;
+}
+.mx-40 {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+.mx-72 {
+  margin-left: 72px;
+  margin-right: 72px;
+}
+
+.my-8 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.my-16 {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.my-24 {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.my-40 {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+.my-72 {
+  margin-top: 72px;
+  margin-bottom: 72px;
+}
+
+.mt-8 {
+  margin-top: 8px;
+}
+.mt-16 {
+  margin-top: 16px;
+}
+.mt-24 {
+  margin-top: 24px;
+}
+.mt-40 {
+  margin-top: 40px;
+}
+.mt-72 {
+  margin-top: 72px;
+}
+
+.mb-8 {
+  margin-bottom: 8px;
+}
+.mb-16 {
+  margin-bottom: 16px;
+}
+.mb-24 {
+  margin-bottom: 24px;
+}
+.mb-40 {
+  margin-bottom: 40px;
+}
+.mb-72 {
+  margin-bottom: 72px;
+}
+
+.ml-8 {
+  margin-left: 8px;
+}
+.ml-16 {
+  margin-left: 16px;
+}
+.ml-24 {
+  margin-left: 24px;
+}
+.ml-40 {
+  margin-left: 40px;
+}
+.ml-72 {
+  margin-left: 72px;
+}
+
+.mr-8 {
+  margin-right: 8px;
+}
+.ml-16 {
+  margin-right: 16px;
+}
+.ml-24 {
+  margin-right: 24px;
+}
+.ml-40 {
+  margin-right: 40px;
+}
+.ml-72 {
+  margin-right: 72px;
+}
+
+/* Flex */
+
+.flex {
+  display: flex;
+}
+.items-center {
+  align-items: center;
+}
+
+/* Radius */
+.radius-6 {
+  border-radius: 6px;
+}
+
+/* Border */
+
+.border {
+  border: solid 1px;
+}
+.border-etc2 {
+  border-color: #d7dbe2;
+}
+
+/* Shadow */
+
+/* Etc */
+
+.pointer {
+  cursor: pointer;
+}

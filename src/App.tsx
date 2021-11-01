@@ -11,6 +11,8 @@ import * as userActions from 'store/user/actions'
 import * as commonActions from 'store/common/actions'
 import * as userSelector from 'store/user/selectors'
 
+import 'styles/common.css'
+
 import Home from 'pages/home'
 import PartnerList from 'pages/partner/List/index'
 import PartnerDetail from 'pages/partner/Detail/index'
@@ -37,6 +39,7 @@ import CleanEstimation from './pages/checklist/components/cleanEstimation'
 import MovePrep from './pages/checklist/components/movePrep'
 import CleanCheck from './pages/checklist/components/cleanCheck'
 import CleanPage from 'pages/clean'
+import CleanBridge01 from './pages/clean/bridge01'
 
 import useScript from 'hooks/useScript'
 import useUserAgent from 'hooks/useUserAgent'
@@ -169,6 +172,7 @@ function AppRoute() {
         <Route exact path="/error" component={ErrorService} />
         <Route exact path="/login" render={(props) => (wematchToken ? <Redirect to={{ pathname: '/' }} /> : <Login />)} />
         <Route exact path="/clean" component={CleanPage} />
+        <Route exact path="/clean/bridge01" component={CleanBridge01} />
         <Route exact path="/notfound" component={NotFound} />
         <Route exact path="/feedback" component={FeedbackPage} />
         <Route component={NotFound} />
