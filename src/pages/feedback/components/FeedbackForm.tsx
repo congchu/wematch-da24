@@ -70,8 +70,8 @@ const FeedbackForm = ({ idx, partners, serviceType, onSubmit, handleNext, isSurv
       <FeedbackTextWrapper>
         <div>
           <h1>이용하신 업체는 어떠셨나요?</h1>
-          <p>고객님의 평가는 업체 평점에 반영됩니다. 냉정한 평가로 이사업계를 개선해주세요.</p>
-          <span>*이사업체는 작성자가 누군지 알 수 없습니다.</span>
+          <p>고객님의 평가는 업체 평점에 반영됩니다. 냉정한 평가로 업계를 개선해주세요.</p>
+          <span>*업체는 작성자가 누군지 알 수 없습니다.</span>
         </div>
       </FeedbackTextWrapper>
       <QuestionWrapper>
