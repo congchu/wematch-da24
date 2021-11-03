@@ -47,11 +47,11 @@ const ResponseFeedback = ({ isSurvey, serviceType }: Props) => {
           {/* <div style={{ flex: 1 }} /> */}
           <ButtonWrapper>
             <Button
-              label={'이사 지원금 이벤트 확인하기'}
+              label={'이벤트 확인하기'}
               theme={'primary'}
               isRound
               onClick={() => {
-                window.location.replace('https://direct.skbroadband.com/upload/WM/wm_nm_index.asp?utm_source=md_web&utm_medium=movingfeedback&utm_campaign=skbevent&utm_content=click')
+                window.location.replace('https://bit.ly/3AhvaIj')
               }}
             />
           </ButtonWrapper>

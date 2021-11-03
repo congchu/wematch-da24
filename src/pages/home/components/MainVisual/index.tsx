@@ -173,13 +173,7 @@ function MainVisual() {
     >
       <SwiperSlide>
         <Slide image="main_visual_04" onClick={() => {
-          dataLayer({
-            event: 'header_banner',
-            category: '다이사_메인_상단배너_1',
-            action: '이벤트',
-            label: '1'
-          })
-          router.history.push('/notice')
+          window.location.replace('https://bit.ly/3AhvaIj')
         }}>
           <div className="wrapper" style={{ marginTop: '-50px', color: 'white' }}>
             <span className="title">이사업체 매칭받기만 해도,</span>
