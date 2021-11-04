@@ -139,7 +139,7 @@ const EstimateForm = ({ idx, partners, serviceType, onSubmit, handleNext, isSurv
           <h1>방문견적을 받으신 이사업체는 어떠셨나요?</h1>
           <p>고객님의 평가는 업체 평점에 반영됩니다. 냉정한 평가로 이사업계를 개선해주세요.</p>
           <span>
-            *이사업체는 작성자가 누군지 알 수 없습니다. <br />
+            *업체는 작성자가 누군지 알 수 없습니다. <br />
             *방문견적 후기는 노출되지 않고 업체 평점에만 반영됩니다.
           </span>
         </div>
