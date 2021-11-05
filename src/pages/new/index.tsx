@@ -7,7 +7,7 @@ import useScrollDirection from 'hooks/useScrollDirection'
 
 import MainHeader from 'components/common/MainHeader'
 import MoveForm from 'pages/home/components/MoveForm'
-import MainVisual from 'pages/home/components/MainVisual'
+import MainBanner from 'pages/home/components/MainBanner'
 import Review from 'pages/home/components/Review'
 import PartnerBanner from 'pages/home/components/PartnerBanner'
 import MainFooter from 'components/common/MainFooter'
@@ -53,7 +53,7 @@ const Home:React.FC<RouteComponentProps> = ({ location}) => {
         <S.Container ref={HomeRef}>
             <S.Group ref={HomeRef}>
                 <MainHeader isFixed={isFixed} />
-                <MainVisual />
+                <MainBanner />
             </S.Group>
             <S.Wrapper>
                 <MoveForm headerRef={HomeRef} isFixed={isFixed} setIsFixed={setIsFixed} />
