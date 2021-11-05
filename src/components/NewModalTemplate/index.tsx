@@ -120,7 +120,7 @@ interface Props {
   }
 }
 const NewModal: React.FC<Props> = (props) => {
-  const { visible, children, title, content, confirmText, cancelText, confirmClick, cancelClick, tags } = props
+  const { visible, title, content, confirmText, cancelText, confirmClick, cancelClick, tags } = props
 
   useEffect(() => {
     if (visible) {

@@ -1,13 +1,11 @@
 import React, { useRef } from 'react'
 import Styled, { css } from 'styled-components'
-import { Next } from 'components/wematch-ui/Icon'
 import { useMedia } from 'react-use-media'
 
 import * as colors from 'styles/colors'
 import { useSelector } from 'react-redux'
 import * as formSelector from 'store/form/selectors'
 import { onMessageHandler } from 'lib/MessageUtil'
-import styled from 'styled-components'
 
 type StyleProps = Pick<Props, 'direction'>
 

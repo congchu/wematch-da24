@@ -127,7 +127,7 @@ interface Props {
 
 const DetailPopup:React.FC<Props> = (props) => {
     const { visible, onClose, partnerData } = props
-    const {description='',keywords, level, pick_cnt, feedback_cnt, experience, addition = '', profile_img, title=''} = partnerData
+    const { keywords, level, pick_cnt, feedback_cnt, experience, addition = '', profile_img, title=''} = partnerData
     const titleLength = () => {
         if (title.length >= 30) {
             return title.substring(0,30) + ' . . .'

@@ -1,6 +1,6 @@
 import React from 'react'
-import ReactDOM, { render } from 'react-dom'
-import Toast, { MemorizedToast } from './Toast'
+import { render } from 'react-dom'
+import { MemorizedToast } from './Toast'
 import { Props } from './types'
 
 export const CONTAINER_CLASSNAME = 'wematch-toastContainer'

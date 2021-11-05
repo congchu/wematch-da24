@@ -6,7 +6,6 @@ import styled, { css } from 'styled-components'
 import { isEmpty } from 'lodash'
 import { Checkbox } from 'components/wematch-ui/Checkbox'
 import Button from 'components/common/Button'
-// import PhoneVerifyPopup from 'components/common/Popup/PhoneVerifyPopup'
 import NoticePopup from 'components/common/Popup/NoticePopup'
 import OneroomNoticePopup from 'components/common/Popup/OneroomNoticePopup'
 import TermsModal from 'components/Modal/TermsModal'
@@ -25,7 +24,6 @@ import useHashToggle from 'hooks/useHashToggle'
 import { useHistory } from 'react-router-dom'
 import { ESignInCase } from 'store/user/types'
 import { Question } from 'components/Icon'
-import CleanDetailInfo from 'pages/clean/components/cleanDetailInfo'
 
 const Visual = {
   Section: styled.section`
@@ -226,21 +224,6 @@ const Terms = {
   `
 }
 
-const HouseTitle = styled.div<{
-  selectMoveType: 'house' | 'oneroom' | 'office' | undefined
-}>`
-  display: ${(props) => (props.selectMoveType === 'house' ? 'block' : 'none')};
-  text-align: center;
-
-  strong {
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: -0.03em;
-    color: ${colors.gray33};
-  }
-`
 export enum EFormError {
   DATE = 'date',
   START_ADDRESS = 'startAddress',

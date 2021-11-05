@@ -13,7 +13,7 @@ import ReactPixel from 'react-facebook-pixel'
 import { init as initSentry } from 'lib/sentry'
 
 // Sentry Init da24-user-web-**
-if (process.env.NODE_ENV != 'development') {
+if (process.env.NODE_ENV !== 'development') {
   initSentry()
 }
 

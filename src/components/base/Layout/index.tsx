@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import * as colors from 'styles/colors'
 
 import {useMedia} from 'react-use-media'
 

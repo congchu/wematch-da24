@@ -10,7 +10,6 @@ import MainHeader from 'components/common/MainHeader'
 import TopGnb from 'components/TopGnb'
 import EmptyPage from 'components/EmptyPage'
 import { KakaoIcon, ChatArrow } from 'components/Icon'
-import ToastPopup from 'components/wematch-ui/ToastPopup'
 
 import SetType from 'components/SetType'
 import PartnerItem from './item'
@@ -125,9 +124,6 @@ const PartnerList = () => {
   const isDesktop = useMedia({
     minWidth: 1200
   })
-  const isMobile = useMedia({
-    maxWidth: 767
-  })
 
   const history = useHistory()
   const dispatch = useDispatch()
@@ -163,10 +159,6 @@ const PartnerList = () => {
     window.open('https://api.happytalk.io/api/kakao/chat_open?yid=%40%EC%9C%84%EB%A7%A4%EC%B9%98&site_id=4000001315&category_id=111561&division_id=111564', '_blank')
   }
 
-  const handlePrevious = () => {
-    dispatch(partnerActions.partnerListReset())
-    history.goBack()
-  }
 
   useEffect(() => {
     if (getFormData?.moving_date.length === 0) {

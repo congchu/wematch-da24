@@ -45,7 +45,7 @@ export function FileUploaderPreview(props: Props) {
   return (
     <S.PreviewLoading {...restProps}>
       <S.Preview img={img}>
-        <button onClick={onRemove}><img src={require('../assets/images/16-sq-default.svg')} /></button>
+        <button onClick={onRemove}><img src={require('../assets/images/16-sq-default.svg')} alt="미리보기 아이콘"/></button>
       </S.Preview>
     </S.PreviewLoading>
   )

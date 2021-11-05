@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import RatingCard from './RatingCard'
-import CheckboxListItem from './CheckboxListItem'
 import RadioBoxListItem from './RadioBoxListItem'
 import { Button, Colors } from '@wematch/wematch-ui'
 import Input from 'components/common/Input'

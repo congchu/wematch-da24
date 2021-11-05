@@ -84,7 +84,7 @@ const OneroomNoticePopup:React.FC<Props> = (props) => {
                 <S.CloseButton onClick={onClose}>
                     <Close size={16} color="#000" />
                 </S.CloseButton>
-                <img src='https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/emoti_good_72x3.png'/>
+                <img src='https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/emoti_good_72x3.png' alt="좋아하는 이모지" />
                 <strong>이사 출발지가 <br/>서울입니까?</strong>
             </S.Container>
         </PopupTemplate>

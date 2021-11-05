@@ -72,7 +72,7 @@ const S = {
 };
 
 const Home: React.FC<RouteComponentProps> = ({ location }) => {
-  const [cookies, setCookie, removeCookie] = useCookies([
+  const [cookies, setCookie] = useCookies([
     "0dj38gepoekf98234aplyadmin",
   ]);
   const HomeRef = useRef<HTMLDivElement>(null);
@@ -134,7 +134,7 @@ const Home: React.FC<RouteComponentProps> = ({ location }) => {
         <MainFooter />
         <BottomNav />
         <S.CallBtn href="tel:1522-2483" isShow={false}>
-          <img src={require("assets/images/call.svg")} />
+          <img src={require("assets/images/call.svg")} alt="전화 아이콘"/>
           <p>전화신청</p>
         </S.CallBtn>
       </S.Container>
