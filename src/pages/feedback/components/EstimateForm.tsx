@@ -32,19 +32,13 @@ const EstimateForm = ({ idx, partners, serviceType, onSubmit, handleNext, isSurv
   const [isNext, setIsNext] = useState<boolean | null>(null)
 
   const validate = () => {
-    if (!selectedPartners.length) return false
-    if (
-      !Object.values(partnerEstimates).filter(({ professionalism_score, kindness_score, price_score }) => {
-        if (!professionalism_score) return false
-        if (!kindness_score) return false
-        if (!price_score) return false
-        return true
-      }).length
-    )
-      return false
-    if (isNext === null) return false
-    return true
-  }
+    if (!selectedPartners.length) return false;
+    const partners = Object.values(partnerEstimates);
+    const validatedCount = partners.filter(({ professionalism_score, kindness_score, price_score }) => {
+      return professionalism_score > 0 && kindness_score > 0 && price_score > 0;
+    }).length;
+    return partners.length == validatedCount && isNext;
+  };
 
   const handleSubmit = () => {
     if (!idx) return

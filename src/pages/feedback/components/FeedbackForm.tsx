@@ -56,8 +56,8 @@ const FeedbackForm = ({ idx, partners, serviceType, onSubmit, handleNext, isSurv
       professionalism_score: expertRating,
       kindness_score: kindnessRating,
       price_score: priceRating,
-      price: Number(totalPrice),
-      extra_price: Number(optionPrice),
+      price: parseInt(totalPrice),
+      extra_price: parseInt(optionPrice),
       advice_to_others: memo,
       publish_agree: !!isRecommandation,
       use_next_time: !!isNext
