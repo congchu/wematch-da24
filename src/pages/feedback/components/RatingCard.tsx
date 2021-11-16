@@ -1,6 +1,6 @@
 import { Colors } from '@wematch/wematch-ui'
 import { StarRating } from 'components/Icon'
-import React, { useState, ReactNode } from 'react'
+import React, {  ReactNode } from 'react'
 import styled from 'styled-components'
 
 interface Props {

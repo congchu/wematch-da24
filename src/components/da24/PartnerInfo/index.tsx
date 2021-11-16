@@ -14,7 +14,6 @@ import NewLevelS from "components/Icon/generated/NewLevelS";
 import NewLevelOther from "components/Icon/generated/NewLevelOther";
 import {useRouter} from "hooks/useRouter";
 import {lineDeco} from "styles/colors";
-import TermsModal from "../../Modal/TermsModal";
 
 const S = {
 	Container: styled.div`
@@ -264,10 +263,6 @@ interface Props {
 const PartnerInfo = ({ title, level, pick_cnt, experience, description='', keywords, adminname, addition=''}: Props) => {
 	const router = useRouter();
 	const [visibleLevelModal, setVisibleLevelModal] = useState(false)
-	const isMobile = useMedia({
-		maxWidth: 767,
-	})
-
 	const pathname = router.location.pathname.split('/')[1];
 
 	const toggleVisibleLevel = () => setVisibleLevelModal(!visibleLevelModal);

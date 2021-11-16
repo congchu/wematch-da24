@@ -4,7 +4,6 @@ import * as colors from 'styles/colors'
 import * as userActions from 'store/user/actions'
 import * as formSelector from 'store/form/selectors'
 import * as userSelector from 'store/user/selectors'
-import * as commonSelector from 'store/common/selectors'
 import * as cleanSelector from 'store/clean/selectors'
 import { useDispatch, useSelector } from 'react-redux'
 import useTimer from 'hooks/useTimer'
@@ -26,7 +25,7 @@ import { ESignInCase } from 'store/user/types'
 
 function LoginPage() {
   const mobileOS = getMobileOS()
-  const [cookies, setCookie, removeCookie] = useCookies()
+  const [cookies] = useCookies()
   const dispatch = useDispatch()
   const getMoveType = useSelector(formSelector.getType)
   const [name, setName] = useState('')
@@ -42,7 +41,6 @@ function LoginPage() {
   const [isTimeout, setIsTimeout] = useState(false)
   const nameInputRef = useRef<HTMLInputElement | null>(null)
   const verifyRef = useRef<HTMLInputElement | null>(null)
-  const [isMobileKeyboard, setIsMobileKeyboard] = useState(false)
   const history = useHistory()
   const isDesktop = useMedia({
     minWidth: 1200
@@ -128,23 +126,7 @@ function LoginPage() {
   useEffect(() => {
     dispatch(userActions.phoneVerifyCancel())
   }, [])
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (mobileOS === 'Android') {
-        if (window.innerHeight < 500) {
-          setIsMobileKeyboard(true)
-        } else {
-          setIsMobileKeyboard(false)
-        }
-      }
-    }
-
-    window.addEventListener('resize', handleResize)
-
-    return () => window.removeEventListener('resize', handleResize)
-  }, [mobileOS])
-
+  
   useEffect(() => {
     if (counter === 0) {
       setVisibleTimeout(true)

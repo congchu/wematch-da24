@@ -954,7 +954,6 @@ const Funnel = [
 function PartnerRegisterPage() {
 
     const dispatch = useDispatch()
-    const getPartnerForm = useSelector(backofficeSelector.getPartnerForm)
     const getPartnerStatus = useSelector(backofficeSelector.getPartnerStatus)
 
     const autoPlayOptions = {
@@ -1244,13 +1243,13 @@ function PartnerRegisterPage() {
                     <p>위매치다이사 이사/청소 서비스에 대해 <span className="br_m">더 알고싶다면 소개서를 다운로드하세요!</span></p>
                     <ul>
                         <li>
-                            <a href="https://da24.wematch.com/pdf/da24_introduction.pdf" target="_blank"
+                            <a href="https://da24.wematch.com/pdf/da24_introduction.pdf" target="_blank" rel="noopener noreferrer"
                                title="위매치다이사 이사 소개서">
                                 위매치다이사 이사 소개서<Download/>
                             </a>
                         </li>
                         <li>
-                            <a href="https://da24.wematch.com/pdf/clean_introduction.pdf" target="_blank"
+                            <a href="https://da24.wematch.com/pdf/clean_introduction.pdf" target="_blank" rel="noopener noreferrer"
                                title="위매치다이사 청소 소개서">
                                 위매치다이사 청소 소개서<Download/>
                             </a>

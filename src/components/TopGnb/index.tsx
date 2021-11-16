@@ -5,8 +5,6 @@ import * as colors from '../../styles/colors'
 
 import { Previous, Truck } from '../Icon'
 import {useRouter} from "../../hooks/useRouter";
-import {useSelector} from "react-redux";
-import * as commonSelector from "../../store/common/selectors";
 
 const S = {
 		Container: Styled.div`
@@ -81,7 +79,6 @@ interface Props {
 
 const TopGnb = ({ title, count, onPrevious,showTruck }: Props) => {
 	const router = useRouter()
-	const routerPath = router.pathname.split('/partner/')[1];
 	return (
 		<S.Container>
 			<S.BtnPrevious onClick={onPrevious} id={"dsl_booking_back"}>

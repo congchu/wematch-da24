@@ -90,7 +90,7 @@ const S = {
   `
 }
 
-export default function ErrorService({}) {
+export default function ErrorService() {
   const isTablet = useMedia({
     minWidth: 760,
   })

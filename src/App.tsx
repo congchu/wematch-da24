@@ -2,66 +2,55 @@ import React, { useState, useEffect } from 'react'
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom'
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
-import ReactPixel from 'react-facebook-pixel'
+import { useCookies } from 'react-cookie'
+import { LOCAL_ENV } from 'constants/env'
+import { get } from 'lodash'
 
+import useScript from 'hooks/useScript'
+import useReceiveMessage from 'hooks/useReceiveMessage'
+import useUserAgent from 'hooks/useUserAgent'
 import store from 'store/index'
 import browserHistory from 'lib/history'
-import GlobalStyled from 'styles/global'
 import * as userActions from 'store/user/actions'
 import * as commonActions from 'store/common/actions'
 import * as userSelector from 'store/user/selectors'
 
+import { dataLayer } from 'lib/dataLayerUtil'
+import ReactPixel from 'react-facebook-pixel'
+
+import GlobalStyled from 'styles/global'
 import 'styles/common.css'
 
+// pages
 import Home from 'pages/home'
-import PartnerList from 'pages/partner/List/index'
-import PartnerDetail from 'pages/partner/Detail/index'
-import PartnerCart from 'pages/partner/Cart'
-import Intro from 'pages/banner/Intro'
-import Customer from 'pages/banner/Customer'
-import Grade from 'pages/banner/Grade'
-import UnSupported from 'pages/unsupported'
-import Terms from 'pages/terms'
-import CompletedPage from 'pages/requests/Completed'
-import NoServicePage from 'pages/requests/NoService'
-import NoPartnerPage from 'pages/requests/NoPartner'
-import RequestPartnerDetail from 'pages/requests/Detail/index'
-import NotFound from 'pages/notFound'
-import ErrorService from 'pages/errorService'
-import NoticePage from './pages/notice'
-import FaqPage from './pages/faq'
-import ContactPage from './pages/contact'
-import PartnerRegisterPage from './pages/partnerRegister'
-import UserReviewPage from './pages/userReview'
-import ChecklistPage from './pages/checklist'
-import MoveEstimation from './pages/checklist/components/moveEstimation'
-import CleanEstimation from './pages/checklist/components/cleanEstimation'
-import MovePrep from './pages/checklist/components/movePrep'
-import CleanCheck from './pages/checklist/components/cleanCheck'
+import Login from 'pages/login'
+import { Intro, Customer, Grade } from 'pages/banner'
+import { PartnerList, PartnerDetail, PartnerCart } from 'pages/partner'
+import { CompletedPage, NoServicePage, NoPartnerPage, RequestPartnerDetail } from 'pages/requests'
+import { ChecklistIntro, ChecklistDetail } from './pages/checklist'
 import CleanPage from 'pages/clean'
 import CleanBridge01 from './pages/clean/bridge01'
-
-import useScript from 'hooks/useScript'
-import useUserAgent from 'hooks/useUserAgent'
-import { useCookies } from 'react-cookie'
-import { dataLayer } from 'lib/dataLayerUtil'
+import PartnerRegisterPage from './pages/partnerRegister'
+import UserReviewPage from './pages/userReview'
+import NoticePage from './pages/notice'
+import ContactPage from './pages/contact'
+import FaqPage from './pages/faq'
+import Terms from 'pages/terms'
+import NotFound from 'pages/notFound'
+import ErrorService from 'pages/errorService'
+import UnSupported from 'pages/unsupported'
+import Template from 'pages/requests/Completed/template'
 import MyConsult from 'pages/myconsult'
+import FeedbackPage from 'pages/feedback'
 import MyConsultDetail from 'pages/myconsult/myConsultDetail'
-import { get } from 'lodash'
-import Login from 'pages/login'
+
 
 //swiper lib
 import SwiperCore, { Pagination, Autoplay } from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/pagination/pagination.scss'
-import { ESignInCase } from 'store/user/types'
-import useReceiveMessage from 'hooks/useReceiveMessage'
-import ToastTestPage from './components/common/Toast/ToastTestPage'
-import { LOCAL_ENV } from 'constants/env'
-import Template from 'pages/requests/Completed/template'
-import FeedbackPage from 'pages/feedback'
-
 SwiperCore.use([Pagination, Autoplay])
+
 
 declare global {
   interface Window {
@@ -143,38 +132,50 @@ function AppRoute() {
     return (
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route exact path="/login" render={(props) => (wematchToken ? <Redirect to={{ pathname: '/' }} /> : <Login />)} />
 
-        {/*subpages*/}
-        <Route exact path="/faq" component={FaqPage} />
-        <Route exact path="/partnernew" component={PartnerRegisterPage} />
-        <Route exact path="/notice" component={NoticePage} />
-        <Route exact path="/contact" component={ContactPage} />
-        <Route exact path="/comment" component={UserReviewPage} />
-        <Route exact path="/checklist" component={ChecklistPage} />
-        <Route exact path="/checklist/moveestimation" component={MoveEstimation} />
-        <Route exact path="/checklist/cleanestimation" component={CleanEstimation} />
-        <Route exact path="/checklist/moveprep" component={MovePrep} />
-        <Route exact path="/checklist/cleancheck" component={CleanCheck} />
+        {/*청소*/}
+        <Route exact path="/clean" component={CleanPage} />
+
+        {/* GA용 청소 브릿지 페이지 */}
+        <Route exact path="/clean/bridge01" component={CleanBridge01} />
+
+        {/* 파트너 */}
         <Route exact path="/partner/list" component={PartnerList} />
         <Route exact path="/partner/detail/:adminId" component={PartnerDetail} />
         <Route exact path="/partner/cart" component={PartnerCart} />
+        <Route exact path="/partnernew" component={PartnerRegisterPage} />
+
+        {/* 배터 */}
         <Route exact path="/banner/intro" component={Intro} />
         <Route exact path="/banner/customer" component={Customer} />
         <Route exact path="/banner/grade" component={Grade} />
-        <Route exact path="/completed" component={CompletedPage} />
-        <Route exact path="/completed/:inquiry_idx" component={Template} />
-        <Route exact path="/myrequest" component={MyConsult} />
-        <Route exact path="/myrequest/detail" component={MyConsultDetail} />
-        <Route exact path="/terms" component={Terms} />
+        {/* 요청 */}
         <Route exact path="/requests/nopartner" component={NoPartnerPage} />
         <Route exact path="/requests/noservice" component={NoServicePage} />
         <Route exact path={['/requests/completed/:adminId', '/comment/:adminId']} component={RequestPartnerDetail} />
-        <Route exact path="/error" component={ErrorService} />
-        <Route exact path="/login" render={(props) => (wematchToken ? <Redirect to={{ pathname: '/' }} /> : <Login />)} />
-        <Route exact path="/clean" component={CleanPage} />
-        <Route exact path="/clean/bridge01" component={CleanBridge01} />
-        <Route exact path="/notfound" component={NotFound} />
+        <Route exact path="/completed" component={CompletedPage} />
+        <Route exact path="/completed/:inquiry_idx" component={Template} />
+
+        {/* 내 신청내역 */}
+        <Route exact path="/myrequest" component={MyConsult} />
+        <Route exact path="/myrequest/detail" component={MyConsultDetail} />
+
+        {/* 기타 */}
+        <Route exact path="/notice" component={NoticePage} />
+        <Route exact path="/contact" component={ContactPage} />
         <Route exact path="/feedback" component={FeedbackPage} />
+        <Route exact path="/comment" component={UserReviewPage} />
+
+        <Route exact path="/checklist" component={ChecklistIntro} />
+        <Route exact path="/checklist/:type" component={ChecklistDetail} />
+        <Route exact path="/terms" component={Terms} />
+        <Route exact path="/faq" component={FaqPage} />
+
+        {/* 에러, 404 */}
+        <Route exact path="/error" component={ErrorService} />
+        <Route exact path="/notfound" component={NotFound} />
+
         <Route component={NotFound} />
       </Switch>
     )
@@ -194,17 +195,16 @@ function App() {
   )
 }
 
-interface IAuthRoute {
-  exact: boolean
-  path: string
-  component: any
-}
-
+// interface IAuthRoute {
+//   exact: boolean
+//   path: string
+//   component: any
+// }
 // 인증 라우터
 // const AuthRoute: React.FC<IAuthRoute> = ({ component: Component, ...rest }) => {
 //     const { token } = useSelector(userSelector.getUser);
 //     const location = useLocation();
-//     const dispatch = useDispatch();
+//     const dispatch = useDispatch();ㄴ
 
 //     return <Route {...rest} render={props => {
 //         if (!token) {

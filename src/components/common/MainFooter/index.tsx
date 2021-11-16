@@ -1,10 +1,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { gray33, gray66, gray88, lineDefault, pointBlue, lineDeco } from 'styles/colors'
+import { gray33, gray66, gray88, lineDefault, lineDeco } from 'styles/colors'
 import { Down, Up } from 'components/wematch-ui/Icon'
 import { checkIos } from 'lib/checkDevice'
 import BlankLink from 'components/base/BlankLink'
-import * as constants from 'constants/env'
 import { useRouter } from 'hooks/useRouter'
 
 const S = {

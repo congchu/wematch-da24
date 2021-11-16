@@ -41,7 +41,7 @@ const CleanSurveyBridge = () => {
     <div>
       {isDesktop ? <MainHeader border /> : <NavHeader title="청소 성향 체크" />}
       <CleanWrapper>
-        {isDesktop && <_Title>청소 성향 체크</_Title>}
+        {isDesktop && <CustomTitle>청소 성향 체크</CustomTitle>}
         <StepProgressBar steps={progressSteps} pointColor={colors.pointBlue} />
         <div className="bg-etc5 ">
           <div className="w-max">
@@ -77,7 +77,7 @@ const SurveyContainer = ({ title, options, setOption, target_index }: IProps) =>
       <Title className="color-66 pb-16">{title}</Title>
       {options.map((text, index) => (
         <button className="flex items-center pb-16 pointer" key={index} onClick={() => setOption(index)}>
-          <RadioCheck checked={index == target_index}>
+          <RadioCheck checked={index === target_index}>
             <div></div>
           </RadioCheck>
           <Body className="pl-8 color-33">{text}</Body>
@@ -137,7 +137,7 @@ const ButtonGroup = styled.div`
   }
 `
 
-const _Title = styled.h1`
+const CustomTitle = styled.h1`
   font-weight: 700;
   font-size: 24px;
   line-height: 36px;

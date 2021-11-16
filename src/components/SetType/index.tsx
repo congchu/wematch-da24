@@ -10,7 +10,6 @@ import * as commonTypes from 'store/common/types'
 import { useDispatch, useSelector } from 'react-redux'
 import * as commonSelector from 'store/common/selectors'
 import * as partnerActions from 'store/partner/actions'
-import { useMedia } from 'react-use-media'
 
 const S = {
   TypeSet: Styled.div`

@@ -1,12 +1,10 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import * as constants from 'constants/env'
 
 import './style.css'
-import { Link } from 'react-router-dom'
 
-interface Props {}
-
-const MainHeaderForDetail = ({}: Props) => {
+const MainHeaderForDetail = () => {
   return (
     <div id="wmWrap" className="main_head">
       <div id="wmHead">

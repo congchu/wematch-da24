@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import RatingCard from './RatingCard'
-import CheckboxListItem from './CheckboxListItem'
 import RadioBoxListItem from './RadioBoxListItem'
 import { Button, Colors } from '@wematch/wematch-ui'
 import Input from 'components/common/Input'
@@ -56,8 +55,8 @@ const FeedbackForm = ({ idx, partners, serviceType, onSubmit, handleNext, isSurv
       professionalism_score: expertRating,
       kindness_score: kindnessRating,
       price_score: priceRating,
-      price: Number(totalPrice),
-      extra_price: Number(optionPrice),
+      price: parseInt(totalPrice),
+      extra_price: parseInt(optionPrice),
       advice_to_others: memo,
       publish_agree: !!isRecommandation,
       use_next_time: !!isNext

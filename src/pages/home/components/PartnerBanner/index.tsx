@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components/macro'
 
 import * as colors from 'styles/colors'
-import { useRouter } from 'hooks/useRouter'
 
 const Banner = styled.section`
   padding: 50px 24px 73px;
@@ -109,7 +108,6 @@ const Banner = styled.section`
 `
 
 export default function PartnerBanner() {
-  const router = useRouter()
   return (
     <Banner>
       <h3>파트너 등록문의</h3>

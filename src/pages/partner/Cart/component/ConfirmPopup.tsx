@@ -10,7 +10,7 @@ interface Props {
     cancelClick: () => void;
 }
 const ConfirmPopup:React.FC<Props> = (props) => {
-    const { visible, showHeaderCancelButton, orderCount, confirmClick, cancelClick} = props
+    const { visible, confirmClick, } = props
     return (
         <NewModal visible={visible} title={"업체 선택"} content={"선택하신 3개 업체에 방문견적 요청을 보내겠습니다."} confirmClick={confirmClick} confirmText={"네 보내주세요."}/>
         /*<ToastPopup visible={visible} showHeaderCancelButton={showHeaderCancelButton} confirmText={'네, 보내주세요'} confirmClick={confirmClick} closeClick={cancelClick}>

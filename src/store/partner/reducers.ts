@@ -1,7 +1,7 @@
 import { createReducer, ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
-import {IPartnerDetail, IReview, IPartnerDetailForCompleted, Level, IComment} from 'types/partner'
+import {IPartnerDetail, IReview, IPartnerDetailForCompleted, IComment} from 'types/partner'
 
 
 export type Actions = ActionType<typeof actions>

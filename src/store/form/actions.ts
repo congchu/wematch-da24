@@ -1,8 +1,6 @@
 import { createAction, createAsyncAction } from 'typesafe-actions'
 import * as types from 'store/common/types'
 import { SubmittedForm } from 'store/form/types'
-import { FormState } from './reducers'
-import { boolean } from '@storybook/addon-knobs'
 
 export type MoveTypeProp = 'house' | 'oneroom' | 'office' | undefined
 

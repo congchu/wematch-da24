@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Home, Report } from 'components/wematch-ui/Icon'
 import BaseBottomNav from 'components/base/BottomNav'
 import BaseBottomMenu from 'components/base/BottomNavMenu'
-import * as constants from 'constants/env'
 
 const ResponsiveBottomNav = styled(BaseBottomNav)`
   @media (min-width: 1200px) {

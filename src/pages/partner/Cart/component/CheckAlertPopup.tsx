@@ -1,8 +1,4 @@
 import React from 'react'
-import styled from "styled-components"
-import * as colors from 'styles/colors'
-
-import ToastPopup from "components/wematch-ui/ToastPopup"
 import NewModal from "components/NewModalTemplate";
 
 interface Props {
@@ -10,22 +6,6 @@ interface Props {
   cancelClick: () => void;
 }
 
-const SubText = styled.div`
-  font-size: 15px;
-  color: ${colors.gray33};
-  white-space: pre-wrap;
-  font-weight: normal;
-  line-height: 24px;
-  margin-top: 7px;
-`;
-
-const Notice = styled.span`
-  font-size: 12px;
-  font-weight: normal;
-  line-height: 18px;
-  color: ${colors.gray33};
-  margin-top: 24px;
-`;
 const CheckAlertPopup:React.FC<Props> = (props) => {
   const { visible, cancelClick} = props
   return (

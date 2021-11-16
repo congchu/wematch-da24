@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import { CardButton, Icons } from '@wematch/wematch-ui'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCleanType } from 'store/clean/actions'

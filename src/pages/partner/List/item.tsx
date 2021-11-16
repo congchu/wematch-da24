@@ -4,11 +4,10 @@ import styled, { css } from 'styled-components'
 import {some} from "lodash";
 
 import { NextArrow, ProfileDefault } from 'components/Icon'
-import {IPartnerList, Level, LevelText} from 'types/partner'
+import {IPartnerList, LevelText} from 'types/partner'
 
 import * as colors from 'styles/colors'
 import * as partnerSelector from "store/partner/selectors";
-import * as values from "constants/values";
 import {Skeleton, SkeletonAnimation} from "components/SkeletonUl";
 
 const S = {

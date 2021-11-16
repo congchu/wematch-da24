@@ -11,7 +11,7 @@ import MainFooter from "components/common/MainFooter";
 import BottomNav from "components/common/BottomNav";
 import ResponsiveSkeleton from "components/common/Skeleton/responsiveSkeleton";
 
-import MainVisual from "pages/home/components/MainVisual";
+import MainBanner from "pages/home/components/MainBanner";
 import Review from "pages/home/components/Review";
 import MoveForm from "pages/home/components/MoveForm";
 import PartnerBanner from "pages/home/components/PartnerBanner";
@@ -72,7 +72,7 @@ const S = {
 };
 
 const Home: React.FC<RouteComponentProps> = ({ location }) => {
-  const [cookies, setCookie, removeCookie] = useCookies([
+  const [cookies, setCookie] = useCookies([
     "0dj38gepoekf98234aplyadmin",
   ]);
   const HomeRef = useRef<HTMLDivElement>(null);
@@ -120,7 +120,7 @@ const Home: React.FC<RouteComponentProps> = ({ location }) => {
       <S.Container ref={HomeRef}>
         <S.Group ref={HomeRef}>
           <MainHeader isFixed={isFixed} />
-          <MainVisual />
+          <MainBanner />
         </S.Group>
         <S.Wrapper>
           <MoveForm
@@ -134,7 +134,7 @@ const Home: React.FC<RouteComponentProps> = ({ location }) => {
         <MainFooter />
         <BottomNav />
         <S.CallBtn href="tel:1522-2483" isShow={false}>
-          <img src={require("assets/images/call.svg")} />
+          <img src={require("assets/images/call.svg")} alt="전화 아이콘"/>
           <p>전화신청</p>
         </S.CallBtn>
       </S.Container>
