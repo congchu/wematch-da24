@@ -173,6 +173,12 @@ function MainVisual() {
     >
       <SwiperSlide>
         <Slide image="main_visual_04" onClick={() => {
+          dataLayer({
+            event: 'header_banner',
+            category: '다이사_메인_상단배너_1',
+            action: '이사업체 매칭받기만 해도, 6대 가전 고장시 수리비 지원!',
+            label: '1'
+          })
           window.location.replace('https://bit.ly/3AhvaIj')
         }}>
           <div className="wrapper" style={{ marginTop: '-50px', color: 'white' }}>
@@ -189,8 +195,8 @@ function MainVisual() {
           dataLayer({
             event: 'header_banner',
             category: '다이사_메인_상단배너_1',
-            action: '이벤트',
-            label: '1'
+            action: '누워서 이사업체 찾기만 해도, 이사 지원금 최대 46만원!',
+            label: '2'
           })
           router.history.push('/notice')
         }}>
@@ -207,9 +213,9 @@ function MainVisual() {
         <Slide image="main_visual_02" onClick={() => {
           dataLayer({
             event: 'header_banner',
-            category: '다이사_메인_상단배너_2',
+            category: '다이사_메인_상단배너_1',
             action: '잘하는 이사업체 1분만에 찾았다',
-            label: '2'
+            label: '3'
           })
           router.history.push('/banner/intro')
         }}>
@@ -227,9 +233,9 @@ function MainVisual() {
         <Slide image="main_visual_03" onClick={() => {
           dataLayer({
             event: 'header_banner',
-            category: '다이사_메인_상단배너_3',
+            category: '다이사_메인_상단배너_1',
             action: '혹시나 하고 이용했는데 대만족이에요',
-            label: '3'
+            label: '4'
           })
           router.history.push('/banner/customer')
         }}>
