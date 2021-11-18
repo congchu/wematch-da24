@@ -87,13 +87,17 @@ const S = {
 const CalendarModal: React.FC<Props> = (props) => {
   const { visible = false, title, onClose, onSelect, selected, serviceType, moveType } = props
   const [rangeStartDate, setRangeStartDate] = useState(dayjs())
-  const [rangeEndDate, setRangeEndDate] = useState(dayjs().add(55,'day'))
+  const [rangeEndDate, setRangeEndDate] = useState(dayjs().add(55, 'day'))
 
   useEffect(() => {
-    // 가정이사, 사무실 이사는 익일 +1부터 55일간 예약 가능
-    if (moveType === 'house' || moveType === 'office') {
-      setRangeStartDate(dayjs().add(1,'day'));
-      setRangeEndDate(dayjs().add(56,'day'));
+    // 청소 마감일자 +1일 (21.11.18 Koo)
+    if (serviceType === 'clean') {
+      setRangeEndDate(dayjs().add(56, 'day'))
+
+    //가정이사, 사무실 이사는 익일 +1부터 55일간 예약 가능 (21.10.21 Koo)
+    } else if (moveType === 'house' || moveType === 'office') {
+      setRangeStartDate(dayjs().add(1, 'day'))
+      setRangeEndDate(dayjs().add(56, 'day'))
     }
   }, [moveType])
 
