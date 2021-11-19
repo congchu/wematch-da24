@@ -1,6 +1,6 @@
 {
-  "semi": false,
-  "singleQuote": true,
+  "semi": true,
+  "singleQuote": false,
   "printWidth": 290,
   "arrowParens": "always",
   "tabWidth": 2,
