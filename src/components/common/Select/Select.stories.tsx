@@ -34,23 +34,24 @@ function SelectSample() {
     const [visible, setVisible] = useState<boolean>(false)
     const toggle = () => setVisible(!visible)
 
-    const items = [
-        { key: '1', value: '1층' },
-        { key: '2', value: '2층' },
-        { key: '3', value: '3층' },
-        { key: '4', value: '4층' },
-        { key: '5', value: '5층' },
-        { key: '6', value: '6층' },
-        { key: '7', value: '7층' },
-        { key: '8', value: '8층' },
-        { key: '9', value: '9층' },
-        { key: '10', value: '10층' },
-        { key: '11', value: '11층' },
-        { key: '12', value: '12층' },
-        { key: '13', value: '13층' },
-        { key: '14', value: '14층' },
-        { key: '15', value: '15층' },
-    ]
+  const items = [
+    { key: "0", value: "지층" },
+    { key: "1", value: "1층" },
+    { key: "2", value: "2층" },
+    { key: "3", value: "3층" },
+    { key: "4", value: "4층" },
+    { key: "5", value: "5층" },
+    { key: "6", value: "6층" },
+    { key: "7", value: "7층" },
+    { key: "8", value: "8층" },
+    { key: "9", value: "9층" },
+    { key: "10", value: "10층" },
+    { key: "11", value: "11층" },
+    { key: "12", value: "12층" },
+    { key: "13", value: "13층" },
+    { key: "14", value: "14층" },
+    { key: "15", value: "15층" }
+  ];
 
     return (
         <Container>
