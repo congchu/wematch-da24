@@ -1,20 +1,20 @@
-import React, { useState } from 'react'
-import Select from './index'
-import Styled from 'styled-components'
-import { withKnobs } from '@storybook/addon-knobs';
+import React, { useState } from "react";
+import Select from "./index";
+import Styled from "styled-components";
+import { withKnobs } from "@storybook/addon-knobs";
 
-import GlobalStyled from 'styles/global'
+import GlobalStyled from "styles/global";
 import Button from "components/common/Button";
 
 export default {
-    title: 'ReviewItem|Select',
-    component: Select,
-    decorators: [withKnobs],
-    parameters: {
-        docs: {
-            inlineStories: false
-        }
+  title: "ReviewItem|Select",
+  component: Select,
+  decorators: [withKnobs],
+  parameters: {
+    docs: {
+      inlineStories: false
     }
+  }
 };
 
 const Container = Styled.div`
@@ -28,11 +28,11 @@ const Container = Styled.div`
           width: 350px;
         }    
     }
-`
+`;
 
 function SelectSample() {
-    const [visible, setVisible] = useState<boolean>(false)
-    const toggle = () => setVisible(!visible)
+  const [visible, setVisible] = useState<boolean>(false);
+  const toggle = () => setVisible(!visible);
 
   const items = [
     { key: "0", value: "지층" },
@@ -53,24 +53,25 @@ function SelectSample() {
     { key: "15", value: "15층" }
   ];
 
-    return (
-        <Container>
-            <Button theme="primary" onClick={toggle}>층수 선택</Button>
-            <Select visible={visible} headerTitle="층수 선택" onClose={toggle} onOverlayClose={toggle} items={items} onSelect={(selected) => alert(selected)} />
-        </Container>
-    )
+  return (
+    <Container>
+      <Button theme="primary" onClick={toggle}>
+        층수 선택
+      </Button>
+      <Select visible={visible} headerTitle="층수 선택" onClose={toggle} onOverlayClose={toggle} items={items} onSelect={(selected) => alert(selected)} />
+    </Container>
+  );
 }
 
 export const button = () => {
-
-    return (
-        <>
-            <GlobalStyled />
-            <SelectSample />
-        </>
-    )
+  return (
+    <>
+      <GlobalStyled />
+      <SelectSample />
+    </>
+  );
 };
 
 button.story = {
-    name: 'Default'
+  name: "Default"
 };
