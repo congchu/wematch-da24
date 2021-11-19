@@ -35,7 +35,7 @@ function SelectSample() {
   const toggle = () => setVisible(!visible);
 
   const items = [
-    { key: "0", value: "지층" },
+    { key: "지", value: "지층" },
     { key: "1", value: "1층" },
     { key: "2", value: "2층" },
     { key: "3", value: "3층" },
