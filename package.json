@@ -59,6 +59,7 @@
     "build:dev": "env-cmd -f .env.staging react-scripts build",
     "build:prod": "env-cmd -f .env.production react-scripts build",
     "build": "react-scripts build",
+    "deploy:dev": "yarn build && aws s3 sync --cache-control 'max-age=604800' --exclude '*.html' --exclude '*/index.js' build/ s3://dev.da24.wematch.com/ && aws s3 sync --cache-control 'no-cache' build/ s3://dev.da24.wematch.com/",
     "invalidate:dev": "aws --profile wematch cloudfront create-invalidation --distribution-id E3KG2OP5IVT9MB --paths '/*'",
     "invalidate:prod": "aws --profile wematch  cloudfront create-invalidation --distribution-id E1RRCOG7M0GR9 --paths '/*'",
     "test": "react-scripts test",
