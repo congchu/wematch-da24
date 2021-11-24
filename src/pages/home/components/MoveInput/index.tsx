@@ -114,7 +114,7 @@ const MoveInput: React.FC<Props> = (props) => {
   const getContents = useSelector(formSelector.getContents)
 
   const floorItems = [
-    { key: '지', value: '지층' },
+    { key: '지하', value: '지하층' },
     { key: '1', value: '1층' },
     { key: '2', value: '2층' },
     { key: '3', value: '3층' },
