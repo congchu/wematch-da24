@@ -3,7 +3,7 @@ import { MoveTypeKoProp } from 'store/form/actions'
 import * as sentry from '@sentry/react'
 import { Severity } from '@sentry/react'
 
-const googldAds: any = {
+const googleAds: any = {
   접수_가정_상상: { gwId: 'AW-862163644', eventId: 'kGW0COPr7oUDELyljpsD' },
   접수_가정_상중: { gwId: 'AW-862163644', eventId: 'LWwICPLUxoUDELyljpsD' },
   접수_가정_상하: { gwId: 'AW-862163644', eventId: '45gyCJ3fjoYDELyljpsD' },
@@ -32,14 +32,14 @@ export const sendGAdsAreaAvgPrice = (moveType: MoveTypeKoProp | undefined, sido:
     if (areaLevel && moveType) {
       const key = `접수_${moveType}_${areaLevel.level}`
       gtag('event', 'conversion', {
-        send_to: `${googldAds[key].gwId}/${googldAds[key].eventId}`,
+        send_to: `${googleAds[key].gwId}/${googleAds[key].eventId}`,
         value: areaLevel.value,
         currency: 'KRW',
       })
 
       // TODO : 주석 제거
       console.log("'event'", "'conversion'", {
-        send_to: `${googldAds[key].gwId}/${googldAds[key].eventId}`,
+        send_to: `${googleAds[key].gwId}/${googleAds[key].eventId}`,
         value: areaLevel.value,
         currency: 'KRW',
       })
