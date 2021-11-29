@@ -38,7 +38,7 @@ export const sendGAdsAreaAvgPrice = (moveType: MoveTypeKoProp | undefined, sido:
       })
 
       // TODO : 주석 제거
-      console.log("'even'", "'conversion'", {
+      console.log("'event'", "'conversion'", {
         send_to: `${googldAds[key].gwId}/${googldAds[key].eventId}`,
         value: areaLevel.value,
         currency: 'KRW',
