@@ -3,6 +3,7 @@ import * as types from 'store/common/types'
 import { SubmittedForm } from 'store/form/types'
 
 export type MoveTypeProp = 'house' | 'oneroom' | 'office' | undefined
+export type MoveTypeKoProp = '가정' | '원룸' | '사무실' | undefined
 
 export const setMoveType = createAction('SET_MOVE_TYPE')<MoveTypeProp>()
 export const setMoveDate = createAction('SET_MOVE_DATE')<string[]>()

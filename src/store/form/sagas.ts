@@ -27,6 +27,8 @@ import { events } from 'lib/appsflyer'
 import axios from 'axios'
 import { LOCAL_ENV } from '../../constants/env'
 import { setDbdbdepp } from './actions'
+import { sendGAdsAreaAvgPrice } from 'lib/googleAds'
+import { sendPixelAreaAvgPrice } from 'lib/facebookPixcel'
 
 export function* setJusoSaga() {
   const getJuso = yield select(commonSelector.getJuso)
@@ -216,7 +218,7 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
         yield put(actions.setDbdbdepp(true))
       }
 
-      const { moving_type } = action.payload.formData
+      const { moving_type, sido, gugun } = action.payload.formData
       const startAddress = moveAddrType.start === 'road' ? `${moveStartAddr?.roadAddr}` : `${moveStartAddr?.jibunAddr}`
       const endAddress = moveAddrType.end === 'road' ? `${moveEndAddr?.roadAddr}` : `${moveEndAddr?.jibunAddr}`
       dataLayer({
@@ -237,6 +239,9 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
       gtag('event', 'conversion', {
         send_to: 'AW-862163644/CmzdCIej6G0QvKWOmwM'
       })
+      // 구글 애드워즈, 픽셀 트래킹 코드 추가 (21.11.29 Koo)
+      sendGAdsAreaAvgPrice(moving_type, sido, gugun);
+      sendPixelAreaAvgPrice(moving_type, sido, gugun);
 
       yield put(replace(`/completed?service_type=move&inquiry_idx=${data.inquiry_idx}`))
     } else if (data?.result === ESubmittedFormResult.NoPartner) {
