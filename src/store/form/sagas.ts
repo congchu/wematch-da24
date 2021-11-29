@@ -28,7 +28,7 @@ import axios from 'axios'
 import { LOCAL_ENV } from '../../constants/env'
 import { setDbdbdepp } from './actions'
 import { sendGAdsAreaAvgPrice } from 'lib/googleAds'
-import { sendPixelAreaAvgPrice } from 'lib/facebookPixcel'
+import { sendPixelAreaAvgPrice } from 'lib/facebookPixel'
 
 export function* setJusoSaga() {
   const getJuso = yield select(commonSelector.getJuso)
