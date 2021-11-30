@@ -37,12 +37,6 @@ export const sendGAdsAreaAvgPrice = (moveType: MoveTypeKoProp | undefined, sido:
         currency: 'KRW',
       })
 
-      // TODO : 주석 제거
-      console.log("'event'", "'conversion'", {
-        send_to: `${googleAds[key].gwId}/${googleAds[key].eventId}`,
-        value: areaLevel.value,
-        currency: 'KRW',
-      })
     } else {
       throw '매핑 지역이 없거나, 이사 구분 없음'
     }

@@ -12,8 +12,6 @@ export const sendPixelAreaAvgPrice = (moveType: MoveTypeKoProp | undefined, sido
     if (areaLevel && moveType) {
       const name = `접수_${moveType}_${areaLevel.level}`
       ReactPixel.fbq('trackCustom', name, { value: areaLevel.value, currency: 'KRW' })
-      // TODO : 주석 제거
-      console.log("'trackCustom'", name, { value: areaLevel.value, currency: 'KRW' })
     } else {
       throw '매핑 지역이 없거나, 이사 구분 없음'
     }

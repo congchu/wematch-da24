@@ -259,15 +259,15 @@ export const areaLevels: { area: string; level: levelType }[] = [
 ]
 
 export const deductionPoints: any = {
-  상상: '55694',
-  상중: '45651',
-  상하: '32465',
-  중상: '55841',
-  중중: '36924',
-  중하: '27097',
-  하상: '47632',
-  하중: '37028',
-  하하: '15457',
+  상상: 55694,
+  상중: 45651,
+  상하: 32465,
+  중상: 55841,
+  중중: 36924,
+  중하: 27097,
+  하상: 47632,
+  하중: 37028,
+  하하: 15457,
 }
 
 export const getAreaLevel = (sido: string, gugun: string) => {
