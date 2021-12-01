@@ -22,6 +22,7 @@ import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { get } from "lodash";
 import { ESignInCase } from "store/user/types";
+import Spinner from "components/Loading/Spinner";
 
 function LoginPage() {
   const mobileOS = getMobileOS();
@@ -39,6 +40,7 @@ function LoginPage() {
   const [visibleTimeout, setVisibleTimeout] = useHashToggle("#timeout");
   const [visibleCancel, setVisibleCancel] = useHashToggle("#verifyCancel");
   const [isTimeout, setIsTimeout] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const nameInputRef = useRef<HTMLInputElement | null>(null);
   const verifyRef = useRef<HTMLInputElement | null>(null);
   const history = useHistory();
@@ -81,6 +83,7 @@ function LoginPage() {
   };
 
   const handleSignUp = () => {
+    setSubmitted(true);
     const agentId = get(cookies, "0dj38gepoekf98234aplyadmin");
     let init_service = EInitService.MOVE_OFFICE;
 
@@ -254,7 +257,7 @@ function LoginPage() {
             <span onClick={() => setVisibleTerms(true)}>이용약관 및 개인정보처리방침 동의</span>, 견적상담을 위한 개인 정보 제3자 제공 및 마케팅 정보수신 동의 필요
           </p>
           <Button theme="primary" disabled={!isVerified || !name} style={{ fontSize: "18px", borderRadius: "6px" }} bold={true} onClick={handleSignUp}>
-            동의하고 진행하기
+            {!submitted ? "동의하고 진행하기" : <Spinner />}
           </Button>
           {isDesktop && (
             <Button theme="default" border={true} style={{ border: "1px solid #D7DBE2", marginTop: 10 }} onClick={() => setVisibleCancel(true)}>
