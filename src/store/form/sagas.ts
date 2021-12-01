@@ -27,6 +27,8 @@ import { events } from 'lib/appsflyer'
 import axios from 'axios'
 import { LOCAL_ENV } from '../../constants/env'
 import { setDbdbdepp } from './actions'
+import { sendGAdsAreaAvgPrice } from 'lib/googleAds'
+import { sendPixelAreaAvgPrice } from 'lib/facebookPixel'
 
 export function* setJusoSaga() {
   const getJuso = yield select(commonSelector.getJuso)
@@ -208,6 +210,13 @@ export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsyn
     const data = yield call(requests.submitForm, action.payload.formData)
     const { start: moveStartAddr, end: moveEndAddr, type: moveAddrType } = yield select(commonSelector.getJuso)
     yield put(actions.submitFormAsync.success(data))
+
+    // 구글 애드워즈, 픽셀 트래킹 코드 추가 (21.11.29 Koo)
+    const { moving_type, sido, gugun } = action.payload.formData  
+    sendGAdsAreaAvgPrice(moving_type, sido, gugun);
+    sendPixelAreaAvgPrice(moving_type, sido, gugun);
+
+
     if (data?.result === ESubmittedFormResult.Success) {
       // yield put(push(`/completed?${data.inquiry_idx}`))
       // yield put(push(`/requests/completed`))

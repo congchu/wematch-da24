@@ -198,7 +198,7 @@ function MainVisual() {
             action: '누워서 이사업체 찾기만 해도, 이사 지원금 최대 46만원!',
             label: '2'
           })
-          router.history.push('/notice')
+          window.location.href= 'http://landing-da24.wematch.com/event_list/'
         }}>
           <div className="wrapper" style={{ marginTop: '-50px' }}>
             <span className="title">누워서 이사업체 찾기만 해도,</span>
