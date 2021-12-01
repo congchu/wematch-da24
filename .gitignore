@@ -28,3 +28,6 @@ yarn-error.log*
 # environment
 .env
 .env.*
+
+# Storybook
+storybook-static/*
