@@ -1,17 +1,17 @@
-import React from 'react'
-import styled, { css } from 'styled-components'
+import React from "react";
+import styled, { css } from "styled-components";
 
-import * as colors from 'styles/colors'
-import * as constants from 'constants/env'
-import { Link, useLocation } from 'react-router-dom'
+import * as colors from "styles/colors";
+import * as constants from "constants/env";
+import { Link, useLocation } from "react-router-dom";
 
 interface Props {
-  isFixed?: boolean | undefined
-  border?: boolean
+  isFixed?: boolean | undefined;
+  border?: boolean;
 }
 
 const MainHeader = ({ isFixed = false, border = false }: Props) => {
-  const location = useLocation()
+  const location = useLocation();
 
   return (
     <S.Wrapper isFixed={isFixed} id="dsl_move_header_1">
@@ -23,11 +23,11 @@ const MainHeader = ({ isFixed = false, border = false }: Props) => {
             </a>
           </S.Logo>
           <S.Categories>
-            <li className={!location.pathname.includes('clean') ? 'on' : ''}>
+            <li className={!location.pathname.includes("clean") ? "on" : ""}>
               <a href={constants.MOVE_URL}>이사</a>
             </li>
-            <li className={location.pathname.includes('clean') ? 'on' : ''}>
-              <a href={'/clean'}>청소</a>
+            <li className={location.pathname.includes("clean") ? "on" : ""}>
+              <a href={"/clean"}>청소</a>
             </li>
             {/*<li><a href={constants.INTERIOR_URL}>인테리어</a></li>*/}
           </S.Categories>
@@ -37,22 +37,22 @@ const MainHeader = ({ isFixed = false, border = false }: Props) => {
               {/* 2020.11.23 삭제 요쳥 (kaya) */}
               {/*<a href="https://wematch.com/inquiry">내 신청내역 확인</a>*/}
             </S.QuickGnb>
-            <S.Partner isActive={location.pathname.includes('myrequest')}>
-              <Link to={'/myrequest'}>내 신청내역</Link>
+            <S.Partner isActive={location.pathname.includes("myrequest")}>
+              <Link to={"/myrequest"}>내 신청내역</Link>
               {/* <a href={constants.MOVE_URL + "/myconsult.asp"}>내 신청내역</a> */}
             </S.Partner>
           </S.Lnb>
         </S.Header>
       </S.HeaderWrapper>
     </S.Wrapper>
-  )
-}
+  );
+};
 
-export default MainHeader
+export default MainHeader;
 
 const S = {
   Wrapper: styled.div<{ isFixed: boolean }>`
-    position: ${(props) => (props.isFixed ? 'fixed' : 'absolute')};
+    position: ${(props) => (props.isFixed ? "fixed" : "absolute")};
     left: 0;
     top: 0;
     width: 100%;
@@ -61,7 +61,7 @@ const S = {
     min-width: 320px;
 
     @media screen and (min-width: 1200px) {
-      position: ${(props) => (props.isFixed ? 'fixed' : 'static')};
+      position: ${(props) => (props.isFixed ? "fixed" : "static")};
       background: #fff;
     }
   `,
@@ -236,7 +236,7 @@ const S = {
 
     .divide {
       &:before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 1px;
         height: 14px;
@@ -256,4 +256,4 @@ const S = {
       }
     }
   `
-}
+};

@@ -1,25 +1,25 @@
-import { ActionType, createReducer } from 'typesafe-actions'
-import * as actions from './actions'
-import { Juso, JusoType } from 'store/common/types'
-import { ResponseCleanAutoMatch } from './types'
-export type Actions = ActionType<typeof actions>
+import { ActionType, createReducer } from "typesafe-actions";
+import * as actions from "./actions";
+import { Juso, JusoType } from "store/common/types";
+import { ResponseCleanAutoMatch } from "./types";
+export type Actions = ActionType<typeof actions>;
 
 export interface CleanState {
   form: {
-    type: '입주청소' | '거주청소' | undefined
-    date: string[]
-    address: Juso | null
-    addressType: JusoType | null
-    livingType: string
-    houseSpace: number
-    selectOptionItem: string[]
-    cleanMemo: string
-  }
+    type: "입주청소" | "거주청소" | undefined;
+    date: string[];
+    address: Juso | null;
+    addressType: JusoType | null;
+    livingType: string;
+    houseSpace: number;
+    selectOptionItem: string[];
+    cleanMemo: string;
+  };
   result: {
-    loading: boolean
-    data: ResponseCleanAutoMatch | null
-    error: boolean
-  }
+    loading: boolean;
+    data: ResponseCleanAutoMatch | null;
+    error: boolean;
+  };
 }
 
 const initialState: CleanState = {
@@ -28,17 +28,17 @@ const initialState: CleanState = {
     date: [],
     address: null,
     addressType: null,
-    livingType: '',
+    livingType: "",
     houseSpace: 0,
     selectOptionItem: [],
-    cleanMemo: ''
+    cleanMemo: ""
   },
   result: {
     loading: false,
     data: null,
     error: false
   }
-}
+};
 
 export default createReducer<CleanState, Actions>(initialState)
   .handleAction(actions.setCleanType, (state, action) => ({ ...state, form: { ...state.form, type: action.payload } }))
@@ -52,4 +52,4 @@ export default createReducer<CleanState, Actions>(initialState)
   .handleAction(actions.fetchCleanAutoMatch.request, (state) => ({ ...state, result: { ...state.result, loading: true } }))
   .handleAction(actions.fetchCleanAutoMatch.success, (state, action) => ({ ...state, result: { loading: false, data: action.payload, error: false } }))
   .handleAction(actions.fetchCleanAutoMatch.failure, (state, action) => ({ ...state, result: { ...state.result, loading: false, error: true } }))
-  .handleAction(actions.resetCleanForm, (state) => ({ ...state, form: { ...initialState.form } }))
+  .handleAction(actions.resetCleanForm, (state) => ({ ...state, form: { ...initialState.form } }));

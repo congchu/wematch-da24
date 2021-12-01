@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import styled from 'styled-components'
+import React, { useEffect } from "react";
+import styled from "styled-components";
 
-import * as colors from 'styles/colors'
+import * as colors from "styles/colors";
 
 const ToastOverlay = styled.div`
   position: fixed;
@@ -20,18 +20,18 @@ const ToastPopupWrapper = styled.div`
 
 const ToastContent = styled.div`
   position: relative;
-  z-index: 100; 
+  z-index: 100;
   top: 50%;
   left: 50%;
   width: 312px;
-  transform:translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 `;
 
 const Content = styled.div`
   display: flex;
   width: 312px;
   /*min-height: 210px;*/
-  background-color: #FFF;
+  background-color: #fff;
   padding: 24px;
   box-sizing: border-box;
   flex-direction: column;
@@ -63,17 +63,17 @@ const SubText = styled.p`
   white-space: pre-wrap;
 `;
 
-const Button = styled.button<{ buttonType?: 'confirm' | 'cancel' }>`
+const Button = styled.button<{ buttonType?: "confirm" | "cancel" }>`
   height: 52px;
-  background-color: ${props => props.buttonType === 'confirm' ? colors.pointBlue : colors.white};
-  border: 1px solid ${props => props.buttonType === 'confirm' ? colors.pointBlue : colors.lineDefault};
+  background-color: ${(props) => (props.buttonType === "confirm" ? colors.pointBlue : colors.white)};
+  border: 1px solid ${(props) => (props.buttonType === "confirm" ? colors.pointBlue : colors.lineDefault)};
   border-radius: 6px;
   font-size: 18px;
-  color: ${props => props.buttonType === 'confirm' ? colors.white : colors.gray66};
+  color: ${(props) => (props.buttonType === "confirm" ? colors.white : colors.gray66)};
   font-weight: bold;
   line-height: 27px;
   letter-spacing: -0.03rem;
-  
+
   &:nth-child(2) {
     margin-left: 8px;
   }
@@ -85,7 +85,7 @@ const ConfirmButton = styled.button`
   border-radius: 6px;
   box-shadow: 0px 4px 10px rgba(22, 114, 247, 0.25);
   font-size: 18px;
-  color: #FFF;
+  color: #fff;
   font-weight: bold;
   line-height: 27px;
   letter-spacing: -0.03rem;
@@ -98,12 +98,12 @@ const CancelButton = styled.button`
   margin-bottom: 6px;
 `;
 
-const Footer = styled.article<{ modalType: 'confirm' | 'alert' }>`
+const Footer = styled.article<{ modalType: "confirm" | "alert" }>`
   display: flex;
   width: 100%;
-  
+
   button {
-    width: ${props => props.modalType === 'alert' ? '50%' : '100%'};
+    width: ${(props) => (props.modalType === "alert" ? "50%" : "100%")};
   }
 `;
 interface Props {
@@ -117,21 +117,21 @@ interface Props {
   tags?: {
     cancel?: string;
     success?: string;
-  }
+  };
 }
 const NewModal: React.FC<Props> = (props) => {
-  const { visible, title, content, confirmText, cancelText, confirmClick, cancelClick, tags } = props
+  const { visible, title, content, confirmText, cancelText, confirmClick, cancelClick, tags } = props;
 
   useEffect(() => {
     if (visible) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = "hidden";
     }
 
-    return () => document.body.removeAttribute('style')
-  }, [visible])
+    return () => document.body.removeAttribute("style");
+  }, [visible]);
 
   if (!visible) {
-    return null
+    return null;
   }
   return (
     <ToastOverlay>
@@ -140,36 +140,37 @@ const NewModal: React.FC<Props> = (props) => {
           <Content>
             <Text>{title}</Text>
             <SubText>{content}</SubText>
-            <Footer modalType={'confirm'}>
+            <Footer modalType={"confirm"}>
               {cancelText && (
-                <Button buttonType={"cancel"}
+                <Button
+                  buttonType={"cancel"}
                   onClick={() => {
                     if (cancelClick) {
-                      cancelClick()
+                      cancelClick();
                     }
                   }}
-                  id={tags?.cancel}
-                >{cancelText}</Button>
+                  id={tags?.cancel}>
+                  {cancelText}
+                </Button>
               )}
               {confirmText && (
                 <Button
-                  buttonType={'confirm'}
+                  buttonType={"confirm"}
                   onClick={() => {
                     if (confirmClick) {
-                      confirmClick()
+                      confirmClick();
                     }
-                  }
-                  }
-                  id={tags?.success}
-                  >
-                  {confirmText}</Button>
+                  }}
+                  id={tags?.success}>
+                  {confirmText}
+                </Button>
               )}
             </Footer>
           </Content>
         </ToastContent>
       </ToastPopupWrapper>
     </ToastOverlay>
-  )
+  );
 };
 
-export default NewModal
+export default NewModal;

@@ -1,28 +1,28 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useMedia } from 'react-use-media'
-import styled from 'styled-components'
-import ReactPixel from 'react-facebook-pixel'
-import { useCookies } from 'react-cookie'
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useMedia } from "react-use-media";
+import styled from "styled-components";
+import ReactPixel from "react-facebook-pixel";
+import { useCookies } from "react-cookie";
 
-import MainHeader from 'components/common/MainHeader'
-import AreaIcon from 'components/Icon/generated/AreaIcon'
-import Kakao from 'components/Icon/generated/Kakao_fit'
+import MainHeader from "components/common/MainHeader";
+import AreaIcon from "components/Icon/generated/AreaIcon";
+import Kakao from "components/Icon/generated/Kakao_fit";
 
-import * as commonSelector from 'store/common/selectors'
-import * as cleanSelector from 'store/clean/selectors'
-import * as formActions from 'store/form/actions'
-import * as formSelectors from 'store/form/selectors'
-import { FormState } from 'store/form/reducers'
+import * as commonSelector from "store/common/selectors";
+import * as cleanSelector from "store/clean/selectors";
+import * as formActions from "store/form/actions";
+import * as formSelectors from "store/form/selectors";
+import { FormState } from "store/form/reducers";
 
-import { MOVE_URL } from 'constants/env'
-import { dataLayer } from 'lib/dataLayerUtil'
-import { events } from 'lib/appsflyer'
-import { Link, useHistory, useLocation } from 'react-router-dom'
-import { IconSad } from '../../../components/Icon'
-import { Button } from '@wematch/wematch-ui'
-import * as colors from '../../../styles/colors'
-import dayjs from 'dayjs'
+import { MOVE_URL } from "constants/env";
+import { dataLayer } from "lib/dataLayerUtil";
+import { events } from "lib/appsflyer";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { IconSad } from "../../../components/Icon";
+import { Button } from "@wematch/wematch-ui";
+import * as colors from "../../../styles/colors";
+import dayjs from "dayjs";
 
 const S = {
   Header: styled.header`
@@ -137,35 +137,35 @@ const S = {
       margin: 0 auto;
     }
   `
-}
+};
 
 export default function NoService() {
   const isDesktop = useMedia({
     minWidth: 1200
-  })
+  });
 
-  const dispatch = useDispatch()
-  const history = useHistory()
-  const location = useLocation()
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
 
-  const [cookies, setCookie] = useCookies(['report'])
-  const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
-  const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
-  const getMoveType = useSelector(formSelectors.getType)
-  const getMoveDate = useSelector(formSelectors.getDate)
-  const getAddress = useSelector(formSelectors.getAddress)
-  const getFloor = useSelector(formSelectors.getFloor)
-  const getName = useSelector(formSelectors.getName)
-  const getPhone = useSelector(formSelectors.getPhone)
-  const getIsMoveStore = useSelector(formSelectors.getIsMoveStore)
-  const getContents = useSelector(formSelectors.getContents)
-  const getFormData = useSelector(formSelectors.getFormData)
-  const getAgree = useSelector(formSelectors.getAgree)
-  const getJuso = useSelector(commonSelector.getJuso)
-  const cleanFormData = useSelector(cleanSelector.getCleanForm)
+  const [cookies, setCookie] = useCookies(["report"]);
+  const [isCookie, setIsCookie] = useState(false); //새로고침 시 픽셀,데이터 레이어 재요청 방지용
+  const getSubmittedForm = useSelector(formSelectors.getSubmittedForm);
+  const getMoveType = useSelector(formSelectors.getType);
+  const getMoveDate = useSelector(formSelectors.getDate);
+  const getAddress = useSelector(formSelectors.getAddress);
+  const getFloor = useSelector(formSelectors.getFloor);
+  const getName = useSelector(formSelectors.getName);
+  const getPhone = useSelector(formSelectors.getPhone);
+  const getIsMoveStore = useSelector(formSelectors.getIsMoveStore);
+  const getContents = useSelector(formSelectors.getContents);
+  const getFormData = useSelector(formSelectors.getFormData);
+  const getAgree = useSelector(formSelectors.getAgree);
+  const getJuso = useSelector(commonSelector.getJuso);
+  const cleanFormData = useSelector(cleanSelector.getCleanForm);
 
-  const params = new URLSearchParams(location.search)
-  const serviceType = params.get('service_type') === 'clean' ? 'clean' : 'move'
+  const params = new URLSearchParams(location.search);
+  const serviceType = params.get("service_type") === "clean" ? "clean" : "move";
 
   const formState: FormState = {
     type: getMoveType,
@@ -179,67 +179,67 @@ export default function NoService() {
     phone: getPhone,
     submittedForm: getSubmittedForm,
     contents: getContents
-  }
+  };
 
-  const getDong = useCallback((dongType: 'start' | 'end') => {
-    if (getJuso.type[dongType] === 'jibun') {
-      return getJuso.start?.jibunAddr.replace(/ /g, '-')
+  const getDong = useCallback((dongType: "start" | "end") => {
+    if (getJuso.type[dongType] === "jibun") {
+      return getJuso.start?.jibunAddr.replace(/ /g, "-");
     }
-    return getJuso[dongType]?.roadAddr?.replace(/ /g, '-')
-  }, [])
+    return getJuso[dongType]?.roadAddr?.replace(/ /g, "-");
+  }, []);
 
   useEffect(() => {
-    if (serviceType === 'move' && getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
+    if (serviceType === "move" && getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
       dataLayer({
-        event: 'complete',
-        category: '업체없음',
-        action: '업체없음',
-        label: `${getDong('start')}_${getDong('end')}`,
-        CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
-        CD12: '바로매칭'
-      })
+        event: "complete",
+        category: "업체없음",
+        action: "업체없음",
+        label: `${getDong("start")}_${getDong("end")}`,
+        CD6: `${getMoveType === "house" ? "가정" : "사무실"}`,
+        CD12: "바로매칭"
+      });
 
-      ReactPixel.fbq('track', 'Purchase')
-      gtag('event', 'conversion', { send_to: 'AW-862163644/CmzdCIej6G0QvKWOmwM' })
-    } else if (serviceType === 'clean') {
+      ReactPixel.fbq("track", "Purchase");
+      gtag("event", "conversion", { send_to: "AW-862163644/CmzdCIej6G0QvKWOmwM" });
+    } else if (serviceType === "clean") {
       dataLayer({
-        event: 'clean_done',
-        category: '청소_마감고객',
+        event: "clean_done",
+        category: "청소_마감고객",
         action: `${cleanFormData.type}`,
-        label: `${dayjs(cleanFormData.date[0]).format('MM_DD')}`,
-        CD16: `${cleanFormData.addressType === 'road' ? cleanFormData.address?.roadAddrPart1.replace(/ /g, '') : cleanFormData.address?.jibunAddr.replace(/ /g, '')}`,
-        CD17: `${cleanFormData.livingType.replace(/\/|\([^)]*\)/g, '')}`,
+        label: `${dayjs(cleanFormData.date[0]).format("MM_DD")}`,
+        CD16: `${cleanFormData.addressType === "road" ? cleanFormData.address?.roadAddrPart1.replace(/ /g, "") : cleanFormData.address?.jibunAddr.replace(/ /g, "")}`,
+        CD17: `${cleanFormData.livingType.replace(/\/|\([^)]*\)/g, "")}`,
         CD18: `${cleanFormData.houseSpace}`,
-        CD19: `${cleanFormData.selectOptionItem.join(',')}`
-      })
+        CD19: `${cleanFormData.selectOptionItem.join(",")}`
+      });
     }
 
     events({
-      action: 'app_move_noservice'
-    })
-  }, [])
+      action: "app_move_noservice"
+    });
+  }, []);
 
   useEffect(() => {
     if (cookies.report && !getSubmittedForm?.data && !getSubmittedForm?.loading) {
-      setIsCookie(true)
-      dispatch(formActions.submitFormAsync.success(cookies.report))
+      setIsCookie(true);
+      dispatch(formActions.submitFormAsync.success(cookies.report));
     }
     // if (!cookies.report && !getSubmittedForm.report && !getSubmittedForm?.loading) {
     //     history.push('/myrequest')
     // }
-  }, [getSubmittedForm])
+  }, [getSubmittedForm]);
 
   useEffect(() => {
-    if (getSubmittedForm.data?.result === 'no service' && !getSubmittedForm.loading) {
-      const now = new Date()
-      const time = now.getTime() + 3600 * 1000
-      now.setTime(time)
-      setCookie('report', formState, {
-        path: '/',
+    if (getSubmittedForm.data?.result === "no service" && !getSubmittedForm.loading) {
+      const now = new Date();
+      const time = now.getTime() + 3600 * 1000;
+      now.setTime(time);
+      setCookie("report", formState, {
+        path: "/",
         expires: now
-      })
+      });
     }
-  }, [getSubmittedForm?.data?.result, getSubmittedForm.loading])
+  }, [getSubmittedForm?.data?.result, getSubmittedForm.loading]);
 
   return (
     <S.Container>
@@ -254,7 +254,7 @@ export default function NoService() {
         </S.Header>
       )}
       <S.Contents>
-        {serviceType === 'move' ? (
+        {serviceType === "move" ? (
           <>
             <AreaIcon />
             <S.Title>해당 지역은 서비스 준비 중입니다.</S.Title>
@@ -273,17 +273,17 @@ export default function NoService() {
               <br /> 최선을 다하겠습니다.
             </S.SubTitle>
             <S.ButtonWrapper>
-              <Button theme={'primary'} label={'홈으로 돌아가기'} isRound={true} onClick={() => history.push('/')} />
+              <Button theme={"primary"} label={"홈으로 돌아가기"} isRound={true} onClick={() => history.push("/")} />
             </S.ButtonWrapper>
           </>
         )}
       </S.Contents>
-      {serviceType === 'move' && (
+      {serviceType === "move" && (
         <S.LinkAlarm id="dsl_a_alarm_noService" href="https://pf.kakao.com/_Ppsxexd/chat" target="_blank">
           <Kakao />
           <span>가능업체 알림 신청</span>
         </S.LinkAlarm>
       )}
     </S.Container>
-  )
+  );
 }

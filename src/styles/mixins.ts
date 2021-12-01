@@ -1,4 +1,4 @@
-import { css } from 'styled-components'
+import { css } from "styled-components";
 
 export const resetButton = css`
   outline: none;
@@ -14,7 +14,7 @@ export const resetButton = css`
   -webkit-font-smoothing: inherit;
   -moz-osx-font-smoothing: inherit;
   -webkit-appearance: none;
-`
+`;
 
 export const resetInput = css`
   border: none;
@@ -36,7 +36,7 @@ export const resetInput = css`
   }
 
   /* Firefox */
-  [type=number] {
+  [type="number"] {
     -moz-appearance: textfield;
   }
-`
+`;

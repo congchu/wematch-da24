@@ -1,8 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import * as constants from 'constants/env'
+import React from "react";
+import { Link } from "react-router-dom";
+import * as constants from "constants/env";
 
-import './style.css'
+import "./style.css";
 
 const MainHeaderForDetail = () => {
   return (
@@ -28,7 +28,7 @@ const MainHeaderForDetail = () => {
           </div>
           <div id="wmLnb">
             <div className="head_info">
-              <Link to="/myrequest" className={'link_request'}>
+              <Link to="/myrequest" className={"link_request"}>
                 내 신청내역
               </Link>
             </div>
@@ -36,7 +36,7 @@ const MainHeaderForDetail = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MainHeaderForDetail
+export default MainHeaderForDetail;

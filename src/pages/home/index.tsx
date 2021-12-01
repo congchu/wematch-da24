@@ -68,13 +68,11 @@ const S = {
       font-size: 12px;
       line-height: 22px;
     }
-  `,
+  `
 };
 
 const Home: React.FC<RouteComponentProps> = ({ location }) => {
-  const [cookies, setCookie] = useCookies([
-    "0dj38gepoekf98234aplyadmin",
-  ]);
+  const [cookies, setCookie] = useCookies(["0dj38gepoekf98234aplyadmin"]);
   const HomeRef = useRef<HTMLDivElement>(null);
   const [isFixed, setIsFixed] = useScrollDirection();
   const [loading, setLoading] = useState(false);
@@ -91,7 +89,7 @@ const Home: React.FC<RouteComponentProps> = ({ location }) => {
 
     const lncd = queryString.parse(location.search).lncd || "";
     if (lncd) {
-      setCookie('lncd', `${lncd}`)
+      setCookie("lncd", `${lncd}`);
     }
 
     // if (9 <= Number(dayjs().format('H')) && 18 >= Number(dayjs().format('H'))) {
@@ -107,12 +105,12 @@ const Home: React.FC<RouteComponentProps> = ({ location }) => {
 
   // memory leak 경고 메시지 해결을 위해 한번 감싸는 용도
   useEffect(() => {
-      setLoading(getSubmittedForm.loading)
-      return () => setLoading(false)
-  }, [getSubmittedForm.loading])
+    setLoading(getSubmittedForm.loading);
+    return () => setLoading(false);
+  }, [getSubmittedForm.loading]);
 
   if (loading) {
-      return <ResponsiveSkeleton />
+    return <ResponsiveSkeleton />;
   }
 
   return (
@@ -123,18 +121,14 @@ const Home: React.FC<RouteComponentProps> = ({ location }) => {
           <MainBanner />
         </S.Group>
         <S.Wrapper>
-          <MoveForm
-            headerRef={HomeRef}
-            isFixed={isFixed}
-            setIsFixed={setIsFixed}
-          />
+          <MoveForm headerRef={HomeRef} isFixed={isFixed} setIsFixed={setIsFixed} />
           <Review />
           <PartnerBanner />
         </S.Wrapper>
         <MainFooter />
         <BottomNav />
         <S.CallBtn href="tel:1522-2483" isShow={false}>
-          <img src={require("assets/images/call.svg")} alt="전화 아이콘"/>
+          <img src={require("assets/images/call.svg")} alt="전화 아이콘" />
           <p>전화신청</p>
         </S.CallBtn>
       </S.Container>

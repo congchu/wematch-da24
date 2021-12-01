@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import dayjs from 'dayjs'
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import dayjs from "dayjs";
 
-import PopupTemplate from 'components/wematch-ui/PopupTemplate'
-import DatePicker from 'components/common/DatePicker'
-import { CalendarDate } from 'components/wematch-ui/utils/date'
-import * as colors from 'styles/colors'
-import { IServiceType } from 'types/partner'
+import PopupTemplate from "components/wematch-ui/PopupTemplate";
+import DatePicker from "components/common/DatePicker";
+import { CalendarDate } from "components/wematch-ui/utils/date";
+import * as colors from "styles/colors";
+import { IServiceType } from "types/partner";
 
 interface Props {
-  serviceType: IServiceType
-  moveType?: string
-  visible: boolean
-  title: string
-  onClose?: () => void
-  onOverlayClose?: () => void
-  onConfirm?: () => void
-  onSelect?: (date: CalendarDate) => void
-  selected?: string[] | undefined
+  serviceType: IServiceType;
+  moveType?: string;
+  visible: boolean;
+  title: string;
+  onClose?: () => void;
+  onOverlayClose?: () => void;
+  onConfirm?: () => void;
+  onSelect?: (date: CalendarDate) => void;
+  selected?: string[] | undefined;
 }
 
 const S = {
@@ -82,28 +82,28 @@ const S = {
       }
     }
   `
-}
+};
 
 const CalendarModal: React.FC<Props> = (props) => {
-  const { visible = false, title, onClose, onSelect, selected, serviceType, moveType } = props
-  const [rangeStartDate, setRangeStartDate] = useState(dayjs())
-  const [rangeEndDate, setRangeEndDate] = useState(dayjs().add(55, 'day'))
+  const { visible = false, title, onClose, onSelect, selected, serviceType, moveType } = props;
+  const [rangeStartDate, setRangeStartDate] = useState(dayjs());
+  const [rangeEndDate, setRangeEndDate] = useState(dayjs().add(55, "day"));
 
   useEffect(() => {
     // 청소 마감일자 +1일 (21.11.18 Koo)
-    if (serviceType === 'clean') {
-      setRangeEndDate(dayjs().add(56, 'day'))
+    if (serviceType === "clean") {
+      setRangeEndDate(dayjs().add(56, "day"));
 
-    //가정이사, 사무실 이사는 익일 +1부터 55일간 예약 가능 (21.10.21 Koo)
-    } else if (moveType === 'house' || moveType === 'office') {
-      setRangeStartDate(dayjs().add(1, 'day'))
-      setRangeEndDate(dayjs().add(56, 'day'))
+      //가정이사, 사무실 이사는 익일 +1부터 55일간 예약 가능 (21.10.21 Koo)
+    } else if (moveType === "house" || moveType === "office") {
+      setRangeStartDate(dayjs().add(1, "day"));
+      setRangeEndDate(dayjs().add(56, "day"));
     }
-  }, [moveType])
+  }, [moveType]);
 
   const disabledDate = (date: Date) => {
-    return false
-  }
+    return false;
+  };
 
   return (
     <PopupTemplate visible={visible} onClose={onClose}>
@@ -143,7 +143,7 @@ const CalendarModal: React.FC<Props> = (props) => {
         <DatePicker currentDate={new Date()} rangeStartDate={rangeStartDate} rangeEndDate={rangeEndDate} onSelect={onSelect} selected={selected} disabledDate={disabledDate} title={title} serviceType={serviceType} />
       </S.Container>
     </PopupTemplate>
-  )
-}
+  );
+};
 
-export default CalendarModal
+export default CalendarModal;

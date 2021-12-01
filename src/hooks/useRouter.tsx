@@ -1,8 +1,8 @@
-import React, {useMemo} from 'react'
-import { useParams, useLocation, useHistory, useRouteMatch } from 'react-router-dom';
-import queryString from 'query-string'
+import React, { useMemo } from "react";
+import { useParams, useLocation, useHistory, useRouteMatch } from "react-router-dom";
+import queryString from "query-string";
 
-export function useRouter():any {
+export function useRouter(): any {
   const params = useParams();
   const location = useLocation();
   const history = useHistory();

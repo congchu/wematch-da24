@@ -1,124 +1,122 @@
-import React, { useState, useEffect } from 'react'
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom'
-import { Provider, useDispatch, useSelector } from 'react-redux'
-import { ConnectedRouter } from 'connected-react-router'
-import { useCookies } from 'react-cookie'
-import { LOCAL_ENV } from 'constants/env'
-import { get } from 'lodash'
+import React, { useState, useEffect } from "react";
+import { Switch, Route, Redirect, useLocation } from "react-router-dom";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { ConnectedRouter } from "connected-react-router";
+import { useCookies } from "react-cookie";
+import { LOCAL_ENV } from "constants/env";
+import { get } from "lodash";
 
-import useScript from 'hooks/useScript'
-import useReceiveMessage from 'hooks/useReceiveMessage'
-import useUserAgent from 'hooks/useUserAgent'
-import store from 'store/index'
-import browserHistory from 'lib/history'
-import * as userActions from 'store/user/actions'
-import * as commonActions from 'store/common/actions'
-import * as userSelector from 'store/user/selectors'
+import useScript from "hooks/useScript";
+import useReceiveMessage from "hooks/useReceiveMessage";
+import useUserAgent from "hooks/useUserAgent";
+import store from "store/index";
+import browserHistory from "lib/history";
+import * as userActions from "store/user/actions";
+import * as commonActions from "store/common/actions";
+import * as userSelector from "store/user/selectors";
 
-import { dataLayer } from 'lib/dataLayerUtil'
-import ReactPixel from 'react-facebook-pixel'
+import { dataLayer } from "lib/dataLayerUtil";
+import ReactPixel from "react-facebook-pixel";
 
-import GlobalStyled from 'styles/global'
-import 'styles/common.css'
+import GlobalStyled from "styles/global";
+import "styles/common.css";
 
 // pages
-import Home from 'pages/home'
-import Login from 'pages/login'
-import { Intro, Customer, Grade } from 'pages/banner'
-import { PartnerList, PartnerDetail, PartnerCart } from 'pages/partner'
-import { CompletedPage, NoServicePage, NoPartnerPage, RequestPartnerDetail } from 'pages/requests'
-import { ChecklistIntro, ChecklistDetail } from './pages/checklist'
-import CleanPage from 'pages/clean'
-import CleanBridge01 from './pages/clean/bridge01'
-import PartnerRegisterPage from './pages/partnerRegister'
-import UserReviewPage from './pages/userReview'
-import NoticePage from './pages/notice'
-import ContactPage from './pages/contact'
-import FaqPage from './pages/faq'
-import Terms from 'pages/terms'
-import NotFound from 'pages/notFound'
-import ErrorService from 'pages/errorService'
-import UnSupported from 'pages/unsupported'
-import Template from 'pages/requests/Completed/template'
-import MyConsult from 'pages/myconsult'
-import FeedbackPage from 'pages/feedback'
-import MyConsultDetail from 'pages/myconsult/myConsultDetail'
-
+import Home from "pages/home";
+import Login from "pages/login";
+import { Intro, Customer, Grade } from "pages/banner";
+import { PartnerList, PartnerDetail, PartnerCart } from "pages/partner";
+import { CompletedPage, NoServicePage, NoPartnerPage, RequestPartnerDetail } from "pages/requests";
+import { ChecklistIntro, ChecklistDetail } from "./pages/checklist";
+import CleanPage from "pages/clean";
+import CleanBridge01 from "./pages/clean/bridge01";
+import PartnerRegisterPage from "./pages/partnerRegister";
+import UserReviewPage from "./pages/userReview";
+import NoticePage from "./pages/notice";
+import ContactPage from "./pages/contact";
+import FaqPage from "./pages/faq";
+import Terms from "pages/terms";
+import NotFound from "pages/notFound";
+import ErrorService from "pages/errorService";
+import UnSupported from "pages/unsupported";
+import Template from "pages/requests/Completed/template";
+import MyConsult from "pages/myconsult";
+import FeedbackPage from "pages/feedback";
+import MyConsultDetail from "pages/myconsult/myConsultDetail";
 
 //swiper lib
-import SwiperCore, { Pagination, Autoplay } from 'swiper'
-import 'swiper/swiper.scss'
-import 'swiper/components/pagination/pagination.scss'
-SwiperCore.use([Pagination, Autoplay])
-
+import SwiperCore, { Pagination, Autoplay } from "swiper";
+import "swiper/swiper.scss";
+import "swiper/components/pagination/pagination.scss";
+SwiperCore.use([Pagination, Autoplay]);
 
 declare global {
   interface Window {
-    ReactNativeWebView: any // eslint-disable-line
+    ReactNativeWebView: any; // eslint-disable-line
   }
   interface TenpingScript {
-    SendConversion: () => void
+    SendConversion: () => void;
   }
 }
 
 function AppRoute() {
-  const dispatch = useDispatch()
-  const [script, setScript] = useState('')
-  const location = useLocation()
-  const customScript = useScript(script)
-  const { isIE } = useUserAgent()
-  const [cookies] = useCookies([`x-wematch-token-${LOCAL_ENV}`])
-  const getDeviceId = useReceiveMessage()
-  const { token } = useSelector(userSelector.getUser)
-  const wematchToken = get(cookies, `x-wematch-token-${LOCAL_ENV}`)
+  const dispatch = useDispatch();
+  const [script, setScript] = useState("");
+  const location = useLocation();
+  const customScript = useScript(script);
+  const { isIE } = useUserAgent();
+  const [cookies] = useCookies([`x-wematch-token-${LOCAL_ENV}`]);
+  const getDeviceId = useReceiveMessage();
+  const { token } = useSelector(userSelector.getUser);
+  const wematchToken = get(cookies, `x-wematch-token-${LOCAL_ENV}`);
 
   const getPathname = () => {
-    let pathname = 5
+    let pathname = 5;
     switch (location.pathname) {
-      case '/partner/list':
-        return (pathname = 5)
-      case '/partner/detail':
-        return (pathname = 5)
-      case '/partner/cart':
-        return (pathname = 3)
+      case "/partner/list":
+        return (pathname = 5);
+      case "/partner/detail":
+        return (pathname = 5);
+      case "/partner/cart":
+        return (pathname = 3);
     }
-    return pathname
-  }
+    return pathname;
+  };
 
   useEffect(() => {
-    const wematchToken = get(cookies, `x-wematch-token-${LOCAL_ENV}`)
+    const wematchToken = get(cookies, `x-wematch-token-${LOCAL_ENV}`);
     if (wematchToken !== undefined) {
-      dispatch(userActions.fetchGetUserAsync.request({ token: wematchToken }))
+      dispatch(userActions.fetchGetUserAsync.request({ token: wematchToken }));
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (getDeviceId) {
-      dispatch(commonActions.setDeviceId(getDeviceId))
+      dispatch(commonActions.setDeviceId(getDeviceId));
     }
-  }, [dispatch, getDeviceId])
+  }, [dispatch, getDeviceId]);
 
   useEffect(() => {
-    if (location.pathname !== '/') {
+    if (location.pathname !== "/") {
       const script = `
                 if(!wcs.add) var wcs_add = {};
                 wcs_add["wa"] = "s_52e77a8a8b79";
                 if (!_nasa) var _nasa={};
                 _nasa["cnv"] = wcs.cnv("${getPathname()}", "1");
                 wcs_do(_nasa);
-            `
-      setScript(script)
+            `;
+      setScript(script);
     }
 
-    dataLayer({ event: 'pageview' })
-    ReactPixel.pageView()
-  }, [location.pathname])
+    dataLayer({ event: "pageview" });
+    ReactPixel.pageView();
+  }, [location.pathname]);
 
   useEffect(() => {
     if (script.length !== 0) {
-      return customScript
+      return customScript;
     }
-  }, [script])
+  }, [script]);
 
   // ie인 경우 무조건 unsupported로 보낸다.
   if (isIE) {
@@ -127,12 +125,12 @@ function AppRoute() {
         <Route exact path="/unsupported" component={UnSupported} />
         <Redirect path="/" to={`/unsupported${location.search}`} />
       </Switch>
-    )
+    );
   } else {
     return (
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/login" render={(props) => (wematchToken ? <Redirect to={{ pathname: '/' }} /> : <Login />)} />
+        <Route exact path="/login" render={(props) => (wematchToken ? <Redirect to={{ pathname: "/" }} /> : <Login />)} />
 
         {/*청소*/}
         <Route exact path="/clean" component={CleanPage} />
@@ -153,7 +151,7 @@ function AppRoute() {
         {/* 요청 */}
         <Route exact path="/requests/nopartner" component={NoPartnerPage} />
         <Route exact path="/requests/noservice" component={NoServicePage} />
-        <Route exact path={['/requests/completed/:adminId', '/comment/:adminId']} component={RequestPartnerDetail} />
+        <Route exact path={["/requests/completed/:adminId", "/comment/:adminId"]} component={RequestPartnerDetail} />
         <Route exact path="/completed" component={CompletedPage} />
         <Route exact path="/completed/:inquiry_idx" component={Template} />
 
@@ -178,7 +176,7 @@ function AppRoute() {
 
         <Route component={NotFound} />
       </Switch>
-    )
+    );
   }
 }
 
@@ -192,7 +190,7 @@ function App() {
         </ConnectedRouter>
       </Provider>
     </>
-  )
+  );
 }
 
 // interface IAuthRoute {
@@ -216,4 +214,4 @@ function App() {
 //     }} />
 // }
 
-export default App
+export default App;

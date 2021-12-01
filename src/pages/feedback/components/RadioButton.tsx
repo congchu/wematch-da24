@@ -1,13 +1,13 @@
-import React, { forwardRef, Ref, useState, memo, InputHTMLAttributes } from 'react'
-import styled from 'styled-components'
-import RadioChecked from 'components/Icon/generated/RadioChecked'
+import React, { forwardRef, Ref, useState, memo, InputHTMLAttributes } from "react";
+import styled from "styled-components";
+import RadioChecked from "components/Icon/generated/RadioChecked";
 
-interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  checked?: boolean
-  type?: 'checkbox'
+interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+  checked?: boolean;
+  type?: "checkbox";
 }
 
-const ControlledRadioButton = forwardRef(function ControlledRadioButton({ type = 'checkbox', className, checked, onChange, ...rest }: Props, ref: Ref<HTMLInputElement>) {
+const ControlledRadioButton = forwardRef(function ControlledRadioButton({ type = "checkbox", className, checked, onChange, ...rest }: Props, ref: Ref<HTMLInputElement>) {
   return (
     <Container className={className} checked={checked}>
       <CheckboxInput
@@ -15,40 +15,40 @@ const ControlledRadioButton = forwardRef(function ControlledRadioButton({ type =
         type={type}
         checked={checked}
         onChange={(value) => {
-          onChange?.(value)
+          onChange?.(value);
         }}
         {...rest}
       />
-      <RadioChecked fill={checked ? undefined : 'transparent'} />
+      <RadioChecked fill={checked ? undefined : "transparent"} />
     </Container>
-  )
-})
+  );
+});
 
 const UncontrolledRadioButton = forwardRef(function UncontrolledRadioButton({ onChange, defaultChecked, ...props }: Props, ref: Ref<HTMLInputElement>) {
-  const [isChecked, setIsChecked] = useState(defaultChecked)
+  const [isChecked, setIsChecked] = useState(defaultChecked);
 
   return (
     <ControlledRadioButton
       ref={ref}
       checked={isChecked}
       onChange={(event) => {
-        setIsChecked(event.currentTarget.checked)
-        onChange?.(event)
+        setIsChecked(event.currentTarget.checked);
+        onChange?.(event);
       }}
       {...props}
     />
-  )
-})
+  );
+});
 
 const RadioButton = forwardRef(function RadioButton(props: Props, ref: Ref<HTMLInputElement>) {
   if (props.checked != null) {
-    return <ControlledRadioButton {...props} />
+    return <ControlledRadioButton {...props} />;
   } else {
-    return <UncontrolledRadioButton {...props} />
+    return <UncontrolledRadioButton {...props} />;
   }
-})
+});
 
-export default memo(RadioButton)
+export default memo(RadioButton);
 
 const Container = styled.div<{ checked?: boolean }>`
   overflow: hidden;
@@ -58,12 +58,12 @@ const Container = styled.div<{ checked?: boolean }>`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: ${({ checked }) => (checked ? 'none' : '3px solid #d7dbe2')};
+  border: ${({ checked }) => (checked ? "none" : "3px solid #d7dbe2")};
   box-sizing: border-box;
   & + & {
     margin-top: 8px;
   }
-`
+`;
 
 const CheckboxInput = styled.input`
   position: fixed;
@@ -76,4 +76,4 @@ const CheckboxInput = styled.input`
   clip: rect(0 0 0 0);
   white-space: nowrap;
   -webkit-appearance: none;
-`
+`;

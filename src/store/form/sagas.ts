@@ -1,45 +1,45 @@
-import { all, call, put, select, takeEvery, takeLeading } from 'redux-saga/effects'
-import { ActionType } from 'typesafe-actions'
-import { push, replace } from 'connected-react-router'
-import queryString from 'query-string'
-import dayjs from 'dayjs'
+import { all, call, put, select, takeEvery, takeLeading } from "redux-saga/effects";
+import { ActionType } from "typesafe-actions";
+import { push, replace } from "connected-react-router";
+import queryString from "query-string";
+import dayjs from "dayjs";
 
-import { phoneSplit, translateMovingType } from 'components/wematch-ui/utils/form'
+import { phoneSplit, translateMovingType } from "components/wematch-ui/utils/form";
 
-import * as userSelector from 'store/user/selectors'
-import * as commonTypes from 'store/common/types'
-import * as commonActions from 'store/common/actions'
-import * as commonSelector from 'store/common/selectors'
-import * as commonRequests from 'store/common/requests'
+import * as userSelector from "store/user/selectors";
+import * as commonTypes from "store/common/types";
+import * as commonActions from "store/common/actions";
+import * as commonSelector from "store/common/selectors";
+import * as commonRequests from "store/common/requests";
 
-import * as formSelector from './selectors'
-import * as actions from './actions'
-import * as requests from './requests'
-import { ESubmittedFormResult } from './types'
+import * as formSelector from "./selectors";
+import * as actions from "./actions";
+import * as requests from "./requests";
+import { ESubmittedFormResult } from "./types";
 
-import { deleteCookie, getCookie, setCookie } from 'lib/cookie'
-import { dataLayer } from 'lib/dataLayerUtil'
+import { deleteCookie, getCookie, setCookie } from "lib/cookie";
+import { dataLayer } from "lib/dataLayerUtil";
 
-import * as sentry from '@sentry/react'
-import { Severity } from '@sentry/react'
-import { useCallback } from 'react'
-import { events } from 'lib/appsflyer'
-import axios from 'axios'
-import { LOCAL_ENV } from '../../constants/env'
-import { setDbdbdepp } from './actions'
-import { sendGAdsAreaAvgPrice } from 'lib/googleAds'
-import { sendPixelAreaAvgPrice } from 'lib/facebookPixel'
+import * as sentry from "@sentry/react";
+import { Severity } from "@sentry/react";
+import { useCallback } from "react";
+import { events } from "lib/appsflyer";
+import axios from "axios";
+import { LOCAL_ENV } from "../../constants/env";
+import { setDbdbdepp } from "./actions";
+import { sendGAdsAreaAvgPrice } from "lib/googleAds";
+import { sendPixelAreaAvgPrice } from "lib/facebookPixel";
 
 export function* setJusoSaga() {
-  const getJuso = yield select(commonSelector.getJuso)
+  const getJuso = yield select(commonSelector.getJuso);
 
   try {
     // 디버깅용
-    sentry.setExtra('juso', {
+    sentry.setExtra("juso", {
       start: getJuso.start,
       end: getJuso.end,
       type: getJuso.type
-    })
+    });
 
     if (getJuso.start) {
       const { data } = yield call(commonRequests.getDistance, {
@@ -53,13 +53,13 @@ export function* setJusoSaga() {
         endIsGf: getJuso.end.udrtYn,
         endMainBd: getJuso.end.buldMnnm,
         endSubBd: getJuso.end.buldSlno
-      })
+      });
       yield put(
         commonActions.setJuso({
           ...getJuso,
           distance: data
         })
-      )
+      );
 
       //쿠키값이 너무 커져서 필요한것만 짜른다..
       const replaceCookieFormData = {
@@ -94,60 +94,60 @@ export function* setJusoSaga() {
           start: getJuso.type.start,
           end: getJuso.type.end
         }
-      }
+      };
 
-      setCookie('jusoData', JSON.stringify(replaceCookieFormData), {
+      setCookie("jusoData", JSON.stringify(replaceCookieFormData), {
         expires: new Date(
           dayjs()
-            .add(2, 'day')
+            .add(2, "day")
             .format()
         )
-      })
+      });
     }
   } catch (e) {
-    sentry.captureMessage('거리계산 실패', {
+    sentry.captureMessage("거리계산 실패", {
       level: Severity.Error
-    })
-    sentry.captureException(e)
+    });
+    sentry.captureException(e);
   }
 }
 
 export function* setFormSaga() {
-  yield call(setJusoSaga)
+  yield call(setJusoSaga);
 
-  const { user } = yield select(userSelector.getUser)
+  const { user } = yield select(userSelector.getUser);
   const {
     formState: { type, date, address, floor, isMoveStore, agree, contents }
-  } = yield select()
-  const getJuso = yield select(commonSelector.getJuso)
+  } = yield select();
+  const getJuso = yield select(commonSelector.getJuso);
   // 디버깅용
-  sentry.setExtra('setFormSaga', {
+  sentry.setExtra("setFormSaga", {
     start: getJuso.start,
     end: getJuso.end,
     type: getJuso.type
-  })
+  });
 
-  const { phone1, phone2, phone3 } = phoneSplit(user.tel)
+  const { phone1, phone2, phone3 } = phoneSplit(user.tel);
 
-  const cookie = getCookie('0dj38gepoekf98234aplyadmin')
+  const cookie = getCookie("0dj38gepoekf98234aplyadmin");
 
-  const getDetailAddress = (type: 'start' | 'end') => {
+  const getDetailAddress = (type: "start" | "end") => {
     // 건물 번호가 없는 경우에는 생략
-    if (getJuso[type].buldSlno === '0') {
-      return getJuso[type].rn + ' ' + getJuso[type].buldMnnm + ' ' + address.detailStart
+    if (getJuso[type].buldSlno === "0") {
+      return getJuso[type].rn + " " + getJuso[type].buldMnnm + " " + address.detailStart;
     }
-    return getJuso[type].rn + ' ' + getJuso[type].buldMnnm + '-' + getJuso[type].buldSlno + ' ' + address.detailStart
-  }
+    return getJuso[type].rn + " " + getJuso[type].buldMnnm + "-" + getJuso[type].buldSlno + " " + address.detailStart;
+  };
 
   const formData: commonTypes.RequestUserInfoInsert = {
     moving_type: translateMovingType(type),
     moving_date: date[0],
     floor: `${floor.start}`,
-    detail_addr: getDetailAddress('start'),
+    detail_addr: getDetailAddress("start"),
     sido: getJuso.start.siNm,
     gugun: getJuso.start.sggNm,
     dong: getJuso.start.emdNm,
-    detail_addr2: getDetailAddress('end'),
+    detail_addr2: getDetailAddress("end"),
     sido2: getJuso.end.siNm,
     gugun2: getJuso.end.sggNm,
     dong2: getJuso.end.emdNm,
@@ -159,12 +159,12 @@ export function* setFormSaga() {
     keep_move: isMoveStore,
     mkt_agree: agree.marketing,
     distance: getJuso.distance,
-    agent_id: cookie ? queryString.parse(cookie).agentid : '',
+    agent_id: cookie ? queryString.parse(cookie).agentid : "",
     memo: contents,
     auto_match: true
-  }
+  };
 
-  yield put(actions.setFormData(formData))
+  yield put(actions.setFormData(formData));
 
   // 필요 없는것 같음
   // if (getCookie('formData')) {
@@ -178,16 +178,16 @@ export function* setFormSaga() {
     moving_date: null,
     detail_addr: address.detailStart,
     detail_addr2: address.detailEnd
-  }
-  setCookie('formData', JSON.stringify(replaceCookieFormData), {
+  };
+  setCookie("formData", JSON.stringify(replaceCookieFormData), {
     expires: new Date(
       dayjs()
-        .add(2, 'day')
+        .add(2, "day")
         .format()
     )
-  })
+  });
 
-  yield put(push('/completed?service_type=move'))
+  yield put(push("/completed?service_type=move"));
 }
 
 // type Dbdbdeep_Type = { lncd: string; name: string; tel: string; dt: string }
@@ -203,84 +203,83 @@ export function* setFormSaga() {
 export function* submitFormSaga(action: ActionType<typeof actions.submitFormAsync.request>) {
   try {
     // 디버깅용
-    sentry.setExtra('submitFormSaga', {
+    sentry.setExtra("submitFormSaga", {
       payload: action.payload.formData
-    })
-    const lncd = getCookie('lncd')
-    const data = yield call(requests.submitForm, action.payload.formData)
-    const { start: moveStartAddr, end: moveEndAddr, type: moveAddrType } = yield select(commonSelector.getJuso)
-    yield put(actions.submitFormAsync.success(data))
+    });
+    const lncd = getCookie("lncd");
+    const data = yield call(requests.submitForm, action.payload.formData);
+    const { start: moveStartAddr, end: moveEndAddr, type: moveAddrType } = yield select(commonSelector.getJuso);
+    yield put(actions.submitFormAsync.success(data));
 
     // 구글 애드워즈, 픽셀 트래킹 코드 추가 (21.11.29 Koo)
-    const { moving_type, sido, gugun } = action.payload.formData  
+    const { moving_type, sido, gugun } = action.payload.formData;
     sendGAdsAreaAvgPrice(moving_type, sido, gugun);
     sendPixelAreaAvgPrice(moving_type, sido, gugun);
-
 
     if (data?.result === ESubmittedFormResult.Success) {
       // yield put(push(`/completed?${data.inquiry_idx}`))
       // yield put(push(`/requests/completed`))
 
       if (lncd) {
-        yield put(actions.setDbdbdepp(true))
+        yield put(actions.setDbdbdepp(true));
       }
 
-      const { moving_type } = action.payload.formData
-      const startAddress = moveAddrType.start === 'road' ? `${moveStartAddr?.roadAddr}` : `${moveStartAddr?.jibunAddr}`
-      const endAddress = moveAddrType.end === 'road' ? `${moveEndAddr?.roadAddr}` : `${moveEndAddr?.jibunAddr}`
+      const { moving_type } = action.payload.formData;
+      const startAddress = moveAddrType.start === "road" ? `${moveStartAddr?.roadAddr}` : `${moveStartAddr?.jibunAddr}`;
+      const endAddress = moveAddrType.end === "road" ? `${moveEndAddr?.roadAddr}` : `${moveEndAddr?.jibunAddr}`;
       dataLayer({
-        event: 'complete',
-        category: '매칭완료',
+        event: "complete",
+        category: "매칭완료",
         action: `매칭완료_${data?.match_list?.length}`,
-        label: `${startAddress.replace(/ /g, '-')}_${endAddress.replace(/ /g, '-')}`,
+        label: `${startAddress.replace(/ /g, "-")}_${endAddress.replace(/ /g, "-")}`,
         CD6: `${moving_type}`,
-        CD12: '바로매칭'
-      })
+        CD12: "바로매칭"
+      });
 
       events({
-        action: 'app_move_done'
-      })
+        action: "app_move_done"
+      });
 
-      TenpingScript.SendConversion()
+      TenpingScript.SendConversion();
 
-      gtag('event', 'conversion', {
-        send_to: 'AW-862163644/CmzdCIej6G0QvKWOmwM'
-      })
+      gtag("event", "conversion", {
+        send_to: "AW-862163644/CmzdCIej6G0QvKWOmwM"
+      });
 
-      yield put(replace(`/completed?service_type=move&inquiry_idx=${data.inquiry_idx}`))
+      yield put(replace(`/completed?service_type=move&inquiry_idx=${data.inquiry_idx}`));
     } else if (data?.result === ESubmittedFormResult.NoPartner) {
-      yield put(replace('/requests/nopartner?service_type=move'))
+      yield put(replace("/requests/nopartner?service_type=move"));
     } else if (data?.result === ESubmittedFormResult.NoService) {
-      yield put(replace('/requests/noservice'))
+      yield put(replace("/requests/noservice"));
     }
   } catch (e) {
-    yield put(actions.submitFormAsync.failure())
-    sentry.captureMessage('이사 접수 실패', {
+    yield put(actions.submitFormAsync.failure());
+    sentry.captureMessage("이사 접수 실패", {
       level: Severity.Error
-    })
-    sentry.captureException(e)
-    alert('에러가 발생했습니다.')
-    yield put(push('/error'))
+    });
+    sentry.captureException(e);
+    alert("에러가 발생했습니다.");
+    yield put(push("/error"));
   }
 }
 
 export function* fetchMoveFormSaga() {
-  const selectedSubmitType = yield select(formSelector.getSelectedSubmitType)
-  const getIsMoveStore = yield select(formSelector.getIsMoveStore)
-  const getMoveType = yield select(formSelector.getType)
-  const formData = yield select(formSelector.getFormData)
+  const selectedSubmitType = yield select(formSelector.getSelectedSubmitType);
+  const getIsMoveStore = yield select(formSelector.getIsMoveStore);
+  const getMoveType = yield select(formSelector.getType);
+  const formData = yield select(formSelector.getFormData);
   const {
     user: { uuid }
-  } = yield select(userSelector.getUser)
+  } = yield select(userSelector.getUser);
 
-  if (selectedSubmitType === 'curation') {
-    yield put(actions.submitFormAsync.request({ formData: { uuid, ...formData } }))
-  } else if (selectedSubmitType === 'select') {
-    yield put(replace('/'))
-    yield put(commonActions.fetchMoveIdx.request({ uuid, ...formData }))
+  if (selectedSubmitType === "curation") {
+    yield put(actions.submitFormAsync.request({ formData: { uuid, ...formData } }));
+  } else if (selectedSubmitType === "select") {
+    yield put(replace("/"));
+    yield put(commonActions.fetchMoveIdx.request({ uuid, ...formData }));
   }
 }
 
 export default function*() {
-  yield all([takeEvery(actions.submitFormAsync.request, submitFormSaga), takeLeading(actions.fetchMoveData, fetchMoveFormSaga), takeEvery(actions.setMoveData, setFormSaga)])
+  yield all([takeEvery(actions.submitFormAsync.request, submitFormSaga), takeLeading(actions.fetchMoveData, fetchMoveFormSaga), takeEvery(actions.setMoveData, setFormSaga)]);
 }

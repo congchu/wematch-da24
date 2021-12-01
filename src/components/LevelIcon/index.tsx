@@ -1,22 +1,22 @@
-import React from 'react'
-import Styled from 'styled-components'
+import React from "react";
+import Styled from "styled-components";
 
-import { Level } from 'types/partner'
+import { Level } from "types/partner";
 
 const S = {
-	Container: Styled.div``,
-}
+  Container: Styled.div``
+};
 
 interface Props {
-	level: Level
+  level: Level;
 }
 
 const LevelIcon = ({ level }: Props) => {
-	return (
-		<S.Container>
-			<img src={require(`../../assets/images/level_${level}.svg`)} alt={level} />
-		</S.Container>
-	)
-}
+  return (
+    <S.Container>
+      <img src={require(`../../assets/images/level_${level}.svg`)} alt={level} />
+    </S.Container>
+  );
+};
 
-export default LevelIcon
+export default LevelIcon;

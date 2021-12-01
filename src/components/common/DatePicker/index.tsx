@@ -1,14 +1,14 @@
-import React, { useMemo } from 'react'
-import styled, { css } from 'styled-components'
+import React, { useMemo } from "react";
+import styled, { css } from "styled-components";
 
-import dayjs, { Dayjs } from 'dayjs'
+import dayjs, { Dayjs } from "dayjs";
 
-import Calendar from './Calendar'
-import { CalendarDate, getCurrentMonthDays } from 'components/wematch-ui/utils/date'
-import { Next } from 'components/wematch-ui/Icon'
+import Calendar from "./Calendar";
+import { CalendarDate, getCurrentMonthDays } from "components/wematch-ui/utils/date";
+import { Next } from "components/wematch-ui/Icon";
 
-import * as colors from 'styles/colors'
-import { IServiceType } from 'types/partner'
+import * as colors from "styles/colors";
+import { IServiceType } from "types/partner";
 
 /**
  * 2020.06.08 Ryan
@@ -109,7 +109,7 @@ const S = {
       color: ${colors.white};
     }
   `
-}
+};
 
 const Dot = styled.span`
   width: 8px;
@@ -118,58 +118,58 @@ const Dot = styled.span`
   border-radius: 50%;
   margin-right: 12px;
   margin-left: 16px;
-`
+`;
 
 interface Props {
-  currentDate?: Dayjs | Date
-  selected?: string[]
-  onSelect?(date: CalendarDate): void
-  rangeStartDate?: Dayjs | Date
-  rangeEndDate?: Dayjs | Date
-  disabledDate?: (date: Date) => boolean
-  title?: string
-  serviceType: IServiceType
+  currentDate?: Dayjs | Date;
+  selected?: string[];
+  onSelect?(date: CalendarDate): void;
+  rangeStartDate?: Dayjs | Date;
+  rangeEndDate?: Dayjs | Date;
+  disabledDate?: (date: Date) => boolean;
+  title?: string;
+  serviceType: IServiceType;
 }
 
 const DatePicker: React.FC<Props> = (props) => {
-  const { currentDate, onSelect, disabledDate, selected = [], rangeStartDate, rangeEndDate, title = '이사', serviceType } = props
+  const { currentDate, onSelect, disabledDate, selected = [], rangeStartDate, rangeEndDate, title = "이사", serviceType } = props;
 
   const initialDate = (() => {
     if (currentDate) {
       if (currentDate instanceof Date) {
-        return dayjs(currentDate)
+        return dayjs(currentDate);
       }
     }
-    return dayjs()
-  })()
+    return dayjs();
+  })();
 
-  const [currentDateValue, setCurrentDateValue] = React.useState<Dayjs>(initialDate)
-  const maxDate = currentDateValue.add(55, 'day')
+  const [currentDateValue, setCurrentDateValue] = React.useState<Dayjs>(initialDate);
+  const maxDate = currentDateValue.add(55, "day");
 
   const disabledDateWithRange = React.useCallback(
     (date: Date) => {
-      const isBeforeRangeStartDate = rangeStartDate ? date < rangeStartDate : false
-      const isAfterRangeEndDate = rangeEndDate ? date > rangeEndDate : false
-      const isDisabledDate = disabledDate ? disabledDate(date) : false
+      const isBeforeRangeStartDate = rangeStartDate ? date < rangeStartDate : false;
+      const isAfterRangeEndDate = rangeEndDate ? date > rangeEndDate : false;
+      const isDisabledDate = disabledDate ? disabledDate(date) : false;
 
-      return isBeforeRangeStartDate || isAfterRangeEndDate || isDisabledDate
+      return isBeforeRangeStartDate || isAfterRangeEndDate || isDisabledDate;
     },
     [rangeStartDate, rangeEndDate, disabledDate]
-  )
+  );
 
-  const diffMonth = Math.ceil(maxDate.diff(currentDateValue, 'month', true)) + 1
-  let arr = new Array(diffMonth).fill(undefined).map((val, idx) => idx)
+  const diffMonth = Math.ceil(maxDate.diff(currentDateValue, "month", true)) + 1;
+  let arr = new Array(diffMonth).fill(undefined).map((val, idx) => idx);
 
   const date = () =>
     arr.map((index) => {
-      let date = dayjs(new Date()).add(index, 'month')
+      let date = dayjs(new Date()).add(index, "month");
       return (
         <div key={index}>
           <S.CalendarHeader>{`${date.year()}년 ${date.month() + 1}월`}</S.CalendarHeader>
           <Calendar currentDate={date} onSelect={onSelect} disabledDate={disabledDateWithRange} selected={selected} maxDate={maxDate} serviceType={serviceType} />
         </div>
-      )
-    })
+      );
+    });
 
   return (
     <S.Container>
@@ -179,9 +179,9 @@ const DatePicker: React.FC<Props> = (props) => {
           <p className="title">
             <em>견적신청 가능 날짜</em>
           </p>
-          <p className="content">{serviceType === 'move' ? `55일 이내 날짜에서만 이사업체 견적신청이 가능해요. (당일, 익일 이사 불가)` : `내일부터 56일 이내 날짜에서만 청소업체 견적신청이 가능해요.`}</p>
+          <p className="content">{serviceType === "move" ? `55일 이내 날짜에서만 이사업체 견적신청이 가능해요. (당일, 익일 이사 불가)` : `내일부터 56일 이내 날짜에서만 청소업체 견적신청이 가능해요.`}</p>
         </S.Info>
-        {serviceType === 'move' && (
+        {serviceType === "move" && (
           <S.Toast>
             <div>
               <Dot />
@@ -191,7 +191,7 @@ const DatePicker: React.FC<Props> = (props) => {
         )}
       </S.Wrapper>
     </S.Container>
-  )
-}
+  );
+};
 
-export default DatePicker
+export default DatePicker;

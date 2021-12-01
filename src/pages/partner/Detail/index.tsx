@@ -1,28 +1,28 @@
-import React, { useEffect, useState, useRef } from 'react'
-import styled, { css } from 'styled-components'
-import { useParams, useHistory } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { useMedia } from 'react-use-media'
-import { useRouter } from 'hooks/useRouter'
+import React, { useEffect, useState, useRef } from "react";
+import styled, { css } from "styled-components";
+import { useParams, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useMedia } from "react-use-media";
+import { useRouter } from "hooks/useRouter";
 
-import { DownArrow, ProfileDefault, UpArrow } from 'components/Icon'
-import Loading from 'components/Loading'
-import MainHeader from 'components/common/MainHeader'
-import TopGnb from 'components/TopGnb'
-import PartnerInfo from 'components/da24/PartnerInfo/index'
-import ToastPopup from 'components/wematch-ui/ToastPopup'
-import TermsModal from 'components/Modal/TermsModal'
-import Review from 'components/da24/Review'
+import { DownArrow, ProfileDefault, UpArrow } from "components/Icon";
+import Loading from "components/Loading";
+import MainHeader from "components/common/MainHeader";
+import TopGnb from "components/TopGnb";
+import PartnerInfo from "components/da24/PartnerInfo/index";
+import ToastPopup from "components/wematch-ui/ToastPopup";
+import TermsModal from "components/Modal/TermsModal";
+import Review from "components/da24/Review";
 
-import * as partnerActions from 'store/partner/actions'
-import * as partnerSelector from 'store/partner/selectors'
-import * as formSelector from 'store/form/selectors'
-import * as commonSelector from 'store/common/selectors'
+import * as partnerActions from "store/partner/actions";
+import * as partnerSelector from "store/partner/selectors";
+import * as formSelector from "store/form/selectors";
+import * as commonSelector from "store/common/selectors";
 
-import * as colors from 'styles/colors'
-import * as values from 'constants/values'
-import { some } from 'lodash'
-import NewModal from 'components/NewModalTemplate'
+import * as colors from "styles/colors";
+import * as values from "constants/values";
+import { some } from "lodash";
+import NewModal from "components/NewModalTemplate";
 
 const S = {
   Container: styled.div``,
@@ -44,7 +44,7 @@ const S = {
     position: relative;
     margin-top: 10px;
     :before {
-      content: '';
+      content: "";
       position: absolute;
       top: -10px;
       width: 100%;
@@ -83,7 +83,7 @@ const S = {
     }
   `,
 
-  BtnSelect: styled.button<{ status: 'selected' | 'available' | 'unavailable'; isSelected: boolean }>`
+  BtnSelect: styled.button<{ status: "selected" | "available" | "unavailable"; isSelected: boolean }>`
     position: fixed;
     z-index: 5;
     left: 0;
@@ -97,7 +97,7 @@ const S = {
     color: ${colors.white};
     cursor: pointer;
     ${(props) =>
-      props.status === 'unavailable' &&
+      props.status === "unavailable" &&
       css`
         background-color: ${colors.lineDefault};
         pointer-events: none;
@@ -212,7 +212,7 @@ const S = {
       padding-left: 272px;
     }
   `
-}
+};
 
 const PartnerImg = {
   WrapImg: styled.div<{ margin: number }>`
@@ -315,77 +315,77 @@ const PartnerImg = {
       height: 474px;
     }
   `
-}
+};
 
 const PartnerDetail = () => {
-  const nextPage = useRef(1)
-  const [showScrollView, setShowScrollView] = useState(true)
-  const [visibleTermsModal, setVisibleTermsModal] = useState(false)
-  const [sessionVisible, setSessionVisible] = useState(false)
-  const [unavailableCheck, setUnavailableCheck] = useState(false)
+  const nextPage = useRef(1);
+  const [showScrollView, setShowScrollView] = useState(true);
+  const [visibleTermsModal, setVisibleTermsModal] = useState(false);
+  const [sessionVisible, setSessionVisible] = useState(false);
+  const [unavailableCheck, setUnavailableCheck] = useState(false);
 
   const isDesktop = useMedia({
     minWidth: 1200
-  })
-  const history = useHistory()
-  const router = useRouter()
-  const params = useParams<{ adminId: string }>()
-  const dispatch = useDispatch()
+  });
+  const history = useHistory();
+  const router = useRouter();
+  const params = useParams<{ adminId: string }>();
+  const dispatch = useDispatch();
 
-  const getPartnerDetail = useSelector(partnerSelector.getPartnerDetail)
-  const getReviewList = useSelector(partnerSelector.getReviewList)
-  const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
-  const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
+  const getPartnerDetail = useSelector(partnerSelector.getPartnerDetail);
+  const getReviewList = useSelector(partnerSelector.getReviewList);
+  const getPartnerPick = useSelector(partnerSelector.getPartnerPick);
+  const getMoveIdxData = useSelector(commonSelector.getMoveIdxData);
 
   const isMobile = useMedia({
     maxWidth: 767
-  })
+  });
 
   const checkScrollTop = () => {
     if (!showScrollView && window.pageYOffset > 300) {
-      setShowScrollView(true)
+      setShowScrollView(true);
     } else if (showScrollView && window.pageYOffset <= 300) {
-      setShowScrollView(false)
+      setShowScrollView(false);
     } else if (window.pageYOffset === 0) {
-      setShowScrollView(false)
+      setShowScrollView(false);
     }
-  }
+  };
 
   const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const handleSelected = () => {
     if (getPartnerDetail.data) {
-      dispatch(partnerActions.setPartnerPick([getPartnerDetail.data]))
+      dispatch(partnerActions.setPartnerPick([getPartnerDetail.data]));
     }
 
-    router.push('/partner/cart')
-  }
+    router.push("/partner/cart");
+  };
 
   const isActive = () => {
     return some(getPartnerPick.data, {
       adminid: params.adminId
-    })
-  }
+    });
+  };
 
-  const buttonText = (status: 'selected' | 'available' | 'unavailable') => {
-    if (status === 'unavailable') {
-      return '오늘 마감된 업체입니다.'
+  const buttonText = (status: "selected" | "available" | "unavailable") => {
+    if (status === "unavailable") {
+      return "오늘 마감된 업체입니다.";
     }
 
     if (isActive()) {
-      return '이미 선택된 업체입니다.'
+      return "이미 선택된 업체입니다.";
     }
 
-    return '이 업체에 견적 받아보기'
-  }
+    return "이 업체에 견적 받아보기";
+  };
 
   useEffect(() => {
     if (!getMoveIdxData.idx) {
-      setSessionVisible(true)
+      setSessionVisible(true);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (getMoveIdxData.idx) {
@@ -394,7 +394,7 @@ const PartnerDetail = () => {
           adminId: params.adminId,
           idx: getMoveIdxData.idx
         })
-      )
+      );
     }
     dispatch(
       partnerActions.fetchReviewListAsync.request({
@@ -402,38 +402,38 @@ const PartnerDetail = () => {
         page: 1,
         size: values.DEFAULT_REVIEW_LIST_SIZE
       })
-    )
-  }, [dispatch, params.adminId])
+    );
+  }, [dispatch, params.adminId]);
 
   useEffect(() => {
-    if (getMoveIdxData.idx && getPartnerDetail?.data?.status === 'unavailable' && !getPartnerDetail.loading && getPartnerDetail?.data?.adminid === params.adminId) {
-      setUnavailableCheck(true)
+    if (getMoveIdxData.idx && getPartnerDetail?.data?.status === "unavailable" && !getPartnerDetail.loading && getPartnerDetail?.data?.adminid === params.adminId) {
+      setUnavailableCheck(true);
     }
-  }, [getPartnerDetail.loading])
+  }, [getPartnerDetail.loading]);
 
   useEffect(() => {
-    window.addEventListener('scroll', checkScrollTop)
+    window.addEventListener("scroll", checkScrollTop);
     return () => {
-      window.removeEventListener('scroll', checkScrollTop)
-    }
-  }, [checkScrollTop])
+      window.removeEventListener("scroll", checkScrollTop);
+    };
+  }, [checkScrollTop]);
 
   if (getPartnerDetail.loading) {
-    return <Loading />
+    return <Loading />;
   }
 
   const handleMoreReview = () => {
-    nextPage.current += 1
+    nextPage.current += 1;
     dispatch(
       partnerActions.fetchReviewMoreListAsync.request({
         adminId: params.adminId,
         page: nextPage.current,
         size: values.DEFAULT_REVIEW_LIST_SIZE
       })
-    )
-  }
+    );
+  };
 
-  const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
+  const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal);
 
   /* Partner Info  - UserImage */
   const partnerImage = () => {
@@ -454,33 +454,33 @@ const PartnerDetail = () => {
           </>
         ) : (
           <PartnerImg.DefaultProfileImg>
-            {getPartnerDetail.data?.status === 'unavailable' && <PartnerImg.Opacity />}
+            {getPartnerDetail.data?.status === "unavailable" && <PartnerImg.Opacity />}
             <ProfileDefault width={60} height={60} color={colors.white} />
-            {getPartnerDetail.data?.status === 'unavailable' && <span>오늘 마감</span>}
+            {getPartnerDetail.data?.status === "unavailable" && <span>오늘 마감</span>}
           </PartnerImg.DefaultProfileImg>
         )}
       </PartnerImg.WrapImg>
-    )
-  }
+    );
+  };
 
   /* Review */
   const review = () => {
     if (getReviewList.data.length < 1) {
       return (
         <S.ReviewPreview>
-          <img src={require(`assets/images/review_${isMobile ? 'm' : 'pc'}.png`)} alt="review_img" />
+          <img src={require(`assets/images/review_${isMobile ? "m" : "pc"}.png`)} alt="review_img" />
         </S.ReviewPreview>
-      )
+      );
     }
 
     return (
       <div>
         {getReviewList.data.map((review, index) => {
-          return <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star} />
+          return <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star} />;
         })}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <S.Container>
@@ -534,13 +534,13 @@ const PartnerDetail = () => {
           </S.BottomContainer>
         </>
       )}
-      <NewModal visible={sessionVisible} title={'정보 만료'} content={'현재 페이지의 정보가 만료되었습니다. 다시 조회해 주세요.'} confirmClick={() => history.push('/')} confirmText={'홈으로 가기'} />
-      <ToastPopup visible={unavailableCheck} showHeaderCancelButton={false} confirmClick={() => setUnavailableCheck(!unavailableCheck)} confirmText={'확인'}>
+      <NewModal visible={sessionVisible} title={"정보 만료"} content={"현재 페이지의 정보가 만료되었습니다. 다시 조회해 주세요."} confirmClick={() => history.push("/")} confirmText={"홈으로 가기"} />
+      <ToastPopup visible={unavailableCheck} showHeaderCancelButton={false} confirmClick={() => setUnavailableCheck(!unavailableCheck)} confirmText={"확인"}>
         <p>오늘 마감된 업체</p>
         <span>해당 업체는 오늘 예약 및 상담 접수가 마감됐어요. 내일 오전에 다시 조회해보세요!</span>
       </ToastPopup>
     </S.Container>
-  )
-}
+  );
+};
 
-export default PartnerDetail
+export default PartnerDetail;

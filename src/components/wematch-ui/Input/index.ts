@@ -1,2 +1,2 @@
-export * from './BoxInput'
-export * from './ButtonBoxInput'
+export * from "./BoxInput";
+export * from "./ButtonBoxInput";

@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react'
-import {createPortal} from "react-dom";
-import styled from 'styled-components'
+import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
+import styled from "styled-components";
 import { Icon } from "../index";
 
 interface Props {
@@ -13,31 +13,32 @@ const PopupTemplate: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (visible) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     }
 
     return () => {
-      document.body.removeAttribute('style');
-    }
-  }, [visible])
+      document.body.removeAttribute("style");
+    };
+  }, [visible]);
 
-    if (!visible) return null
+  if (!visible) return null;
 
-    return createPortal((
-      <PopupOverlay>
-          <PopupWrapper>
-              <PopupHeader>
-                  <div onClick={onClose}>
-                      <Icon.Close size={20} color={'#121212'} />
-                  </div>
-              </PopupHeader>
-              {children}
-          </PopupWrapper>
-      </PopupOverlay>
-    ), document.body)
-}
+  return createPortal(
+    <PopupOverlay>
+      <PopupWrapper>
+        <PopupHeader>
+          <div onClick={onClose}>
+            <Icon.Close size={20} color={"#121212"} />
+          </div>
+        </PopupHeader>
+        {children}
+      </PopupWrapper>
+    </PopupOverlay>,
+    document.body
+  );
+};
 
-export default PopupTemplate
+export default PopupTemplate;
 
 const PopupOverlay = styled.div`
   position: fixed;
@@ -58,8 +59,8 @@ const PopupWrapper = styled.div`
   position: relative;
   height: 100%;
   overflow-y: hidden;
-  background-color: #FAFAFA;
-  
+  background-color: #fafafa;
+
   box-sizing: border-box;
   height: -webkit-fill-available;
   -ms-overflow-style: none;
@@ -68,7 +69,7 @@ const PopupWrapper = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
-  
+
   @media screen and (min-width: 768px) {
     width: 360px;
     height: 580px;
@@ -81,7 +82,7 @@ const PopupWrapper = styled.div`
 
 const PopupHeader = styled.div`
   position: fixed;
-  width:100%;
+  width: 100%;
   min-height: 56px;
   display: flex;
   align-items: center;

@@ -1,25 +1,25 @@
-import React, {useEffect, useState} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import styled, {css} from 'styled-components'
-import useHashToggle from 'hooks/useHashToggle'
-import {Swiper, SwiperSlide} from 'swiper/react'
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import styled, { css } from "styled-components";
+import useHashToggle from "hooks/useHashToggle";
+import { Swiper, SwiperSlide } from "swiper/react";
 
-import Layout from 'components/base/Layout'
-import Input from 'components/common/Input'
-import Select from 'components/common/Select'
-import TermsModal from 'components/common/Modal/TermsModal'
-import { Checkbox } from 'components/wematch-ui'
-import { Download } from 'components/Icon'
-import {showToast} from 'components/common/Toast'
+import Layout from "components/base/Layout";
+import Input from "components/common/Input";
+import Select from "components/common/Select";
+import TermsModal from "components/common/Modal/TermsModal";
+import { Checkbox } from "components/wematch-ui";
+import { Download } from "components/Icon";
+import { showToast } from "components/common/Toast";
 
-import * as colors from 'styles/colors'
-import { gray33, gray66, pointBlue } from 'styles/colors'
-import { PartnerFormData } from 'types/backoffice'
-import * as backofficeActions from 'store/backoffice/actions'
-import * as backofficeSelector from 'store/backoffice/selectors'
-import {every} from "lodash";
-import { MOVE_URL } from 'constants/env'
-import {debounce} from "lodash"
+import * as colors from "styles/colors";
+import { gray33, gray66, pointBlue } from "styles/colors";
+import { PartnerFormData } from "types/backoffice";
+import * as backofficeActions from "store/backoffice/actions";
+import * as backofficeSelector from "store/backoffice/selectors";
+import { every } from "lodash";
+import { MOVE_URL } from "constants/env";
+import { debounce } from "lodash";
 
 const CustomSwiper = styled(Swiper)`
   .swiper-pagination-bullets {
@@ -31,14 +31,14 @@ const CustomSwiper = styled(Swiper)`
   }
 
   .swiper-pagination-bullet {
-    color: #C4C9D1;
+    color: #c4c9d1;
   }
 
   .swiper-pagination-bullet-active {
     border-radius: 40px;
     background: ${pointBlue};
   }
-`
+`;
 
 const Slide = styled.div<{ image: string }>`
   display: flex;
@@ -50,9 +50,11 @@ const Slide = styled.div<{ image: string }>`
   margin: 0 auto;
   padding: 20px;
 
-  ${props => props.image && css`
-    background-image: url(${props.image});
-  `};
+  ${(props) =>
+    props.image &&
+    css`
+      background-image: url(${props.image});
+    `};
   background-size: 85%;
   background-repeat: no-repeat;
   background-position: center center;
@@ -60,7 +62,6 @@ const Slide = styled.div<{ image: string }>`
   font-style: normal;
   font-weight: normal;
   color: ${gray33};
-
 
   .wrapper {
     max-width: 768px;
@@ -96,20 +97,22 @@ const Slide = styled.div<{ image: string }>`
     letter-spacing: -0.01em;
     color: ${gray66};
   }
-  
-  @media screen and (min-width: 525px){
+
+  @media screen and (min-width: 525px) {
     width: 80%;
     background-size: 63%;
   }
-  
+
   @media screen and (min-width: 768px) {
     width: 608px;
     height: 410px;
     background-size: 60%;
     padding: 60px 0;
-    ${props => props.image && css`
-      background-image: url(${props.image});
-    `};
+    ${(props) =>
+      props.image &&
+      css`
+        background-image: url(${props.image});
+      `};
   }
 
   @media screen and (min-width: 1200px) {
@@ -126,177 +129,169 @@ const Slide = styled.div<{ image: string }>`
       line-height: 52px;
     }
   }
-`
+`;
 
 const S = {
-    Container: styled.div`
-      display: block;
-    `,
-    Title: styled.h3`
-      display: block;
-      padding: 40px 0 16px;
-      font-weight: 600;
-      font-size: 22px;
-      line-height: 33px;
-      color: #333;
-      letter-spacing: -1px;
-      text-align: center;
+  Container: styled.div`
+    display: block;
+  `,
+  Title: styled.h3`
+    display: block;
+    padding: 40px 0 16px;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 33px;
+    color: #333;
+    letter-spacing: -1px;
+    text-align: center;
 
+    strong {
+      display: block;
+      padding-top: 0;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 29px;
+    }
+
+    span {
+      display: block;
+      font-weight: 100;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .br_m {
+      display: block;
+    }
+
+    @media screen and (min-width: 1200px) {
+      display: none;
+    }
+
+    @media screen and (min-width: 768px) {
       strong {
-        display: block;
         padding-top: 0;
-        font-size: 20px;
+        font-size: 32px;
         font-weight: 600;
-        line-height: 29px;
+        line-height: 34px;
       }
 
       span {
-        display: block;
-        font-weight: 100;
-        font-size: 16px;
-        line-height: 24px;
+        padding-top: 10px;
+        font-size: 18px;
       }
 
       .br_m {
-        display: block;
+        display: inline;
       }
+    }
+  `,
+  VideoContainer: styled.div`
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    height: 180px;
+    margin: 26px auto 0;
+    background-color: #000;
+    @media screen and (min-width: 768px) {
+      max-width: none;
+      height: 375px;
+      margin-top: 3px;
+    }
+    @media screen and (min-width: 1200px) {
+      margin: 0;
+    }
+  `,
+  Form: styled.form`
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 90%;
 
-      @media screen and (min-width: 1200px) {
-        display: none;
-      }
-
-      @media screen and (min-width: 768px) {
-        strong {
-          padding-top: 0;
-          font-size: 32px;
-          font-weight: 600;
-          line-height: 34px;
-        }
-
-        span {
-          padding-top: 10px;
-          font-size: 18px;
-        }
-
-        .br_m {
-          display: inline;
-        }
-
-      }
-
-    `,
-    VideoContainer: styled.div`
-      display: block;
+    @media screen and (min-width: 768px) {
       width: 100%;
-      max-width: 360px;
-      height: 180px;
-      margin: 26px auto 0;
-      background-color: #000;
-      @media screen and (min-width: 768px) {
-        max-width: none;
-        height: 375px;
-        margin-top: 3px;
-      }
-      @media screen and (min-width: 1200px) {
-        margin: 0;
-      }
-    `,
-    Form: styled.form`
-      display: flex;
-      flex-direction: column;
-      margin: 0 auto;
-      width: 90%;
-
-      @media screen and (min-width: 768px) {
-        width: 100%;
-        padding: 0;
-        h3 {
-          text-align: center;
-          padding-bottom: 26px;
-          font-size: 14px;
-          font-weight: 600;
-          line-height: 29px;
-          letter-spacing: -1px;
-        }
-      }
-      
-      @media screen and (min-width: 1200px) {
-        width: 100%;
-        padding: 40px 0 0px 0;
-      }
-
+      padding: 0;
       h3 {
         text-align: center;
         padding-bottom: 26px;
-        font-size: 20px;
+        font-size: 14px;
         font-weight: 600;
         line-height: 29px;
         letter-spacing: -1px;
-        padding-top: 40px;
-
       }
-    `,
-    Group: styled.div`
-      display: flex;
-      flex-direction: row;
-    `,
-    TextContainer: styled.div`
-      overflow: hidden;
-      position: relative;
-      padding: 12px 16px;
-      border: 1px solid ${colors.lineDefault};
-      background-color: #f8f9fb;
-      border-radius: 4px;
+    }
 
-    `,
-    Textarea: styled.textarea`
-      display: block;
+    @media screen and (min-width: 1200px) {
       width: 100%;
-      border: 0 none;
-      resize: none;
-      outline: none;
-      background-color: transparent;
+      padding: 40px 0 0px 0;
+    }
+
+    h3 {
+      text-align: center;
+      padding-bottom: 26px;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 29px;
       letter-spacing: -1px;
-      height: 146px;
-      font-size: 16px;
-      line-height: 28px;
-      border-radius: 4px;
-      padding-left: 0px;
+      padding-top: 40px;
+    }
+  `,
+  Group: styled.div`
+    display: flex;
+    flex-direction: row;
+  `,
+  TextContainer: styled.div`
+    overflow: hidden;
+    position: relative;
+    padding: 12px 16px;
+    border: 1px solid ${colors.lineDefault};
+    background-color: #f8f9fb;
+    border-radius: 4px;
+  `,
+  Textarea: styled.textarea`
+    display: block;
+    width: 100%;
+    border: 0 none;
+    resize: none;
+    outline: none;
+    background-color: transparent;
+    letter-spacing: -1px;
+    height: 146px;
+    font-size: 16px;
+    line-height: 28px;
+    border-radius: 4px;
+    padding-left: 0px;
+  `,
+  Button: styled.button`
+    margin-top: 0;
+    display: block;
+    width: 100%;
+    height: 56px;
+    font-size: 18px;
+    background: #1672f7;
+    color: #fff;
+    z-index: 5;
+    position: fixed;
+    bottom: 0;
+    right: 0;
 
-    `,
-    Button: styled.button`
-      margin-top: 0;
-      display: block;
-      width: 100%;
-      height: 56px;
-      font-size: 18px;
-      background: #1672F7;
-      color: #fff;
-      z-index: 5;
-      position: fixed;
+    @media screen and (min-width: 769px) {
+      position: relative;
       bottom: 0;
       right: 0;
-      
-      
-      @media screen and (min-width: 769px) {
-        position: relative;
-        bottom: 0;
-        right: 0;
-        margin: 20px auto 0 ;
-        
-      }
+      margin: 20px auto 0;
+    }
 
-      @media screen and (min-width: 1200px) {
-        margin-bottom: 70px;
-      }
+    @media screen and (min-width: 1200px) {
+      margin-bottom: 70px;
+    }
 
-      &:disabled {
-        background-color: ${colors.lineDefault};
-        cursor: not-allowed;
-      }
-
-    `
-}
+    &:disabled {
+      background-color: ${colors.lineDefault};
+      cursor: not-allowed;
+    }
+  `
+};
 
 const Reason = styled.div`
       border-top: 0 none;
@@ -404,397 +399,376 @@ const Reason = styled.div`
     
     
         }
-`
+`;
 
 const Benefit = styled.div`
-      border-top: 0 none;
-      padding: 35px 0 38px;
-      text-align: center;
+  border-top: 0 none;
+  padding: 35px 0 38px;
+  text-align: center;
 
-      @media screen and (min-width: 1200px) {
-        width: 720px;
-        margin: 0 auto;
-        padding: 58px 0;
-      }
+  @media screen and (min-width: 1200px) {
+    width: 720px;
+    margin: 0 auto;
+    padding: 58px 0;
+  }
 
-      @media screen and (min-width: 768px) and (max-width: 1119px) {
-        width: 608px;
-        margin: 0 auto;
-        padding: 58px 0;
-      }
+  @media screen and (min-width: 768px) and (max-width: 1119px) {
+    width: 608px;
+    margin: 0 auto;
+    padding: 58px 0;
+  }
 
-      h3 {
-        padding-bottom: 8px;
-        font-size: 20px;
-        font-weight: 600;
-        line-height: 29px;
-        letter-spacing: -1px;
-      }
+  h3 {
+    padding-bottom: 8px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 29px;
+    letter-spacing: -1px;
+  }
 
-      ul {
-        list-style: none;
+  ul {
+    list-style: none;
 
-        @media screen and (min-width: 768px) {
-          overflow: hidden;
-        }
+    @media screen and (min-width: 768px) {
+      overflow: hidden;
+    }
 
-        li {
-          letter-spacing: -0.75px;
-          padding-top: 20px;
-
-          @media screen and (min-width: 768px) {
-            float: left;
-            width: 30%;
-            padding-left: 18px;
-            padding-top: 32px;
-
-          }
-
-          p {
-            font-size: 14px;
-            line-height: 20px;
-          }
-
-          strong {
-            display: block;
-            font-weight: 600;
-            font-size: 16px;
-            line-height: 20px;
-            font-style: normal;
-          }
-
-          img {
-            width: 194px;
-            margin: 0 auto 16px;
-            border: 0 none;
-            @media screen and (min-width: 768px) {
-              display: block;
-              width: 100%;
-              margin: 0 0 16px;
-            }
-
-          }
-
-        }
-      }
-
-    `
-
-const Guide = styled.div`
-      padding: 0;
-      margin: 0 24px;
-      text-align: center;
-      display: block;
+    li {
+      letter-spacing: -0.75px;
+      padding-top: 20px;
 
       @media screen and (min-width: 768px) {
-        overflow: hidden;
-        padding: 64px 0 60px;
-        width: 608px;
-        margin: 0 auto;
-        text-align: center;
-      }
-
-      .box_process {
-        padding: 36px 0 38px;
-        @media screen and (min-width: 768px) {
-          padding-right: 4px;
-          border-top: 0 none;
-          float: left;
-          width: 50%;
-          -webkit-box-sizing: border-box;
-        }
-
-        h3 {
-          padding-bottom: 8px;
-          font-size: 20px;
-          font-weight: 600;
-          line-height: 29px;
-          letter-spacing: -1px;
-          @media screen and (min-width: 768px) {
-            padding-bottom: 27px;
-            font-size: 20px;
-          }
-        }
-
-        ol {
-          padding: 2px 9px 0;
-          list-style: none;
-          @media screen and (min-width: 768px) {
-            padding: 0;
-          }
-
-          li {
-            position: relative;
-            height: 31px;
-            margin-top: 10px;
-            padding-top: 14px;
-            font-weight: 600;
-            font-size: 16px;
-            line-height: 20px;
-            background-color: #e8e8e8;
-            letter-spacing: -0.9px;
-
-            &:first-child {
-              margin-top: 0;
-            }
-
-            @media screen and (min-width: 768px) {
-              height: 32px;
-              margin-top: 8px;
-              padding-top: 16px;
-            }
-
-            span {
-              position: absolute;
-              top: 14px;
-              left: 10px;
-              @media screen and (min-width: 768px) {
-                top: 16px;
-              }
-            }
-          }
-
-        }
-
-      }
-
-      .box_paper {
-        padding: 18px 0 13px;
-        border-top: 0 none;
-        @media screen and (min-width: 768px) {
-          padding-top: 36px;
-          padding-left: 24px;
-          border-top: 0 none;
-          float: left;
-          width: 50%;
-          -webkit-box-sizing: border-box;
-        }
-
-        h3 {
-          padding-bottom: 8px;
-          font-size: 20px;
-          font-weight: 600;
-          line-height: 29px;
-          letter-spacing: -1px;
-          @media screen and (min-width: 768px) {
-            padding-bottom: 27px;
-            font-size: 20px;
-          }
-        }
-
-        li {
-          padding-bottom: 26px;
-          @media screen and (min-width: 768px) {
-            padding-bottom: 63px;
-          }
-
-          strong {
-            display: block;
-            padding-top: 4px;
-            font-size: 16px;
-            font-weight: 600;
-            @media screen and (min-width: 768px) {
-              padding-top: 2px;
-            }
-          }
-
-          &:last-child {
-            padding-bottom: 26px;
-          }
-        }
-
-        p {
-          font-size: 14px;
-          line-height: 16px;
-          letter-spacing: -1px;
-        }
-        
-        
-        a{
-          color: #333;
-          text-decoration: none;
-          display: none;
-
-          @media screen and (min-width: 1200px){
-            display: block !important;
-              margin-top: 20px;
-              padding: 5px;
-              font-size: 15px;
-              //font-weight: 500; 
-              font-weight: 600;
-              line-height: normal;
-              letter-spacing: -1px;
-            
-          }
-          svg {
-            width: 24px;
-            height: 24px;
-            background-position: -376px -16px;
-            @media screen and (min-width: 768px){
-              margin-top: -4px;
-              margin-left: 10px;
-              vertical-align: middle;
-            }
-          }
-          
-        }
-
-      }
-
-
-    `
-
-const Intro = styled.div`
-      margin: 0 24px;
-      border-top: 0 none;
-      padding: 35px 0 38px;
-      text-align: center;
-
-      @media screen and (min-width: 1200px) {
-        width: 720px;
-        margin: 0;
-        padding: 58px 0;
-
-      }
-
-      @media screen and (min-width: 768px) {
-        width: 608px;
-        margin: 0 auto;
-        padding: 58px 0;
-      }
-
-      h3 {
-        padding-bottom: 8px;
-        font-size: 20px;
-        font-weight: 600;
-        line-height: 29px;
-        letter-spacing: -1px;
+        float: left;
+        width: 30%;
+        padding-left: 18px;
+        padding-top: 32px;
       }
 
       p {
-        padding: 6px 0 16px;
-        font-size: 16px;
-        font-weight: 500;
+        font-size: 14px;
         line-height: 20px;
-        letter-spacing: -1px;
+      }
 
-        .br_m {
+      strong {
+        display: block;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+        font-style: normal;
+      }
+
+      img {
+        width: 194px;
+        margin: 0 auto 16px;
+        border: 0 none;
+        @media screen and (min-width: 768px) {
           display: block;
-        }
-
-        @media screen and (min-width: 768px) {
-          padding: 0 0 40px;
-          .br_m {
-            display: inline;
-          }
-        }
-
-
-      }
-
-      ul {
-        display: block;
-
-        li {
-          margin-bottom: 10px;
-          list-style: none;
-          @media screen and (min-width: 768px) {
-            float: left;
-            width: 50%;
-            margin-bottom: 4px;
-          }
-          // 아이콘 변경 필요
-          svg {
-            margin-top: -4px;
-            margin-left: 5px;
-            vertical-align: middle;
-          }
+          width: 100%;
+          margin: 0 0 16px;
         }
       }
+    }
+  }
+`;
 
-      a {
-        display: block;
-        height: 46px;
-        border: 1px solid #d7dbe2;
-        font-size: 15px;
-        font-weight: 500;
-        color: #333;
-        letter-spacing: -1px;
-        line-height: 50px;
-        @media screen and (min-width: 768px) {
-          margin-left: 10px;
-        }
-      }
-    `
+const Guide = styled.div`
+  padding: 0;
+  margin: 0 24px;
+  text-align: center;
+  display: block;
 
-const Contact = styled.div`
+  @media screen and (min-width: 768px) {
+    overflow: hidden;
+    padding: 64px 0 60px;
+    width: 608px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .box_process {
+    padding: 36px 0 38px;
+    @media screen and (min-width: 768px) {
+      padding-right: 4px;
       border-top: 0 none;
-      margin: 35px 0 38px;
+      float: left;
+      width: 50%;
+      -webkit-box-sizing: border-box;
+    }
 
-      text-align: center;
+    h3 {
+      padding-bottom: 8px;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 29px;
+      letter-spacing: -1px;
+      @media screen and (min-width: 768px) {
+        padding-bottom: 27px;
+        font-size: 20px;
+      }
+    }
+
+    ol {
+      padding: 2px 9px 0;
+      list-style: none;
+      @media screen and (min-width: 768px) {
+        padding: 0;
+      }
+
+      li {
+        position: relative;
+        height: 31px;
+        margin-top: 10px;
+        padding-top: 14px;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+        background-color: #e8e8e8;
+        letter-spacing: -0.9px;
+
+        &:first-child {
+          margin-top: 0;
+        }
+
+        @media screen and (min-width: 768px) {
+          height: 32px;
+          margin-top: 8px;
+          padding-top: 16px;
+        }
+
+        span {
+          position: absolute;
+          top: 14px;
+          left: 10px;
+          @media screen and (min-width: 768px) {
+            top: 16px;
+          }
+        }
+      }
+    }
+  }
+
+  .box_paper {
+    padding: 18px 0 13px;
+    border-top: 0 none;
+    @media screen and (min-width: 768px) {
+      padding-top: 36px;
+      padding-left: 24px;
+      border-top: 0 none;
+      float: left;
+      width: 50%;
+      -webkit-box-sizing: border-box;
+    }
+
+    h3 {
+      padding-bottom: 8px;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 29px;
+      letter-spacing: -1px;
+      @media screen and (min-width: 768px) {
+        padding-bottom: 27px;
+        font-size: 20px;
+      }
+    }
+
+    li {
+      padding-bottom: 26px;
+      @media screen and (min-width: 768px) {
+        padding-bottom: 63px;
+      }
+
+      strong {
+        display: block;
+        padding-top: 4px;
+        font-size: 16px;
+        font-weight: 600;
+        @media screen and (min-width: 768px) {
+          padding-top: 2px;
+        }
+      }
+
+      &:last-child {
+        padding-bottom: 26px;
+      }
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 16px;
+      letter-spacing: -1px;
+    }
+
+    a {
+      color: #333;
+      text-decoration: none;
+      display: none;
 
       @media screen and (min-width: 1200px) {
-        width: 720px;
-        //margin: 0;
-        margin: 62px 0 52px;;
-      }
-
-      @media screen and (min-width: 768px) {
-        width: 608px;
-        margin: 62px auto 52px;
-        padding: 62px 0 52px;
-        
-      }
-
-
-      h3 {
-        padding-bottom: 8px;
-        font-size: 20px;
+        display: block !important;
+        margin-top: 20px;
+        padding: 5px;
+        font-size: 15px;
+        //font-weight: 500;
         font-weight: 600;
-        line-height: 29px;
+        line-height: normal;
         letter-spacing: -1px;
       }
-
-      ul {
-        list-style: none;
-
-        li {
-          margin-top: 5px;
-
-          @media screen and (min-width: 768px) {
-            float: left;
-            width: 50%;
-            margin-top: 0;
-            padding: 0;
-
-          }
-
-          img {
-            width: 56px;
-            vertical-align: middle;
-          }
-
-          span {
-            display: inline-block;
-            margin-top: 2px;
-            margin-left: 8px;
-            vertical-align: middle;
-            font-size: 16px;
-            line-height: 23px;
-            color: #1672f7;
-
-            em {
-              font-weight: 600;
-              font-size: 20px;
-              vertical-align: top;
-            }
-
-
-          }
-
+      svg {
+        width: 24px;
+        height: 24px;
+        background-position: -376px -16px;
+        @media screen and (min-width: 768px) {
+          margin-top: -4px;
+          margin-left: 10px;
+          vertical-align: middle;
         }
       }
-`
+    }
+  }
+`;
+
+const Intro = styled.div`
+  margin: 0 24px;
+  border-top: 0 none;
+  padding: 35px 0 38px;
+  text-align: center;
+
+  @media screen and (min-width: 1200px) {
+    width: 720px;
+    margin: 0;
+    padding: 58px 0;
+  }
+
+  @media screen and (min-width: 768px) {
+    width: 608px;
+    margin: 0 auto;
+    padding: 58px 0;
+  }
+
+  h3 {
+    padding-bottom: 8px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 29px;
+    letter-spacing: -1px;
+  }
+
+  p {
+    padding: 6px 0 16px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -1px;
+
+    .br_m {
+      display: block;
+    }
+
+    @media screen and (min-width: 768px) {
+      padding: 0 0 40px;
+      .br_m {
+        display: inline;
+      }
+    }
+  }
+
+  ul {
+    display: block;
+
+    li {
+      margin-bottom: 10px;
+      list-style: none;
+      @media screen and (min-width: 768px) {
+        float: left;
+        width: 50%;
+        margin-bottom: 4px;
+      }
+      // 아이콘 변경 필요
+      svg {
+        margin-top: -4px;
+        margin-left: 5px;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  a {
+    display: block;
+    height: 46px;
+    border: 1px solid #d7dbe2;
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+    letter-spacing: -1px;
+    line-height: 50px;
+    @media screen and (min-width: 768px) {
+      margin-left: 10px;
+    }
+  }
+`;
+
+const Contact = styled.div`
+  border-top: 0 none;
+  margin: 35px 0 38px;
+
+  text-align: center;
+
+  @media screen and (min-width: 1200px) {
+    width: 720px;
+    //margin: 0;
+    margin: 62px 0 52px;
+  }
+
+  @media screen and (min-width: 768px) {
+    width: 608px;
+    margin: 62px auto 52px;
+    padding: 62px 0 52px;
+  }
+
+  h3 {
+    padding-bottom: 8px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 29px;
+    letter-spacing: -1px;
+  }
+
+  ul {
+    list-style: none;
+
+    li {
+      margin-top: 5px;
+
+      @media screen and (min-width: 768px) {
+        float: left;
+        width: 50%;
+        margin-top: 0;
+        padding: 0;
+      }
+
+      img {
+        width: 56px;
+        vertical-align: middle;
+      }
+
+      span {
+        display: inline-block;
+        margin-top: 2px;
+        margin-left: 8px;
+        vertical-align: middle;
+        font-size: 16px;
+        line-height: 23px;
+        color: #1672f7;
+
+        em {
+          font-weight: 600;
+          font-size: 20px;
+          vertical-align: top;
+        }
+      }
+    }
+  }
+`;
 
 const Share = styled.div`
   border-top: 0 none;
@@ -809,7 +783,6 @@ const Share = styled.div`
     padding: 64px 0 60px;
     text-align: left;
     display: inline-block;
-
   }
 
   @media screen and (min-width: 768px) {
@@ -818,7 +791,6 @@ const Share = styled.div`
     width: 608px;
     margin: 0 auto;
     display: block;
-
   }
 
   p {
@@ -885,421 +857,470 @@ const Share = styled.div`
             }
           }
         }
-
       }
     }
-
   }
-`
+`;
 
 const Terms = {
-    NewLink: styled.div`
-      margin-top: 20px;
-      display: flex;
-      align-items: flex-end;
-      margin-bottom: 20px;
+  NewLink: styled.div`
+    margin-top: 20px;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 20px;
 
-      @media screen and (min-width: 768px) {
-        margin: 25px 0 38px;
-      }
+    @media screen and (min-width: 768px) {
+      margin: 25px 0 38px;
+    }
 
-      a {
-        display: inline-block;
-        color: ${colors.gray33};
-        text-decoration: underline;
-        margin-left: 5px;
-        line-height: 24px;
-        margin-bottom: -2px;
-      }
-    `,
-}
-
+    a {
+      display: inline-block;
+      color: ${colors.gray33};
+      text-decoration: underline;
+      margin-left: 5px;
+      line-height: 24px;
+      margin-bottom: -2px;
+    }
+  `
+};
 
 /* Modal Selection */
 const Category = [
-    {key: '이사', value: '이사'},
-    {key: '청소', value: '청소'},
-    {key: '이사+청소', value: '이사+청소'},
-]
+  { key: "이사", value: "이사" },
+  { key: "청소", value: "청소" },
+  { key: "이사+청소", value: "이사+청소" }
+];
 const Sido = [
-    {key: '전국', value: '전국'},
-    {key: '서울', value: '서울'},
-    {key: '경기', value: '경기'},
-    {key: '인천', value: '인천'},
-    {key: '부산', value: '부산'},
-    {key: '대구', value: '대구'},
-    {key: '광주', value: '광주'},
-    {key: '대전', value: '대전'},
-    {key: '울산', value: '울산'},
-    {key: '강원', value: '강원'},
-    {key: '경남/경북', value: '경남/경북'},
-    {key: '전남/전북', value: '전남/전북'},
-    {key: '충남/충북', value: '충남/충북'},
-    {key: '제주', value: '제주'},
-    {key: '세종', value: '세종'},
-    {key: '기타', value: '기타'},
-]
+  { key: "전국", value: "전국" },
+  { key: "서울", value: "서울" },
+  { key: "경기", value: "경기" },
+  { key: "인천", value: "인천" },
+  { key: "부산", value: "부산" },
+  { key: "대구", value: "대구" },
+  { key: "광주", value: "광주" },
+  { key: "대전", value: "대전" },
+  { key: "울산", value: "울산" },
+  { key: "강원", value: "강원" },
+  { key: "경남/경북", value: "경남/경북" },
+  { key: "전남/전북", value: "전남/전북" },
+  { key: "충남/충북", value: "충남/충북" },
+  { key: "제주", value: "제주" },
+  { key: "세종", value: "세종" },
+  { key: "기타", value: "기타" }
+];
 const Funnel = [
-    {key: '업체(지인)추천', value: '업체(지인)추천'},
-    {key: '주위 권유/소개', value: '주위 권유/소개'},
-    {key: '온라인-모바일 배너광고', value: '온라인-모바일 배너광고'},
-    {key: '검색광고', value: '검색광고'},
-    {key: 'TV광고', value: 'TV광고'},
-    {key: '뉴스기사', value: '뉴스기사'},
-    {key: '우편물', value: '우편물'},
-    {key: '기타(직접입력)', value: '기타(직접입력)'}
-]
-
+  { key: "업체(지인)추천", value: "업체(지인)추천" },
+  { key: "주위 권유/소개", value: "주위 권유/소개" },
+  { key: "온라인-모바일 배너광고", value: "온라인-모바일 배너광고" },
+  { key: "검색광고", value: "검색광고" },
+  { key: "TV광고", value: "TV광고" },
+  { key: "뉴스기사", value: "뉴스기사" },
+  { key: "우편물", value: "우편물" },
+  { key: "기타(직접입력)", value: "기타(직접입력)" }
+];
 
 function PartnerRegisterPage() {
+  const dispatch = useDispatch();
+  const getPartnerStatus = useSelector(backofficeSelector.getPartnerStatus);
 
-    const dispatch = useDispatch()
-    const getPartnerStatus = useSelector(backofficeSelector.getPartnerStatus)
+  const autoPlayOptions = {
+    delay: 4000
+  };
 
-    const autoPlayOptions = {
-        delay: 4000
+  const [visibleCategoryModal, setVisibleCategoryModal] = useHashToggle("#category");
+  const [visibleFunnelModal, setVisibleFunnelModal] = useHashToggle("#funnel");
+  const [visibleSidoModal, setVisibleSidoModal] = useHashToggle("#sido");
+  const [visibleTerms, setVisibleTerms] = useHashToggle("#terms");
+  const toggleCategory = () => setVisibleCategoryModal(!visibleCategoryModal);
+  const toggleFunnel = () => setVisibleFunnelModal(!visibleFunnelModal);
+  const toggleSido = () => setVisibleSidoModal(!visibleSidoModal);
+
+  const [partnerName, setPartnerName] = useState("");
+  const [category, setCategory] = useState("");
+  const [sido, setSido] = useState("");
+  const [funnel, setFunnel] = useState("");
+  const [tel, setTel] = useState("");
+  const [content, setContent] = useState("");
+  const [checked, setChecked] = useState<boolean>(false);
+  const [completed, setCompleted] = useState(false);
+  const [otherFunnel, setOtherFunnel] = useState<string>("");
+
+  const initObj = {
+    service_type: category,
+    area: sido,
+    company_name: partnerName,
+    reason: funnel,
+    tel: tel,
+    contents: content,
+    checked: checked
+  };
+
+  const selectCategory = (data: string) => {
+    setCategory(data);
+  };
+  const selectFunnel = (data: string) => {
+    setFunnel(data);
+  };
+  const selectSido = (data: string) => {
+    setSido(data);
+  };
+
+  const checkHandler = () => {
+    setChecked(!checked);
+  };
+
+  const copyToClipboard = () => {
+    const textarea = document.createElement("textarea");
+    document.body.appendChild(textarea);
+    /* TODO : 새로운 주소로 변경 필요 */
+    textarea.value = `${MOVE_URL}` + "/partnernew";
+    textarea.select();
+    textarea.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+    showToast({ message: "복사되었습니다.", type: "success" });
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    if (every(initObj)) {
+      setCompleted(true);
     }
+  }, [partnerName, category, sido, funnel, tel, content, checked]);
 
-    const [visibleCategoryModal, setVisibleCategoryModal] = useHashToggle('#category')
-    const [visibleFunnelModal, setVisibleFunnelModal] = useHashToggle('#funnel')
-    const [visibleSidoModal, setVisibleSidoModal] = useHashToggle('#sido')
-    const [visibleTerms, setVisibleTerms] = useHashToggle('#terms')
-    const toggleCategory = () => setVisibleCategoryModal(!visibleCategoryModal)
-    const toggleFunnel = () => setVisibleFunnelModal(!visibleFunnelModal)
-    const toggleSido = () => setVisibleSidoModal(!visibleSidoModal)
+  const contactSubmitHandler = debounce(() => {
+    const formData: PartnerFormData = {
+      service_type: category,
+      area: sido,
+      company_name: partnerName,
+      reason: funnel !== "기타(직접입력)" ? funnel : otherFunnel,
+      tel: tel,
+      contents: content
+    };
+    dispatch(backofficeActions.submitPartnerFormAsync.request({ formData: formData }));
+  }, 500);
 
-    const [partnerName, setPartnerName] = useState('')
-    const [category, setCategory] = useState('')
-    const [sido, setSido] = useState('')
-    const [funnel, setFunnel] = useState('')
-    const [tel, setTel] = useState('')
-    const [content, setContent] = useState('')
-    const [checked, setChecked] = useState<boolean>(false)
-    const [completed, setCompleted] = useState(false)
-    const [otherFunnel, setOtherFunnel] = useState<string>('')
-
-    const initObj = {
-        service_type: category,
-        area: sido,
-        company_name: partnerName,
-        reason: funnel,
-        tel: tel,
-        contents: content,
-        checked: checked
+  useEffect(() => {
+    if (getPartnerStatus === "success") {
+      setCategory("");
+      setPartnerName("");
+      setContent("");
+      setSido("");
+      setFunnel("");
+      setOtherFunnel("");
+      setContent("");
+      setTel("");
+      setChecked(false);
+      setCompleted(false);
     }
+  }, [getPartnerStatus]);
 
-    const selectCategory = (data: string) => {
-        setCategory(data)
-    }
-    const selectFunnel = (data: string) => {
-        setFunnel(data)
-    }
-    const selectSido = (data: string) => {
-        setSido(data)
-    }
-
-    const checkHandler = () => {
-        setChecked(!checked)
-    }
-
-    const copyToClipboard = () => {
-        const textarea = document.createElement('textarea')
-        document.body.appendChild(textarea)
-        /* TODO : 새로운 주소로 변경 필요 */
-        textarea.value = `${MOVE_URL}` + '/partnernew'
-        textarea.select()
-        textarea.setSelectionRange(0, 99999)
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-        showToast({ message: '복사되었습니다.', type: 'success'})
-    }
-
-    useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
-
-    useEffect(()=>{
-        if(every(initObj)){
-            setCompleted(true)
-        }
-    },[partnerName, category, sido, funnel, tel, content, checked])
-
-    const contactSubmitHandler =  debounce( () => {
-
-        const formData : PartnerFormData = {
-            service_type: category,
-            area: sido,
-            company_name: partnerName,
-            reason: funnel !== '기타(직접입력)' ? funnel :otherFunnel,
-            tel: tel,
-            contents: content,
-        }
-        dispatch(backofficeActions.submitPartnerFormAsync.request({formData: formData}))
-    }, 500)
-
-
-    useEffect(()=>{
-        if(getPartnerStatus === 'success') {
-            setCategory('')
-            setPartnerName('')
-            setContent('')
-            setSido('')
-            setFunnel('')
-            setOtherFunnel('')
-            setContent('')
-            setTel('')
-            setChecked(false)
-            setCompleted(false)
-        }
-    },[getPartnerStatus])
-
-
-    return (
-        <Layout title='파트너 등록문의' subTitle={<>좋은 서비스를 제공할 수 있는<br/>이사/청소업체 사장님을 모십니다</>}>
-            <S.Container>
-                <S.Title>
-                    <strong>파트너 등록문의</strong>
-                    <span>좋은 서비스를 제공할 수 있는 <span className="br_m">이사/청소업체 사장님을 모십니다</span></span>
-                </S.Title>
-                <S.VideoContainer>
-                    <iframe width="100%" height="100%"
-                            src="https://www.youtube.com/embed/ZobFP-2xf2U?version=3&amp;enablejsapi=1&amp;rel=0&amp;autoplay=0"
-                            frameBorder="0"/>
-                </S.VideoContainer>
-                <Reason>
-                    <h3>왜, 위매치다이사 인가요?</h3>
-                    <ul>
-                        <li>
-                            <p className="display_t">
-                                <img
-                                    src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/network/service/com_service_icon_01.png"
-                                    alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,Sales"/>
-                                <em>Sales</em>
-                            </p>
-                            <strong>더욱 커진 영업기회</strong>
-                            <p>업계 최고수준의 이용자 수<br/>이사 월 오더 3만건 이상 <span className="br_t">(2018년 5월 기준)</span></p>
-                        </li>
-                        <li>
-                            <p className="display_t">
-                                <img
-                                    src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/network/service/com_service_icon_02.png"
-                                    alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,Marketing"/>
-                                <em>Marketing</em>
-                            </p>
-                            <strong>안정적인 고객유치</strong>
-                            <p>업계 최고 수준의 이용자 수<br/><span className="br_t">온/오프라인에서 공격적인</span> 고객마케팅 지원</p>
-                        </li>
-                        <li>
-                            <p className="display_t">
-                                <img
-                                    src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/network/service/com_service_icon_03.png"
-                                    alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,Benefit"/>
-                                <em>Benefit</em>
-                            </p>
-                            <strong>신규가입 우대 혜택</strong>
-                            <p><span>고객 조회화면</span> 상단 노출<br/>(최소 2개월)</p>
-                        </li>
-                    </ul>
-
-                </Reason>
-                <Benefit>
-                    <h3>소비자평가등급제 특장점</h3>
-                    <ul>
-                        <li>
-                            <img
-                                src="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_m_partner01.png"
-                                alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,평가등급제특장점"/>
-                            <strong>홍보 없는 영업</strong>
-                            <p>좋은 서비스 = 높은 평가등급<br/>별도의 홍보활동이 필요없습니다</p>
-                        </li>
-                        <li>
-                            <img
-                                src="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_m_partner02.png"
-                                alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,평가등급제특장점"
-                            />
-                            <strong>제값 받는 환경</strong>
-                            <p>높은 평가등급이 곧 보증이 되어<br/>합당한 가격을 제시할 수 있습니다</p>
-                        </li>
-                        <li>
-                            <img
-                                src="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_m_partner03.png"
-                                alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,평가등급제특장점"/>
-                            <strong>높아지는 우리 업체 명성</strong>
-                            <p>ㅇㅇ이사(청소), ∆ ∆ 지점이 아닌<br/>우리업체 이름을 알릴 수 있습니다</p>
-                        </li>
-                    </ul>
-                </Benefit>
-                {/*스와이프*/}
-                <CustomSwiper
-                    id="dsl_move_banner_1"
-                    slidesPerView={1}
-                    pagination={{clickable: true}}
-                    loop={true}
-                    autoplay={autoPlayOptions}
-                >
-                    <SwiperSlide>
-                        <Slide
-                            image="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_slide01_201222.png"/>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Slide
-                            image="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_slide02_201222.png"/>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Slide
-                            image="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_slide03_201222.png"/>
-                    </SwiperSlide>
-                </CustomSwiper>
-                <Guide>
-                    <div className="box_process">
-                        <h3>등록절차</h3>
-                        <ol>
-                            <li><span>01</span>등록상담</li>
-                            <li><span>02</span>서류제출</li>
-                            <li><span>03</span>승인검토</li>
-                            <li><span>04</span>정보설정 및 확인안내</li>
-                            <li><span>05</span>영업승인</li>
-                        </ol>
-                    </div>
-                    <div className="box_paper">
-                        <h3>필요서류</h3>
-                        <ul>
-                            <li>
-                                <strong>이사업체</strong>
-                                <p>사업자등록증, 견적서 양식, 명함</p>
-                                <a href="/pdf/da24_application_form_20190102a.pdf"
-                                   download
-                                   title="신규등록서">신규업체 등록신청서<Download/></a>
-                            </li>
-                            <li>
-                                <strong>청소업체</strong>
-                                <p>사업자등록증, 명함</p>
-                                <a href="/pdf/clean_application_form_20190102a.pdf"
-                                   download
-                                   title="신규등록서">신규업체 등록신청서<Download/></a>
-                            </li>
-                        </ul>
-                    </div>
-                </Guide>
-                <S.Form>
-                    <h3>등록문의</h3>
-                    <Input theme="default" border readOnly icon="down"
-                           placeholder="공통" rootStyle={{}}
-                           style={{fontSize: "16px", color: colors.black}}
-                           onClick={toggleCategory}
-                           value={category}
-                    />
-                    <Input theme="default" border placeholder="업체명을 입력해주세요" rootStyle={{}} maxLength={20}
-                           style={{fontSize: "16px", color: colors.black}}
-                           value={partnerName}
-                           onChange={(e)=>{setPartnerName(e.target.value)}}
-                    />
-                    <Input theme="default"
-                           border readOnly icon="down"
-                           placeholder="영업지역 선택" rootStyle={{}}
-                           style={{fontSize: "16px", color: colors.black}}
-                           onClick={toggleSido}
-                           value={sido}
-                    />
-                    <Input theme="default"
-                           border readOnly icon="down"
-                           placeholder="위매치다이사를 어떻게 알게 되셨나요?" rootStyle={{}}
-                           style={{fontSize: "16px", color: colors.black}}
-                           onClick={toggleFunnel}
-                           value={funnel}
-                    />
-                    {
-                        funnel === '기타(직접입력)'&&
-                        <Input
-                            theme="default" border rootStyle={{}} maxLength={20}
-                            style={{fontSize: "16px", color: colors.black}}
-                            value={otherFunnel}
-                            onChange={(e)=>{setOtherFunnel(e.target.value)}}
-                        />
-                    }
-                    <Input theme="default" type="tel" pattern="[0-9]*" inputMode="numeric"
-                           placeholder="휴대전화번호 입력 ('-'없이)" border rootStyle={{}} maxLength={13}
-                           style={{fontSize: "16px", color: colors.black}}
-                           value={tel}
-                           onChange={(e)=>{setTel(e.target.value)}}
-                    />
-                    <S.TextContainer>
-                        <S.Textarea placeholder="문의내용"
-                                    style={{fontSize: "16px"}}
-                                    value={content}
-                                    onChange={(e) => {setContent(e.target.value)}}/>
-                    </S.TextContainer>
-                    <Terms.NewLink>
-                        <Checkbox label="이용약관 및 개인정보처리방침 동의"
-                                  checked={checked}
-                                  onChange={checkHandler}
-                        />
-                        <a onClick={() => setVisibleTerms(true)}>보기</a>
-                    </Terms.NewLink>
-                </S.Form>
-                <S.Button theme={"primary"} disabled={!completed} onClick={() => contactSubmitHandler() }>확인</S.Button>
-                <Intro>
-                    <h3>위매치다이사 소개서</h3>
-                    <p>위매치다이사 이사/청소 서비스에 대해 <span className="br_m">더 알고싶다면 소개서를 다운로드하세요!</span></p>
-                    <ul>
-                        <li>
-                            <a href="https://da24.wematch.com/pdf/da24_introduction.pdf" target="_blank" rel="noopener noreferrer"
-                               title="위매치다이사 이사 소개서">
-                                위매치다이사 이사 소개서<Download/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://da24.wematch.com/pdf/clean_introduction.pdf" target="_blank" rel="noopener noreferrer"
-                               title="위매치다이사 청소 소개서">
-                                위매치다이사 청소 소개서<Download/>
-                            </a>
-                        </li>
-                    </ul>
-                </Intro>
-                <Contact>
-                    <h3>파트너센터 직통번호</h3>
-                    <ul>
-                        <li>
-                            <img
-                                src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/service_move.png"
-                                alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,이사상담"/>
-                            <span>이사업체 상담 <em><a href="tel:1522-1340">1522-1340</a></em></span>
-                        </li>
-                        <li>
-                            <img
-                                src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/service_clean.png"
-                                alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,청소상담"/>
-                            <span>청소업체 상담 <em><a href="tel:1522-1962">1522-1962</a></em></span>
-                        </li>
-                    </ul>
-                </Contact>
-                <Share>
-                    <div>
-                        <p>위매치다이사를 <span>다른 사장님들께도 </span>알려주세요!</p>
-                        <ul>
-                            <li>
-                                <a onClick={()=> copyToClipboard()}>
-                                    <img
-                                        src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/sns_link.png"
-                                        alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,링크복사"/><span>링크복사<span
-                                    className='gone'>하기</span></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </Share>
-                <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)}/>
-                <Select visible={visibleCategoryModal} items={Category} onOverlayClose={toggleCategory}
-                        onClose={toggleCategory} onSelect={selectCategory}/>
-                <Select visible={visibleSidoModal} items={Sido} onOverlayClose={toggleSido} onClose={toggleSido}
-                        onSelect={selectSido}/>
-                <Select visible={visibleFunnelModal} items={Funnel} onOverlayClose={toggleFunnel} onClose={toggleFunnel}
-                        onSelect={selectFunnel}/>
-            </S.Container>
-        </Layout>
-
-    )
-
+  return (
+    <Layout
+      title="파트너 등록문의"
+      subTitle={
+        <>
+          좋은 서비스를 제공할 수 있는
+          <br />
+          이사/청소업체 사장님을 모십니다
+        </>
+      }>
+      <S.Container>
+        <S.Title>
+          <strong>파트너 등록문의</strong>
+          <span>
+            좋은 서비스를 제공할 수 있는 <span className="br_m">이사/청소업체 사장님을 모십니다</span>
+          </span>
+        </S.Title>
+        <S.VideoContainer>
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/ZobFP-2xf2U?version=3&amp;enablejsapi=1&amp;rel=0&amp;autoplay=0" frameBorder="0" />
+        </S.VideoContainer>
+        <Reason>
+          <h3>왜, 위매치다이사 인가요?</h3>
+          <ul>
+            <li>
+              <p className="display_t">
+                <img
+                  src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/network/service/com_service_icon_01.png"
+                  alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,Sales"
+                />
+                <em>Sales</em>
+              </p>
+              <strong>더욱 커진 영업기회</strong>
+              <p>
+                업계 최고수준의 이용자 수<br />
+                이사 월 오더 3만건 이상 <span className="br_t">(2018년 5월 기준)</span>
+              </p>
+            </li>
+            <li>
+              <p className="display_t">
+                <img
+                  src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/network/service/com_service_icon_02.png"
+                  alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,Marketing"
+                />
+                <em>Marketing</em>
+              </p>
+              <strong>안정적인 고객유치</strong>
+              <p>
+                업계 최고 수준의 이용자 수<br />
+                <span className="br_t">온/오프라인에서 공격적인</span> 고객마케팅 지원
+              </p>
+            </li>
+            <li>
+              <p className="display_t">
+                <img
+                  src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/network/service/com_service_icon_03.png"
+                  alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,Benefit"
+                />
+                <em>Benefit</em>
+              </p>
+              <strong>신규가입 우대 혜택</strong>
+              <p>
+                <span>고객 조회화면</span> 상단 노출
+                <br />
+                (최소 2개월)
+              </p>
+            </li>
+          </ul>
+        </Reason>
+        <Benefit>
+          <h3>소비자평가등급제 특장점</h3>
+          <ul>
+            <li>
+              <img
+                src="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_m_partner01.png"
+                alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,평가등급제특장점"
+              />
+              <strong>홍보 없는 영업</strong>
+              <p>
+                좋은 서비스 = 높은 평가등급
+                <br />
+                별도의 홍보활동이 필요없습니다
+              </p>
+            </li>
+            <li>
+              <img
+                src="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_m_partner02.png"
+                alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,평가등급제특장점"
+              />
+              <strong>제값 받는 환경</strong>
+              <p>
+                높은 평가등급이 곧 보증이 되어
+                <br />
+                합당한 가격을 제시할 수 있습니다
+              </p>
+            </li>
+            <li>
+              <img
+                src="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_m_partner03.png"
+                alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,평가등급제특장점"
+              />
+              <strong>높아지는 우리 업체 명성</strong>
+              <p>
+                ㅇㅇ이사(청소), ∆ ∆ 지점이 아닌
+                <br />
+                우리업체 이름을 알릴 수 있습니다
+              </p>
+            </li>
+          </ul>
+        </Benefit>
+        {/*스와이프*/}
+        <CustomSwiper id="dsl_move_banner_1" slidesPerView={1} pagination={{ clickable: true }} loop={true} autoplay={autoPlayOptions}>
+          <SwiperSlide>
+            <Slide image="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_slide01_201222.png" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Slide image="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_slide02_201222.png" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Slide image="https://marketdesigners-asset.s3.ap-northeast-2.amazonaws.com/images/img/img_slide03_201222.png" />
+          </SwiperSlide>
+        </CustomSwiper>
+        <Guide>
+          <div className="box_process">
+            <h3>등록절차</h3>
+            <ol>
+              <li>
+                <span>01</span>등록상담
+              </li>
+              <li>
+                <span>02</span>서류제출
+              </li>
+              <li>
+                <span>03</span>승인검토
+              </li>
+              <li>
+                <span>04</span>정보설정 및 확인안내
+              </li>
+              <li>
+                <span>05</span>영업승인
+              </li>
+            </ol>
+          </div>
+          <div className="box_paper">
+            <h3>필요서류</h3>
+            <ul>
+              <li>
+                <strong>이사업체</strong>
+                <p>사업자등록증, 견적서 양식, 명함</p>
+                <a href="/pdf/da24_application_form_20190102a.pdf" download title="신규등록서">
+                  신규업체 등록신청서
+                  <Download />
+                </a>
+              </li>
+              <li>
+                <strong>청소업체</strong>
+                <p>사업자등록증, 명함</p>
+                <a href="/pdf/clean_application_form_20190102a.pdf" download title="신규등록서">
+                  신규업체 등록신청서
+                  <Download />
+                </a>
+              </li>
+            </ul>
+          </div>
+        </Guide>
+        <S.Form>
+          <h3>등록문의</h3>
+          <Input theme="default" border readOnly icon="down" placeholder="공통" rootStyle={{}} style={{ fontSize: "16px", color: colors.black }} onClick={toggleCategory} value={category} />
+          <Input
+            theme="default"
+            border
+            placeholder="업체명을 입력해주세요"
+            rootStyle={{}}
+            maxLength={20}
+            style={{ fontSize: "16px", color: colors.black }}
+            value={partnerName}
+            onChange={(e) => {
+              setPartnerName(e.target.value);
+            }}
+          />
+          <Input theme="default" border readOnly icon="down" placeholder="영업지역 선택" rootStyle={{}} style={{ fontSize: "16px", color: colors.black }} onClick={toggleSido} value={sido} />
+          <Input theme="default" border readOnly icon="down" placeholder="위매치다이사를 어떻게 알게 되셨나요?" rootStyle={{}} style={{ fontSize: "16px", color: colors.black }} onClick={toggleFunnel} value={funnel} />
+          {funnel === "기타(직접입력)" && (
+            <Input
+              theme="default"
+              border
+              rootStyle={{}}
+              maxLength={20}
+              style={{ fontSize: "16px", color: colors.black }}
+              value={otherFunnel}
+              onChange={(e) => {
+                setOtherFunnel(e.target.value);
+              }}
+            />
+          )}
+          <Input
+            theme="default"
+            type="tel"
+            pattern="[0-9]*"
+            inputMode="numeric"
+            placeholder="휴대전화번호 입력 ('-'없이)"
+            border
+            rootStyle={{}}
+            maxLength={13}
+            style={{ fontSize: "16px", color: colors.black }}
+            value={tel}
+            onChange={(e) => {
+              setTel(e.target.value);
+            }}
+          />
+          <S.TextContainer>
+            <S.Textarea
+              placeholder="문의내용"
+              style={{ fontSize: "16px" }}
+              value={content}
+              onChange={(e) => {
+                setContent(e.target.value);
+              }}
+            />
+          </S.TextContainer>
+          <Terms.NewLink>
+            <Checkbox label="이용약관 및 개인정보처리방침 동의" checked={checked} onChange={checkHandler} />
+            <a onClick={() => setVisibleTerms(true)}>보기</a>
+          </Terms.NewLink>
+        </S.Form>
+        <S.Button theme={"primary"} disabled={!completed} onClick={() => contactSubmitHandler()}>
+          확인
+        </S.Button>
+        <Intro>
+          <h3>위매치다이사 소개서</h3>
+          <p>
+            위매치다이사 이사/청소 서비스에 대해 <span className="br_m">더 알고싶다면 소개서를 다운로드하세요!</span>
+          </p>
+          <ul>
+            <li>
+              <a href="https://da24.wematch.com/pdf/da24_introduction.pdf" target="_blank" rel="noopener noreferrer" title="위매치다이사 이사 소개서">
+                위매치다이사 이사 소개서
+                <Download />
+              </a>
+            </li>
+            <li>
+              <a href="https://da24.wematch.com/pdf/clean_introduction.pdf" target="_blank" rel="noopener noreferrer" title="위매치다이사 청소 소개서">
+                위매치다이사 청소 소개서
+                <Download />
+              </a>
+            </li>
+          </ul>
+        </Intro>
+        <Contact>
+          <h3>파트너센터 직통번호</h3>
+          <ul>
+            <li>
+              <img
+                src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/service_move.png"
+                alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,이사상담"
+              />
+              <span>
+                이사업체 상담{" "}
+                <em>
+                  <a href="tel:1522-1340">1522-1340</a>
+                </em>
+              </span>
+            </li>
+            <li>
+              <img
+                src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/service_clean.png"
+                alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,청소상담"
+              />
+              <span>
+                청소업체 상담{" "}
+                <em>
+                  <a href="tel:1522-1962">1522-1962</a>
+                </em>
+              </span>
+            </li>
+          </ul>
+        </Contact>
+        <Share>
+          <div>
+            <p>
+              위매치다이사를 <span>다른 사장님들께도 </span>알려주세요!
+            </p>
+            <ul>
+              <li>
+                <a onClick={() => copyToClipboard()}>
+                  <img
+                    src="https://s3.ap-northeast-2.amazonaws.com/marketdesigners-asset/images/icon/sns_link.png"
+                    alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사,링크복사"
+                  />
+                  <span>
+                    링크복사<span className="gone">하기</span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </Share>
+        <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
+        <Select visible={visibleCategoryModal} items={Category} onOverlayClose={toggleCategory} onClose={toggleCategory} onSelect={selectCategory} />
+        <Select visible={visibleSidoModal} items={Sido} onOverlayClose={toggleSido} onClose={toggleSido} onSelect={selectSido} />
+        <Select visible={visibleFunnelModal} items={Funnel} onOverlayClose={toggleFunnel} onClose={toggleFunnel} onSelect={selectFunnel} />
+      </S.Container>
+    </Layout>
+  );
 }
 
-export default PartnerRegisterPage
+export default PartnerRegisterPage;

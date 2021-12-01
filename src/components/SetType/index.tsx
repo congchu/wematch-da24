@@ -1,15 +1,15 @@
-import React from 'react'
-import Styled from 'styled-components'
-import dayjs from 'dayjs'
+import React from "react";
+import Styled from "styled-components";
+import dayjs from "dayjs";
 
-import { Truck } from 'components/Icon'
-import { useRouter } from 'hooks/useRouter'
+import { Truck } from "components/Icon";
+import { useRouter } from "hooks/useRouter";
 
-import * as colors from 'styles/colors'
-import * as commonTypes from 'store/common/types'
-import { useDispatch, useSelector } from 'react-redux'
-import * as commonSelector from 'store/common/selectors'
-import * as partnerActions from 'store/partner/actions'
+import * as colors from "styles/colors";
+import * as commonTypes from "store/common/types";
+import { useDispatch, useSelector } from "react-redux";
+import * as commonSelector from "store/common/selectors";
+import * as partnerActions from "store/partner/actions";
 
 const S = {
   TypeSet: Styled.div`
@@ -75,34 +75,34 @@ const S = {
 			line-height:17px;
 			background:${colors.pointBlue};
 		`
-}
+};
 
 interface Props {
-  count: number
-  formData: commonTypes.RequestUserInfoInsert
+  count: number;
+  formData: commonTypes.RequestUserInfoInsert;
 }
 
 const SetType: React.FC<Props> = ({ count, formData }) => {
-  const router = useRouter()
-  const dispatch = useDispatch()
-  const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
-  const { dong, moving_type, moving_date } = formData
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const getMoveIdxData = useSelector(commonSelector.getMoveIdxData);
+  const { dong, moving_type, moving_date } = formData;
 
   if (!getMoveIdxData.idx) {
-    return <></>
+    return <></>;
   }
 
   return (
     <S.TypeSet>
       <S.BoxSet>
         <span className="type">{moving_type}이사 / </span>
-        <span className="type">{dayjs(moving_date).format('MM.DD')} / </span>
+        <span className="type">{dayjs(moving_date).format("MM.DD")} / </span>
         <span className="type">{dong}</span>
         <S.ReSelect
           onClick={() => {
-            dispatch(partnerActions.cartReset())
-            dispatch(partnerActions.partnerListReset())
-            router.history.push('/')
+            dispatch(partnerActions.cartReset());
+            dispatch(partnerActions.partnerListReset());
+            router.history.push("/");
           }}
           id="dsl_booking_list_date">
           날짜변경
@@ -114,7 +114,7 @@ const SetType: React.FC<Props> = ({ count, formData }) => {
         </S.CompareList>
       </S.BoxSet>
     </S.TypeSet>
-  )
-}
+  );
+};
 
-export default SetType
+export default SetType;

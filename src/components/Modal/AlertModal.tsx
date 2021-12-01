@@ -1,21 +1,21 @@
-import React, {useEffect} from 'react'
-import styled from 'styled-components'
+import React, { useEffect } from "react";
+import styled from "styled-components";
 
-import * as colors from 'styles/colors'
+import * as colors from "styles/colors";
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
-    /** 모달 visible */
-    visible: boolean;
-    /** 타이틀 */
-    title?: string;
-    /** 내용 */
-    subTitle?: string;
-    /** confirm 버튼 TEXT*/
-    confirmBtnText?: string;
-    /** 확인 버튼 이벤트 정의 */
-    onConfirm?: () => void;
-    /** 오버레이 클릭 시 이벤트 정의 */
-    onOverlayClose?: () => void;
+  /** 모달 visible */
+  visible: boolean;
+  /** 타이틀 */
+  title?: string;
+  /** 내용 */
+  subTitle?: string;
+  /** confirm 버튼 TEXT*/
+  confirmBtnText?: string;
+  /** 확인 버튼 이벤트 정의 */
+  onConfirm?: () => void;
+  /** 오버레이 클릭 시 이벤트 정의 */
+  onOverlayClose?: () => void;
 }
 
 const Wrapper = styled.div`
@@ -68,34 +68,30 @@ const SubTitle = styled.p`
   white-space: pre-line;
   line-height: 1.5;
 `;
-const AlertModal:React.FC<Props> = (props:Props) => {
-    const {visible, title, onConfirm, subTitle, confirmBtnText} = props;
+const AlertModal: React.FC<Props> = (props: Props) => {
+  const { visible, title, onConfirm, subTitle, confirmBtnText } = props;
 
-    useEffect(() => {
-        if (visible) {
-            document.body.style.overflow = 'hidden'
-        }
+  useEffect(() => {
+    if (visible) {
+      document.body.style.overflow = "hidden";
+    }
 
-        return () => document.body.removeAttribute('style')
-    })
+    return () => document.body.removeAttribute("style");
+  });
 
-    if (!visible) return null
+  if (!visible) return null;
 
-    return (
-        <Wrapper>
-            <Panel>
-                <Content>
-                    <Title>{title}</Title>
-                    {subTitle && (
-                         <SubTitle>{subTitle}</SubTitle>
-                     )}
-                </Content>
-                <Footer onClick={onConfirm}>
-                    {confirmBtnText ? confirmBtnText : "확인"}
-                </Footer>
-            </Panel>
-        </Wrapper>
-    )
+  return (
+    <Wrapper>
+      <Panel>
+        <Content>
+          <Title>{title}</Title>
+          {subTitle && <SubTitle>{subTitle}</SubTitle>}
+        </Content>
+        <Footer onClick={onConfirm}>{confirmBtnText ? confirmBtnText : "확인"}</Footer>
+      </Panel>
+    </Wrapper>
+  );
 };
 
-export default AlertModal
+export default AlertModal;

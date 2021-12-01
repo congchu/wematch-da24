@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react'
-import styled, { css } from 'styled-components'
+import React, { useEffect } from "react";
+import styled, { css } from "styled-components";
 
-import * as colors from 'styles/colors'
+import * as colors from "styles/colors";
 
 const ToastOverlay = styled.div`
   position: fixed;
@@ -23,21 +23,20 @@ const ToastContent = styled.div`
   width: 100%;
   left: 0;
   bottom: 0;
-  
+
   @media screen and (min-width: 1200px) {
     position: relative;
-    z-index: 100; 
+    z-index: 100;
     top: 50%;
     left: 50%;
     width: 360px;
-    transform:translate(-50%, -50%);
+    transform: translate(-50%, -50%);
   }
-  
 `;
 
 const Header = styled.div<{ showHeaderCancelButton: boolean }>`
   height: 48px;
-  background-color: ${(props) => props.showHeaderCancelButton ? colors.grayBg : colors.white};
+  background-color: ${(props) => (props.showHeaderCancelButton ? colors.grayBg : colors.white)};
   display: flex;
   justify-content: flex-end;
   border-top-right-radius: 15px;
@@ -49,11 +48,11 @@ const Header = styled.div<{ showHeaderCancelButton: boolean }>`
     letter-spacing: -0.01px;
     margin-right: 10px;
     cursor: pointer;
-    
+
     @media screen and (min-width: 720px) {
       margin-right: 51px;
     }
-    
+
     @media screen and (min-width: 1200px) {
       margin-right: 8.5px;
     }
@@ -62,7 +61,7 @@ const Header = styled.div<{ showHeaderCancelButton: boolean }>`
 
 const Content = styled.div`
   display: flex;
-  background-color: #FFF;
+  background-color: #fff;
   //min-height: 218px;
   padding: 24px;
   box-sizing: border-box;
@@ -70,7 +69,7 @@ const Content = styled.div`
   text-align: left;
   justify-content: center;
   align-items: center;
-  
+
   @media screen and (min-width: 1200px) {
     border-bottom-right-radius: 15px;
     border-bottom-left-radius: 15px;
@@ -86,7 +85,7 @@ const Text = styled.div`
   color: ${colors.gray33};
   margin-top: 6px;
   white-space: pre-wrap;
-  
+
   span {
     margin-top: 15px;
     font-size: 16px;
@@ -97,7 +96,7 @@ const Text = styled.div`
   @media screen and (min-width: 720px) {
     text-align: center;
   }
-  
+
   @media screen and (min-width: 1200px) {
     text-align: left;
   }
@@ -110,11 +109,11 @@ const SubText = styled.p`
   line-height: 22px;
   letter-spacing: -0.03px;
   text-align: left;
-  
+
   @media screen and (min-width: 720px) {
     text-align: center;
   }
-  
+
   @media screen and (min-width: 1200px) {
     text-align: left;
   }
@@ -127,12 +126,12 @@ const ConfirmButton = styled.button`
   border-radius: 6px;
   box-shadow: 0px 4px 10px rgba(22, 114, 247, 0.25);
   font-size: 18px;
-  color: #FFF;
+  color: #fff;
   font-weight: bold;
   line-height: 27px;
   letter-spacing: -0.03rem;
   margin-top: 30px;
-  
+
   @media screen and (min-width: 1200px) {
     margin-top: 60px;
   }
@@ -146,67 +145,62 @@ const CancelButton = styled.button`
 `;
 
 interface Props {
-    visible: boolean;
-    subContent?: string;
-    confirmText?: string;
-    confirmClick?: () => void;
-    cancelText?: string;
-    cancelClick?: () => void;
-    closeClick?: () => void;
-    showHeaderCancelButton: boolean
+  visible: boolean;
+  subContent?: string;
+  confirmText?: string;
+  confirmClick?: () => void;
+  cancelText?: string;
+  cancelClick?: () => void;
+  closeClick?: () => void;
+  showHeaderCancelButton: boolean;
 }
-const ToastPopup:React.FC<Props> = (props) => {
-    const { visible, children, subContent, confirmText, cancelText, confirmClick, showHeaderCancelButton, cancelClick, closeClick } = props
+const ToastPopup: React.FC<Props> = (props) => {
+  const { visible, children, subContent, confirmText, cancelText, confirmClick, showHeaderCancelButton, cancelClick, closeClick } = props;
 
-    useEffect(() => {
-        if (visible) {
-            document.body.style.overflow = 'hidden'
-        }
-
-        return () => document.body.removeAttribute('style')
-    }, [visible])
-
-    if (!visible) {
-        return null
+  useEffect(() => {
+    if (visible) {
+      document.body.style.overflow = "hidden";
     }
-    return (
-        <ToastOverlay>
-            <ToastPopupWrapper>
-                <ToastContent>
-                    <Header showHeaderCancelButton={showHeaderCancelButton}>
-                        {showHeaderCancelButton &&
-                            <button onClick={closeClick}>닫기</button>
-                        }
-                    </Header>
-                    <Content>
-                        <Text>{children}</Text>
-                        {subContent && (
-                            <SubText>{subContent}</SubText>
-                        )}
-                        {confirmText && (
-                            <ConfirmButton
-                                onClick={() => {
-                                    if(confirmClick) {
-                                        confirmClick()
-                                    }}
-                                }>
-                                {confirmText}
-                            </ConfirmButton>
-                        )}
-                        {cancelText && (
-                            <CancelButton onClick={() => {
-                                if(cancelClick) {
-                                    cancelClick()
-                                }}
-                            }>
-                                {cancelText}
-                            </CancelButton>
-                        )}
-                    </Content>
-                </ToastContent>
-            </ToastPopupWrapper>
-        </ToastOverlay>
-    )
+
+    return () => document.body.removeAttribute("style");
+  }, [visible]);
+
+  if (!visible) {
+    return null;
+  }
+  return (
+    <ToastOverlay>
+      <ToastPopupWrapper>
+        <ToastContent>
+          <Header showHeaderCancelButton={showHeaderCancelButton}>{showHeaderCancelButton && <button onClick={closeClick}>닫기</button>}</Header>
+          <Content>
+            <Text>{children}</Text>
+            {subContent && <SubText>{subContent}</SubText>}
+            {confirmText && (
+              <ConfirmButton
+                onClick={() => {
+                  if (confirmClick) {
+                    confirmClick();
+                  }
+                }}>
+                {confirmText}
+              </ConfirmButton>
+            )}
+            {cancelText && (
+              <CancelButton
+                onClick={() => {
+                  if (cancelClick) {
+                    cancelClick();
+                  }
+                }}>
+                {cancelText}
+              </CancelButton>
+            )}
+          </Content>
+        </ToastContent>
+      </ToastPopupWrapper>
+    </ToastOverlay>
+  );
 };
 
-export default ToastPopup
+export default ToastPopup;

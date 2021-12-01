@@ -1,7 +1,7 @@
-import * as React from 'react'
-import styled, { css } from 'styled-components'
-import { white, gray88 } from 'styles/colors'
-import { resetButton } from 'styles/mixins'
+import * as React from "react";
+import styled, { css } from "styled-components";
+import { white, gray88 } from "styles/colors";
+import { resetButton } from "styles/mixins";
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
@@ -10,7 +10,7 @@ interface Props extends React.HTMLAttributes<HTMLElement> {
 }
 
 const S = {
-  Button: styled.button<{highlight: boolean}>`
+  Button: styled.button<{ highlight: boolean }>`
     ${resetButton};
     height: 56px;
     font-size: 16px;
@@ -29,24 +29,21 @@ const S = {
       background-image: linear-gradient(to left, #2ccbcb, #1689f7);
       color: ${white};
     }
-    ${props =>
-    props.highlight && css`
-      background-image: linear-gradient(to left, #2ccbcb, #1689f7);
-      color: ${white};
-    `
-}
+    ${(props) =>
+      props.highlight &&
+      css`
+        background-image: linear-gradient(to left, #2ccbcb, #1689f7);
+        color: ${white};
+      `}
   `
-}
+};
 
 export function SuggestionButton(props: Props) {
-  const {
-    onClick,
-    children,
-    highlight = false,
-    ...restProps
-  } = props
+  const { onClick, children, highlight = false, ...restProps } = props;
 
   return (
-    <S.Button onClick={onClick} {...restProps} highlight={highlight}>{children}</S.Button>
-  )
+    <S.Button onClick={onClick} {...restProps} highlight={highlight}>
+      {children}
+    </S.Button>
+  );
 }

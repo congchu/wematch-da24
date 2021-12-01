@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 // import { useDispatch, useSelector } from 'react-redux'
 // import Styled from 'styled-components'
 
@@ -38,14 +38,14 @@ import React, { useEffect, useState } from 'react'
 //             line-height: 26px;
 //             color: ${colors.gray33};
 //         }
-        
+
 //         p {
 //             font-size: 15px;
 //             line-height: 22px;
 //         }
-        
+
 //         em {
-//             color: ${colors.pointBlue};  
+//             color: ${colors.pointBlue};
 //         }
 //     `,
 //     CloseButton: Styled.button`
@@ -76,7 +76,6 @@ import React, { useEffect, useState } from 'react'
 //     const dispatch = useDispatch()
 
 //     const [code, setCode] = useState<string>('')
-
 
 //     // TODO: 로그인 모달 완성시 삭제 예정
 //     // useEffect(() => {

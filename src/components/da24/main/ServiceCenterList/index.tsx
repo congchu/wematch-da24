@@ -1,17 +1,17 @@
-import React from 'react'
-import Styled from 'styled-components'
+import React from "react";
+import Styled from "styled-components";
 
-import { Next } from 'components/wematch-ui/Icon';
+import { Next } from "components/wematch-ui/Icon";
 
-import * as colors from 'styles/colors'
-import * as constants from 'constants/env'
+import * as colors from "styles/colors";
+import * as constants from "constants/env";
 
 interface Props {
-    title: string;
+  title: string;
 }
 
 const S = {
-    Container: Styled.div`
+  Container: Styled.div`
         position: relative;
         background-color: ${colors.white};
         letter-spacing: -1px;
@@ -23,7 +23,7 @@ const S = {
             padding: 35px 0 20px;
         }
     `,
-    Title: Styled.strong`
+  Title: Styled.strong`
         display: block;
         margin-bottom: 9px;
         font-weight: 700;
@@ -31,13 +31,13 @@ const S = {
         line-height: 24px;
         letter-spacing: -1px;
     `,
-    Ul: Styled.ul`
+  Ul: Styled.ul`
         display: block;
         @media (min-width: 1200px) {
             overflow: hidden;
         }
     `,
-    Li: Styled.li`
+  Li: Styled.li`
         overflow: hidden;
         position: relative; 
         border-top: 1px solid ${colors.lineDeco};
@@ -87,24 +87,42 @@ const S = {
             }
         }
     `
-}
+};
 
-const ServiceCenterList:React.FC<Props> = (props) => {
-    const {
-        title
-    } = props
+const ServiceCenterList: React.FC<Props> = (props) => {
+  const { title } = props;
 
-    return (
-        <S.Container>
-            <S.Title>{title}</S.Title>
-            <S.Ul>
-                <S.Li><a href={constants.MOVE_URL + "/faq.asp"}>자주 묻는 질문<Next size={16}/></a></S.Li>
-                <S.Li><a href={constants.MOVE_URL + "/suggest.asp"}>문의하기<Next size={16}/></a></S.Li>
-                <S.Li><a href={constants.MOVE_URL + "/notice.asp"}>공지사항<Next size={16}/></a></S.Li>
-                <S.Li><a href={constants.MOVE_URL + "/myrequest"}>내 신청내역 확인<Next size={16}/></a></S.Li>
-            </S.Ul>
-        </S.Container>
-    )
-}
+  return (
+    <S.Container>
+      <S.Title>{title}</S.Title>
+      <S.Ul>
+        <S.Li>
+          <a href={constants.MOVE_URL + "/faq.asp"}>
+            자주 묻는 질문
+            <Next size={16} />
+          </a>
+        </S.Li>
+        <S.Li>
+          <a href={constants.MOVE_URL + "/suggest.asp"}>
+            문의하기
+            <Next size={16} />
+          </a>
+        </S.Li>
+        <S.Li>
+          <a href={constants.MOVE_URL + "/notice.asp"}>
+            공지사항
+            <Next size={16} />
+          </a>
+        </S.Li>
+        <S.Li>
+          <a href={constants.MOVE_URL + "/myrequest"}>
+            내 신청내역 확인
+            <Next size={16} />
+          </a>
+        </S.Li>
+      </S.Ul>
+    </S.Container>
+  );
+};
 
-export default ServiceCenterList
+export default ServiceCenterList;

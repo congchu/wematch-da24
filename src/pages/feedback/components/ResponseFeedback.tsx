@@ -1,11 +1,11 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Button, Colors } from '@wematch/wematch-ui'
-import SmileIcon from 'components/Icon/generated/SmileIcon'
+import React from "react";
+import styled from "styled-components";
+import { Button, Colors } from "@wematch/wematch-ui";
+import SmileIcon from "components/Icon/generated/SmileIcon";
 
 interface Props {
-  isSurvey?: boolean | null
-  serviceType: string | null
+  isSurvey?: boolean | null;
+  serviceType: string | null;
 }
 
 const ResponseFeedback = ({ isSurvey, serviceType }: Props) => {
@@ -25,7 +25,7 @@ const ResponseFeedback = ({ isSurvey, serviceType }: Props) => {
       ) : (
         <>
           <Text>
-            {serviceType === 'estimate_call' ? (
+            {serviceType === "estimate_call" ? (
               <>소중한 의견 감사합니다.</>
             ) : (
               <>
@@ -34,7 +34,7 @@ const ResponseFeedback = ({ isSurvey, serviceType }: Props) => {
             )}
           </Text>
           <Text>
-            {serviceType === 'estimate_call' ? (
+            {serviceType === "estimate_call" ? (
               <>
                 방문견적 피드백은 업체 평점에 반영되지만 <br /> 다른 고객들에게 노출되지는 않습니다.
               </>
@@ -47,33 +47,33 @@ const ResponseFeedback = ({ isSurvey, serviceType }: Props) => {
           {/* <div style={{ flex: 1 }} /> */}
           <ButtonWrapper>
             <Button
-              label={'이벤트 확인하기'}
-              theme={'primary'}
+              label={"이벤트 확인하기"}
+              theme={"primary"}
               isRound
               onClick={() => {
-                window.location.replace('https://bit.ly/3AhvaIj')
+                window.location.replace("https://bit.ly/3AhvaIj");
               }}
             />
           </ButtonWrapper>
         </>
       )}
     </Container>
-  )
-}
+  );
+};
 
-export default ResponseFeedback
+export default ResponseFeedback;
 
 const Container = styled.div<{ isSurvey?: boolean | null }>`
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: ${({ isSurvey }) => (!isSurvey ? 'center' : 'flex-start')};
+  justify-content: ${({ isSurvey }) => (!isSurvey ? "center" : "flex-start")};
   align-items: center;
-  padding-top: ${({ isSurvey }) => (!isSurvey ? '0px' : '67px')};
+  padding-top: ${({ isSurvey }) => (!isSurvey ? "0px" : "67px")};
   span + span {
     margin-top: 16px;
   }
-`
+`;
 
 const Title = styled.span`
   display: block;
@@ -83,7 +83,7 @@ const Title = styled.span`
   letter-spacing: -1px;
   color: ${Colors.gary33};
   margin-top: 16px;
-`
+`;
 
 const Text = styled.span`
   display: block;
@@ -92,7 +92,7 @@ const Text = styled.span`
   letter-spacing: -1px;
   color: ${Colors.gray66};
   text-align: center;
-`
+`;
 
 const ButtonWrapper = styled.div`
   position: fixed;
@@ -105,4 +105,4 @@ const ButtonWrapper = styled.div`
     max-width: 768px;
     width: 100%;
   }
-`
+`;
