@@ -1,8 +1,8 @@
-import React from 'react'
-import Styled from 'styled-components'
+import React from "react";
+import Styled from "styled-components";
 
 const S = {
-    Container: Styled.div`
+  Container: Styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
@@ -13,17 +13,13 @@ const S = {
         left: 0;
         z-index: 100;
     `
-}
+};
 
 interface Props {
-    text?: string
+  text?: string;
 }
-const Loading:React.FC<Props> = ({text}) => {
-    return (
-        <S.Container>
-            {text ? text : '로딩중'}
-        </S.Container>
-    )
-}
+const Loading: React.FC<Props> = ({ text }) => {
+  return <S.Container>{text ? text : "로딩중"}</S.Container>;
+};
 
 export default Loading;

@@ -1,5 +1,4 @@
-import { Method, AxiosRequestConfig } from 'axios'
-
+import { Method, AxiosRequestConfig } from "axios";
 
 export interface BaseProps extends React.InputHTMLAttributes<HTMLInputElement> {
   text?: string;

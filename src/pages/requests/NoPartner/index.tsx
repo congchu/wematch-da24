@@ -1,24 +1,24 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import styled from 'styled-components'
-import ReactPixel from 'react-facebook-pixel'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useHistory, useLocation } from 'react-router-dom'
-import { useMedia } from 'react-use-media'
-import useHashToggle from 'hooks/useHashToggle'
-import { useCookies } from 'react-cookie'
-import { Button } from '@wematch/wematch-ui'
+import React, { useCallback, useEffect, useState } from "react";
+import styled from "styled-components";
+import ReactPixel from "react-facebook-pixel";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { useMedia } from "react-use-media";
+import useHashToggle from "hooks/useHashToggle";
+import { useCookies } from "react-cookie";
+import { Button } from "@wematch/wematch-ui";
 
-import MainHeader from 'components/common/MainHeader'
-import { IconSad, SoldOut } from 'components/Icon'
-import * as formSelectors from 'store/form/selectors'
-import * as formSelector from 'store/form/selectors'
-import * as commonSelector from 'store/common/selectors'
-import * as cleanSelector from 'store/clean/selectors'
-import { dataLayer } from 'lib/dataLayerUtil'
-import { events } from 'lib/appsflyer'
-import { formatDateKor } from 'lib/dateUtil'
-import * as colors from 'styles/colors'
-import dayjs from 'dayjs'
+import MainHeader from "components/common/MainHeader";
+import { IconSad, SoldOut } from "components/Icon";
+import * as formSelectors from "store/form/selectors";
+import * as formSelector from "store/form/selectors";
+import * as commonSelector from "store/common/selectors";
+import * as cleanSelector from "store/clean/selectors";
+import { dataLayer } from "lib/dataLayerUtil";
+import { events } from "lib/appsflyer";
+import { formatDateKor } from "lib/dateUtil";
+import * as colors from "styles/colors";
+import dayjs from "dayjs";
 
 const S = {
   Header: styled.header`
@@ -196,68 +196,68 @@ const S = {
       width: 740px;
     }
   `
-}
+};
 
 export default function NoPartner() {
   const isDesktop = useMedia({
     minWidth: 1200
-  })
+  });
 
-  const dispatch = useDispatch()
-  const location = useLocation()
-  const history = useHistory()
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const history = useHistory();
 
-  const getSubmittedForm = useSelector(formSelectors.getSubmittedForm)
-  const getMoveType = useSelector(formSelector.getType)
-  const getMoveDate = useSelector(formSelector.getDate)
-  const getFormData = useSelector(formSelector.getFormData)
-  const getJuso = useSelector(commonSelector.getJuso)
-  const cleanFormData = useSelector(cleanSelector.getCleanForm)
-  const params = new URLSearchParams(location.search)
-  const serviceType = params.get('service_type') === 'clean' ? 'clean' : 'move'
-  const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle('#calendar')
-  const [cookies, setCookie] = useCookies(['report'])
-  const [isCookie, setIsCookie] = useState(false) //새로고침 시 픽셀,데이터 레이어 재요청 방지용
+  const getSubmittedForm = useSelector(formSelectors.getSubmittedForm);
+  const getMoveType = useSelector(formSelector.getType);
+  const getMoveDate = useSelector(formSelector.getDate);
+  const getFormData = useSelector(formSelector.getFormData);
+  const getJuso = useSelector(commonSelector.getJuso);
+  const cleanFormData = useSelector(cleanSelector.getCleanForm);
+  const params = new URLSearchParams(location.search);
+  const serviceType = params.get("service_type") === "clean" ? "clean" : "move";
+  const [visibleCalendarModal, setVisibleCalendarModal] = useHashToggle("#calendar");
+  const [cookies, setCookie] = useCookies(["report"]);
+  const [isCookie, setIsCookie] = useState(false); //새로고침 시 픽셀,데이터 레이어 재요청 방지용
 
-  const getDong = useCallback((dongType: 'start' | 'end') => {
-    if (getJuso.type[dongType] === 'jibun') {
-      return getJuso.start?.jibunAddr.replace(/ /g, '-')
+  const getDong = useCallback((dongType: "start" | "end") => {
+    if (getJuso.type[dongType] === "jibun") {
+      return getJuso.start?.jibunAddr.replace(/ /g, "-");
     }
-    return getJuso[dongType]?.roadAddr?.replace(/ /g, '-')
-  }, [])
+    return getJuso[dongType]?.roadAddr?.replace(/ /g, "-");
+  }, []);
 
   useEffect(() => {
     try {
-      if (serviceType === 'move' && getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
+      if (serviceType === "move" && getSubmittedForm.data && !getSubmittedForm.loading && !isCookie) {
         dataLayer({
-          event: 'complete',
-          category: '업체마감',
-          action: '업체마감',
-          label: `${getDong('start')}_${getDong('end')}`,
-          CD6: `${getMoveType === 'house' ? '가정' : '사무실'}`,
-          CD12: '바로매칭'
-        })
-        ReactPixel.fbq('track', 'Purchase')
+          event: "complete",
+          category: "업체마감",
+          action: "업체마감",
+          label: `${getDong("start")}_${getDong("end")}`,
+          CD6: `${getMoveType === "house" ? "가정" : "사무실"}`,
+          CD12: "바로매칭"
+        });
+        ReactPixel.fbq("track", "Purchase");
 
-        gtag('event', 'conversion', { send_to: 'AW-862163644/CmzdCIej6G0QvKWOmwM' })
-      } else if (serviceType === 'clean') {
+        gtag("event", "conversion", { send_to: "AW-862163644/CmzdCIej6G0QvKWOmwM" });
+      } else if (serviceType === "clean") {
         dataLayer({
-          event: 'clean_done',
-          category: '청소_마감고객',
+          event: "clean_done",
+          category: "청소_마감고객",
           action: `${cleanFormData.type}`,
-          label: `${dayjs(cleanFormData.date[0]).format('MM_DD')}`,
-          CD16: `${cleanFormData.addressType === 'road' ? cleanFormData.address?.roadAddrPart1.replace(/ /g, '') : cleanFormData.address?.jibunAddr.replace(/ /g, '')}`,
-          CD17: `${cleanFormData.livingType.replace(/\/|\([^)]*\)/g, '')}`,
+          label: `${dayjs(cleanFormData.date[0]).format("MM_DD")}`,
+          CD16: `${cleanFormData.addressType === "road" ? cleanFormData.address?.roadAddrPart1.replace(/ /g, "") : cleanFormData.address?.jibunAddr.replace(/ /g, "")}`,
+          CD17: `${cleanFormData.livingType.replace(/\/|\([^)]*\)/g, "")}`,
           CD18: `${cleanFormData.houseSpace}`,
-          CD19: `${cleanFormData.selectOptionItem.join(',')}`
-        })
+          CD19: `${cleanFormData.selectOptionItem.join(",")}`
+        });
       }
 
       events({
-        action: 'app_move_nopartner'
-      })
+        action: "app_move_nopartner"
+      });
     } catch {}
-  }, [])
+  }, []);
 
   return (
     <S.Container>
@@ -271,7 +271,7 @@ export default function NoPartner() {
         </S.Header>
       )}
       <S.Contents>
-        {serviceType === 'move' ? (
+        {serviceType === "move" ? (
           <>
             <SoldOut />
             {/*<S.Title>선택하신 날짜에 업체가 모두 마감됐습니다.</S.Title>*/}
@@ -281,7 +281,7 @@ export default function NoPartner() {
             <S.TitleContainer>
               <p>
                 <em>{formatDateKor(getFormData.moving_date)}</em>에 고객이 많아 <br /> 이사가 가능한 업체를 찾는 중입니다.
-              </p>{' '}
+              </p>{" "}
               <br />
               <p>
                 가능 업체 발생 시 상담원이 <br /> 안내 드릴 예정입니다. (최대 2일)
@@ -313,11 +313,11 @@ export default function NoPartner() {
       {/*  </S.ChangeDate>*/}
       {/*)}*/}
       <S.ButtonWrapper>
-        <Button theme={'primary'} label={'홈으로 돌아가기'} isRound={true} onClick={() => history.push('/')} />
+        <Button theme={"primary"} label={"홈으로 돌아가기"} isRound={true} onClick={() => history.push("/")} />
       </S.ButtonWrapper>
       {/* <S.BottomContainer>
         <S.DateSelect onClick={() => history.push('/')}>홈으로 돌아가기</S.DateSelect>
       </S.BottomContainer> */}
     </S.Container>
-  )
+  );
 }

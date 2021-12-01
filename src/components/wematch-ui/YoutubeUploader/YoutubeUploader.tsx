@@ -1,8 +1,8 @@
-import * as React from 'react'
-import styled from 'styled-components'
-import { lineEnd } from 'styles/colors'
-import { Plus } from '../Icon'
-import { resetButton } from 'styles/mixins'
+import * as React from "react";
+import styled from "styled-components";
+import { lineEnd } from "styles/colors";
+import { Plus } from "../Icon";
+import { resetButton } from "styles/mixins";
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   onClick?: () => void;
@@ -14,7 +14,7 @@ const S = {
     margin-left: 1px;
     margin-right: -1px;
     overflow: hidden;
-`,
+  `,
   Wrap: styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -30,8 +30,8 @@ const S = {
       height: 72px;
       box-sizing: border-box;
     }
-`,
-  Preview: styled.div<{img: string}>`
+  `,
+  Preview: styled.div<{ img: string }>`
     background-image: url(${({ img }) => img});
     background-size: cover;
     background-position: center center;
@@ -41,7 +41,7 @@ const S = {
       top: 0;
       right: 0;
     }
-`,
+  `,
   UploadButton: styled.div`
     border: 1px dashed ${lineEnd};
     .plus {
@@ -50,15 +50,10 @@ const S = {
       left: 42px;
     }
   `
-}
+};
 
 export function YoutubeUploader(props: Props) {
-
-  const {
-    onClick,
-    children,
-    ...restProps
-  } = props
+  const { onClick, children, ...restProps } = props;
 
   return (
     <S.Container {...restProps}>
@@ -76,5 +71,5 @@ export function YoutubeUploader(props: Props) {
         })} */}
       </S.Wrap>
     </S.Container>
-  )
+  );
 }

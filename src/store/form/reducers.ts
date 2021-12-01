@@ -1,59 +1,59 @@
-import { createReducer, ActionType } from 'typesafe-actions'
-import * as actions from './actions'
-import * as types from 'store/common/types'
-import { SubmittedForm } from './types'
-export type Actions = ActionType<typeof actions>
+import { createReducer, ActionType } from "typesafe-actions";
+import * as actions from "./actions";
+import * as types from "store/common/types";
+import { SubmittedForm } from "./types";
+export type Actions = ActionType<typeof actions>;
 
 export interface FormState {
-  type: 'house' | 'oneroom' | 'office' | undefined
-  date: string[]
+  type: "house" | "oneroom" | "office" | undefined;
+  date: string[];
   address: {
-    start: string
-    end: string
-    detailStart: string
-    detailEnd: string
-  }
+    start: string;
+    end: string;
+    detailStart: string;
+    detailEnd: string;
+  };
   floor: {
-    start: string
-    end: string
-  }
-  name: string
-  phone: string
-  contents?: string
-  isMoveStore: boolean
+    start: string;
+    end: string;
+  };
+  name: string;
+  phone: string;
+  contents?: string;
+  isMoveStore: boolean;
   agree: {
-    terms: boolean
-    privacy: boolean
-    marketing: boolean
-  }
+    terms: boolean;
+    privacy: boolean;
+    marketing: boolean;
+  };
 
-  formData: types.RequestUserInfoInsert
-  selectedSubmitType?: 'curation' | 'select' | null
+  formData: types.RequestUserInfoInsert;
+  selectedSubmitType?: "curation" | "select" | null;
   /* submittedForm */
   submittedForm: {
-    data: SubmittedForm | undefined
-    loading: boolean
-    report: boolean
-  },
-  callDbdbDepp?: boolean
+    data: SubmittedForm | undefined;
+    loading: boolean;
+    report: boolean;
+  };
+  callDbdbDepp?: boolean;
 }
 
 const initialState: FormState = {
   type: undefined,
   date: [],
   address: {
-    start: '',
-    end: '',
-    detailStart: '',
-    detailEnd: ''
+    start: "",
+    end: "",
+    detailStart: "",
+    detailEnd: ""
   },
   floor: {
-    start: '',
-    end: ''
+    start: "",
+    end: ""
   },
-  name: '',
-  phone: '',
-  contents: '',
+  name: "",
+  phone: "",
+  contents: "",
   isMoveStore: false,
   agree: {
     terms: false,
@@ -62,26 +62,26 @@ const initialState: FormState = {
   },
   formData: {
     moving_type: undefined,
-    moving_date: '',
-    sido: '',
-    gugun: '',
-    dong: '',
-    floor: '',
-    detail_addr: '',
-    sido2: '',
-    gugun2: '',
-    dong2: '',
-    floor2: '',
-    detail_addr2: '',
+    moving_date: "",
+    sido: "",
+    gugun: "",
+    dong: "",
+    floor: "",
+    detail_addr: "",
+    sido2: "",
+    gugun2: "",
+    dong2: "",
+    floor2: "",
+    detail_addr2: "",
     distance: 1,
-    name: '',
-    phone1: '',
-    phone2: '',
-    phone3: '',
+    name: "",
+    phone1: "",
+    phone2: "",
+    phone3: "",
     keep_move: false,
     mkt_agree: false,
-    agent_id: '',
-    memo: '',
+    agent_id: "",
+    memo: "",
     auto_match: true
   },
   selectedSubmitType: null,
@@ -92,7 +92,7 @@ const initialState: FormState = {
     report: false
   },
   callDbdbDepp: false
-}
+};
 
 export default createReducer<FormState, Actions>(initialState)
   .handleAction(actions.setMoveType, (state, action) => ({ ...state, type: action.payload }))
@@ -106,7 +106,7 @@ export default createReducer<FormState, Actions>(initialState)
   .handleAction(actions.setAgree, (state, action) => ({ ...state, agree: action.payload }))
   .handleAction(actions.setFormData, (state, action) => ({ ...state, formData: action.payload }))
   .handleAction(actions.setInitialFormData, (state, action) => {
-    const { moving_date, detail_addr, detail_addr2, dong, dong2, floor, floor2, gugun, gugun2, keep_move, terms, privacy, marketing, name, phone1, phone2, phone3, sido, sido2 } = action.payload
+    const { moving_date, detail_addr, detail_addr2, dong, dong2, floor, floor2, gugun, gugun2, keep_move, terms, privacy, marketing, name, phone1, phone2, phone3, sido, sido2 } = action.payload;
     return {
       ...state,
       date: moving_date === null ? [] : [moving_date],
@@ -116,7 +116,7 @@ export default createReducer<FormState, Actions>(initialState)
       name: name,
       phone: `${phone1}${phone2}${phone3}`,
       agree: { terms, privacy, marketing }
-    }
+    };
   })
   .handleAction(actions.setSubmitType, (state, action) => ({
     ...state,
@@ -132,4 +132,4 @@ export default createReducer<FormState, Actions>(initialState)
   }))
   .handleAction(actions.submitFormAsync.failure, (state) => ({ ...state, submittedForm: { ...state.submittedForm, loading: false, report: false } }))
   .handleAction(actions.resetFormData, (state) => ({ ...state, formData: initialState.formData }))
-  .handleAction(actions.setDbdbdepp, (state, action) => ({ ...state, callDbdbDepp: action.payload }))
+  .handleAction(actions.setDbdbdepp, (state, action) => ({ ...state, callDbdbDepp: action.payload }));

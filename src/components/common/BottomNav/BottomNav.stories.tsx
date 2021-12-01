@@ -1,31 +1,31 @@
-import React from 'react'
-import Styled from 'styled-components'
-import { BrowserRouter as Router } from 'react-router-dom'
-import BottomNav from './index'
+import React from "react";
+import Styled from "styled-components";
+import { BrowserRouter as Router } from "react-router-dom";
+import BottomNav from "./index";
 
-import GlobalStyled from 'styles/global'
+import GlobalStyled from "styles/global";
 
 export default {
-    title: 'ReviewItem|BottomNav',
-    component: BottomNav,
-    parameters: {
-        docs: {
-            inlineStories: false
-        }
+  title: "ReviewItem|BottomNav",
+  component: BottomNav,
+  parameters: {
+    docs: {
+      inlineStories: false
     }
+  }
 };
 
 export const buttonNav = () => {
-    return (
-        <>
-            <GlobalStyled />
-            <Router>
-                <BottomNav />
-            </Router>
-        </>
-    )
+  return (
+    <>
+      <GlobalStyled />
+      <Router>
+        <BottomNav />
+      </Router>
+    </>
+  );
 };
 
 buttonNav.story = {
-    name: 'Default'
+  name: "Default"
 };

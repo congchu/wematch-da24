@@ -1,8 +1,8 @@
-import * as React from 'react'
-import styled, { keyframes } from 'styled-components'
-import { white, gray33, gray88 } from 'styles/colors'
-import { Icon } from 'components/wematch-ui'
-import { resetButton } from 'styles/mixins'
+import * as React from "react";
+import styled, { keyframes } from "styled-components";
+import { white, gray33, gray88 } from "styles/colors";
+import { Icon } from "components/wematch-ui";
+import { resetButton } from "styles/mixins";
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   onClose?: () => void;
@@ -19,11 +19,10 @@ const slideUp = keyframes`
     transform: translateY(0);
     opacity: 1;
   }
-`
+`;
 
 const S = {
-  Container: styled.div`
-  `,
+  Container: styled.div``,
   Overlay: styled.div`
     position: fixed;
     z-index: 100;
@@ -73,33 +72,22 @@ const S = {
     width: 16px;
     height: 16px;
   `
-}
-
+};
 
 export function Suggestion(props: Props) {
-  const {
-    onClose,
-    title,
-    guide,
-    children,
-    ...restProps
-  } = props
+  const { onClose, title, guide, children, ...restProps } = props;
 
   return (
     <S.Container {...restProps}>
       <S.Overlay onClick={onClose} />
       <S.Panel>
         <S.CloseButton onClick={onClose}>
-          <Icon.Close size={16}/>
+          <Icon.Close size={16} />
         </S.CloseButton>
-        {title && <S.Title>
-          {title}
-        </S.Title>}
-        {guide && <S.Guide>
-          {guide}
-        </S.Guide>}
+        {title && <S.Title>{title}</S.Title>}
+        {guide && <S.Guide>{guide}</S.Guide>}
         {children}
       </S.Panel>
     </S.Container>
-  )
+  );
 }

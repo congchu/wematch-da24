@@ -1,8 +1,8 @@
-import * as React from 'react'
-import styled from 'styled-components'
-import CollapseItemContext from './CollapseItemContext'
-import { Down, Up } from '../Icon'
-import { gray33 } from 'styles/colors'
+import * as React from "react";
+import styled from "styled-components";
+import CollapseItemContext from "./CollapseItemContext";
+import { Down, Up } from "../Icon";
+import { gray33 } from "styles/colors";
 
 interface Props extends React.HTMLAttributes<Element> {
   text: string;
@@ -23,22 +23,19 @@ const Header = styled.strong`
     position: absolute;
     right: 4px;
   }
-`
+`;
 
 export function CollapseHeader(props: Props) {
-  const {
-    text,
-    ...restProps
-  } = props
+  const { text, ...restProps } = props;
 
   return (
     <CollapseItemContext.Consumer>
       {({ toggleExpansion, expanded }) => (
         <Header onClick={toggleExpansion} {...restProps}>
           {text}
-          {expanded ? (<Down className="icon" />) : (<Up  className="icon" />)}
+          {expanded ? <Down className="icon" /> : <Up className="icon" />}
         </Header>
       )}
     </CollapseItemContext.Consumer>
-  )
+  );
 }

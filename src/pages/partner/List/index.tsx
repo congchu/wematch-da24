@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import styled, { css } from 'styled-components'
-import { useHistory } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { useMedia } from 'react-use-media'
-import { isEmpty } from 'lodash'
+import React, { useEffect, useState } from "react";
+import styled, { css } from "styled-components";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useMedia } from "react-use-media";
+import { isEmpty } from "lodash";
 
-import useInfiniteScroll from 'hooks/useInfiniteScroll'
-import MainHeader from 'components/common/MainHeader'
-import TopGnb from 'components/TopGnb'
-import EmptyPage from 'components/EmptyPage'
-import { KakaoIcon, ChatArrow } from 'components/Icon'
+import useInfiniteScroll from "hooks/useInfiniteScroll";
+import MainHeader from "components/common/MainHeader";
+import TopGnb from "components/TopGnb";
+import EmptyPage from "components/EmptyPage";
+import { KakaoIcon, ChatArrow } from "components/Icon";
 
-import SetType from 'components/SetType'
-import PartnerItem from './item'
+import SetType from "components/SetType";
+import PartnerItem from "./item";
 
-import * as colors from 'styles/colors'
-import * as values from 'constants/values'
+import * as colors from "styles/colors";
+import * as values from "constants/values";
 
-import * as partnerActions from 'store/partner/actions'
-import * as partnerSelector from 'store/partner/selectors'
-import * as formSelector from 'store/form/selectors'
-import * as commonSelector from 'store/common/selectors'
-import { dataLayer } from 'lib/dataLayerUtil'
-import { IPartnerList } from 'types/partner'
-import NewModal from 'components/NewModalTemplate'
+import * as partnerActions from "store/partner/actions";
+import * as partnerSelector from "store/partner/selectors";
+import * as formSelector from "store/form/selectors";
+import * as commonSelector from "store/common/selectors";
+import { dataLayer } from "lib/dataLayerUtil";
+import { IPartnerList } from "types/partner";
+import NewModal from "components/NewModalTemplate";
 
 const S = {
   Container: styled.div`
@@ -111,65 +111,64 @@ const S = {
     color: ${colors.pointBlue};
     padding: 15px;
   `
-}
+};
 
 {
   /* 임시용 디자인 없음*/
 }
 function MoreLoading() {
-  return <S.More>로딩중..</S.More>
+  return <S.More>로딩중..</S.More>;
 }
 
 const PartnerList = () => {
   const isDesktop = useMedia({
     minWidth: 1200
-  })
+  });
 
-  const history = useHistory()
-  const dispatch = useDispatch()
+  const history = useHistory();
+  const dispatch = useDispatch();
 
-  const getPartnerList = useSelector(partnerSelector.getPartnerList)
-  const getPartnerPick = useSelector(partnerSelector.getPartnerPick)
-  const getFormData = useSelector(formSelector.getFormData)
-  const getMoveIdxData = useSelector(commonSelector.getMoveIdxData)
+  const getPartnerList = useSelector(partnerSelector.getPartnerList);
+  const getPartnerPick = useSelector(partnerSelector.getPartnerPick);
+  const getFormData = useSelector(formSelector.getFormData);
+  const getMoveIdxData = useSelector(commonSelector.getMoveIdxData);
 
-  const [page, setPage] = useState<number>(2)
-  const [visible, setVisible] = useState(false)
+  const [page, setPage] = useState<number>(2);
+  const [visible, setVisible] = useState(false);
 
   const fetchMoreListItems = () => {
     if (getMoveIdxData.idx && getPartnerList.hasMore) {
-      setPage(page + 1)
+      setPage(page + 1);
       dispatch(
         partnerActions.fetchPartnerMoreListAsync.request({
           page: page,
           size: values.DEFAULT_PARTNER_LIST_SIZE,
           idx: getMoveIdxData.idx
         })
-      )
+      );
       setTimeout(() => {
         // @ts-ignore
-        setIsFetching(false)
-      }, 3000)
+        setIsFetching(false);
+      }, 3000);
     }
-  }
+  };
 
-  const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems)
+  const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
 
   const handleLinkKakao = () => {
-    window.open('https://api.happytalk.io/api/kakao/chat_open?yid=%40%EC%9C%84%EB%A7%A4%EC%B9%98&site_id=4000001315&category_id=111561&division_id=111564', '_blank')
-  }
-
+    window.open("https://api.happytalk.io/api/kakao/chat_open?yid=%40%EC%9C%84%EB%A7%A4%EC%B9%98&site_id=4000001315&category_id=111561&division_id=111564", "_blank");
+  };
 
   useEffect(() => {
     if (getFormData?.moving_date.length === 0) {
-      setVisible(true)
+      setVisible(true);
     }
     if (!getMoveIdxData.idx) {
-      setVisible(true)
+      setVisible(true);
     }
 
-    return () => {}
-  }, [])
+    return () => {};
+  }, []);
 
   useEffect(() => {
     if (getMoveIdxData.idx && getPartnerList.data.length === 0 && !getMoveIdxData.loading) {
@@ -179,24 +178,24 @@ const PartnerList = () => {
           size: values.DEFAULT_PARTNER_LIST_SIZE,
           idx: getMoveIdxData.idx
         })
-      )
+      );
     }
-  }, [dispatch])
+  }, [dispatch]);
 
   const renderList = () => {
     if (getPartnerList.loading) {
-      let arr = new Array(10).fill(undefined).map((val, idx) => idx)
+      let arr = new Array(10).fill(undefined).map((val, idx) => idx);
       return (
         <S.PartnerItemContainer hasMore={getPartnerList.hasMore}>
           {arr.map((index: number) => {
-            return <PartnerItem key={index} />
+            return <PartnerItem key={index} />;
           })}
         </S.PartnerItemContainer>
-      )
+      );
     }
 
     if (isEmpty(getPartnerList.data)) {
-      return <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다." />
+      return <EmptyPage title="죄송합니다" subTitle="해당지역에 가능한 업체가 없습니다." />;
     }
 
     return (
@@ -207,23 +206,23 @@ const PartnerList = () => {
               <PartnerItem
                 list={list}
                 onClick={() => {
-                  history.push(`/partner/detail/${list.adminid}`)
-                  dataLayer({ event: 'partner_select', label: `${getPartnerList.data.length}_${index + 1}`, CD7: `${list.level}등급`, CD8: `${list.title}` })
+                  history.push(`/partner/detail/${list.adminid}`);
+                  dataLayer({ event: "partner_select", label: `${getPartnerList.data.length}_${index + 1}`, CD7: `${list.level}등급`, CD8: `${list.title}` });
                 }}
               />
-            )
+            );
           })}
         </S.PartnerItemContainer>
         <S.ChatText onClick={handleLinkKakao} id="dsl_booking_list_katalk2">
-          {getPartnerList.data[0].status === 'unavailable' ? '가능업체를 찾아드릴까요?' : '도움이 필요하세요?'}
+          {getPartnerList.data[0].status === "unavailable" ? "가능업체를 찾아드릴까요?" : "도움이 필요하세요?"}
           <ChatArrow width={20} height={12} />
         </S.ChatText>
         <S.BtnKakao onClick={handleLinkKakao} id="dsl_booking_list_katalk">
           <KakaoIcon width={35} height={34} />
         </S.BtnKakao>
       </>
-    )
-  }
+    );
+  };
 
   return (
     <S.Container>
@@ -233,9 +232,9 @@ const PartnerList = () => {
         <S.WrapItem id="dsl_booking_list_partner">{renderList()}</S.WrapItem>
         {isFetching && getPartnerList.hasMore && <MoreLoading />}
       </>
-      <NewModal visible={visible} title={'정보 만료'} content={'현재 페이지의 정보가 만료되었습니다. 다시 조회해 주세요.'} confirmClick={() => history.push('/')} confirmText={'홈으로 가기'} />
+      <NewModal visible={visible} title={"정보 만료"} content={"현재 페이지의 정보가 만료되었습니다. 다시 조회해 주세요."} confirmClick={() => history.push("/")} confirmText={"홈으로 가기"} />
     </S.Container>
-  )
-}
+  );
+};
 
-export default PartnerList
+export default PartnerList;

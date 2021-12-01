@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
-import styled, { css, keyframes } from 'styled-components'
-import ScrollLock, { TouchScrollable } from 'react-scrolllock'
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import styled, { css, keyframes } from "styled-components";
+import ScrollLock, { TouchScrollable } from "react-scrolllock";
 
-import * as colors from 'styles/colors'
-import { Icon } from '../../wematch-ui'
+import * as colors from "styles/colors";
+import { Icon } from "../../wematch-ui";
 
 type SelectItemProp = {
-  key: string
-  value: string
-}
+  key: string;
+  value: string;
+};
 
 interface Props {
   /** 모달 visible */
-  visible: boolean
+  visible: boolean;
   /** 상단 헤더 타이틀 */
-  headerTitle?: string
+  headerTitle?: string;
   /** close 버튼 이벤트 정의 */
-  onClose?: (e: React.MouseEvent) => void
+  onClose?: (e: React.MouseEvent) => void;
   /** overlay 클릭 이벤트 정의 */
-  onOverlayClose?: (e: React.MouseEvent) => void
+  onOverlayClose?: (e: React.MouseEvent) => void;
   /** 셀렉트 박스 내용 정의 */
-  items: SelectItemProp[]
+  items: SelectItemProp[];
   /** 리스트 내용 선택 이벤트 */
-  onSelect?(data: string): void
+  onSelect?(data: string): void;
 }
 
 const fadeIn = keyframes`
@@ -33,7 +33,7 @@ const fadeIn = keyframes`
     to {
         opacity: 1
     }
-`
+`;
 
 const fadeOut = keyframes`
     from {
@@ -42,7 +42,7 @@ const fadeOut = keyframes`
     to {
         opacity: 0
     }
-`
+`;
 
 const slideUp = keyframes`
     from {
@@ -51,7 +51,7 @@ const slideUp = keyframes`
     to {
         transform: translateY(0px);
     }
-`
+`;
 
 const slideDown = keyframes`
     from {
@@ -60,7 +60,7 @@ const slideDown = keyframes`
     to {
         transform: translateY(200%);
     }
-`
+`;
 
 const S = {
   Container: styled.div`
@@ -218,44 +218,44 @@ const S = {
       color: ${colors.pointVividBlue};
     }
   `
-}
+};
 
 const Select: React.FC<Props> = (props) => {
-  const { visible, headerTitle, onClose, onOverlayClose, items, onSelect } = props
+  const { visible, headerTitle, onClose, onOverlayClose, items, onSelect } = props;
 
-  const [animate, setAnimate] = useState(false)
-  const [localVisible, setLocalVisible] = useState(visible)
+  const [animate, setAnimate] = useState(false);
+  const [localVisible, setLocalVisible] = useState(visible);
   // const [lockScroll, setLockScroll] = useState(true)
 
   const handleOnSelect = (data: string) => {
     if (onSelect) {
-      onSelect(data)
+      onSelect(data);
     }
-  }
+  };
 
   const handleOnClose = (e: React.MouseEvent) => {
     if (onClose) {
-      onClose(e)
+      onClose(e);
     }
-  }
+  };
 
   useEffect(() => {
     if (localVisible && !visible) {
-      setAnimate(true)
-      setTimeout(() => setAnimate(false), 250)
+      setAnimate(true);
+      setTimeout(() => setAnimate(false), 250);
     }
-    setLocalVisible(visible)
-  }, [localVisible, visible])
+    setLocalVisible(visible);
+  }, [localVisible, visible]);
 
-  if (!animate && !localVisible) return null
+  if (!animate && !localVisible) return null;
 
   const keyList = items.map((item) => {
-    return item.key
-  })
+    return item.key;
+  });
 
   const values = items.map((item) => {
-    return item.value
-  })
+    return item.value;
+  });
 
   return createPortal(
     <ScrollLock>
@@ -265,7 +265,7 @@ const Select: React.FC<Props> = (props) => {
           <S.Header>
             <strong>{headerTitle}</strong>
             <button onClick={onClose}>
-              <Icon.Close size={20} color={'#121212'} />
+              <Icon.Close size={20} color={"#121212"} />
             </button>
           </S.Header>
           <S.ListWrapper>
@@ -275,8 +275,8 @@ const Select: React.FC<Props> = (props) => {
                   <S.Item
                     key={index}
                     onClick={(e) => {
-                      handleOnSelect(keyList[index])
-                      handleOnClose(e)
+                      handleOnSelect(keyList[index]);
+                      handleOnClose(e);
                     }}>
                     {value}
                   </S.Item>
@@ -288,7 +288,7 @@ const Select: React.FC<Props> = (props) => {
       </S.Container>
     </ScrollLock>,
     document.body
-  )
-}
+  );
+};
 
-export default Select
+export default Select;
