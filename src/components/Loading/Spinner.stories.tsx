@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Spinner from "./Spinner";
 
 import GlobalStyled from "styles/global";
+import SpinnerPopup from "./SpinnerPopup";
 
 export default {
   title: "Loading|Spinner",
@@ -16,18 +17,30 @@ export default {
 
 export const spinner = () => {
   return (
-    <Container>
+    <>
       <GlobalStyled />
-      <Spinner />
-    </Container>
+      <Container className="flex">
+        <div className="container">
+          <Spinner color="main" />
+        </div>
+        <div className="container">
+          <Spinner color="white" />
+        </div>
+      </Container>
+    </>
   );
 };
 
 const Container = styled.div`
-  widht: 100%;
-  height: 100vh;
-  padding: 20px;
-  background-color: #1672f7;
+  display: flex;
+  .container {
+    padding: 30px;
+  }
+  .container:nth-child(1) {
+  }
+  .container:nth-child(2) {
+    background-color: #1672f7;
+  }
 `;
 spinner.story = {
   name: "Default"

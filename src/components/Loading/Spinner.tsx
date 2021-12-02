@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Styled from "styled-components";
 
-const Spinner = () => {
+type Props = { color: string; size?: string };
+const Spinner = ({ color, size }: Props) => {
   return (
-    <Container>
+    <Container color={color === "main" ? "#1672f7" : "#ffffff"} size={size ? size : "24px"}>
       <div className="circle">
         <div className="circle1 child"></div>
         <div className="circle2 child"></div>
@@ -21,109 +22,151 @@ const Spinner = () => {
 
 export default Spinner;
 
-const Container = Styled.div`
-    .circle {
-        width: 24px;
-        height: 24px;
+const Container = Styled.div<{ color: string; size: string }>`
+.circle {
+        width: ${({ size }) => size};
+        height: ${({ size }) => size};
         position: relative;
-    }
-    .circle .child {
-    width: 100%;
-    height: 100%;
     
-    position: absolute;
-    left: 0;
-    top: 0;
-    }
-    .circle .child:before {
-    content: '';
-    display: block;
-    margin: 0 auto;
-    width: 20%;
-    height: 20%;
-    background-color: #ffffff;
-    border-radius: 100%;
-    -webkit-animation: circleBounceDelay 1.2s infinite ease-in-out both;
+        .child {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    
+        .child:before {
+            content: '';
+            display: block;
+            margin: 0 auto;
+            width: 20%;
+            height: 20%;
+    
+            background-color: ${({ color }) => color};
+            border-radius: 100%;
+            -webkit-animation: circleBounceDelay 1.2s infinite ease-in-out both;
             animation: circleBounceDelay 1.2s infinite ease-in-out both;
+        }
+    
+        .circle2 {
+            -webkit-transform: rotate(40deg);
+        }
+    
+        .circle3 {
+            -webkit-transform: rotate(80deg);
+        }
+    
+        .circle4 {
+            -webkit-transform: rotate(120deg);
+            -ms-transform: rotate(120deg);
+            transform: rotate(120deg);
+        }
+    
+        .circle5 {
+            -webkit-transform: rotate(160deg);
+            -ms-transform: rotate(160deg);
+            transform: rotate(160deg);
+        }
+    
+        .circle6 {
+            -webkit-transform: rotate(200deg);
+            -ms-transform: rotate(200deg);
+            transform: rotate(200deg);
+        }
+    
+        .circle7 {
+            -webkit-transform: rotate(240deg);
+            -ms-transform: rotate(240deg);
+            transform: rotate(240deg);
+        }
+    
+        .circle8 {
+                -webkit-transform: rotate(280deg);
+                -ms-transform: rotate(280deg);
+                transform: rotate(280deg);
+            }
+      
+         .circle9 {
+            -webkit-transform: rotate(320deg);
+            -ms-transform: rotate(320deg);
+            transform: rotate(320deg);
+        }
+    
+        .circle2:before {
+            -webkit-animation-delay: -1.0s;
+            animation-delay: -1.0s;
+        }
+    
+        .circle3:before {
+            -webkit-animation-delay: -0.8s;
+            animation-delay: -0.8s;
+        }
+    
+        .circle4:before {
+            -webkit-animation-delay: -0.6s;
+            animation-delay: -0.6s;
+        }
+    
+        .circle5:before {
+            -webkit-animation-delay: -0.5s;
+            animation-delay: -0.5s;
+        }
+    
+        .circle6:before {
+            -webkit-animation-delay: -0.4s;
+            animation-delay: -0.4s;
+        }
+    
+        .circle7:before {
+            -webkit-animation-delay: -0.3s;
+            animation-delay: -0.3s;
+        }
+    
+        .circle8:before {
+            -webkit-animation-delay: -0.2s;
+            animation-delay: -0.2s;
+        }
+    
+        .circle9:before {
+            -webkit-animation-delay: -0.1s;
+            animation-delay: -0.1s;
+        }
     }
-    .circle .circle2 {
-    -webkit-transform: rotate(40deg);
-        -ms-transform: rotate(40deg);
-            transform: rotate(40deg); }
-    .circle .circle3 {
-    -webkit-transform: rotate(80deg);
-        -ms-transform: rotate(80deg);
-            transform: rotate(80deg); }
-    .circle .circle4 {
-    -webkit-transform: rotate(120deg);
-        -ms-transform: rotate(120deg);
-            transform: rotate(120deg); }
-    .circle .circle5 {
-    -webkit-transform: rotate(160deg);
-        -ms-transform: rotate(160deg);
-            transform: rotate(160deg); }
-    .circle .circle6 {
-    -webkit-transform: rotate(200deg);
-        -ms-transform: rotate(200deg);
-            transform: rotate(200deg); }
-    .circle .circle7 {
-    -webkit-transform: rotate(240deg);
-        -ms-transform: rotate(240deg);
-            transform: rotate(240deg); }
-    .circle .circle8 {
-    -webkit-transform: rotate(280deg);
-        -ms-transform: rotate(280deg);
-            transform: rotate(280deg); }
-            .circle .circle9 {
-            -webkit-transform: rotate(320deg);
-                -ms-transform: rotate(320deg);
-                    transform: rotate(320deg); }
-            .circle .circle9 {
-            -webkit-transform: rotate(320deg);
-                -ms-transform: rotate(320deg);
-                    transform: rotate(320deg); }
-    .circle .circle2:before {
-    -webkit-animation-delay: -1.0s;
-            animation-delay: -1.0s; }
-    .circle .circle3:before {
-    -webkit-animation-delay: -0.8s;
-            animation-delay: -0.8s; }
-    .circle .circle4:before {
-    -webkit-animation-delay: -0.6s;
-            animation-delay: -0.6s; }
-    .circle .circle5:before {
-    -webkit-animation-delay: -0.5s;
-            animation-delay: -0.5s; }
-    .circle .circle6:before {
-    -webkit-animation-delay: -0.4s;
-            animation-delay: -0.4s; }
-    .circle .circle7:before {
-    -webkit-animation-delay: -0.3s;
-            animation-delay: -0.3s; }
-    .circle .circle8:before {
-    -webkit-animation-delay: -0.2s;
-            animation-delay: -0.2s; }
-    .circle .circle9:before {
-    -webkit-animation-delay: -0.1s;
-            animation-delay: -0.1s; }
-
+    
+    
+    
     @-webkit-keyframes circleBounceDelay {
-    0%, 80%, 100% {
-        -webkit-transform: scale(0);
-                transform: scale(0);
-                opacity: 0.5;
-    } 40% {
-        -webkit-transform: scale(1);
-                transform: scale(1);
+    
+        0%,
+        80%,
+        100% {
+            -webkit-transform: scale(0);
+            transform: scale(0);
+            opacity: 0;
+        }
+    
+        40% {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+            opacity: 1;
+        }
     }
-    }
-
+    
     @keyframes circleBounceDelay {
-    0%, 80%, 100% {
-        -webkit-transform: scale(0);
-                transform: scale(0);
-    } 40% {
-        -webkit-transform: scale(1);
-                transform: scale(1);
+    
+        0%,
+        80%,
+        100% {
+            -webkit-transform: scale(0);
+            transform: scale(0);
+            opacity: 0;
+        }
+    
+        40% {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+            opacity: 1;
+        }
     }
 `;
