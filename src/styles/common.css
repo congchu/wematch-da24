@@ -29,17 +29,12 @@
   line-height: 29px;
 }
 
-.font-body1 {
+.font-body {
   font-family: 'Noto Sans KR', 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
   font-weight: normal;
   font-size: 16px;
   line-height: 23px;
-}
-
-.font-body2 {
-  font-family: 'Noto Sans KR', 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
-  font-size: 14px;
-  line-height: 20px;
+  letter-spacing: -1px;
 }
 
 .font-caption {
@@ -66,6 +61,13 @@
   line-height: 20px;
 }
 
+
+/* Weight */
+.weight-bold {
+  font-weight: bold;
+}
+
+
 .color-88 {
   color: #888888;
 }
@@ -76,6 +78,14 @@
 
 .color-33 {
   color: #333333;
+}
+
+.color-main1 {
+  color: var(--color-main-1);
+}
+
+.color-main1 {
+  color: var(--color-main-1);
 }
 
 .bg-ect1 {

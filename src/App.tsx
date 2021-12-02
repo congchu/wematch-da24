@@ -19,7 +19,6 @@ import { dataLayer } from "lib/dataLayerUtil";
 import ReactPixel from "react-facebook-pixel";
 
 import GlobalStyled from "styles/global";
-import "styles/common.css";
 
 // pages
 import Home from "pages/home";
