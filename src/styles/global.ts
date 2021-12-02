@@ -2,6 +2,7 @@ import { createGlobalStyle } from 'styled-components'
 import { resetButton, resetInput } from './mixins'
 import reset from './reset'
 import * as colors from 'styles/colors'
+import "styles/common.css";
 
 export default createGlobalStyle`
   ${reset}
