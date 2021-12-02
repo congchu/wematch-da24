@@ -12,8 +12,6 @@ import { Down, Up } from "components/wematch-ui/Icon";
 import { Check } from "components/Icon";
 import ProcessBar from "./processBar";
 import NewModal from "components/NewModalTemplate";
-import ResponsiveSkeleton from "components/common/Skeleton/responsiveSkeleton";
-
 import * as commonSelector from "store/common/selectors";
 import * as commonActions from "store/common/actions";
 import * as partnerActions from "store/partner/actions";
@@ -639,7 +637,7 @@ export default function Completed() {
   };
 
   if (loading || firstLoading || cleanLoading || moveLoading) {
-    return <SpinnerPopup title="내 조건에 맞는 이사업체 찾는 중..." subtitle="(최대 1분 소요)" />;
+    return <SpinnerPopup title={`내 조건에 맞는 ${serviceType === "clean" ? "청소" : "이사"}업체 찾는 중...`} subtitle="(최대 1분 소요)" />;
   }
   return (
     <S.Container>
