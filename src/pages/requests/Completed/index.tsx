@@ -37,6 +37,7 @@ import { getCookie } from "../../../lib/cookie";
 import * as userActions from "../../../store/user/actions";
 import * as formActions from "../../../store/form/actions";
 import { maskingName, maskingPhone } from "lib/stringUtil";
+import SpinnerPopup from "components/Loading/SpinnerPopup";
 
 const S = {
   Container: styled.div`
@@ -638,7 +639,7 @@ export default function Completed() {
   };
 
   if (loading || firstLoading || cleanLoading || moveLoading) {
-    return <ResponsiveSkeleton />;
+    return <SpinnerPopup title="내 조건에 맞는 이사업체 찾는 중..." subtitle="(최대 1분 소요)" />;
   }
   return (
     <S.Container>

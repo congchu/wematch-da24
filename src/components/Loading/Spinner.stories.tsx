@@ -31,6 +31,14 @@ export const spinner = () => {
   );
 };
 
+export const spinnerPopup = () => {
+  return (
+    <>
+      <GlobalStyled />
+      <SpinnerPopup title="내 조건에 맞는 이사업체 찾는 중..." subtitle="(최대 1분 소요)"/>
+    </>
+  );
+};
 const Container = styled.div`
   display: flex;
   .container {
