@@ -12,8 +12,6 @@ import { Down, Up } from "components/wematch-ui/Icon";
 import { Check } from "components/Icon";
 import ProcessBar from "./processBar";
 import NewModal from "components/NewModalTemplate";
-import ResponsiveSkeleton from "components/common/Skeleton/responsiveSkeleton";
-
 import * as commonSelector from "store/common/selectors";
 import * as commonActions from "store/common/actions";
 import * as partnerActions from "store/partner/actions";
