@@ -27,6 +27,7 @@ import dayjs from "dayjs";
 import NewLevelN from "components/Icon/generated/NewLevelN";
 import NewLevelOther from "components/Icon/generated/NewLevelOther";
 import NewLevelS from "components/Icon/generated/NewLevelS";
+import { SpinnerPopup } from "@wematch/wematch-ui";
 import { Level } from "types/partner";
 import { getUser } from "store/user/selectors";
 import { phoneSplit } from "components/wematch-ui/utils/form";
@@ -35,7 +36,6 @@ import { getCookie } from "../../../lib/cookie";
 import * as userActions from "../../../store/user/actions";
 import * as formActions from "../../../store/form/actions";
 import { maskingName, maskingPhone } from "lib/stringUtil";
-import SpinnerPopup from "components/Loading/SpinnerPopup";
 
 const S = {
   Container: styled.div`

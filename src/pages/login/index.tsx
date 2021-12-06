@@ -17,12 +17,12 @@ import Button from "components/common/Button";
 import TermsModal from "components/common/Modal/TermsModal";
 import MainHeader from "components/common/MainHeader";
 import TopGnb from "components/TopGnb";
+import { Spinner } from "@wematch/wematch-ui";
 import { useMedia } from "react-use-media";
 import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { get } from "lodash";
 import { ESignInCase } from "store/user/types";
-import Spinner from "components/Loading/Spinner";
 
 function LoginPage() {
   const mobileOS = getMobileOS();
