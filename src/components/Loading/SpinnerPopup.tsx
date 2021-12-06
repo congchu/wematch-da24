@@ -18,7 +18,7 @@ const SpinnerPopup = ({ title, subtitle }: Props) => {
       <div className="fong-bold color-33 flex">
         <div>{subtitle}</div>
       </div>
-      <div className="pb-40"/>
+      <div className="pb-40" />
     </Container>
   );
 };
@@ -33,6 +33,7 @@ const Container = styled.div`
 `;
 
 const AnimatedDots = styled.div`
+width: 16px;
 &:after {
   content: ' .';
   animation: dots 1.2s steps(5, end) infinite;

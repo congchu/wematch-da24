@@ -134,8 +134,8 @@ const SpinnerSmall = styled.div<{ color: string }>`
   transform-origin: 71px 29px;
 }
 .loadingio-spinner-spin {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   display: inline-block;
   overflow: hidden;
 }
