@@ -637,7 +637,7 @@ export default function Completed() {
   };
 
   if (loading || firstLoading || cleanLoading || moveLoading) {
-    return <SpinnerPopup title={`내 조건에 맞는 ${serviceType === "clean" ? "청소" : "이사"}업체 찾는 중...`} subtitle="(최대 1분 소요)" />;
+    return <SpinnerPopup title={`내 조건에 맞는 ${serviceType === "clean" ? "청소" : "이사"}업체 찾는 중`} subtitle="(최대 1분 소요)" />;
   }
   return (
     <S.Container>

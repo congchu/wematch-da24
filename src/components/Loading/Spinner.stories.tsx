@@ -21,10 +21,10 @@ export const spinner = () => {
       <GlobalStyled />
       <Container className="flex">
         <div className="container">
-          <Spinner color="main" />
+          <Spinner color="main" size="medium"/>
         </div>
         <div className="container">
-          <Spinner color="white" />
+          <Spinner color="white" size="small" />
         </div>
       </Container>
     </>
@@ -35,12 +35,13 @@ export const spinnerPopup = () => {
   return (
     <>
       <GlobalStyled />
-      <SpinnerPopup title="내 조건에 맞는 이사업체 찾는 중..." subtitle="(최대 1분 소요)"/>
+      <SpinnerPopup title="내 조건에 맞는 이사업체 찾는 중" subtitle="(최대 1분 소요)"/>
     </>
   );
 };
 const Container = styled.div`
   display: flex;
+  
   .container {
     padding: 30px;
   }
