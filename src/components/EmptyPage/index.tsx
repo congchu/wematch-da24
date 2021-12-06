@@ -1,12 +1,12 @@
-import React from 'react'
-import Styled from 'styled-components'
+import React from "react";
+import Styled from "styled-components";
 
-import * as colors from '../../styles/colors'
+import * as colors from "../../styles/colors";
 
-import { IconSad } from '../Icon'
+import { IconSad } from "../Icon";
 
 const S = {
-	Container: Styled.div`
+  Container: Styled.div`
 		padding:110px 0 40px;
 		text-align:center;
 		letter-spacing:-0.5px;
@@ -31,23 +31,22 @@ const S = {
 			font-size:14px;
 			color:${colors.gray66};
 		}
-	`,
-
-}
+	`
+};
 
 interface Props {
-	title: string;
-	subTitle: string;
+  title: string;
+  subTitle: string;
 }
 
 const EmptyPage = ({ title, subTitle }: Props) => {
-	return (
-		<S.Container>
-			<IconSad width={80} height={64} />
-			<strong>{title}</strong>
-			<p>{subTitle}</p>
-		</S.Container>
-	)
-}
+  return (
+    <S.Container>
+      <IconSad width={80} height={64} />
+      <strong>{title}</strong>
+      <p>{subTitle}</p>
+    </S.Container>
+  );
+};
 
-export default EmptyPage
+export default EmptyPage;

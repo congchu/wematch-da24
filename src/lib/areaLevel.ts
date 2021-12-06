@@ -3,7 +3,7 @@
  * 11월 데이터로 업데이트 (21.12.03)
  */
 
-type levelType = '상상' | '상중' | '상하' | '중상' | '중중' | '중하' | '하상' | '하중' | '하하'
+type levelType = "상상" | "상중" | "상하" | "중상" | "중중" | "중하" | "하상" | "하중" | "하하";
 
 export const areaLevels: { area: string; level: levelType }[] = [
   { area: '서울특별시송파구', level: '상상' },
@@ -271,13 +271,13 @@ export const deductionPoints: any = {
 }
 
 export const getAreaLevel = (sido: string, gugun: string) => {
-  let value = 0
-  const address = `${sido}${gugun}`.replace(/ /g, '')
-  const targetArea = areaLevels.find((area) => area.area === address)
+  let value = 0;
+  const address = `${sido}${gugun}`.replace(/ /g, "");
+  const targetArea = areaLevels.find((area) => area.area === address);
 
   if (targetArea) {
-    value = deductionPoints[targetArea.level]
-    return { ...targetArea, value }
+    value = deductionPoints[targetArea.level];
+    return { ...targetArea, value };
   }
-  return null
-}
+  return null;
+};

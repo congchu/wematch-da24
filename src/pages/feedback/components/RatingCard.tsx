@@ -1,13 +1,13 @@
-import { Colors } from '@wematch/wematch-ui'
-import { StarRating } from 'components/Icon'
-import React, {  ReactNode } from 'react'
-import styled from 'styled-components'
+import { Colors } from "@wematch/wematch-ui";
+import { StarRating } from "components/Icon";
+import React, { ReactNode } from "react";
+import styled from "styled-components";
 
 interface Props {
-  title?: string
-  textBody?: ReactNode
-  value: number
-  onChange: (value: number) => void
+  title?: string;
+  textBody?: ReactNode;
+  value: number;
+  onChange: (value: number) => void;
 }
 
 const RatingCard = ({ title, textBody, value = 0, onChange }: Props) => {
@@ -15,9 +15,9 @@ const RatingCard = ({ title, textBody, value = 0, onChange }: Props) => {
     .fill(0)
     .map((_, index) => (
       <IconWrapper key={`${title}-ratingIcon-${index}`} onClick={() => onChange(index + 1)}>
-        <StarRating width={40} height={40} color={value > 0 && index < value ? '#FFD500' : '#D7DBE2'} />
+        <StarRating width={40} height={40} color={value > 0 && index < value ? "#FFD500" : "#D7DBE2"} />
       </IconWrapper>
-    ))
+    ));
   return (
     <Container>
       <Title>{title}</Title>
@@ -30,10 +30,10 @@ const RatingCard = ({ title, textBody, value = 0, onChange }: Props) => {
         </TextWrapper>
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default RatingCard
+export default RatingCard;
 
 const Container = styled.div`
   width: 100%;
@@ -50,7 +50,7 @@ const Container = styled.div`
   @media (min-width: 1200px) {
     align-items: center;
   }
-`
+`;
 
 const Title = styled.h1`
   font-weight: bold;
@@ -58,14 +58,14 @@ const Title = styled.h1`
   font-size: 16px;
   line-height: 23px;
   letter-spacing: -1px;
-`
+`;
 const TextBody = styled.p`
   font-size: 16px;
   line-height: 23px;
   letter-spacing: -1px;
   color: ${Colors.gray66};
   padding-top: 8px;
-`
+`;
 
 const SelectWrapper = styled.div`
   width: 100%;
@@ -75,9 +75,9 @@ const SelectWrapper = styled.div`
   span + span {
     margin-left: 17px;
   }
-`
+`;
 
-const IconWrapper = styled.span``
+const IconWrapper = styled.span``;
 
 const TextWrapper = styled.div`
   width: 100%;
@@ -101,4 +101,4 @@ const TextWrapper = styled.div`
       }
     }
   }
-`
+`;

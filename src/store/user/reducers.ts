@@ -1,33 +1,33 @@
-import { ActionType, createReducer } from 'typesafe-actions'
-import { ESignInCase, IOrder } from './types'
-import * as actions from './actions'
-import { IUser } from 'types/auth'
+import { ActionType, createReducer } from "typesafe-actions";
+import { ESignInCase, IOrder } from "./types";
+import * as actions from "./actions";
+import { IUser } from "types/auth";
 
-export type Actions = ActionType<typeof actions>
+export type Actions = ActionType<typeof actions>;
 
 export interface UserState {
   auth: {
-    token: string | null
-    loading: boolean
-    user: IUser | null
-    prevPage: ESignInCase
-    error: boolean
-  }
+    token: string | null;
+    loading: boolean;
+    user: IUser | null;
+    prevPage: ESignInCase;
+    error: boolean;
+  };
   phoneVerify: {
-    isVerified: boolean | null
-    isSendMessage?: boolean
-    loading: boolean
-  }
+    isVerified: boolean | null;
+    isSendMessage?: boolean;
+    loading: boolean;
+  };
   consult: {
     data: {
-      name: string
-      phone: string
-      clean_orders: IOrder[]
-      move_orders: IOrder[]
-    }
-    selected: IOrder | null
-    loading: boolean
-  }
+      name: string;
+      phone: string;
+      clean_orders: IOrder[];
+      move_orders: IOrder[];
+    };
+    selected: IOrder | null;
+    loading: boolean;
+  };
 }
 
 const initialState: UserState = {
@@ -45,15 +45,15 @@ const initialState: UserState = {
   },
   consult: {
     data: {
-      name: '',
-      phone: '',
+      name: "",
+      phone: "",
       clean_orders: [],
       move_orders: []
     },
     selected: null,
     loading: false
   }
-}
+};
 
 export default createReducer<UserState, Actions>(initialState)
   .handleAction(actions.fetchUserConsultAsync.request, (state) => ({ ...state, consult: { ...state.consult, loading: true } }))
@@ -73,4 +73,4 @@ export default createReducer<UserState, Actions>(initialState)
   .handleAction(actions.signOut, (state) => ({ ...state, auth: { user: null, token: null, loading: false, prevPage: ESignInCase.NONE, error: false }, phoneVerify: { isVerified: null, isSendMessage: false, loading: false } }))
   .handleAction(actions.phoneVerifyCancel, (state) => ({ ...state, phoneVerify: { isVerified: null, isSendMessage: false, loading: false } }))
   .handleAction(actions.phoneVerifyReset, (state) => ({ ...state, phoneVerify: { ...state.phoneVerify, isVerified: null } }))
-  .handleAction(actions.errorModalOff, (state) => ({ ...state, auth: { ...state.auth, error: false } }))
+  .handleAction(actions.errorModalOff, (state) => ({ ...state, auth: { ...state.auth, error: false } }));

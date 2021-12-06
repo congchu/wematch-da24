@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
-import styled, { createGlobalStyle, css, keyframes } from 'styled-components'
+import React, { useEffect, useRef, useState } from "react";
+import styled, { createGlobalStyle, css, keyframes } from "styled-components";
 
-import ToastPortal from './Portal'
-import { CONTAINER_CLASSNAME } from './'
-import { Props, ToastType, PositionType } from './types'
+import ToastPortal from "./Portal";
+import { CONTAINER_CLASSNAME } from "./";
+import { Props, ToastType, PositionType } from "./types";
 
-import { Check, Exclamation } from 'components/Icon/index'
-import * as colors from 'styles/colors'
+import { Check, Exclamation } from "components/Icon/index";
+import * as colors from "styles/colors";
 
 const ToastStyle = createGlobalStyle<{ position: PositionType }>`
   .wematch-toastContainer {
@@ -14,21 +14,29 @@ const ToastStyle = createGlobalStyle<{ position: PositionType }>`
     width: 100%;
     position: fixed;
     margin: 0 auto;
-    ${props => props.position === 'navigator' && css`
-      bottom: 56px;
-    `};
-    ${props => props.position === 'bottom' && css`
-      bottom: 0;
-    `};
+    ${(props) =>
+      props.position === "navigator" &&
+      css`
+        bottom: 56px;
+      `};
+    ${(props) =>
+      props.position === "bottom" &&
+      css`
+        bottom: 0;
+      `};
     //top: 8px;
     left: 0;
     right: 0;
-    ${props => props.position === 'navigator' && css`
-      z-index: 1;
-    `};
-    ${props => props.position === 'bottom' && css`
-      z-index: 300;
-    `};
+    ${(props) =>
+      props.position === "navigator" &&
+      css`
+        z-index: 1;
+      `};
+    ${(props) =>
+      props.position === "bottom" &&
+      css`
+        z-index: 300;
+      `};
 
     @media screen and (min-width:1200px) {
       width: 720px;
@@ -38,7 +46,7 @@ const ToastStyle = createGlobalStyle<{ position: PositionType }>`
       text-align: center;
     }
   }
-`
+`;
 
 const OpenAnimation = keyframes`
   from {
@@ -47,8 +55,7 @@ const OpenAnimation = keyframes`
   } to {
       transform: translateY(0)
     }
-`
-
+`;
 
 const CloseAnimation = keyframes`
   from {
@@ -59,9 +66,7 @@ const CloseAnimation = keyframes`
       transform: scale(1) translateY(100%);
       opacity: 0
   }
-`
-
-
+`;
 
 const ToastItem = styled.div<{ isDestroying: boolean; type: ToastType }>`
     font-size: 14px;
@@ -74,10 +79,12 @@ const ToastItem = styled.div<{ isDestroying: boolean; type: ToastType }>`
     height: 56px;
   
     /* Animation for Destroying */
-    ${props => props.isDestroying && css`
-      animation: ${CloseAnimation} 0.4s ease-out;
-      animation-fill-mode: forwards;
-    `};
+    ${(props) =>
+      props.isDestroying &&
+      css`
+        animation: ${CloseAnimation} 0.4s ease-out;
+        animation-fill-mode: forwards;
+      `};
   
     @media screen and (min-width:1200px) {
       width: 720px;
@@ -99,66 +106,66 @@ const ToastItem = styled.div<{ isDestroying: boolean; type: ToastType }>`
 
     }
 
-    ${props => props.type === 'detail' && css`
-      background-color: ${colors.gray33};
-    `}
-    ${props => props.type === 'success' && css`
-      background-color: ${colors.pointSky};
-    `}
-    ${props => props.type === 'error' && css`
-      background-color: #E95D76;
-    `}
+    ${(props) =>
+      props.type === "detail" &&
+      css`
+        background-color: ${colors.gray33};
+      `}
+    ${(props) =>
+      props.type === "success" &&
+      css`
+        background-color: ${colors.pointSky};
+      `}
+    ${(props) =>
+      props.type === "error" &&
+      css`
+        background-color: #e95d76;
+      `}
   }
-`
+`;
 
-const CLICK_TO_REMOVE_TOAST = 400
+const CLICK_TO_REMOVE_TOAST = 400;
 
-export default function Toast({ message, type = 'detail', duration = 3000, position = 'navigator' }: Props){
+export default function Toast({ message, type = "detail", duration = 3000, position = "navigator" }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isDestroying, setIsDestroying] = useState<boolean>(false);
+  const [isDestroyed, setIsDestroyed] = useState<boolean>(false);
+  const [time, setTime] = useState<number>(duration);
 
-    const ref = useRef<HTMLDivElement>(null)
-    const [isDestroying, setIsDestroying] = useState<boolean>(false)
-    const [isDestroyed, setIsDestroyed] = useState<boolean>(false)
-    const [time, setTime] = useState<number>(duration)
+  const remove = () => {
+    setTime(CLICK_TO_REMOVE_TOAST);
+  };
 
-    const remove = () => {
-        setTime(CLICK_TO_REMOVE_TOAST)
+  useEffect(() => {
+    let t1: NodeJS.Timeout;
+    let t2: NodeJS.Timeout;
+    if (!isDestroyed) {
+      t1 = setTimeout(() => {
+        setIsDestroying(true);
+      }, time - CLICK_TO_REMOVE_TOAST);
+      t2 = setTimeout(() => {
+        const container = document.querySelector(`.${CONTAINER_CLASSNAME}`) as Element;
+        container.removeChild(ref.current as HTMLDivElement);
+        setIsDestroyed(true);
+      }, time);
     }
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [isDestroyed, time]);
 
-    useEffect(() => {
-        let t1: NodeJS.Timeout
-        let t2: NodeJS.Timeout
-        if (!isDestroyed) {
-            t1 = setTimeout(() => {
-                setIsDestroying(true)
-            }, time - CLICK_TO_REMOVE_TOAST)
-            t2 = setTimeout(() => {
-                const container = document.querySelector(`.${CONTAINER_CLASSNAME}`) as Element
-                container.removeChild(ref.current as HTMLDivElement)
-                setIsDestroyed(true)
-            }, time)
-        }
-        return () => {
-            clearTimeout(t1)
-            clearTimeout(t2)
-        }
-    }, [isDestroyed, time])
-
-    return (
-        <ToastPortal>
-            <ToastStyle position={position}/>
-            <ToastItem ref={ref} isDestroying={isDestroying} type={type}
-                       onClick={remove}  >
-                <div className='toastText'>
-                    {
-                        type === 'error' ? <Exclamation width={17} height={17} /> : <Check width={15} height={15} fill={colors.white}/>
-                    }
-                    {
-                        type === 'error' ? <p className='centre' >{message}</p> : <p>{message}</p>
-                    }
-                </div>
-            </ToastItem>
-        </ToastPortal>
-    )
+  return (
+    <ToastPortal>
+      <ToastStyle position={position} />
+      <ToastItem ref={ref} isDestroying={isDestroying} type={type} onClick={remove}>
+        <div className="toastText">
+          {type === "error" ? <Exclamation width={17} height={17} /> : <Check width={15} height={15} fill={colors.white} />}
+          {type === "error" ? <p className="centre">{message}</p> : <p>{message}</p>}
+        </div>
+      </ToastItem>
+    </ToastPortal>
+  );
 }
 
-export const MemorizedToast = React.memo(Toast)
+export const MemorizedToast = React.memo(Toast);

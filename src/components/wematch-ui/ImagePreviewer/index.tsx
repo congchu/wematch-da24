@@ -1,6 +1,6 @@
-import * as React from 'react'
-import styled from 'styled-components'
-import { parseYoutubeId, isYoutubeLink } from '../utils/youtube'
+import * as React from "react";
+import styled from "styled-components";
+import { parseYoutubeId, isYoutubeLink } from "../utils/youtube";
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   urls?: string[];
@@ -28,35 +28,31 @@ const S = {
       box-sizing: border-box;
     }
   `,
-  Preview: styled.div<{img: string}>`
+  Preview: styled.div<{ img: string }>`
     background-image: url(${({ img }) => img});
     background-size: cover;
     background-position: center center;
   `
-}
+};
 
 export function ImagePreviewer(props: Props) {
+  const { urls = [], ...restProps } = props;
 
-  const {
-    urls = [],
-    ...restProps
-  } = props
-
-  const previews = urls.map(url => {
+  const previews = urls.map((url) => {
     if (isYoutubeLink(url)) {
-      const id = parseYoutubeId(url)
-      return `http://img.youtube.com/vi/${id}/0.jpg`
+      const id = parseYoutubeId(url);
+      return `http://img.youtube.com/vi/${id}/0.jpg`;
     }
-    return url
-  })
+    return url;
+  });
 
   return (
     <S.Container>
       <S.Wrap {...restProps}>
-        {previews.map(i => {
-          return (<S.Preview key={i} img={i} />)
+        {previews.map((i) => {
+          return <S.Preview key={i} img={i} />;
         })}
       </S.Wrap>
     </S.Container>
-  )
+  );
 }

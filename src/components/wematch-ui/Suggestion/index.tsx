@@ -1,5 +1,5 @@
-import { Suggestion as SuggestionBody } from './Suggestion'
-import { SuggestionButton as Button } from './SuggestionButton'
+import { Suggestion as SuggestionBody } from "./Suggestion";
+import { SuggestionButton as Button } from "./SuggestionButton";
 
-export const Suggestion = SuggestionBody
-export const SuggestionButton = Button
+export const Suggestion = SuggestionBody;
+export const SuggestionButton = Button;

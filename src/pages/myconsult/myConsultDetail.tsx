@@ -1,20 +1,20 @@
-import Collapse from 'components/base/Collapse'
-import { Down, Up } from 'components/wematch-ui/Icon'
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import * as colors from 'styles/colors'
-import * as userSelector from 'store/user/selectors'
-import { useSelector } from 'react-redux'
-import { Previous } from 'components/wematch-ui/Icon'
-import MainHeader from 'components/common/MainHeader'
-import { useMedia } from 'react-use-media'
-import { Link, useHistory } from 'react-router-dom'
-import ToastPopup from 'components/wematch-ui/ToastPopup'
-import { dataLayer } from 'lib/dataLayerUtil'
-import { IPartnerDetail } from 'types/partner'
-import NewLevelN from '../../components/Icon/generated/NewLevelN'
-import NewLevelS from '../../components/Icon/generated/NewLevelS'
-import NewLevelOther from '../../components/Icon/generated/NewLevelOther'
+import Collapse from "components/base/Collapse";
+import { Down, Up } from "components/wematch-ui/Icon";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import * as colors from "styles/colors";
+import * as userSelector from "store/user/selectors";
+import { useSelector } from "react-redux";
+import { Previous } from "components/wematch-ui/Icon";
+import MainHeader from "components/common/MainHeader";
+import { useMedia } from "react-use-media";
+import { Link, useHistory } from "react-router-dom";
+import ToastPopup from "components/wematch-ui/ToastPopup";
+import { dataLayer } from "lib/dataLayerUtil";
+import { IPartnerDetail } from "types/partner";
+import NewLevelN from "../../components/Icon/generated/NewLevelN";
+import NewLevelS from "../../components/Icon/generated/NewLevelS";
+import NewLevelOther from "../../components/Icon/generated/NewLevelOther";
 
 const S = {
   Container: styled.div`
@@ -123,7 +123,7 @@ const S = {
     box-sizing: border-box;
   `,
   LevelInfoBox: styled.div<{ visible: boolean }>`
-    display: ${(props) => (props.visible ? 'block' : 'none')};
+    display: ${(props) => (props.visible ? "block" : "none")};
     position: absolute;
     top: 64px;
     right: 24px;
@@ -268,39 +268,39 @@ const S = {
       margin: 0 auto 106px;
     }
   `
-}
+};
 
 const MyConsultDetail = () => {
   const {
     data: { name, phone },
     selected: selectedOrder
-  } = useSelector(userSelector.getConsult)
-  const [sessionVisible, setSessionVisible] = useState(false)
-  const [expand, setExpand] = useState(true)
+  } = useSelector(userSelector.getConsult);
+  const [sessionVisible, setSessionVisible] = useState(false);
+  const [expand, setExpand] = useState(true);
 
-  const history = useHistory()
+  const history = useHistory();
 
   const isDesktop = useMedia({
     minWidth: 1200
-  })
+  });
 
   useEffect(() => {
     if (!selectedOrder) {
-      setSessionVisible(true)
+      setSessionVisible(true);
     }
-  }, [selectedOrder])
+  }, [selectedOrder]);
 
   const selectOrderType = () => {
     if (selectedOrder) {
-      if (selectedOrder.type.includes('이사')) {
-        return selectedOrder.type
+      if (selectedOrder.type.includes("이사")) {
+        return selectedOrder.type;
       } else {
-        return '청소업체'
+        return "청소업체";
       }
     } else {
-      return ''
+      return "";
     }
-  }
+  };
 
   return (
     <S.Container>
@@ -316,7 +316,7 @@ const MyConsultDetail = () => {
       )}
       <S.TopContents>
         <S.Icon>
-          <img src={require('assets/images/white_list.svg')} alt="icon" />
+          <img src={require("assets/images/white_list.svg")} alt="icon" />
         </S.Icon>
         <S.TopTitle>
           <em>{selectOrderType()}</em> 신청내역 <br />
@@ -334,9 +334,9 @@ const MyConsultDetail = () => {
           {selectedOrder?.partners.map((list: IPartnerDetail, index: number, arr: IPartnerDetail[]) => (
             <S.Card key={index}>
               <S.ListBox>
-                {list.level === 'NEW' && <NewLevelN />}
-                {list.level === 'S' && <NewLevelS />}
-                {list.level !== 'NEW' && list.level !== 'S' && <NewLevelOther />}
+                {list.level === "NEW" && <NewLevelN />}
+                {list.level === "S" && <NewLevelS />}
+                {list.level !== "NEW" && list.level !== "S" && <NewLevelOther />}
                 <S.CompanyTitle>
                   {list.adminname} <br />
                   <span>{list.level_text}</span>
@@ -347,13 +347,13 @@ const MyConsultDetail = () => {
                 to={`/requests/completed/${list.adminid}`}
                 onClick={() => {
                   dataLayer({
-                    event: 'myrequest_detail',
-                    category: '내신청내역_상세',
-                    action: '고객평가_확인',
+                    event: "myrequest_detail",
+                    category: "내신청내역_상세",
+                    action: "고객평가_확인",
                     label: `${arr.length}_${index + 1}`,
                     CD6: selectedOrder.type,
                     CD8: `${list.level}등급`
-                  })
+                  });
                 }}>
                 {/*<em>{list.feedback_cnt}</em> 명의 고객 평가 확인*/}
                 {`업체 정보 자세히 보기 (후기 ${list.feedback_cnt}개)`}
@@ -376,22 +376,22 @@ const MyConsultDetail = () => {
               <S.MoveSubtext>{selectedOrder?.moving_date}</S.MoveSubtext>
             </li>
             <li>
-              <S.MoveText>{!selectedOrder?.type.includes('청소') ? `출발지` : `청소지`}</S.MoveText>
+              <S.MoveText>{!selectedOrder?.type.includes("청소") ? `출발지` : `청소지`}</S.MoveText>
               <S.MoveSubtext>
                 {selectedOrder?.start_address}
-                {selectedOrder?.type !== '원룸이사' && !selectedOrder?.type.includes('청소') && '층'}
+                {selectedOrder?.type !== "원룸이사" && !selectedOrder?.type.includes("청소") && "층"}
               </S.MoveSubtext>
             </li>
-            {!selectedOrder?.type.includes('청소') && (
+            {!selectedOrder?.type.includes("청소") && (
               <li>
                 <S.MoveText>도착지</S.MoveText>
                 <S.MoveSubtext>
                   {selectedOrder?.end_address}
-                  {selectedOrder?.type !== '원룸이사' && '층'}
+                  {selectedOrder?.type !== "원룸이사" && "층"}
                 </S.MoveSubtext>
               </li>
             )}
-            {selectedOrder?.type === '원룸이사' && (
+            {selectedOrder?.type === "원룸이사" && (
               <li style={{ borderTop: `1px solid ${colors.lineDeco}`, paddingTop: 20 }}>
                 <S.MoveText>짐량</S.MoveText>
                 <S.MoveSubtext>{selectedOrder?.stuff}</S.MoveSubtext>
@@ -404,14 +404,14 @@ const MyConsultDetail = () => {
           </S.MoveInfo>
         </Collapse>
       </S.ContentsWrap>
-      <ToastPopup visible={sessionVisible} confirmText={'홈으로 가기'} confirmClick={() => history.push('/')} showHeaderCancelButton={false}>
-        <p>{'정보가 만료되었습니다.\n다시 조회해주세요'}</p>
+      <ToastPopup visible={sessionVisible} confirmText={"홈으로 가기"} confirmClick={() => history.push("/")} showHeaderCancelButton={false}>
+        <p>{"정보가 만료되었습니다.\n다시 조회해주세요"}</p>
       </ToastPopup>
     </S.Container>
-  )
-}
+  );
+};
 
-export default MyConsultDetail
+export default MyConsultDetail;
 
 const Header = styled.div`
   position: fixed;
@@ -440,4 +440,4 @@ const Header = styled.div`
     letter-spacing: -0.03em;
     ${colors.gray33}
   }
-`
+`;

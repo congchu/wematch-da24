@@ -1,16 +1,16 @@
-import React, { useEffect, useRef } from 'react'
-import styled from 'styled-components'
-import { isEmpty } from 'lodash'
+import React, { useEffect, useRef } from "react";
+import styled from "styled-components";
+import { isEmpty } from "lodash";
 
-import Layout from 'components/base/Layout'
-import { useDispatch, useSelector } from 'react-redux'
+import Layout from "components/base/Layout";
+import { useDispatch, useSelector } from "react-redux";
 
-import * as partnerActions from 'store/partner/actions'
-import * as partnerSelector from 'store/partner/selectors'
-import * as values from 'constants/values'
-import ReviewSkeleton from 'components/common/Skeleton/reviewSkeleton'
-import useInfiniteScroll from 'hooks/useInfiniteScroll'
-import Review from 'components/da24/Review'
+import * as partnerActions from "store/partner/actions";
+import * as partnerSelector from "store/partner/selectors";
+import * as values from "constants/values";
+import ReviewSkeleton from "components/common/Skeleton/reviewSkeleton";
+import useInfiniteScroll from "hooks/useInfiniteScroll";
+import Review from "components/da24/Review";
 const S = {
   Container: styled.div`
     margin-top: 0px;
@@ -40,28 +40,28 @@ const S = {
       line-height: 36px;
     }
   `
-}
+};
 
 export default function UserReviewPage() {
-  const dispatch = useDispatch()
-  const getCommentList = useSelector(partnerSelector.getCommentList)
+  const dispatch = useDispatch();
+  const getCommentList = useSelector(partnerSelector.getCommentList);
 
   useEffect(() => {
     if (isEmpty(getCommentList.data)) {
-      window.scrollTo(0, 0)
+      window.scrollTo(0, 0);
       dispatch(
         partnerActions.fetchCommentListAsync.request({
           page: 1,
           size: values.DEFAULT_COMMENT_LIST_SIZE
         })
-      )
+      );
     }
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
 
   /* 스켈레톤 끝나면 스크롤 방지 해제 */
   if (!getCommentList.loading) {
-    document.body.style.overflow = 'unset'
+    document.body.style.overflow = "unset";
   }
 
   return (
@@ -91,7 +91,7 @@ export default function UserReviewPage() {
                     id={comment.id}
                     created_at={comment.created_at}
                     professional={comment.professional}
-                    partnerName={comment.area + '' + '이사업체'}
+                    partnerName={comment.area + "" + "이사업체"}
                     kind={comment.kind}
                     price={comment.price}
                     memo={comment.memo}
@@ -100,12 +100,12 @@ export default function UserReviewPage() {
                     level={comment.level}
                     partner={comment.partner}
                   />
-                )
+                );
               })
             )}
           </div>
         </S.Container>
       </Layout>
     </>
-  )
+  );
 }

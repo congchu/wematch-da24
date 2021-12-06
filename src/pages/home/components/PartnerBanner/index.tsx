@@ -1,15 +1,15 @@
-import React from 'react'
-import styled from 'styled-components/macro'
+import React from "react";
+import styled from "styled-components/macro";
 
-import * as colors from 'styles/colors'
+import * as colors from "styles/colors";
 
 const Banner = styled.section`
   padding: 50px 24px 73px;
-  
+
   a {
     cursor: pointer;
   }
-  
+
   h3 {
     font-weight: bold;
     font-size: 22px;
@@ -33,7 +33,7 @@ const Banner = styled.section`
     height: 80px;
     background-color: #f7f7f7;
     border-radius: 8px;
-    
+
     display: flex;
     align-items: center;
     .box {
@@ -49,15 +49,15 @@ const Banner = styled.section`
       .title {
         font-weight: 500;
       }
-      
+
       .text {
         font-size: 14px;
       }
     }
-    
+
     &:after {
-      content: '';
-      background-image: url(${require('assets/images/partner_banner.png')});
+      content: "";
+      background-image: url(${require("assets/images/partner_banner.png")});
       background-repeat: no-repeat;
       background-size: cover;
       width: 115px;
@@ -69,26 +69,26 @@ const Banner = styled.section`
       border-bottom-right-radius: 8px;
     }
   }
-  @media screen and (max-width:320px) {
+  @media screen and (max-width: 320px) {
     .banner {
       &:after {
-         width: 80px;
+        width: 80px;
       }
     }
   }
-  
-  @media screen and (min-width:768px) {
+
+  @media screen and (min-width: 768px) {
     .banner {
       width: 100%;
       height: 120px;
-      
+
       .box {
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
         line-height: 30px;
-        
+
         .title {
           font-weight: bold;
           font-size: 20px;
@@ -97,15 +97,15 @@ const Banner = styled.section`
           font-size: 20px;
         }
       }
-      
+
       &:after {
         width: 204px;
         height: 120px;
-        background-image: url(${require('assets/images/partner_banner.svg')});
+        background-image: url(${require("assets/images/partner_banner.svg")});
       }
     }
   }
-`
+`;
 
 export default function PartnerBanner() {
   return (
@@ -113,7 +113,7 @@ export default function PartnerBanner() {
       <h3>파트너 등록문의</h3>
       <p style={{ marginBottom: 21 }}>No.1 이사업체 매칭플랫폼 위매치다이사</p>
       {/* <a onClick={()=> router.push('/partnernew')}> */}
-      <a onClick={() => window.location.href = `https://landing-da24.wematch.com/partner_application/`}>
+      <a onClick={() => (window.location.href = `https://landing-da24.wematch.com/partner_application/`)}>
         <div className="banner">
           <div className="box">
             <strong className="title">500만 고객의 선택! &nbsp;</strong>
@@ -122,5 +122,5 @@ export default function PartnerBanner() {
         </div>
       </a>
     </Banner>
-  )
+  );
 }

@@ -1,29 +1,29 @@
-import React from 'react'
-import Styled, { css } from 'styled-components'
-import { Icon } from 'components/wematch-ui'
+import React from "react";
+import Styled, { css } from "styled-components";
+import { Icon } from "components/wematch-ui";
 
-import * as colors from 'styles/colors'
+import * as colors from "styles/colors";
 
 interface StyleProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   /** 테마 설정 */
-  theme: ThemeProps
+  theme: ThemeProps;
   /** border 여부 */
-  border?: boolean
+  border?: boolean;
   /** Search 아이콘 출력 여부 */
-  icon?: IconProps
+  icon?: IconProps;
   /** Disabled 여부 */
-  disabled?: boolean
+  disabled?: boolean;
   /** 최상단 스타일 custom */
-  rootStyle?: React.CSSProperties
-  inputRef?: React.RefObject<HTMLInputElement>
-  unit?: string
+  rootStyle?: React.CSSProperties;
+  inputRef?: React.RefObject<HTMLInputElement>;
+  unit?: string;
 }
 
-type ThemeProps = 'default' | 'primary'
-type BorderProp = boolean
-type IconProps = 'search' | 'down' | 'space'
+type ThemeProps = "default" | "primary";
+type BorderProp = boolean;
+type IconProps = "search" | "down" | "space";
 
 const S = {
   Container: Styled.div`
@@ -63,7 +63,7 @@ const S = {
           `};
         
         ${({ theme }) =>
-          theme === 'default' &&
+          theme === "default" &&
           css`
             background-color: ${colors.grayBg};
             color: ${colors.gray33};
@@ -78,7 +78,7 @@ const S = {
           `};
         
         ${({ theme }) =>
-          theme === 'primary' &&
+          theme === "primary" &&
           css`
             border: solid 1px ${colors.pointBlue};
             &:focus {
@@ -97,20 +97,20 @@ const S = {
             color: ${colors.gray88};
         }
     `
-}
+};
 
 const Input: React.FC<InputProps> = (props) => {
-  const { theme = 'default', border = false, icon, disabled, rootStyle, inputRef, unit, ...restProps } = props
+  const { theme = "default", border = false, icon, disabled, rootStyle, inputRef, unit, ...restProps } = props;
 
   return (
     <S.Container style={rootStyle}>
       <S.StyledInput theme={theme} border={border} disabled={disabled} {...restProps} ref={inputRef} />
-      {icon === 'search' && <Icon.Search size={22} />}
-      {icon === 'down' && <Icon.Down size={22} />}
-      {icon === 'space' && <span>평</span>}
+      {icon === "search" && <Icon.Search size={22} />}
+      {icon === "down" && <Icon.Down size={22} />}
+      {icon === "space" && <span>평</span>}
       {unit && <span>{unit}</span>}
     </S.Container>
-  )
-}
+  );
+};
 
-export default Input
+export default Input;

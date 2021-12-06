@@ -1,7 +1,7 @@
-import * as React from 'react'
-import styled from 'styled-components'
-import { resetButton, resetInput } from 'styles/mixins'
-import { BaseProps } from './types'
+import * as React from "react";
+import styled from "styled-components";
+import { resetButton, resetInput } from "styles/mixins";
+import { BaseProps } from "./types";
 
 interface Props extends BaseProps, React.HTMLAttributes<HTMLInputElement> {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -24,22 +24,15 @@ const S = {
     top: 0;
     left: 0;
   `
-}
+};
 
 export function BaseFileUploader(props: Props) {
-  const {
-    accept,
-    multiple,
-    text,
-    onChange,
-    className
-  } = props
+  const { accept, multiple, text, onChange, className } = props;
 
   return (
     <S.Container className={className}>
       {text}
-      <S.Input type="file" accept={accept} multiple={multiple}
-        onChange={onChange} />
+      <S.Input type="file" accept={accept} multiple={multiple} onChange={onChange} />
     </S.Container>
-  )
+  );
 }

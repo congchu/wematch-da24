@@ -1,66 +1,66 @@
-import React, { useEffect, useState } from 'react'
-import BottomNav from 'components/common/BottomNav'
-import MainHeader from 'components/common/MainHeader'
-import { useHistory } from 'react-router-dom'
-import { useMedia } from 'react-use-media'
-import styled from 'styled-components'
-import * as colors from 'styles/colors'
-import { ConsultCard, FindCard } from './components/MyConsultCard'
-import * as userActions from 'store/user/actions'
-import * as formActions from 'store/form/actions'
-import { useDispatch, useSelector } from 'react-redux'
-import * as userSelector from 'store/user/selectors'
-import dayjs from 'dayjs'
-import { IOrder } from 'store/user/types'
-import Button from 'components/common/Button'
-import { deleteCookie } from 'lib/cookie'
-import { useCookies } from 'react-cookie'
-import { get } from 'lodash'
-import { onMessageHandler } from 'lib/MessageUtil'
-import { CLEAN_URL, LOCAL_ENV, MOVE_URL } from 'constants/env'
+import React, { useEffect, useState } from "react";
+import BottomNav from "components/common/BottomNav";
+import MainHeader from "components/common/MainHeader";
+import { useHistory } from "react-router-dom";
+import { useMedia } from "react-use-media";
+import styled from "styled-components";
+import * as colors from "styles/colors";
+import { ConsultCard, FindCard } from "./components/MyConsultCard";
+import * as userActions from "store/user/actions";
+import * as formActions from "store/form/actions";
+import { useDispatch, useSelector } from "react-redux";
+import * as userSelector from "store/user/selectors";
+import dayjs from "dayjs";
+import { IOrder } from "store/user/types";
+import Button from "components/common/Button";
+import { deleteCookie } from "lib/cookie";
+import { useCookies } from "react-cookie";
+import { get } from "lodash";
+import { onMessageHandler } from "lib/MessageUtil";
+import { CLEAN_URL, LOCAL_ENV, MOVE_URL } from "constants/env";
 
 const MyConsult = () => {
-  const history = useHistory()
-  const dispatch = useDispatch()
-  const [cookies] = useCookies([`x-wematch-token-${LOCAL_ENV}`])
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [cookies] = useCookies([`x-wematch-token-${LOCAL_ENV}`]);
   const isDesktop = useMedia({
     minWidth: 1200
-  })
+  });
 
   const handleLogout = () => {
     // dispatch(userActions.signOut()); // location href 처리로 리덕스 데이터 갱신됨
-    deleteCookie(`x-wematch-token-${LOCAL_ENV}`)
+    deleteCookie(`x-wematch-token-${LOCAL_ENV}`);
     onMessageHandler({
-      action: 'clearData'
-    })
-    window.location.href = '/'
-  }
+      action: "clearData"
+    });
+    window.location.href = "/";
+  };
 
   const {
     data: { clean_orders, move_orders },
     loading
-  } = useSelector(userSelector.getConsult)
-  const { user, token } = useSelector(userSelector.getUser)
-  const wematchToken = get(cookies, `x-wematch-token-${LOCAL_ENV}`)
+  } = useSelector(userSelector.getConsult);
+  const { user, token } = useSelector(userSelector.getUser);
+  const wematchToken = get(cookies, `x-wematch-token-${LOCAL_ENV}`);
 
   useEffect(() => {
     if (token && user) {
-      dispatch(userActions.fetchUserConsultAsync.request({ name: user.name, phone: user.tel }))
+      dispatch(userActions.fetchUserConsultAsync.request({ name: user.name, phone: user.tel }));
     }
-  }, [dispatch, token, user])
+  }, [dispatch, token, user]);
 
   const handleSelectConsult = (order: IOrder) => {
-    dispatch(userActions.selectOrder({ order }))
-  }
+    dispatch(userActions.selectOrder({ order }));
+  };
 
   const handleCertifyButtonClick = () => {
-    dispatch(formActions.setMoveType('office'))
-    history.push('/login')
-  }
+    dispatch(formActions.setMoveType("office"));
+    history.push("/login");
+  };
 
   // TODO: Skeleton UI 적용 필요. 현재 임시로 작업
   if (loading) {
-    return <LoadingContainter>내 신청내역 불러오는 중...</LoadingContainter>
+    return <LoadingContainter>내 신청내역 불러오는 중...</LoadingContainter>;
   }
 
   if (!user && wematchToken === undefined) {
@@ -72,13 +72,13 @@ const MyConsult = () => {
             <strong>쉽고, 빠르게 이용하기</strong>
             <p>최초 1회만 번호인증을 하시면 무료 견적상담 및 내 신청내역 기능을 자유롭게 이용하실 수 있어요!</p>
           </LoginWrapper>
-          <Button theme="primary" border={true} bold={true} onClick={handleCertifyButtonClick} id={'dsl_myrequests_gate_button'}>
+          <Button theme="primary" border={true} bold={true} onClick={handleCertifyButtonClick} id={"dsl_myrequests_gate_button"}>
             인증하기
           </Button>
         </LoginContent>
         <BottomNav />
       </Container>
-    )
+    );
   }
 
   return (
@@ -94,64 +94,64 @@ const MyConsult = () => {
         <Wrapper>
           <ContentTitle>내 신청내역</ContentTitle>
           <Separator />
-          <ContentSection style={{ marginBottom: '16px' }} id={'dsl_myrequests_step1'}>
+          <ContentSection style={{ marginBottom: "16px" }} id={"dsl_myrequests_step1"}>
             <ContentSubTitle>
               <span className="bold">STEP 1</span>
               <span>&nbsp; &#124; &nbsp;입주/이사청소</span>
             </ContentSubTitle>
             <ContentList>
               {clean_orders.length === 0 ? (
-                <FindCard title="입주/이사청소" link={'/clean'} />
+                <FindCard title="입주/이사청소" link={"/clean"} />
               ) : (
                 clean_orders.map((order: IOrder) => (
                   <ConsultCard
                     handleSelectConsult={() => handleSelectConsult(order)}
                     key={order.idx}
-                    category={'clean'}
-                    link={'/myrequest/detail'}
+                    category={"clean"}
+                    link={"/myrequest/detail"}
                     categoryTitle={order.type}
-                    dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')}
-                    dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')}
+                    dateOfReceipt={dayjs(order.submit_date).format("YYYY.MM.DD")}
+                    dateOfService={dayjs(order.moving_date).format("YYYY.MM.DD")}
                   />
                 ))
               )}
             </ContentList>
           </ContentSection>
-          <ContentSection style={{ paddingBottom: 40 }} id={'dsl_myrequests_step2'}>
+          <ContentSection style={{ paddingBottom: 40 }} id={"dsl_myrequests_step2"}>
             <ContentSubTitle>
               <span className="bold">STEP 2</span>
               <span>&nbsp; &#124; &nbsp;이사</span>
             </ContentSubTitle>
             <ContentList>
               {move_orders.length === 0 ? (
-                <FindCard title="이사" link={'/'} />
+                <FindCard title="이사" link={"/"} />
               ) : (
                 move_orders.map((order: IOrder) => (
                   <ConsultCard
                     handleSelectConsult={() => handleSelectConsult(order)}
                     key={order.idx}
-                    category={'move'}
-                    link={'/myrequest/detail'}
+                    category={"move"}
+                    link={"/myrequest/detail"}
                     categoryTitle={order.type}
-                    dateOfReceipt={dayjs(order.submit_date).format('YYYY.MM.DD')}
-                    dateOfService={dayjs(order.moving_date).format('YYYY.MM.DD')}
+                    dateOfReceipt={dayjs(order.submit_date).format("YYYY.MM.DD")}
+                    dateOfService={dayjs(order.moving_date).format("YYYY.MM.DD")}
                   />
                 ))
               )}
             </ContentList>
           </ContentSection>
           <Separator />
-          <LogoutWrapper id={'dsl_myrequests_logout'}>
+          <LogoutWrapper id={"dsl_myrequests_logout"}>
             <button onClick={handleLogout}>로그아웃</button>
           </LogoutWrapper>
         </Wrapper>
       </Content>
       <BottomNav />
     </Container>
-  )
-}
+  );
+};
 
-export default MyConsult
+export default MyConsult;
 
 const Container = styled.div`
   padding-top: 0;
@@ -159,7 +159,7 @@ const Container = styled.div`
   @media screen and (min-width: 768px) {
     padding-top: 56px;
   }
-`
+`;
 
 const Header = styled.div`
   position: relative;
@@ -200,7 +200,7 @@ const Header = styled.div`
     letter-spacing: -0.5px;
     color: ${colors.gray33};
   }
-`
+`;
 
 const Content = styled.div`
   position: relative;
@@ -213,7 +213,7 @@ const Content = styled.div`
     padding: 0;
     box-shadow: none;
   }
-`
+`;
 
 const LoginContent = styled.div`
   position: relative;
@@ -234,12 +234,12 @@ const LoginContent = styled.div`
       text-align: center;
     }
   }
-`
+`;
 
 const Wrapper = styled.div`
   width: 100%;
   padding-top: 24px;
-`
+`;
 
 const ContentTitle = styled.h4`
   font-weight: 700;
@@ -247,12 +247,12 @@ const ContentTitle = styled.h4`
   line-height: 30px;
   color: ${colors.gray33};
   padding-bottom: 16px;
-`
+`;
 
 const Separator = styled.div`
   width: 100%;
   border-bottom: 1px solid ${colors.lineDefault};
-`
+`;
 
 const ContentSubTitle = styled.div`
   padding-top: 24px;
@@ -267,9 +267,9 @@ const ContentSubTitle = styled.div`
     line-height: 24px;
     color: ${colors.gray66};
   }
-`
+`;
 
-const ContentSection = styled.div``
+const ContentSection = styled.div``;
 
 const ContentList = styled.div`
   a {
@@ -279,7 +279,7 @@ const ContentList = styled.div`
       margin-bottom: 0;
     }
   }
-`
+`;
 
 const NoContent = styled.div`
   display: flex;
@@ -290,7 +290,7 @@ const NoContent = styled.div`
   font-size: 16px;
   line-height: 24px;
   color: ${colors.gray99};
-`
+`;
 
 const LoginWrapper = styled.div`
   padding-top: 78px;
@@ -311,7 +311,7 @@ const LoginWrapper = styled.div`
     letter-spacing: -0.5px;
     color: ${colors.gray66};
   }
-`
+`;
 
 const LogoutWrapper = styled.div`
   display: flex;
@@ -326,7 +326,7 @@ const LogoutWrapper = styled.div`
     color: ${colors.gray33};
     line-height: 24px;
   }
-`
+`;
 
 const LoadingContainter = styled.div`
   position: fixed;
@@ -342,4 +342,4 @@ const LoadingContainter = styled.div`
     font-size: 16px;
     color: ${colors.gray66};
   }
-`
+`;

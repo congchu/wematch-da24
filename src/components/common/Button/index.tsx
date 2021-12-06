@@ -57,10 +57,7 @@ const S = {
     height: 28px;
     margin-right: 8px;
     animation: rotate 1s linear infinite;
-    background-image: url(${({ theme }) =>
-      require(theme === "default"
-        ? `assets/images/loading-b.svg`
-        : `assets/images/loading-w.svg`)});
+    background-image: url(${({ theme }) => require(theme === "default" ? `assets/images/loading-b.svg` : `assets/images/loading-w.svg`)});
   
     @keyframes rotate {
         from {
@@ -71,20 +68,11 @@ const S = {
             transform: rotate(360deg);
         }
     }
-  `,
+  `
 };
 
 const Button: React.FC<Props> = (props) => {
-  const {
-    theme = "default",
-    disabled = false,
-    border = false,
-    bold = false,
-    children,
-    loading = false,
-    onClick,
-    ...restProps
-  } = props;
+  const { theme = "default", disabled = false, border = false, bold = false, children, loading = false, onClick, ...restProps } = props;
 
   return (
     <S.StyledButton
@@ -99,8 +87,7 @@ const Button: React.FC<Props> = (props) => {
               e.preventDefault();
             }
       }
-      {...restProps}
-    >
+      {...restProps}>
       {loading && <S.Icon theme={theme} />}
       {children}
     </S.StyledButton>

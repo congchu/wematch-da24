@@ -1,29 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useCookies } from 'react-cookie'
-import { useRouter } from 'hooks/useRouter'
-import styled, { css } from 'styled-components'
-import { isEmpty } from 'lodash'
-import { Checkbox } from 'components/wematch-ui/Checkbox'
-import Button from 'components/common/Button'
-import NoticePopup from 'components/common/Popup/NoticePopup'
-import OneroomNoticePopup from 'components/common/Popup/OneroomNoticePopup'
-import TermsModal from 'components/Modal/TermsModal'
-import { showToast } from 'components/common/Toast'
-import ButtonGroup from 'components/common/ButtonGroup'
-import MoveInput from 'pages/home/components/MoveInput'
-import * as commonActions from 'store/common/actions'
-import * as formSelector from 'store/form/selectors'
-import * as formActions from 'store/form/actions'
-import * as userActions from 'store/user/actions'
-import * as userSelector from 'store/user/selectors'
-import * as colors from 'styles/colors'
-import { dataLayer } from 'lib/dataLayerUtil'
-import { ONEROOM_URL } from 'constants/env'
-import useHashToggle from 'hooks/useHashToggle'
-import { useHistory } from 'react-router-dom'
-import { ESignInCase } from 'store/user/types'
-import { Question } from 'components/Icon'
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useCookies } from "react-cookie";
+import { useRouter } from "hooks/useRouter";
+import styled, { css } from "styled-components";
+import { isEmpty } from "lodash";
+import { Checkbox } from "components/wematch-ui/Checkbox";
+import Button from "components/common/Button";
+import NoticePopup from "components/common/Popup/NoticePopup";
+import OneroomNoticePopup from "components/common/Popup/OneroomNoticePopup";
+import TermsModal from "components/Modal/TermsModal";
+import { showToast } from "components/common/Toast";
+import ButtonGroup from "components/common/ButtonGroup";
+import MoveInput from "pages/home/components/MoveInput";
+import * as commonActions from "store/common/actions";
+import * as formSelector from "store/form/selectors";
+import * as formActions from "store/form/actions";
+import * as userActions from "store/user/actions";
+import * as userSelector from "store/user/selectors";
+import * as colors from "styles/colors";
+import { dataLayer } from "lib/dataLayerUtil";
+import { ONEROOM_URL } from "constants/env";
+import useHashToggle from "hooks/useHashToggle";
+import { useHistory } from "react-router-dom";
+import { ESignInCase } from "store/user/types";
+import { Question } from "components/Icon";
 
 const Visual = {
   Section: styled.section`
@@ -57,7 +57,7 @@ const Visual = {
   ButtonGroupContainer: styled.div`
     margin-top: 26px;
   `
-}
+};
 
 const Description = {
   Container: styled.div`
@@ -82,9 +82,9 @@ const Description = {
     }
   `,
   InfoType: styled.div<{
-    selectMoveType: 'house' | 'oneroom' | 'office' | undefined
+    selectMoveType: "house" | "oneroom" | "office" | undefined;
   }>`
-    display: ${(props) => (props.selectMoveType === 'office' ? 'block' : 'none')};
+    display: ${(props) => (props.selectMoveType === "office" ? "block" : "none")};
     text-align: center;
     margin-bottom: 28px;
 
@@ -104,12 +104,12 @@ const Description = {
       letter-spacing: -0.5px;
     }
   `
-}
+};
 
 const Terms = {
   Container: styled.div<{ selectMoveType: boolean }>`
     position: relative;
-    display: ${(props) => (props.selectMoveType ? 'flex' : 'none')};
+    display: ${(props) => (props.selectMoveType ? "flex" : "none")};
     margin-bottom: 14px;
     align-items: center;
     margin-top: 24px;
@@ -149,7 +149,7 @@ const Terms = {
     }
   `,
   SubmitContainer: styled.div<{ selectMoveType: boolean }>`
-    display: ${(props) => (props.selectMoveType ? 'flex' : 'none')};
+    display: ${(props) => (props.selectMoveType ? "flex" : "none")};
     flex-direction: column;
 
     .text {
@@ -187,7 +187,7 @@ const Terms = {
   `,
   LevelInfoWrapper: styled.div<{ visible: boolean }>`
     position: fixed;
-    display: ${({ visible }) => (visible ? 'flex' : 'none')};
+    display: ${({ visible }) => (visible ? "flex" : "none")};
     top: 0;
     bottom: 0;
     left: 0;
@@ -198,7 +198,7 @@ const Terms = {
   `,
   LevelInfoBox: styled.div<{ visible: boolean }>`
     position: absolute;
-    display: ${({ visible }) => (visible ? 'flex' : 'none')};
+    display: ${({ visible }) => (visible ? "flex" : "none")};
     align-items: center;
     left: 35px;
     top: -17px;
@@ -222,128 +222,128 @@ const Terms = {
     border-bottom: 7.5px solid transparent;
     border-right: 8px solid rgba(0, 0, 0, 0.75);
   `
-}
+};
 
 export enum EFormError {
-  DATE = 'date',
-  START_ADDRESS = 'startAddress',
-  END_ADDRESS = 'endAddress',
-  START_FLOOR = 'startFloor',
-  END_FLOOR = 'endFloor'
+  DATE = "date",
+  START_ADDRESS = "startAddress",
+  END_ADDRESS = "endAddress",
+  START_FLOOR = "startFloor",
+  END_FLOOR = "endFloor"
 }
 
 interface Props {
-  headerRef?: React.RefObject<HTMLDivElement>
-  isFixed?: boolean
-  setIsFixed?: React.Dispatch<boolean>
+  headerRef?: React.RefObject<HTMLDivElement>;
+  isFixed?: boolean;
+  setIsFixed?: React.Dispatch<boolean>;
 }
 
 const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
-  const dispatch = useDispatch()
-  const history = useHistory()
-  const router = useRouter()
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const router = useRouter();
 
-  const getMoveType = useSelector(formSelector.getType)
-  const getMoveDate = useSelector(formSelector.getDate)
-  const getAddress = useSelector(formSelector.getAddress)
-  const getFloor = useSelector(formSelector.getFloor)
-  const getIsMoveStore = useSelector(formSelector.getIsMoveStore)
-  const { user } = useSelector(userSelector.getUser)
-  const [infoVisible, setInfoVisible] = useState(false)
-  const [visibleTerms, setVisibleTerms] = useHashToggle('#terms')
-  const [visibleOneroom, setVisibleOneroom] = useState(false)
-  const [isVerifySuccess, setIsVerifySuccess] = useState(false)
-  const selectedSubmitType = useRef<'curation' | 'select' | null>(null)
-  const [cookies] = useCookies(['0dj38gepoekf98234aplyadmin'])
-  const [formValidations, setFormValidations] = useState<EFormError[]>([])
+  const getMoveType = useSelector(formSelector.getType);
+  const getMoveDate = useSelector(formSelector.getDate);
+  const getAddress = useSelector(formSelector.getAddress);
+  const getFloor = useSelector(formSelector.getFloor);
+  const getIsMoveStore = useSelector(formSelector.getIsMoveStore);
+  const { user } = useSelector(userSelector.getUser);
+  const [infoVisible, setInfoVisible] = useState(false);
+  const [visibleTerms, setVisibleTerms] = useHashToggle("#terms");
+  const [visibleOneroom, setVisibleOneroom] = useState(false);
+  const [isVerifySuccess, setIsVerifySuccess] = useState(false);
+  const selectedSubmitType = useRef<"curation" | "select" | null>(null);
+  const [cookies] = useCookies(["0dj38gepoekf98234aplyadmin"]);
+  const [formValidations, setFormValidations] = useState<EFormError[]>([]);
 
   const validateHouseOrOfficeForm = () => {
-    let errors = []
+    let errors = [];
     if (isEmpty(getMoveDate)) {
-      errors.push(EFormError.DATE)
+      errors.push(EFormError.DATE);
     }
     if (isEmpty(getAddress.start)) {
-      errors.push(EFormError.START_ADDRESS)
+      errors.push(EFormError.START_ADDRESS);
     }
     if (isEmpty(getFloor.start)) {
-      errors.push(EFormError.START_FLOOR)
+      errors.push(EFormError.START_FLOOR);
     }
 
     if (isEmpty(getAddress.end)) {
-      errors.push(EFormError.END_ADDRESS)
+      errors.push(EFormError.END_ADDRESS);
     }
     if (isEmpty(getFloor.end)) {
-      errors.push(EFormError.END_FLOOR)
+      errors.push(EFormError.END_FLOOR);
     }
 
     if (errors.length > 0) {
-      setFormValidations(errors)
-      showToast({ message: '이사 정보를 입력해 주세요', type: 'error' })
-      return false
+      setFormValidations(errors);
+      showToast({ message: "이사 정보를 입력해 주세요", type: "error" });
+      return false;
     }
 
-    return true
-  }
+    return true;
+  };
 
-  const handleRequestClick = (submitType: 'curation' | 'select') => {
-    if (!validateHouseOrOfficeForm()) return
+  const handleRequestClick = (submitType: "curation" | "select") => {
+    if (!validateHouseOrOfficeForm()) return;
 
     dataLayer({
-      event: 'request',
-      category: '다이사_메인_신청_1',
-      label: '매칭신청',
-      action: submitType === 'curation' ? '업체_바로매칭' : '업체_직접고르기',
-      CD6: getMoveType === 'house' ? '가정' : '사무실',
-      CD10: getIsMoveStore ? 'Y' : 'N'
-    })
+      event: "request",
+      category: "다이사_메인_신청_1",
+      label: "매칭신청",
+      action: submitType === "curation" ? "업체_바로매칭" : "업체_직접고르기",
+      CD6: getMoveType === "house" ? "가정" : "사무실",
+      CD10: getIsMoveStore ? "Y" : "N"
+    });
 
-    selectedSubmitType.current = submitType
+    selectedSubmitType.current = submitType;
 
-    dispatch(formActions.setSubmitType(submitType))
+    dispatch(formActions.setSubmitType(submitType));
 
     if (!user) {
-      dispatch(userActions.signIn({ prevPage: ESignInCase.FORM }))
-      history.push('/login')
+      dispatch(userActions.signIn({ prevPage: ESignInCase.FORM }));
+      history.push("/login");
     } else {
-      dispatch(formActions.setMoveData())
+      dispatch(formActions.setMoveData());
     }
-  }
+  };
 
   useEffect(() => {
     if (getMoveDate.length > 0) {
-      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.DATE))
+      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.DATE));
     }
     if (!isEmpty(getAddress.start)) {
-      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.START_ADDRESS))
+      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.START_ADDRESS));
     }
 
     if (!isEmpty(getAddress.end)) {
-      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.END_ADDRESS))
+      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.END_ADDRESS));
     }
 
     if (!isEmpty(getFloor.start)) {
-      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.START_FLOOR))
+      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.START_FLOOR));
     }
 
     if (!isEmpty(getFloor.end)) {
-      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.END_FLOOR))
+      setFormValidations((prev) => prev.filter((valid) => valid !== EFormError.END_FLOOR));
     }
-  }, [getMoveType, getMoveDate, getAddress, getFloor])
+  }, [getMoveType, getMoveDate, getAddress, getFloor]);
 
   useEffect(() => {
-    const { type } = router.query
+    const { type } = router.query;
     if (cookies.formData) {
-      dispatch(formActions.setInitialFormData(cookies.formData))
+      dispatch(formActions.setInitialFormData(cookies.formData));
     }
 
     if (cookies.jusoData) {
-      dispatch(commonActions.setJuso(cookies.jusoData))
+      dispatch(commonActions.setJuso(cookies.jusoData));
     }
 
-    if (type === 'house') {
-      dispatch(formActions.setMoveType('house' as formActions.MoveTypeProp))
+    if (type === "house") {
+      dispatch(formActions.setMoveType("house" as formActions.MoveTypeProp));
     }
-  }, [dispatch])
+  }, [dispatch]);
 
   return (
     <Visual.Section>
@@ -355,13 +355,13 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
         headerRef={headerRef}
         isFixed={isFixed}
         setIsFixed={setIsFixed}
-        onClick={(type: 'house' | 'oneroom' | 'office' | undefined) => {
-          setFormValidations([])
-          if (type === 'oneroom') {
-            document.location.href = `${ONEROOM_URL}`
-            return
+        onClick={(type: "house" | "oneroom" | "office" | undefined) => {
+          setFormValidations([]);
+          if (type === "oneroom") {
+            document.location.href = `${ONEROOM_URL}`;
+            return;
           }
-          dispatch(formActions.setMoveType(type as formActions.MoveTypeProp))
+          dispatch(formActions.setMoveType(type as formActions.MoveTypeProp));
         }}
       />
       <Visual.ButtonGroupContainer>
@@ -388,7 +388,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
       <>
         <Terms.Container selectMoveType={getMoveType !== undefined}>
           <Checkbox label="보관이사 필요" checked={getIsMoveStore} onChange={() => dispatch(formActions.setIsMoveStore(!getIsMoveStore))} />
-          <div onClick={() => setInfoVisible(true)} style={{ position: 'relative', height: 24, display: 'flex', alignItems: 'center' }}>
+          <div onClick={() => setInfoVisible(true)} style={{ position: "relative", height: 24, display: "flex", alignItems: "center" }}>
             <Question color={colors.gray33} />
             <Terms.LevelInfoBox visible={infoVisible}>
               <Terms.Arrow />
@@ -397,8 +397,8 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
             <Terms.LevelInfoWrapper
               visible={infoVisible}
               onClick={(e) => {
-                e.stopPropagation()
-                setInfoVisible(false)
+                e.stopPropagation();
+                setInfoVisible(false);
               }}
             />
           </div>
@@ -412,7 +412,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
           </div>
           <div id="dsl_move_button_requests_1">
             {/******* AUTO MATCH *******/}
-            <Button theme="primary" bold border onClick={() => handleRequestClick('curation')}>
+            <Button theme="primary" bold border onClick={() => handleRequestClick("curation")}>
               추천업체 바로 신청하기
             </Button>
             {/* {getMoveType !== 'oneroom' && (
@@ -425,7 +425,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
       <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
       <OneroomNoticePopup visible={visibleOneroom} footerButton border onClose={() => setVisibleOneroom(!visibleOneroom)} />
     </Visual.Section>
-  )
-}
+  );
+};
 
-export default MoveForm
+export default MoveForm;

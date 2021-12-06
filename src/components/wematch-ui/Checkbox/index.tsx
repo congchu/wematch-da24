@@ -1,16 +1,16 @@
-import * as React from 'react'
-import styled from 'styled-components'
-import CheckCircleOn from '../Icon/generated/CheckCircleOn'
-import CheckCircleOff from '../Icon/generated/CheckCircleOff'
-import RadioOn from '../Icon/generated/RadioOn'
-import RadioOff from '../Icon/generated/RadioOff'
-import { pointBlue, gray33 } from 'styles/colors'
+import * as React from "react";
+import styled from "styled-components";
+import CheckCircleOn from "../Icon/generated/CheckCircleOn";
+import CheckCircleOff from "../Icon/generated/CheckCircleOff";
+import RadioOn from "../Icon/generated/RadioOn";
+import RadioOff from "../Icon/generated/RadioOff";
+import { pointBlue, gray33 } from "styles/colors";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string
-  shape?: 'radio' | 'checkbox'
-  className?: string
-  checked?: boolean
+  label?: string;
+  shape?: "radio" | "checkbox";
+  className?: string;
+  checked?: boolean;
 }
 
 const S = {
@@ -27,7 +27,7 @@ const S = {
     height: 24px;
     font-size: 16px;
     word-break: keep-all;
-    font-weight: ${(props) => (props.checked ? 'bold' : 'normal')};
+    font-weight: ${(props) => (props.checked ? "bold" : "normal")};
     font-stretch: normal;
     font-style: normal;
     line-height: normal;
@@ -41,13 +41,13 @@ const S = {
   HiddenCheckbox: styled.input`
     display: none;
   `
-}
+};
 
 export function Checkbox(props: Props) {
-  const { checked = false, className, shape = 'checkbox', label, ...restProps } = props
+  const { checked = false, className, shape = "checkbox", label, ...restProps } = props;
 
-  const IconOn = shape === 'radio' ? RadioOn : CheckCircleOn
-  const IconOff = shape === 'radio' ? RadioOff : CheckCircleOff
+  const IconOn = shape === "radio" ? RadioOn : CheckCircleOn;
+  const IconOff = shape === "radio" ? RadioOff : CheckCircleOff;
 
   return (
     <S.Container className={className}>
@@ -55,5 +55,5 @@ export function Checkbox(props: Props) {
       {label && <S.LabelText checked={checked}>{label}</S.LabelText>}
       <S.HiddenCheckbox type="checkbox" {...restProps} />
     </S.Container>
-  )
+  );
 }

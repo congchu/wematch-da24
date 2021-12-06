@@ -1,22 +1,22 @@
-import React, { useEffect, useState, useRef } from 'react'
-import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { useMedia } from 'react-use-media'
+import React, { useEffect, useState, useRef } from "react";
+import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useMedia } from "react-use-media";
 
-import { DownArrow, ProfileDefault, UpArrow } from 'components/Icon'
-import Loading from 'components/Loading'
-import MainHeaderForDetail from 'components/common/MainHeaderForDetail'
-import NavHeader from 'components/common/NavHeader'
-import TermsModal from 'components/Modal/TermsModal'
-import PartnerInfo from 'components/da24/PartnerInfo'
-import Review from 'components/da24/Review'
+import { DownArrow, ProfileDefault, UpArrow } from "components/Icon";
+import Loading from "components/Loading";
+import MainHeaderForDetail from "components/common/MainHeaderForDetail";
+import NavHeader from "components/common/NavHeader";
+import TermsModal from "components/Modal/TermsModal";
+import PartnerInfo from "components/da24/PartnerInfo";
+import Review from "components/da24/Review";
 
-import * as partnerActions from 'store/partner/actions'
-import * as partnerSelector from 'store/partner/selectors'
+import * as partnerActions from "store/partner/actions";
+import * as partnerSelector from "store/partner/selectors";
 
-import * as colors from 'styles/colors'
-import * as values from 'constants/values'
+import * as colors from "styles/colors";
+import * as values from "constants/values";
 
 const S = {
   Container: styled.div``,
@@ -38,7 +38,7 @@ const S = {
     position: relative;
     margin-top: 10px;
     :before {
-      content: '';
+      content: "";
       position: absolute;
       top: -10px;
       width: 100%;
@@ -179,7 +179,7 @@ const S = {
       padding-left: 0px;
     }
   `
-}
+};
 
 const PartnerImg = {
   WrapImg: styled.div`
@@ -277,79 +277,79 @@ const PartnerImg = {
       height: 474px;
     }
   `
-}
+};
 
 const PartnerDetailForCompleted = () => {
-  const nextPage = useRef(1)
-  const [showScrollView, setShowScrollView] = useState(true)
-  const [visibleTermsModal, setVisibleTermsModal] = useState(false)
+  const nextPage = useRef(1);
+  const [showScrollView, setShowScrollView] = useState(true);
+  const [visibleTermsModal, setVisibleTermsModal] = useState(false);
 
   const isDesktop = useMedia({
     minWidth: 1200
-  })
+  });
   const isMobile = useMedia({
     maxWidth: 767
-  })
+  });
 
-  const params = useParams<{ adminId: string }>()
-  const dispatch = useDispatch()
+  const params = useParams<{ adminId: string }>();
+  const dispatch = useDispatch();
 
-  const getPartnerDetailCompleted = useSelector(partnerSelector.getPartnerDetailCompleted)
-  const getReviewCompList = useSelector(partnerSelector.getReviewList)
-  const getReviewList = useSelector(partnerSelector.getReviewList)
+  const getPartnerDetailCompleted = useSelector(partnerSelector.getPartnerDetailCompleted);
+  const getReviewCompList = useSelector(partnerSelector.getReviewList);
+  const getReviewList = useSelector(partnerSelector.getReviewList);
 
   const checkScrollTop = () => {
     if (!showScrollView && window.pageYOffset > 300) {
-      setShowScrollView(true)
+      setShowScrollView(true);
     } else if (showScrollView && window.pageYOffset <= 300) {
-      setShowScrollView(false)
+      setShowScrollView(false);
     } else if (window.pageYOffset === 0) {
-      setShowScrollView(false)
+      setShowScrollView(false);
     }
-  }
+  };
 
   const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   useEffect(() => {
     dispatch(
       partnerActions.fetchPartnerDetailCompAsync.request({
         adminId: params.adminId
       })
-    )
+    );
     dispatch(
       partnerActions.fetchReviewListAsync.request({
         adminId: params.adminId,
         page: 1,
         size: values.DEFAULT_REVIEW_LIST_SIZE
       })
-    )
-  }, [dispatch, params.adminId])
+    );
+  }, [dispatch, params.adminId]);
 
   useEffect(() => {
-    window.addEventListener('scroll', checkScrollTop)
+    window.addEventListener("scroll", checkScrollTop);
     return () => {
-      window.removeEventListener('scroll', checkScrollTop)
-    }
-  }, [checkScrollTop])
+      window.removeEventListener("scroll", checkScrollTop);
+    };
+  }, [checkScrollTop]);
 
   if (getPartnerDetailCompleted.loading) {
-    return <Loading />
+    return <Loading />;
   }
 
   const handleMoreReview = () => {
-    nextPage.current += 1
+    nextPage.current += 1;
     dispatch(
       partnerActions.fetchReviewMoreListAsync.request({
         adminId: params.adminId,
         page: nextPage.current,
         size: values.DEFAULT_REVIEW_LIST_SIZE
       })
-    )
-  }
+    );
+  };
 
-  const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal)
+  const toggleVisibleTerms = () => setVisibleTermsModal(!visibleTermsModal);
 
   /* Partner Info  - UserImage */
   const partnerImage = () => {
@@ -367,33 +367,33 @@ const PartnerDetailForCompleted = () => {
           </PartnerImg.DefaultProfileImg>
         )}
       </PartnerImg.WrapImg>
-    )
-  }
+    );
+  };
 
   /* Review */
   const review = () => {
     if (getReviewList.data.length < 1) {
       return (
         <S.ReviewPreview>
-          <img src={require(`assets/images/review_${isMobile ? 'm' : 'pc'}.svg`)} alt="review_img" />
+          <img src={require(`assets/images/review_${isMobile ? "m" : "pc"}.svg`)} alt="review_img" />
         </S.ReviewPreview>
-      )
+      );
     }
 
     return (
       <div>
         {getReviewList.data.map((review, index) => {
-          return <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star} serviceType={getPartnerDetailCompleted?.data?.service_type} />
+          return <Review key={index} id={review.id} created_at={review.created_at} professional={review.professional} kind={review.kind} price={review.price} memo={review.memo} reply={review.reply} star={review.star} serviceType={getPartnerDetailCompleted?.data?.service_type} />;
         })}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <S.Container>
       {getPartnerDetailCompleted.data && (
         <>
-          {isDesktop ? <MainHeaderForDetail /> : <NavHeader title={getPartnerDetailCompleted?.data?.service_type === 'move' ? '이사업체 상세 정보' : '청소업체 상세 정보'} />}
+          {isDesktop ? <MainHeaderForDetail /> : <NavHeader title={getPartnerDetailCompleted?.data?.service_type === "move" ? "이사업체 상세 정보" : "청소업체 상세 정보"} />}
           {partnerImage()}
           <S.PartnerInfoContainer>
             <PartnerInfo
@@ -439,7 +439,7 @@ const PartnerDetailForCompleted = () => {
         </>
       )}
     </S.Container>
-  )
-}
+  );
+};
 
-export default PartnerDetailForCompleted
+export default PartnerDetailForCompleted;

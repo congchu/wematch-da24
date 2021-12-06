@@ -1,42 +1,41 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react'
-import styled from 'styled-components'
-import ReactPixel from 'react-facebook-pixel'
-import { useMedia } from 'react-use-media'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useLocation } from 'react-router-dom'
-import { useRouter } from 'hooks/useRouter'
+import React, { useEffect, useState, useCallback, useMemo } from "react";
+import styled from "styled-components";
+import ReactPixel from "react-facebook-pixel";
+import { useMedia } from "react-use-media";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
+import { useRouter } from "hooks/useRouter";
 
-import MainHeader from 'components/common/MainHeader'
-import Collapse from 'components/base/Collapse'
-import { Down, Up } from 'components/wematch-ui/Icon'
-import { Check } from 'components/Icon'
-import ProcessBar from './processBar'
-import NewModal from 'components/NewModalTemplate'
-import ResponsiveSkeleton from 'components/common/Skeleton/responsiveSkeleton'
-
-import * as commonSelector from 'store/common/selectors'
-import * as commonActions from 'store/common/actions'
-import * as partnerActions from 'store/partner/actions'
-import * as cleanActions from 'store/clean/actions'
-import * as cleanSelector from 'store/clean/selectors'
-import * as moveActions from 'store/form/actions'
-import * as moveSelector from 'store/form/selectors'
-import * as colors from 'styles/colors'
-import { CLEAN_URL } from 'constants/env'
-import { dataLayer } from 'lib/dataLayerUtil'
-import { whatDay } from 'lib/dateUtil'
-import dayjs from 'dayjs'
-import NewLevelN from 'components/Icon/generated/NewLevelN'
-import NewLevelOther from 'components/Icon/generated/NewLevelOther'
-import NewLevelS from 'components/Icon/generated/NewLevelS'
-import { Level } from 'types/partner'
-import { getUser } from 'store/user/selectors'
-import { phoneSplit } from 'components/wematch-ui/utils/form'
-import * as formSelector from '../../../store/form/selectors'
-import { getCookie } from '../../../lib/cookie'
-import * as userActions from '../../../store/user/actions'
-import * as formActions from '../../../store/form/actions'
-import { maskingName, maskingPhone } from 'lib/stringUtil'
+import MainHeader from "components/common/MainHeader";
+import Collapse from "components/base/Collapse";
+import { Down, Up } from "components/wematch-ui/Icon";
+import { Check } from "components/Icon";
+import ProcessBar from "./processBar";
+import NewModal from "components/NewModalTemplate";
+import * as commonSelector from "store/common/selectors";
+import * as commonActions from "store/common/actions";
+import * as partnerActions from "store/partner/actions";
+import * as cleanActions from "store/clean/actions";
+import * as cleanSelector from "store/clean/selectors";
+import * as moveActions from "store/form/actions";
+import * as moveSelector from "store/form/selectors";
+import * as colors from "styles/colors";
+import { CLEAN_URL } from "constants/env";
+import { dataLayer } from "lib/dataLayerUtil";
+import { whatDay } from "lib/dateUtil";
+import dayjs from "dayjs";
+import NewLevelN from "components/Icon/generated/NewLevelN";
+import NewLevelOther from "components/Icon/generated/NewLevelOther";
+import NewLevelS from "components/Icon/generated/NewLevelS";
+import { Level } from "types/partner";
+import { getUser } from "store/user/selectors";
+import { phoneSplit } from "components/wematch-ui/utils/form";
+import * as formSelector from "../../../store/form/selectors";
+import { getCookie } from "../../../lib/cookie";
+import * as userActions from "../../../store/user/actions";
+import * as formActions from "../../../store/form/actions";
+import { maskingName, maskingPhone } from "lib/stringUtil";
+import SpinnerPopup from "components/Loading/SpinnerPopup";
 
 const S = {
   Container: styled.div`
@@ -175,7 +174,7 @@ const S = {
     }
   `,
   LevelInfoBox: styled.div<{ visible: boolean }>`
-    display: ${(props) => (props.visible ? 'block' : 'none')};
+    display: ${(props) => (props.visible ? "block" : "none")};
     position: absolute;
     top: 64px;
     right: 24px;
@@ -381,157 +380,157 @@ const S = {
   IFrame: styled.iframe`
     display: none;
   `
-}
+};
 
-type ServiceType = 'move' | 'clean'
+type ServiceType = "move" | "clean";
 
 export default function Completed() {
-  const moveForm = useSelector(moveSelector.getFormData)
-  const cleanForm = useSelector(cleanSelector.getCleanForm)
-  const getDbdbDeep = useSelector(formSelector.getDbdbDeep)
-  const { start: moveStartAddr, end: moveEndAddr, type: moveAddrType } = useSelector(commonSelector.getJuso)
-  const { moving_type } = useSelector(moveSelector.getFormData)
-  const { type: cleanType } = useSelector(cleanSelector.getCleanForm)
-  const { data, loading } = useSelector(commonSelector.getCompletedData)
-  const { data: cleanData, loading: cleanLoading } = useSelector(cleanSelector.getCleanMatchData)
-  const { data: moveData, loading: moveLoading } = useSelector(moveSelector.getSubmittedForm)
-  const { user } = useSelector(getUser)
-  const dispatch = useDispatch()
-  const history = useHistory()
-  const location = useLocation()
+  const moveForm = useSelector(moveSelector.getFormData);
+  const cleanForm = useSelector(cleanSelector.getCleanForm);
+  const getDbdbDeep = useSelector(formSelector.getDbdbDeep);
+  const { start: moveStartAddr, end: moveEndAddr, type: moveAddrType } = useSelector(commonSelector.getJuso);
+  const { moving_type } = useSelector(moveSelector.getFormData);
+  const { type: cleanType } = useSelector(cleanSelector.getCleanForm);
+  const { data, loading } = useSelector(commonSelector.getCompletedData);
+  const { data: cleanData, loading: cleanLoading } = useSelector(cleanSelector.getCleanMatchData);
+  const { data: moveData, loading: moveLoading } = useSelector(moveSelector.getSubmittedForm);
+  const { user } = useSelector(getUser);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
   const isDesktop = useMedia({
     minWidth: 1200
-  })
-  const [expand, setExpand] = useState(true)
-  const [showPopup, setShowPopup] = useState(false)
-  const [firstLoading, setFirstLoading] = useState(true)
+  });
+  const [expand, setExpand] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
+  const [firstLoading, setFirstLoading] = useState(true);
   const {
     query: { msg }
-  } = useRouter()
-  const params = new URLSearchParams(location.search)
-  const inquiry_idx = params.get('inquiry_idx')
-  const serviceType = params.get('service_type') === 'clean' ? 'clean' : 'move'
-  const lncd = getCookie('lncd')
+  } = useRouter();
+  const params = new URLSearchParams(location.search);
+  const inquiry_idx = params.get("inquiry_idx");
+  const serviceType = params.get("service_type") === "clean" ? "clean" : "move";
+  const lncd = getCookie("lncd");
 
   const togglePopup = () => {
-    setShowPopup(!showPopup)
-    history.push('/myrequest')
-  }
+    setShowPopup(!showPopup);
+    history.push("/myrequest");
+  };
 
   // 접수 성공 후 한번만 호출
   useEffect(() => {
     return () => {
-      dispatch(formActions.setDbdbdepp(false))
-    }
-  }, [])
+      dispatch(formActions.setDbdbdepp(false));
+    };
+  }, []);
 
   useEffect(() => {
     if (loading || cleanLoading || moveLoading) {
-      setFirstLoading(false)
+      setFirstLoading(false);
     }
-  }, [loading, cleanLoading, moveLoading])
+  }, [loading, cleanLoading, moveLoading]);
 
   useEffect(() => {
-    const isPartnerList = moveData?.match_list?.length || cleanData?.match_list?.length || data?.partners?.length
+    const isPartnerList = moveData?.match_list?.length || cleanData?.match_list?.length || data?.partners?.length;
 
-    if ((moveData && moveData?.result !== 'success') || (cleanData && cleanData?.result !== 'success')) {
-      return
+    if ((moveData && moveData?.result !== "success") || (cleanData && cleanData?.result !== "success")) {
+      return;
     }
 
     if (inquiry_idx && !isPartnerList) {
-      dispatch(commonActions.fetchCompletedMoveIdx.request({ inquiry_idx }))
-      return
+      dispatch(commonActions.fetchCompletedMoveIdx.request({ inquiry_idx }));
+      return;
     }
 
-    if (serviceType === 'clean' && cleanType && !isPartnerList) {
-      dispatch(cleanActions.fetchCleanAutoMatch.request())
-      return
+    if (serviceType === "clean" && cleanType && !isPartnerList) {
+      dispatch(cleanActions.fetchCleanAutoMatch.request());
+      return;
     }
 
-    if (serviceType === 'move' && moving_type && !isPartnerList) {
-      ReactPixel.fbq('track', 'Purchase')
-      dispatch(moveActions.fetchMoveData())
-      return
+    if (serviceType === "move" && moving_type && !isPartnerList) {
+      ReactPixel.fbq("track", "Purchase");
+      dispatch(moveActions.fetchMoveData());
+      return;
     }
 
     if (isPartnerList) {
-      setFirstLoading(false)
+      setFirstLoading(false);
     } else {
-      history.replace('/notFound')
+      history.replace("/notFound");
     }
-  }, [dispatch, history, cleanType, moving_type, data, cleanData, moveData, inquiry_idx, serviceType])
+  }, [dispatch, history, cleanType, moving_type, data, cleanData, moveData, inquiry_idx, serviceType]);
 
   const handleCleanConfirm = useCallback(() => {
     if (data !== null) {
       const pl = new Promise((resolve) => {
         dataLayer({
-          event: 'msg_complete',
-          category: msg ? '매칭완료메시지_크로스셀' : '매칭완료_크로스셀',
-          action: '입주청소찾기',
-          label: '바로찾기',
-          CD6: `${data.type === '가정이사' ? '가정' : '사무실'}`
-        })
-        resolve(null)
-      })
-      pl.then(() => (window.location.href = `/clean`))
+          event: "msg_complete",
+          category: msg ? "매칭완료메시지_크로스셀" : "매칭완료_크로스셀",
+          action: "입주청소찾기",
+          label: "바로찾기",
+          CD6: `${data.type === "가정이사" ? "가정" : "사무실"}`
+        });
+        resolve(null);
+      });
+      pl.then(() => (window.location.href = `/clean`));
     }
 
-    history.push('/clean')
-  }, [msg, data, history])
+    history.push("/clean");
+  }, [msg, data, history]);
 
   const handleCleanCancel = useCallback(() => {
     if (data !== null) {
       const pl = new Promise((resolve) => {
         dataLayer({
-          event: 'msg_complete',
-          category: msg ? '매칭완료메시지_크로스셀' : '매칭완료_크로스셀',
-          action: '입주청소찾기',
+          event: "msg_complete",
+          category: msg ? "매칭완료메시지_크로스셀" : "매칭완료_크로스셀",
+          action: "입주청소찾기",
 
-          label: '다음에',
-          CD6: `${data.type === '가정이사' ? '가정' : '사무실'}`
-        })
-        resolve(null)
-      })
-      pl.then(() => togglePopup())
+          label: "다음에",
+          CD6: `${data.type === "가정이사" ? "가정" : "사무실"}`
+        });
+        resolve(null);
+      });
+      pl.then(() => togglePopup());
     }
 
-    history.push('/')
-  }, [msg, data])
+    history.push("/");
+  }, [msg, data]);
 
   const handleOnLoad = useCallback(() => {
     // 없으면 응답값이 안올때가 있음.
-  }, [getDbdbDeep])
+  }, [getDbdbDeep]);
 
   const compileLevelText = (level: Level) => {
     switch (level) {
-      case 'S':
-        return '최고 등급의 검증된 파트너 업체'
-      case 'NEW':
-        return '의욕적인 신규 파트너 업체'
+      case "S":
+        return "최고 등급의 검증된 파트너 업체";
+      case "NEW":
+        return "의욕적인 신규 파트너 업체";
       default:
-        return '믿을 수 있는 우수 파트너 업체'
+        return "믿을 수 있는 우수 파트너 업체";
     }
-  }
+  };
 
   const handleSubmit = () => {
-    if (serviceType === 'move') {
-      setShowPopup(!showPopup)
-    } else if (serviceType === 'clean') {
-      history.push('/myrequest')
+    if (serviceType === "move") {
+      setShowPopup(!showPopup);
+    } else if (serviceType === "clean") {
+      history.push("/myrequest");
     }
-  }
+  };
 
   const companyListData = useMemo(() => {
     if (inquiry_idx && data) {
-      return data?.partners
+      return data?.partners;
     }
 
-    if (serviceType === 'move' && moveData) {
-      return moveData?.match_list
-    } else if (serviceType === 'clean' && cleanData) {
-      return cleanData?.match_list
+    if (serviceType === "move" && moveData) {
+      return moveData?.match_list;
+    } else if (serviceType === "clean" && cleanData) {
+      return cleanData?.match_list;
     }
-  }, [inquiry_idx, serviceType, data, cleanData, moveData])
+  }, [inquiry_idx, serviceType, data, cleanData, moveData]);
 
   const renderMoveUserInfo = ({ contact, movingDate, movingType, startAddr, endAddr, memo }: { contact: string; movingDate: string; movingType: string; startAddr: string; endAddr: string; memo: string }) => (
     <S.MoveInfo>
@@ -555,7 +554,7 @@ export default function Completed() {
         <S.MoveText>도착지</S.MoveText>
         <S.MoveSubtext>{endAddr}</S.MoveSubtext>
       </li>
-      {memo !== '' ? (
+      {memo !== "" ? (
         <li>
           <S.MoveText>전달메모</S.MoveText>
           <S.MoveSubtext>{memo}</S.MoveSubtext>
@@ -564,7 +563,7 @@ export default function Completed() {
         <></>
       )}
     </S.MoveInfo>
-  )
+  );
 
   const renderCleanUserInfo = ({ contact, cleaningDate, cleanAddr, memo }: { contact: string; cleaningDate: string; cleanAddr?: string; memo: string }) => (
     <S.MoveInfo>
@@ -585,60 +584,60 @@ export default function Completed() {
         <S.MoveSubtext>{memo}</S.MoveSubtext>
       </li>
     </S.MoveInfo>
-  )
+  );
 
   const renderUserInfo = () => {
-    let userInfo
+    let userInfo;
     if (inquiry_idx && data !== null) {
-      if (data.type.includes('이사')) {
+      if (data.type.includes("이사")) {
         userInfo = {
           contact: `(${data?.name}) ${data?.phone_number}`,
-          movingDate: `(${whatDay(data?.moving_date)}) ${dayjs(data?.moving_date).format('YYYY.MM.DD')}`,
+          movingDate: `(${whatDay(data?.moving_date)}) ${dayjs(data?.moving_date).format("YYYY.MM.DD")}`,
           movingType: `${data?.type}`,
           startAddr: `${data?.start_address}층`,
           endAddr: `${data?.end_address}층`,
           memo: `${data?.memo}`
-        }
+        };
 
-        return renderMoveUserInfo({ ...userInfo })
+        return renderMoveUserInfo({ ...userInfo });
       } else {
         userInfo = {
           contact: `(${data?.name}) ${data?.phone_number}`,
-          cleaningDate: `(${whatDay(data?.moving_date)}) ${dayjs(data?.moving_date).format('YYYY.MM.DD')}`,
+          cleaningDate: `(${whatDay(data?.moving_date)}) ${dayjs(data?.moving_date).format("YYYY.MM.DD")}`,
           cleanAddr: `${data?.start_address}층`,
           memo: `${data?.memo}`
-        }
+        };
 
-        return renderCleanUserInfo({ ...userInfo })
+        return renderCleanUserInfo({ ...userInfo });
       }
     }
 
-    if (serviceType === 'move' && moving_type) {
+    if (serviceType === "move" && moving_type) {
       userInfo = {
         contact: `(${moveForm.name}) ${moveForm.phone1}-${moveForm.phone2}-${moveForm.phone3}`,
         movingDate: `(${whatDay(moveForm.moving_date)}) ${moveForm.moving_date}`,
         movingType: `${moveForm.moving_type}`,
-        startAddr: moveAddrType.start === 'road' ? `${moveStartAddr?.roadAddr}` : `${moveStartAddr?.jibunAddr}`,
-        endAddr: moveAddrType.end === 'road' ? `${moveEndAddr?.roadAddr}` : `${moveEndAddr?.jibunAddr}`,
+        startAddr: moveAddrType.start === "road" ? `${moveStartAddr?.roadAddr}` : `${moveStartAddr?.jibunAddr}`,
+        endAddr: moveAddrType.end === "road" ? `${moveEndAddr?.roadAddr}` : `${moveEndAddr?.jibunAddr}`,
         memo: `${moveForm.memo}`
-      }
+      };
 
-      return renderMoveUserInfo({ ...userInfo })
-    } else if (serviceType === 'clean' && cleanType && user !== null) {
-      const { phone1, phone2, phone3 } = phoneSplit(user.tel)
+      return renderMoveUserInfo({ ...userInfo });
+    } else if (serviceType === "clean" && cleanType && user !== null) {
+      const { phone1, phone2, phone3 } = phoneSplit(user.tel);
       userInfo = {
         contact: `(${user?.name}) ${phone1}-${phone2}-${phone3}`,
         cleaningDate: cleanForm.date[0],
-        cleanAddr: cleanForm.addressType === 'road' ? cleanForm.address?.roadAddr : cleanForm.address?.jibunAddr,
+        cleanAddr: cleanForm.addressType === "road" ? cleanForm.address?.roadAddr : cleanForm.address?.jibunAddr,
         memo: cleanForm.cleanMemo
-      }
+      };
 
-      return renderCleanUserInfo({ ...userInfo })
+      return renderCleanUserInfo({ ...userInfo });
     }
-  }
+  };
 
   if (loading || firstLoading || cleanLoading || moveLoading) {
-    return <ResponsiveSkeleton />
+    return <SpinnerPopup title={`내 조건에 맞는 ${serviceType === "clean" ? "청소" : "이사"}업체 찾는 중`} subtitle="(최대 1분 소요)" />;
   }
   return (
     <S.Container>
@@ -646,12 +645,12 @@ export default function Completed() {
       <S.TopContainer>
         <S.TopContents>
           <S.Icon>
-            <Check fill={'#fff'} />
+            <Check fill={"#fff"} />
           </S.Icon>
-          <S.TopTitle style={{ paddingBottom: serviceType !== 'clean' ? 0 : '24px' }}>
-            <em>{serviceType !== 'clean' && !cleanType ? `이사업체` : `청소업체`}</em> 매칭완료 <br />
+          <S.TopTitle style={{ paddingBottom: serviceType !== "clean" ? 0 : "24px" }}>
+            <em>{serviceType !== "clean" && !cleanType ? `이사업체` : `청소업체`}</em> 매칭완료 <br />
             <div>
-              {serviceType !== 'clean' && !cleanType ? (
+              {serviceType !== "clean" && !cleanType ? (
                 <>
                   <p>
                     3개 업체 미만 매칭된 경우 24시간 내<br />
@@ -671,7 +670,7 @@ export default function Completed() {
               )}
             </div>
           </S.TopTitle>
-          {serviceType !== 'clean' && !cleanType && <ProcessBar />}
+          {serviceType !== "clean" && !cleanType && <ProcessBar />}
         </S.TopContents>
       </S.TopContainer>
       <S.ContentsWrap>
@@ -682,9 +681,9 @@ export default function Completed() {
           {companyListData?.map((list, index, arr) => (
             <S.Card key={index}>
               <S.ListBox>
-                {list.level === 'NEW' && <NewLevelN />}
-                {list.level === 'S' && <NewLevelS />}
-                {list.level !== 'NEW' && list.level !== 'S' && <NewLevelOther />}
+                {list.level === "NEW" && <NewLevelN />}
+                {list.level === "S" && <NewLevelS />}
+                {list.level !== "NEW" && list.level !== "S" && <NewLevelOther />}
                 <S.CompanyTitle>
                   {list.adminname} <br />
                   <span>{compileLevelText(list.level)}</span>
@@ -693,22 +692,22 @@ export default function Completed() {
               <S.HorizontalBar />
               <S.LinkCompany
                 onClick={() => {
-                  let type = "사무실"
+                  let type = "사무실";
                   if (data) {
-                    type = data.type === '가정이사' ? '가정' : '사무실';
+                    type = data.type === "가정이사" ? "가정" : "사무실";
                   } else if (moveForm && moveForm.moving_type) {
-                    type = moveForm.moving_type
+                    type = moveForm.moving_type;
                   }
                   dataLayer({
-                    event: msg !== 'true' ? 'complete' : 'msg_complete',
-                    category: msg !== 'true' ? '매칭완료' : '매칭완료메시지_업체정보',
-                    action: '고객평가_확인',
+                    event: msg !== "true" ? "complete" : "msg_complete",
+                    category: msg !== "true" ? "매칭완료" : "매칭완료메시지_업체정보",
+                    action: "고객평가_확인",
                     label: `${arr.length}_${index + 1}`,
                     CD6: type
-                  })
+                  });
                   /* 페이지 재접속시 이전상태 초기화 */
-                  dispatch(partnerActions.detailReset())
-                  history.push(`/requests/completed/${list.adminid}`)
+                  dispatch(partnerActions.detailReset());
+                  history.push(`/requests/completed/${list.adminid}`);
                 }}>
                 {`업체 정보 자세히 보기 (후기 ${list.feedback_cnt}개)`}
               </S.LinkCompany>
@@ -721,31 +720,31 @@ export default function Completed() {
         </S.TitleWrap>
         <Collapse expand={expand}>{renderUserInfo()}</Collapse>
       </S.ContentsWrap>
-      {serviceType !== 'clean' && !cleanType && (
-        <S.Box href={'/clean'}>
-          <img className="left" src={require('assets/images/components/Completed/home.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사" />
+      {serviceType !== "clean" && !cleanType && (
+        <S.Box href={"/clean"}>
+          <img className="left" src={require("assets/images/components/Completed/home.svg")} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사" />
           <div>
             <h3 className="title">
               {data?.end_address
-                .split(' ')
+                .split(" ")
                 .slice(0, -1)
                 .pop()}
             </h3>
             <p className="desc">잘하는 입주청소 업체 찾기</p>
           </div>
-          <img className="right" src={require('assets/images/components/Completed/right.svg')} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사" />
+          <img className="right" src={require("assets/images/components/Completed/right.svg")} alt="위매치,포장이사,이사짐센터,이삿짐센터,포장이사견적비교,이사견적,포장이사비용,보관이사,원룸이사,사다리차,이삿짐보관,가정이사,포장이사업체,이사견적비교사이트,소형이사" />
         </S.Box>
       )}
       <S.Button onClick={() => handleSubmit()}>신청 정보 확인완료</S.Button>
-      {serviceType === 'move' && <NewModal visible={showPopup} title={'입주청소 찾기'} content={'입주청소도 필요하세요?'} confirmText={'바로 찾기'} cancelText={'다음에'} confirmClick={handleCleanConfirm} cancelClick={handleCleanCancel} />}
+      {serviceType === "move" && <NewModal visible={showPopup} title={"입주청소 찾기"} content={"입주청소도 필요하세요?"} confirmText={"바로 찾기"} cancelText={"다음에"} confirmClick={handleCleanConfirm} cancelClick={handleCleanCancel} />}
       {getDbdbDeep && (
         <S.IFrame
-          src={`https://dbdbdeep.com/site19/gate/da24/join.php?lncd=${lncd}&name=${encodeURIComponent(maskingName(moveForm.name))}&tel=${encodeURIComponent(moveForm.phone1 + '-' + maskingPhone(moveForm.phone2) + '-' + maskingPhone(moveForm.phone3))}&dt=${encodeURIComponent(
+          src={`https://dbdbdeep.com/site19/gate/da24/join.php?lncd=${lncd}&name=${encodeURIComponent(maskingName(moveForm.name))}&tel=${encodeURIComponent(moveForm.phone1 + "-" + maskingPhone(moveForm.phone2) + "-" + maskingPhone(moveForm.phone3))}&dt=${encodeURIComponent(
             moveForm.moving_date
           )}`}
           onLoad={handleOnLoad}
         />
       )}
     </S.Container>
-  )
+  );
 }

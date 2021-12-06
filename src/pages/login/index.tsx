@@ -1,66 +1,68 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import styled, { css } from 'styled-components'
-import * as colors from 'styles/colors'
-import * as userActions from 'store/user/actions'
-import * as formSelector from 'store/form/selectors'
-import * as userSelector from 'store/user/selectors'
-import * as cleanSelector from 'store/clean/selectors'
-import { useDispatch, useSelector } from 'react-redux'
-import useTimer from 'hooks/useTimer'
-import useHashToggle from 'hooks/useHashToggle'
-import NewModal from 'components/NewModalTemplate'
-import getMobileOS from 'lib/getMobileOS'
-import { EInitService } from 'types/auth'
-import { dataLayer } from 'lib/dataLayerUtil'
-import Input from 'components/common/Input'
-import Button from 'components/common/Button'
-import TermsModal from 'components/common/Modal/TermsModal'
-import MainHeader from 'components/common/MainHeader'
-import TopGnb from 'components/TopGnb'
-import { useMedia } from 'react-use-media'
-import { useHistory } from 'react-router-dom'
-import { useCookies } from 'react-cookie'
-import { get } from 'lodash'
-import { ESignInCase } from 'store/user/types'
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import styled, { css } from "styled-components";
+import * as colors from "styles/colors";
+import * as userActions from "store/user/actions";
+import * as formSelector from "store/form/selectors";
+import * as userSelector from "store/user/selectors";
+import * as cleanSelector from "store/clean/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import useTimer from "hooks/useTimer";
+import useHashToggle from "hooks/useHashToggle";
+import NewModal from "components/NewModalTemplate";
+import getMobileOS from "lib/getMobileOS";
+import { EInitService } from "types/auth";
+import { dataLayer } from "lib/dataLayerUtil";
+import Input from "components/common/Input";
+import Button from "components/common/Button";
+import TermsModal from "components/common/Modal/TermsModal";
+import MainHeader from "components/common/MainHeader";
+import TopGnb from "components/TopGnb";
+import { useMedia } from "react-use-media";
+import { useHistory } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { get } from "lodash";
+import { ESignInCase } from "store/user/types";
+import Spinner from "components/Loading/Spinner";
 
 function LoginPage() {
-  const mobileOS = getMobileOS()
-  const [cookies] = useCookies()
-  const dispatch = useDispatch()
-  const getMoveType = useSelector(formSelector.getType)
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
-  const { error, prevPage } = useSelector(userSelector.getUser)
-  const cleanType = useSelector(cleanSelector.getCleanType)
-  const { isVerified, isSendMessage, loading } = useSelector(userSelector.getPhoneVerified)
-  const { counter, handleCounterStart, handleCounterStop } = useTimer(180)
-  const [code, setCode] = useState<string>('')
-  const [visibleTerms, setVisibleTerms] = useHashToggle('#terms')
-  const [visibleTimeout, setVisibleTimeout] = useHashToggle('#timeout')
-  const [visibleCancel, setVisibleCancel] = useHashToggle('#verifyCancel')
-  const [isTimeout, setIsTimeout] = useState(false)
-  const nameInputRef = useRef<HTMLInputElement | null>(null)
-  const verifyRef = useRef<HTMLInputElement | null>(null)
-  const history = useHistory()
+  const mobileOS = getMobileOS();
+  const [cookies] = useCookies();
+  const dispatch = useDispatch();
+  const getMoveType = useSelector(formSelector.getType);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const { error, prevPage } = useSelector(userSelector.getUser);
+  const cleanType = useSelector(cleanSelector.getCleanType);
+  const { isVerified, isSendMessage, loading } = useSelector(userSelector.getPhoneVerified);
+  const { counter, handleCounterStart, handleCounterStop } = useTimer(180);
+  const [code, setCode] = useState<string>("");
+  const [visibleTerms, setVisibleTerms] = useHashToggle("#terms");
+  const [visibleTimeout, setVisibleTimeout] = useHashToggle("#timeout");
+  const [visibleCancel, setVisibleCancel] = useHashToggle("#verifyCancel");
+  const [isTimeout, setIsTimeout] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const nameInputRef = useRef<HTMLInputElement | null>(null);
+  const verifyRef = useRef<HTMLInputElement | null>(null);
+  const history = useHistory();
   const isDesktop = useMedia({
     minWidth: 1200
-  })
+  });
 
   const handleSubmit = () => {
-    setIsTimeout(false)
+    setIsTimeout(false);
     dispatch(
       userActions.fetchVerifySendMessageAsync.request({
         phone
       })
-    )
-  }
+    );
+  };
 
   const handlePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const originPhoneValue = event.target.value.replace(/-/gi, '')
-    setPhone(originPhoneValue)
-  }
-  const isNumRegex = /^[0-9]+$/g
-  const isAuth = useMemo(() => !(!!name && phone.length >= 11 && isNumRegex.test(phone)) || !!isVerified, [name, phone, isVerified, isNumRegex])
+    const originPhoneValue = event.target.value.replace(/-/gi, "");
+    setPhone(originPhoneValue);
+  };
+  const isNumRegex = /^[0-9]+$/g;
+  const isAuth = useMemo(() => !(!!name && phone.length >= 11 && isNumRegex.test(phone)) || !!isVerified, [name, phone, isVerified, isNumRegex]);
 
   const handleVerify = () => {
     dispatch(
@@ -68,26 +70,27 @@ function LoginPage() {
         phone,
         code
       })
-    )
-  }
+    );
+  };
 
-  const displayCount = (count: number) => `${Math.floor(count / 60)}:${count % 60 < 10 ? `0${count % 60}` : count % 60}`
+  const displayCount = (count: number) => `${Math.floor(count / 60)}:${count % 60 < 10 ? `0${count % 60}` : count % 60}`;
 
   const handleLoginClose = () => {
     if (visibleCancel) {
-      dispatch(userActions.phoneVerifyCancel())
-      history.go(-2)
+      dispatch(userActions.phoneVerifyCancel());
+      history.go(-2);
     }
-  }
+  };
 
   const handleSignUp = () => {
-    const agentId = get(cookies, '0dj38gepoekf98234aplyadmin')
-    let init_service = EInitService.MOVE_OFFICE
+    setSubmitted(true);
+    const agentId = get(cookies, "0dj38gepoekf98234aplyadmin");
+    let init_service = EInitService.MOVE_OFFICE;
 
     if (prevPage === ESignInCase.FORM) {
-      init_service = getMoveType === 'house' ? EInitService.MOVE_HOUSE : EInitService.MOVE_OFFICE
+      init_service = getMoveType === "house" ? EInitService.MOVE_HOUSE : EInitService.MOVE_OFFICE;
     } else if (prevPage === ESignInCase.CLEAN) {
-      init_service = cleanType === '거주청소' ? EInitService.CLEAN_HOUSE : EInitService.CLEAN_MOVE
+      init_service = cleanType === "거주청소" ? EInitService.CLEAN_HOUSE : EInitService.CLEAN_MOVE;
     }
 
     dispatch(
@@ -98,59 +101,59 @@ function LoginPage() {
         code,
         user_agent: navigator.userAgent,
         agreed_marketing: new Date().toISOString(),
-        agent: agentId ? agentId.split('=')[1] : null
+        agent: agentId ? agentId.split("=")[1] : null
       })
-    )
-  }
+    );
+  };
 
   const handleLoginCancel = () => {
     dataLayer({
-      event: 'login',
-      category: '로그인취소_팝업',
-      action: '로그인취소',
-      label: '취소'
-    })
-    handleLoginClose()
-  }
+      event: "login",
+      category: "로그인취소_팝업",
+      action: "로그인취소",
+      label: "취소"
+    });
+    handleLoginClose();
+  };
 
   const handleLoginConfirm = () => {
     dataLayer({
-      event: 'login',
-      category: '로그인취소_팝업',
-      action: '계속진행',
-      label: '계속진행하기'
-    })
-    setVisibleCancel(!visibleCancel)
-  }
+      event: "login",
+      category: "로그인취소_팝업",
+      action: "계속진행",
+      label: "계속진행하기"
+    });
+    setVisibleCancel(!visibleCancel);
+  };
 
   useEffect(() => {
-    dispatch(userActions.phoneVerifyCancel())
-  }, [])
-  
+    dispatch(userActions.phoneVerifyCancel());
+  }, []);
+
   useEffect(() => {
     if (counter === 0) {
-      setVisibleTimeout(true)
+      setVisibleTimeout(true);
     }
-  }, [counter])
+  }, [counter]);
 
   useEffect(() => {
     if (isSendMessage) {
-      verifyRef?.current?.focus()
-      handleCounterStart()
+      verifyRef?.current?.focus();
+      handleCounterStart();
     }
-  }, [isSendMessage, handleCounterStart])
+  }, [isSendMessage, handleCounterStart]);
 
   useEffect(() => {
     if (isVerified !== null && code.length === 0) {
-      dispatch(userActions.phoneVerifyReset())
+      dispatch(userActions.phoneVerifyReset());
     }
-  }, [dispatch, code, isVerified])
+  }, [dispatch, code, isVerified]);
 
   return (
     <Container>
       {isDesktop ? <MainHeader isFixed={true} /> : <TopGnb title="번호인증" count={0} onPrevious={() => setVisibleCancel(true)} showTruck={false} />}
-      <LoginWrapper id={'dsl_login_popup'}>
-        <div style={{ width: '100%' }}>
+      <LoginWrapper id={"dsl_login_popup"}>
+        <div style={{ width: "100%" }}>
           <TextWrppaer>
             <p>
               업체와의 <span>견적상담신청/내신청내역 확인</span>을 위해
@@ -166,20 +169,20 @@ function LoginPage() {
               onChange={(e) => setName(e.target.value)}
               value={name}
               inputRef={nameInputRef}
-              style={{ backgroundColor: isVerified ? '' : 'transparent' }}
+              style={{ backgroundColor: isVerified ? "" : "transparent" }}
               disabled={!!isVerified}
               onBlur={(e) => {
                 if (e.target.value.length >= 2) {
                   dataLayer({
-                    event: 'login',
-                    category: '로그인_팝업',
-                    action: '이름',
-                    label: '회원명'
-                  })
+                    event: "login",
+                    category: "로그인_팝업",
+                    action: "이름",
+                    label: "회원명"
+                  });
                 }
               }}
             />
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
               <Input
                 theme="default"
                 border
@@ -188,27 +191,27 @@ function LoginPage() {
                 inputMode="numeric"
                 value={phone}
                 onChange={handlePhone}
-                style={{ backgroundColor: isVerified ? '' : 'transparent' }}
+                style={{ backgroundColor: isVerified ? "" : "transparent" }}
                 rootStyle={{ flex: 1 }}
                 maxLength={11}
                 disabled={!!isVerified}
                 onBlur={(e) => {
                   if (e.target.value.length >= 2) {
                     dataLayer({
-                      event: 'login',
-                      category: '로그인_팝업',
-                      action: '휴대폰번호',
-                      label: '회원연락처'
-                    })
+                      event: "login",
+                      category: "로그인_팝업",
+                      action: "휴대폰번호",
+                      label: "회원연락처"
+                    });
                   }
                 }}
               />
-              <Button theme="primary" disabled={isAuth} style={{ width: '90px', marginLeft: '7px', borderRadius: '4px' }} onClick={handleSubmit} bold={true}>
-                {!isSendMessage && !isVerified ? '인증요청' : '재전송'}
+              <Button theme="primary" disabled={isAuth} style={{ width: "90px", marginLeft: "7px", borderRadius: "4px" }} onClick={handleSubmit} bold={true}>
+                {!isSendMessage && !isVerified ? "인증요청" : "재전송"}
               </Button>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div style={{ flex: 1, position: 'relative' }}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div style={{ flex: 1, position: "relative" }}>
                 <Input
                   theme="default"
                   border
@@ -218,19 +221,19 @@ function LoginPage() {
                   pattern="[0-9]*"
                   inputMode="numeric"
                   onChange={(e) => {
-                    setCode(e.target.value)
+                    setCode(e.target.value);
                   }}
-                  style={{ backgroundColor: !isSendMessage || isVerified ? '' : 'transparent', borderColor: isVerified === false ? '#EC485C' : '' }}
+                  style={{ backgroundColor: !isSendMessage || isVerified ? "" : "transparent", borderColor: isVerified === false ? "#EC485C" : "" }}
                   inputRef={verifyRef}
                   disabled={!isSendMessage || !!isVerified}
                   onBlur={(e) => {
                     if (e.target.value.length >= 2) {
                       dataLayer({
-                        event: 'login',
-                        category: '로그인_팝업',
-                        action: '인증번호',
-                        label: '인증번호입력'
-                      })
+                        event: "login",
+                        category: "로그인_팝업",
+                        action: "인증번호",
+                        label: "인증번호입력"
+                      });
                     }
                   }}
                 />
@@ -238,7 +241,7 @@ function LoginPage() {
                   <span>{isSendMessage && displayCount(counter)}</span>
                 </CounterWrapper>
               </div>
-              <Button theme="primary" disabled={!isSendMessage || isVerified || isTimeout || code.length < 6} onClick={handleVerify} bold={true} style={{ width: '90px', marginLeft: '7px', borderRadius: '4px' }}>
+              <Button theme="primary" disabled={!isSendMessage || isVerified || isTimeout || code.length < 6} onClick={handleVerify} bold={true} style={{ width: "90px", marginLeft: "7px", borderRadius: "4px" }}>
                 확인
               </Button>
             </div>
@@ -249,15 +252,15 @@ function LoginPage() {
           </FormWrapper>
         </div>
         {/* {mobileOS === 'Android' && <MobileKeyboardSection isMobileKeyboard={isMobileKeyboard} />} */}
-        <FooterWrappe isIOS={mobileOS === 'iOS'}>
+        <FooterWrappe isIOS={mobileOS === "iOS"}>
           <p>
             <span onClick={() => setVisibleTerms(true)}>이용약관 및 개인정보처리방침 동의</span>, 견적상담을 위한 개인 정보 제3자 제공 및 마케팅 정보수신 동의 필요
           </p>
-          <Button theme="primary" disabled={!isVerified || !name} style={{ fontSize: '18px', borderRadius: '6px' }} bold={true} onClick={handleSignUp}>
-            동의하고 진행하기
+          <Button theme="primary" disabled={!isVerified || !name} style={{ fontSize: "18px", borderRadius: "6px" }} bold={true} onClick={handleSignUp}>
+            {!submitted ? "동의하고 진행하기" : <Spinner color="white" size="small" />}
           </Button>
           {isDesktop && (
-            <Button theme="default" border={true} style={{ border: '1px solid #D7DBE2', marginTop: 10 }} onClick={() => setVisibleCancel(true)}>
+            <Button theme="default" border={true} style={{ border: "1px solid #D7DBE2", marginTop: 10 }} onClick={() => setVisibleCancel(true)}>
               이전
             </Button>
           )}
@@ -266,32 +269,32 @@ function LoginPage() {
       {/*인증번호 초과 모달*/}
       <NewModal
         visible={visibleTimeout}
-        title={'인증번호 입력시간 초과'}
-        content={'인증번호 입력가능시간이 초과 되었습니다. 인증번호를 다시 받아주세요!'}
-        confirmText={'확인'}
+        title={"인증번호 입력시간 초과"}
+        content={"인증번호 입력가능시간이 초과 되었습니다. 인증번호를 다시 받아주세요!"}
+        confirmText={"확인"}
         confirmClick={() => {
-          setVisibleTimeout(!visibleTimeout)
-          setIsTimeout(true)
+          setVisibleTimeout(!visibleTimeout);
+          setIsTimeout(true);
         }}
       />
       {/*로그인/가입 취소 모달*/}
       <NewModal
         visible={visibleCancel}
-        title={'번호인증 취소'}
+        title={"번호인증 취소"}
         content={`번호인증을 취소하시면 견적상담신청 및 내신청내역을 확인할 수 없습니다.\n취소하시겠어요?`}
-        confirmText={'인증 진행하기'}
-        cancelText={'취소'}
+        confirmText={"인증 진행하기"}
+        cancelText={"취소"}
         cancelClick={handleLoginCancel}
         confirmClick={handleLoginConfirm}
-        tags={{ cancel: 'dsl_logincancel_cancel', success: 'dsl_logincancel_continue' }}
+        tags={{ cancel: "dsl_logincancel_cancel", success: "dsl_logincancel_continue" }}
       />
       <TermsModal visible={visibleTerms} onClose={() => setVisibleTerms(!visibleTerms)} />
-      <NewModal visible={error} title={'죄송합니다'} content={`진행 중 오류가 발생하였습니다. 문제가 지속될 시 고객센터로 문의해주세요. \n고객센터 1522-2483`} confirmText={'확인'} confirmClick={() => dispatch(userActions.errorModalOff())} />
+      <NewModal visible={error} title={"죄송합니다"} content={`진행 중 오류가 발생하였습니다. 문제가 지속될 시 고객센터로 문의해주세요. \n고객센터 1522-2483`} confirmText={"확인"} confirmClick={() => dispatch(userActions.errorModalOff())} />
     </Container>
-  )
+  );
 }
 
-export default LoginPage
+export default LoginPage;
 
 const Container = styled.div`
   position: relative;
@@ -307,7 +310,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
   }
-`
+`;
 
 const LoginWrapper = styled.div`
   width: 100%;
@@ -327,11 +330,11 @@ const LoginWrapper = styled.div`
     align-items: center;
     padding-top: 100px;
   }
-`
+`;
 
 const MobileKeyboardSection = styled.div<{ isMobileKeyboard: boolean }>`
-  height: ${({ isMobileKeyboard }) => (isMobileKeyboard ? `${window.innerHeight}px` : '0')};
-`
+  height: ${({ isMobileKeyboard }) => (isMobileKeyboard ? `${window.innerHeight}px` : "0")};
+`;
 
 const TextWrppaer = styled.div`
   font-size: 16px;
@@ -364,7 +367,7 @@ const TextWrppaer = styled.div`
   @media screen and (min-width: 768px) {
     padding: 0;
   }
-`
+`;
 
 const FormWrapper = styled.div`
   padding: 0 24px;
@@ -376,7 +379,7 @@ const FormWrapper = styled.div`
     padding: 0;
     margin-bottom: 100px;
   }
-`
+`;
 
 const FooterWrappe = styled.div<{ isIOS?: boolean }>`
   padding: 24px;
@@ -406,15 +409,15 @@ const FooterWrappe = styled.div<{ isIOS?: boolean }>`
       border-radius: 4px;
     }
   }
-`
+`;
 
 const ErrorMessage = styled.span`
   color: #fa3c3c;
-`
+`;
 
 const SuccessMessage = styled.span`
   color: #1672f7;
-`
+`;
 
 const CounterWrapper = styled.div`
   position: absolute;
@@ -426,4 +429,4 @@ const CounterWrapper = styled.div`
     line-height: 24px;
     color: ${colors.gray33};
   }
-`
+`;

@@ -1,17 +1,17 @@
-import React from 'react'
-import Styled from 'styled-components'
+import React from "react";
+import Styled from "styled-components";
 
-import { Next } from 'components/wematch-ui/Icon';
+import { Next } from "components/wematch-ui/Icon";
 
-import * as colors from 'styles/colors'
-import * as constants from 'constants/env'
+import * as colors from "styles/colors";
+import * as constants from "constants/env";
 
 interface Props {
-    title: string;
+  title: string;
 }
 
 const S = {
-    Container: Styled.div`
+  Container: Styled.div`
         position: relative;
         background-color: ${colors.white};
         letter-spacing: -1px;
@@ -23,7 +23,7 @@ const S = {
             padding: 35px 0 20px;
         }
     `,
-    Title: Styled.strong`
+  Title: Styled.strong`
         display: block;
         margin-bottom: 9px;
         font-weight: 700;
@@ -31,13 +31,13 @@ const S = {
         line-height: 24px;
         letter-spacing: -1px;
     `,
-    Ul: Styled.ul`
+  Ul: Styled.ul`
         display: block;
         @media (min-width: 1200px) {
             overflow: hidden;
         }
     `,
-    Li: Styled.li`
+  Li: Styled.li`
         overflow: hidden;
         position: relative; 
         border-top: 1px solid ${colors.lineDeco};
@@ -110,56 +110,57 @@ const S = {
             }
         }
     `
-}
+};
 
-const TipList:React.FC<Props> = (props) => {
-    const {
-        title
-    } = props
+const TipList: React.FC<Props> = (props) => {
+  const { title } = props;
 
-    return (
-        <S.Container>
-            <S.Title>{title}</S.Title>
-            <S.Ul>
-                <S.Li>
-                    <a href={constants.MOVE_URL + "/da24.asp"}>
-                        <strong>소비자평가등급</strong>
-                        <span className="txtDirect">빅데이터 기반으로 신뢰할 수 있는 업체 평가등급</span>
-                        <Next size={16}/>
-                    </a>
-                </S.Li>
-                <S.Li>
-                    <a href={constants.MOVE_URL + "/comment2.asp"}>
-                        <strong>이용자 평가</strong>
-                        <span className="txtDirect">실제 업체 이용자가 남긴 실시간 직접 평가</span>
-                        <Next size={16}/>
-                    </a>
-                </S.Li>
-                <S.Li>
-                    <a href={constants.MOVE_URL + "/bigdata.asp"}>
-                        <strong>빅데이터 랩</strong>
-                        <span className="txtDirect">
-                            <span className="txtBar">이사 거래액
-                            <span className="num_g"> 3,325 </span>
-                            <span className="txt_won">억원</span>
-                        </span>
-                        <span>누적매칭
-                            <span className="num_g"> 976,856 </span>
-                            <span className="txt_won">건</span></span>
-                        </span>
-                        <Next size={16}/>
-                    </a>
-                </S.Li>
-                <S.Li>
-                    <a href={constants.MOVE_URL + "/service.asp"}>
-                        <strong>서비스 소개</strong>
-                        <span className="txtDirect">위매치다이사 서비스 소개</span>
-                        <Next size={16}/>
-                    </a>
-                </S.Li>
-            </S.Ul>
-        </S.Container>
-    )
-}
+  return (
+    <S.Container>
+      <S.Title>{title}</S.Title>
+      <S.Ul>
+        <S.Li>
+          <a href={constants.MOVE_URL + "/da24.asp"}>
+            <strong>소비자평가등급</strong>
+            <span className="txtDirect">빅데이터 기반으로 신뢰할 수 있는 업체 평가등급</span>
+            <Next size={16} />
+          </a>
+        </S.Li>
+        <S.Li>
+          <a href={constants.MOVE_URL + "/comment2.asp"}>
+            <strong>이용자 평가</strong>
+            <span className="txtDirect">실제 업체 이용자가 남긴 실시간 직접 평가</span>
+            <Next size={16} />
+          </a>
+        </S.Li>
+        <S.Li>
+          <a href={constants.MOVE_URL + "/bigdata.asp"}>
+            <strong>빅데이터 랩</strong>
+            <span className="txtDirect">
+              <span className="txtBar">
+                이사 거래액
+                <span className="num_g"> 3,325 </span>
+                <span className="txt_won">억원</span>
+              </span>
+              <span>
+                누적매칭
+                <span className="num_g"> 976,856 </span>
+                <span className="txt_won">건</span>
+              </span>
+            </span>
+            <Next size={16} />
+          </a>
+        </S.Li>
+        <S.Li>
+          <a href={constants.MOVE_URL + "/service.asp"}>
+            <strong>서비스 소개</strong>
+            <span className="txtDirect">위매치다이사 서비스 소개</span>
+            <Next size={16} />
+          </a>
+        </S.Li>
+      </S.Ul>
+    </S.Container>
+  );
+};
 
 export default TipList;

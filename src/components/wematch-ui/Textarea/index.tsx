@@ -1,10 +1,10 @@
-import * as React from 'react'
-import styled from 'styled-components'
-import { gray33, gray88, lineDefault, grayBg } from 'styles/colors'
+import * as React from "react";
+import styled from "styled-components";
+import { gray33, gray88, lineDefault, grayBg } from "styles/colors";
 
 interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  initialHeight?: number
-  autoExtend?: boolean
+  initialHeight?: number;
+  autoExtend?: boolean;
 }
 
 const S = {
@@ -15,7 +15,7 @@ const S = {
     border-radius: 6px;
   `,
   Textarea: styled.textarea<{ height: number }>`
-    font-family: 'Noto Sans KR', 'AppleSDGothicNeo-Light', 'Malgun Gothic', '맑은 고딕', sans-serif;
+    font-family: "Noto Sans KR", "AppleSDGothicNeo-Light", "Malgun Gothic", "맑은 고딕", sans-serif;
     border: none;
     background-image: none;
     background-color: transparent;
@@ -44,31 +44,31 @@ const S = {
       color: ${gray88};
     }
   `
-}
+};
 
 export function Textarea(props: Props) {
-  const { className, initialHeight = 120, autoExtend = false, ...restProps } = props
+  const { className, initialHeight = 120, autoExtend = false, ...restProps } = props;
 
-  const textarea = React.useRef<HTMLTextAreaElement>(null)
+  const textarea = React.useRef<HTMLTextAreaElement>(null);
 
-  const [height, setHeight] = React.useState<number>(initialHeight)
+  const [height, setHeight] = React.useState<number>(initialHeight);
 
   React.useEffect(() => {
     const heightHandler = () => {
       if (autoExtend) {
-        setHeight(textarea?.current?.scrollHeight as number)
+        setHeight(textarea?.current?.scrollHeight as number);
       }
-    }
-    textarea.current?.addEventListener('input', heightHandler)
+    };
+    textarea.current?.addEventListener("input", heightHandler);
 
     return () => {
-      textarea.current?.removeEventListener('input', heightHandler) // eslint-disable-line
-    }
-  }, [autoExtend, textarea])
+      textarea.current?.removeEventListener("input", heightHandler); // eslint-disable-line
+    };
+  }, [autoExtend, textarea]);
 
   return (
     <S.Container className={className}>
       <S.Textarea height={height} ref={textarea} {...restProps} />
     </S.Container>
-  )
+  );
 }
