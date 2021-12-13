@@ -99,7 +99,6 @@
     "@storybook/react": "^5.3.19",
     "@types/googlemaps": "3.39.8",
     "addon-redux": "1.1.0",
-    "babel-loader": "^8.1.0",
     "babel-preset-react-app": "9.1.2",
     "react-docgen-typescript-loader": "3.7.2"
   }
