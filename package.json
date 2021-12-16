@@ -21,7 +21,7 @@
     "@types/react-redux": "7.1.9",
     "@types/react-router-dom": "5.1.5",
     "@types/styled-components": "5.1.0",
-    "@wematch/wematch-ui": "^0.0.29",
+    "@wematch/wematch-ui": "^0.0.31",
     "axios": "0.24.0",
     "connected-react-router": "6.8.0",
     "dayjs": "1.8.28",
@@ -99,7 +99,6 @@
     "@storybook/react": "^5.3.19",
     "@types/googlemaps": "3.39.8",
     "addon-redux": "1.1.0",
-    "babel-loader": "^8.2.3",
     "babel-preset-react-app": "9.1.2",
     "react-docgen-typescript-loader": "3.7.2"
   }

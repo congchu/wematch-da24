@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { isEmpty } from "lodash";
 
 import Layout from "components/base/Layout";
+import ReviewItem from "./ReviewItem/reviewItem";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as partnerActions from "store/partner/actions";
@@ -43,6 +44,20 @@ const S = {
 };
 
 export default function UserReviewPage() {
+  const moreComments = () => {
+    nextPage.current += 1;
+    dispatch(
+      partnerActions.fetchCommentMoreListAsync.request({
+        page: nextPage.current,
+        size: values.DEFAULT_COMMENT_LIST_SIZE
+      })
+    );
+    setIsFetching(false);
+  };
+
+  const nextPage = useRef(1);
+  const [isFetching, setIsFetching] = useInfiniteScroll(moreComments);
+
   const dispatch = useDispatch();
   const getCommentList = useSelector(partnerSelector.getCommentList);
 
