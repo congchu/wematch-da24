@@ -72,7 +72,7 @@ const S = {
 };
 
 const Home: React.FC<RouteComponentProps> = ({ location }) => {
-  const [cookies, setCookie] = useCookies(["0dj38gepoekf98234aplyadmin"]);
+  const [cookies, setCookie] = useCookies(["0dj38gepoekf98234aplyadmin", "lncd"]);
   const HomeRef = useRef<HTMLDivElement>(null);
   const [isFixed, setIsFixed] = useScrollDirection();
   const [loading, setLoading] = useState(false);

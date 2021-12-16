@@ -254,7 +254,7 @@ const MoveForm = ({ headerRef, isFixed, setIsFixed }: Props) => {
   const [visibleOneroom, setVisibleOneroom] = useState(false);
   const [isVerifySuccess, setIsVerifySuccess] = useState(false);
   const selectedSubmitType = useRef<"curation" | "select" | null>(null);
-  const [cookies] = useCookies(["0dj38gepoekf98234aplyadmin"]);
+  const [cookies] = useCookies(["0dj38gepoekf98234aplyadmin", "formData", "jusoData"]);
   const [formValidations, setFormValidations] = useState<EFormError[]>([]);
 
   const validateHouseOrOfficeForm = () => {
